@@ -6,9 +6,9 @@ public class BeatManager : MonoBehaviour
     #region Initialization
     [Range(1, 400)] public float bpm;
     [Tooltip("L'intervalle de temps dont le joueur dispose pour effectuer son action et être en rythme.")]
-    [Range(0f,1f)] public float timingThreshold = 0.2f;
-    [Range(-1f,1f)] public float timingThresholdOffset;
-    [Range(0f, 1f)] public float beatStartTimeOffset;
+    [Range(0f, 1f)] public float timingThreshold = 0.2f;
+    [Range(-1f, 1f)] public float timingThresholdOffset;
+    [Range(0f, 1f)] public float beatStartTimeOffset; // à supprimer pour l'adapter selon la machine qui joue la musique
 
     public float cameraBeatEffectLerpSpeed;
     public float cameraBeatEffectAmplitude;
@@ -20,6 +20,7 @@ public class BeatManager : MonoBehaviour
     private float currentBeatProgression;
     private float nextBeatStartTime;
     private float offBeatStartTime;
+    private float songStartTime;
 
     private AudioSource source;
 
@@ -40,19 +41,15 @@ public class BeatManager : MonoBehaviour
 
     private void Update()
     {
-        if(!musicStarted && Input.GetButtonDown("Blink"))
+        if (!musicStarted && Input.GetButtonDown("Blink"))
         {
-            musicStarted = true;
+            StartMusic();
 
-            source.Play();
-            nextBeatStartTime = Time.time + beatStartTimeOffset;
+            nextBeatStartTime = (float)AudioSettings.dspTime + beatStartTimeOffset;
             offBeatStartTime = nextBeatStartTime;
         }
-    }
 
-    void FixedUpdate()
-    {
-        if(musicStarted)
+        if (musicStarted)
         {
             TimeCycle();
         }
@@ -63,26 +60,26 @@ public class BeatManager : MonoBehaviour
     /// </summary>
     private void TimeCycle()
     {
-        if (nextBeatStartTime < Time.time)
+        if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
             StartCoroutine(BeatEffect(1));
         }
 
-        if(offBeatStartTime < Time.time - beatTime / 2)
+        if (offBeatStartTime < (float)AudioSettings.dspTime - beatTime / 2)
         {
             offBeatStartTime += beatTime;
             //StartCoroutine(BeatEffect(0.2f));
         }
 
-        timeBeforeNextBeat = nextBeatStartTime - Time.time;
+        timeBeforeNextBeat = nextBeatStartTime - (float)AudioSettings.dspTime;
         currentBeatProgression = timeBeforeNextBeat / beatTime;
     }
 
     private IEnumerator BeatEffect(float amplitude)
     {
         mainCamera.orthographicSize = initialCameraSize + cameraBeatEffectAmplitude * amplitude;
-        while(mainCamera.orthographicSize > initialCameraSize + 0.01f)
+        while (mainCamera.orthographicSize > initialCameraSize + 0.01f)
         {
             mainCamera.orthographicSize -= cameraBeatEffectLerpSpeed * (mainCamera.orthographicSize - initialCameraSize) * Time.fixedDeltaTime * 50;
             yield return new WaitForFixedUpdate();
@@ -99,11 +96,20 @@ public class BeatManager : MonoBehaviour
             onBeat = true;
         }*/
 
-        if(Time.time > offBeatStartTime - (timingThreshold / 2) + timingThresholdOffset && Time.time < offBeatStartTime + (timingThreshold / 2) + timingThresholdOffset)
+        if ((float)AudioSettings.dspTime > offBeatStartTime - (timingThreshold / 2) + timingThresholdOffset && (float)AudioSettings.dspTime < offBeatStartTime + (timingThreshold / 2) + timingThresholdOffset)
         {
             return true;
         }
 
         return onBeat;
+    }
+
+    private void StartMusic()
+    {
+        musicStarted = true;
+
+        source.Play();
+
+        songStartTime = (float)AudioSettings.dspTime;
     }
 }
