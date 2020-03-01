@@ -9,7 +9,7 @@ public class Blink : MonoBehaviour
     public GameObject timingEffectPrefab;
     public BeatManager beatManager;
 
-    private float currentRange;
+    [HideInInspector] public float currentRange;
     private int currentTimedCombo;
     private Vector2 worldMousePos;
     private Hook selectedHook = null;
@@ -66,7 +66,7 @@ public class Blink : MonoBehaviour
         {
             float distanceToHook;
             distanceToHook = Vector2.Distance(hookHover[i].transform.position, worldMousePos);
-            if (distanceToHook < minDistanceToHook && Vector2.Distance(transform.position, hookHover[i].transform.position) <= currentRange && transform.position != hookHover[i].transform.position)
+            if (distanceToHook < minDistanceToHook && hookHover[i].GetComponent<Hook>().blinkable && transform.position != hookHover[i].transform.position)
             {
                 minDistanceToHook = distanceToHook;
                 if (selectedHook != null)
@@ -78,7 +78,7 @@ public class Blink : MonoBehaviour
             }
         }
 
-        if (hookHover.Length == 0 && selectedHook != null)
+        if (selectedHook != null && (hookHover.Length == 0 || !selectedHook.blinkable))
         {
             selectedHook.selected = false;
             selectedHook = null;
@@ -100,6 +100,7 @@ public class Blink : MonoBehaviour
         if (!blinkHitObject)
         {
             blinkDestination = selectedHook.transform.position;
+            StartCoroutine(selectedHook.BlinkReaction());
         }
         else
         {

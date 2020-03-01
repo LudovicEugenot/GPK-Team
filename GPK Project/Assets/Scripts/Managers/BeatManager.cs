@@ -13,9 +13,10 @@ public class BeatManager : MonoBehaviour
     public float cameraBeatEffectLerpSpeed;
     public float cameraBeatEffectAmplitude;
 
+    [HideInInspector] public bool onBeatSingleFrame;
 
     private bool musicStarted;
-    private float beatTime;
+    [HideInInspector] public float beatTime;
     private float timeBeforeNextBeat;
     private float currentBeatProgression;
     private float nextBeatStartTime;
@@ -34,6 +35,7 @@ public class BeatManager : MonoBehaviour
         source = GetComponent<AudioSource>();
         musicStarted = false;
         beatTime = 60 / bpm;
+        onBeatSingleFrame = false;
 
         mainCamera = Camera.main;
         initialCameraSize = mainCamera.orthographicSize;
@@ -60,10 +62,16 @@ public class BeatManager : MonoBehaviour
     /// </summary>
     private void TimeCycle()
     {
+        if(onBeatSingleFrame)
+        {
+            onBeatSingleFrame = false;
+        }
+
         if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
             StartCoroutine(BeatEffect(1));
+            onBeatSingleFrame = true;
         }
 
         if (offBeatStartTime < (float)AudioSettings.dspTime - beatTime / 2)

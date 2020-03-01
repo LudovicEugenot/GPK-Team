@@ -1,32 +1,39 @@
 ﻿using System.Collections;
 using UnityEngine;
-/*
-public enum HookState
-{
-    Selected,
-    Unselected
-}
-*/
-public class Hook : MonoBehaviour
+
+public abstract class Hook : MonoBehaviour
 {
     #region Initialization
-    public bool selected;
-    private SpriteRenderer sprite;
+    [Header("Temporary references")]
+    public BeatManager beatManager;
+    public Blink blink;
+    [Header("General Hook Options")]
+    public Color blinkableColor;
+    public Color selectedColor;
+    public Color unselectableColor;
 
-    public Color blue;
-    public Color red;
+    [HideInInspector] public bool selected;
+    [HideInInspector] public bool blinkable;
+    [HideInInspector] public SpriteRenderer sprite;
+
     #endregion
 
 
-    void Start()
+    public void HandlerStart()
     {
         sprite = GetComponent<SpriteRenderer>();
+
+        selected = false;
+        blinkable = true;
     }
 
 
-    void Update()
+    public void HandlerUpdate()
     {
-        sprite.color = selected ? red : blue;
+        StateUpdate();
     }
 
+    public abstract void StateUpdate();
+
+    public abstract IEnumerator BlinkReaction();
 }

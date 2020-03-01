@@ -337,12 +337,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 334711835}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  lockLoop: 00010001
+  lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
 --- !u!1 &631531586
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,12 +458,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 631531586}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  convertable: 1
+  convertedColor: {r: 0.061807394, g: 1, b: 0, a: 1}
+  converted: 0
 --- !u!1 &689116095
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,12 +502,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b54b98c5848ef74bbc591636544f12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 140
+  bpm: 70
   timingThreshold: 0.1
   timingThresholdOffset: 0.05
   beatStartTimeOffset: 0.38
   cameraBeatEffectLerpSpeed: 0.5
   cameraBeatEffectAmplitude: 1
+  onBeatSingleFrame: 0
+  beatTime: 0
 --- !u!82 &689116097
 AudioSource:
   m_ObjectHideFlags: 0
@@ -794,12 +811,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 861748698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  convertable: 1
+  convertedColor: {r: 0.061807394, g: 1, b: 0, a: 1}
+  converted: 0
 --- !u!1 &1156541185
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,12 +933,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1156541185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  convertable: 1
+  convertedColor: {r: 0.061807394, g: 1, b: 0, a: 1}
+  converted: 0
 --- !u!1 &1291309599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,12 +1039,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1291309599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  lockLoop: 00010001
+  lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
 --- !u!58 &1291309603
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1136,12 +1176,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1294224424}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  lockLoop: 000101
+  lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
 --- !u!1 &1636733462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,12 +1267,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1636733462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  lockLoop: 000101
+  lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
 --- !u!4 &1636733465
 Transform:
   m_ObjectHideFlags: 0
@@ -1364,12 +1418,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1768787290}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  convertable: 1
+  convertedColor: {r: 0.061807394, g: 1, b: 0, a: 1}
+  converted: 0
 --- !u!1 &1914526070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,6 +1582,7 @@ MonoBehaviour:
   timingEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
     type: 3}
   beatManager: {fileID: 689116096}
+  currentRange: 0
 --- !u!120 &1936471286
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1863,12 +1926,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1954684495}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  lockLoop: 000101
+  lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
 --- !u!58 &1954684499
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1993,9 +2063,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2120972280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77d9aa25b54b3f141a0925878108f739, type: 3}
+  m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  blink: {fileID: 1936471285}
+  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
+  unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
   selected: 0
-  blue: {r: 0.1544589, g: 0.8396226, b: 0.62773484, a: 1}
-  red: {r: 0.9254902, g: 0.14509805, b: 0.14509805, a: 1}
+  blinkable: 0
+  sprite: {fileID: 0}
+  lockLoop: 00010001
+  lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
