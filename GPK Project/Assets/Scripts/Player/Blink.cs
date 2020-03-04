@@ -19,10 +19,11 @@ public class Blink : MonoBehaviour
 
     private LineRenderer lineCircle;
     #endregion
-
-
+    Animator animator;
+    bool IsBlink;
     void Start()
     {
+        IsBlink = false;
         currentTimedCombo = 0;
         lineCircle = GetComponent<LineRenderer>();
         currentRange = blinkRangeProgression[0];
@@ -105,7 +106,6 @@ public class Blink : MonoBehaviour
         else
         {
             blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
-
         }
     }
 
