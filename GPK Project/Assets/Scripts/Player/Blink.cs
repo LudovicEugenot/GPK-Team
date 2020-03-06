@@ -111,7 +111,7 @@ public class Blink : MonoBehaviour
 
     private void BlinkMove()
     {
-        transform.position = blinkDestination;
+        transform.parent.position = blinkDestination;
         if (beatManager.OnBeat())
         {
             currentTimedCombo++;
