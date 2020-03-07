@@ -8,6 +8,7 @@ public abstract class Hook : MonoBehaviour
     public BeatManager beatManager;
     public Blink blink;
     [Header("General Hook Options")]
+    public bool isSecureHook;
     public Color blinkableColor;
     public Color selectedColor;
     public Color unselectableColor;

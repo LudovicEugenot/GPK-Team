@@ -14,6 +14,8 @@ public class BeatManager : MonoBehaviour
     public float cameraBeatEffectAmplitude;
 
     [HideInInspector] public bool onBeatSingleFrame;
+    [HideInInspector] public bool onBeatFirstFrame;
+    private bool firstFrameFlag;
 
     private bool musicStarted;
     [HideInInspector] public float beatTime;
@@ -67,6 +69,24 @@ public class BeatManager : MonoBehaviour
             onBeatSingleFrame = false;
         }
 
+        if (onBeatFirstFrame)
+        {
+            onBeatFirstFrame = false;
+        }
+
+        if (OnBeat())
+        {
+            if(firstFrameFlag)
+            {
+                onBeatFirstFrame = true;
+                firstFrameFlag = false;
+            }
+        }
+        else
+        {
+            firstFrameFlag = true;
+        }
+
         if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
@@ -81,7 +101,7 @@ public class BeatManager : MonoBehaviour
         }
 
         timeBeforeNextBeat = nextBeatStartTime - (float)AudioSettings.dspTime;
-        currentBeatProgression = timeBeforeNextBeat / beatTime;
+        currentBeatProgression = 1 - (timeBeforeNextBeat / beatTime);
     }
 
     private IEnumerator BeatEffect(float amplitude)
@@ -98,15 +118,28 @@ public class BeatManager : MonoBehaviour
     public bool OnBeat()
     {
         bool onBeat = false;
+        float beatTimeProgression = beatTime - timeBeforeNextBeat;
 
-        /*if(timeBeforeNextBeat < timingThreshold / 2 || beatTime - timeBeforeNextBeat < timingThreshold / 2)
+        if(timingThresholdOffset >= timingThreshold / 2)
         {
-            onBeat = true;
-        }*/
-
-        if ((float)AudioSettings.dspTime > offBeatStartTime - (timingThreshold / 2) + timingThresholdOffset && (float)AudioSettings.dspTime < offBeatStartTime + (timingThreshold / 2) + timingThresholdOffset)
+            if(beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+            {
+                onBeat = true;
+            }
+        }
+        else if(timingThresholdOffset <= - timingThreshold / 2)
         {
-            return true;
+            if (timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset && timeBeforeNextBeat > - timingThresholdOffset - (timingThreshold / 2))
+            {
+                onBeat = true;
+            }
+        }
+        else
+        {
+            if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
+            {
+                onBeat = true;
+            }
         }
 
         return onBeat;

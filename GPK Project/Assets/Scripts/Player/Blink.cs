@@ -5,15 +5,18 @@ public class Blink : MonoBehaviour
 {
     #region Initialization
     public float[] blinkRangeProgression;
+    public Hook startHook;
 
     public GameObject timingEffectPrefab;
     public BeatManager beatManager;
 
+    private Hook lastSecureHook;
     [HideInInspector] public float currentRange;
     private int currentTimedCombo;
     private Vector2 worldMousePos;
     private Hook selectedHook = null;
 
+    private bool blinkReachDestination;
     private Vector2 blinkOrigin;
     private Vector2 blinkDestination;
 
@@ -26,6 +29,8 @@ public class Blink : MonoBehaviour
         currentTimedCombo = 0;
         lineCircle = GetComponent<LineRenderer>();
         currentRange = blinkRangeProgression[0];
+        transform.parent.position = startHook.transform.position;
+        lastSecureHook = startHook;
     }
 
 
@@ -40,8 +45,6 @@ public class Blink : MonoBehaviour
             BlinkTest();
             BlinkMove();
         }
-
-
     }
 
     private void DrawHookRange(float radius, Vector2 center)
@@ -89,6 +92,7 @@ public class Blink : MonoBehaviour
 
     private void BlinkTest()
     {
+        blinkReachDestination = false;
         blinkOrigin = transform.position;
         RaycastHit2D blinkHitObject = Physics2D.Raycast
             (
@@ -100,19 +104,23 @@ public class Blink : MonoBehaviour
         if (!blinkHitObject)
         {
             blinkDestination = selectedHook.transform.position;
+            blinkReachDestination = true;
+            if(selectedHook.isSecureHook)
+            {
+                lastSecureHook = selectedHook;
+            }
             StartCoroutine(selectedHook.BlinkReaction());
         }
         else
         {
             blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
-
         }
     }
 
     private void BlinkMove()
     {
         transform.parent.position = blinkDestination;
-        if (beatManager.OnBeat())
+        if (beatManager.OnBeat() && blinkReachDestination)
         {
             currentTimedCombo++;
             Instantiate(timingEffectPrefab, transform.position, Quaternion.identity);
@@ -123,5 +131,11 @@ public class Blink : MonoBehaviour
         }
         selectedHook.selected = false;
         selectedHook = null;
+    }
+
+    public IEnumerator RespawnPlayer()
+    {
+        yield return new WaitForSeconds(0.2f);
+        transform.position = lastSecureHook.transform.position;
     }
 }
