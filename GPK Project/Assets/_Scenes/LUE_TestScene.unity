@@ -606,11 +606,11 @@ GameObject:
   m_IsActive: 1
 --- !u!114 &689116096
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
+    type: 3}
+  m_PrefabInstance: {fileID: 1253643285835179961}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689116095}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b54b98c5848ef74bbc591636544f12a, type: 3}
@@ -1425,34 +1425,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!4 &1636733465
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
+    type: 3}
+  m_PrefabInstance: {fileID: 6405902348360203964}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636733462}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5144924, y: -0.86971635, z: 2.3544235}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1914526071}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1636733466
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1636733462}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2
 --- !u!1 &1768787290
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,9 +1697,9 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!114 &1954684498
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4386607189583796236, guid: 2627f25b8ae207b4bb3dfe0c2c3d9d40,
+    type: 3}
+  m_PrefabInstance: {fileID: 4386607188290645241}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1954684495}
   m_Enabled: 1
