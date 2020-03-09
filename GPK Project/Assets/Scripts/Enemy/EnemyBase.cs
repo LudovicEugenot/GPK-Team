@@ -16,6 +16,47 @@ public enum EnemyState
     NULL
 }
 
+public class EnemyBehaviour
+{
+    #region Behaviour Related
+    public EnemyState state;
+    public bool vulnerable = false;
+    public float necessaryTimeToAction; // Utile que pour les comportements triggered juste avant un beat.
+    #endregion
+
+
+    public void Behaviour()
+    {
+        Debug.LogWarning("Le Behaviour " + state.ToString() + " n'a pas été override et l'ennemi essaie de l'utiliser.");
+    }
+
+    #region Contructors
+    public EnemyBehaviour(EnemyState _state)
+    {
+        state = _state;
+    }
+
+    public EnemyBehaviour(EnemyState _state, bool _vulnerable)
+    {
+        state = _state;
+        vulnerable = _vulnerable;
+    }
+
+    public EnemyBehaviour(EnemyState _state, float _necessaryTimeToAction)
+    {
+        state = _state;
+        necessaryTimeToAction = _necessaryTimeToAction;
+    }
+
+    public EnemyBehaviour(EnemyState _state, bool _vulnerable, float _necessaryTimeToAction)
+    {
+        state = _state;
+        vulnerable = _vulnerable;
+        necessaryTimeToAction = _necessaryTimeToAction;
+    }
+    #endregion
+}
+
 /// <summary>
 /// EnemyBase contient la base de fonctionnement de tous les ennemis. Faire hériter le nouveau script d'ennemi de ce script.
 /// </summary>
@@ -53,6 +94,11 @@ public abstract class EnemyBase : MonoBehaviour
     /// Suite des comportements qu'a l'ennemi dès que le joueur est rentré dans sa range d'aggro.
     /// </summary>
     protected abstract EnemyState[] triggeredPattern { get; }
+
+    /// <summary>
+    /// Le code derrière les enemyStates.
+    /// </summary>
+    protected abstract EnemyBehaviour[] behaviours { get ; }
     #endregion
 
     #region Code Related

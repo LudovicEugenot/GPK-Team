@@ -14,6 +14,14 @@ public class Enemy_Basic : EnemyBase
         EnemyState.Vulnerable
     };
 
+    protected override EnemyBehaviour[] behaviours => new EnemyBehaviour[]
+    {
+        new EnemyBehaviour(EnemyState.Triggered) // N'utilise pas les constructors, je ne sais pas comment utiliser le switch du CurrentBehaviour puisque je ne sais pas comment transmettre le state
+        // pour le test
+    };
+
+
+
     protected override void Init()
     {
 
