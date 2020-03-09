@@ -9,6 +9,8 @@ public class Blink : MonoBehaviour
     public GameObject timingEffectPrefab;
     public BeatManager beatManager;
 
+    public GameObject blinkDisparition;
+
     [HideInInspector] public float currentRange;
     private int currentTimedCombo;
     private Vector2 worldMousePos;
@@ -20,13 +22,15 @@ public class Blink : MonoBehaviour
     private LineRenderer lineCircle;
     #endregion
     Animator animator;
-    bool IsBlink;
+    SpriteRenderer spriteRenderer;
     void Start()
     {
-        IsBlink = false;
         currentTimedCombo = 0;
         lineCircle = GetComponent<LineRenderer>();
         currentRange = blinkRangeProgression[0];
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
 
@@ -111,6 +115,7 @@ public class Blink : MonoBehaviour
 
     private void BlinkMove()
     {
+        Instantiate(blinkDisparition, transform.position, Quaternion.identity);
         transform.parent.position = blinkDestination;
         if (beatManager.OnBeat())
         {

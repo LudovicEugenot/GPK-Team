@@ -7,11 +7,15 @@ public class ClassicHook : Hook
     [Header("Classic Hook Options")]
     public bool convertable;
     public Color convertedColor;
+    public Animator animator;
+    SpriteRenderer spriteRenderer;
+
 
     [HideInInspector] public bool converted;
 
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         HandlerStart();
         converted = false;
     }
@@ -33,11 +37,16 @@ public class ClassicHook : Hook
         }
 
         sprite.color = blinkable ? (selected ? selectedColor : (converted ? convertedColor : blinkableColor)) : unselectableColor;
+
+        if(animator != null)
+        {
+            animator.SetBool("IsConvert", converted);
+        }
     }
 
     public override IEnumerator BlinkReaction()
     {
         converted = convertable ? true : false;
-        yield return null; // conversion animation effect
+        yield return null;
     }
 }
