@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class HookFX : MonoBehaviour
 {
-    Animator animator;
+    public Animator animator;
+
 
     void Start()
     {
@@ -13,7 +14,7 @@ public class HookFX : MonoBehaviour
 
     private void Update()
     {
-     animator.Play("Expention_Hook");
+        animator.Play("Expention_Hook");
     }
 
 }
