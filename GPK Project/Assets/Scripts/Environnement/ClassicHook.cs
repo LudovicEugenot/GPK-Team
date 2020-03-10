@@ -10,7 +10,6 @@ public class ClassicHook : Hook
     public Animator animator;
     SpriteRenderer spriteRenderer;
 
-
     [HideInInspector] public bool converted;
 
     void Start()

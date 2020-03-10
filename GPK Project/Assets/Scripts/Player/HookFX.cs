@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class HookFX : MonoBehaviour
 {
-    public Animator animator;
-
+    Animator animator;
+    public ClassicHook hookFX;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = gameObject.GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
-        animator.Play("Expention_Hook");
+        if(hookFX.converted == true)
+        {
+            animator.SetBool("IsExpend", true);
+        }
+
     }
 
 }
