@@ -1,34 +1,40 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-// faut créer une classe state pour pouvoir accéder aux infos de tel état de n'importe où 
-// (ex : savoir pendant l'état précédent si on sera vulnérable dans l'état suivant...)
-
 public enum EnemyState
 {
+    NULL,
     Action,
     Defense,
     Vulnerable,
     Moving,
     Idle,
     Triggered,
-    Converted,
-    NULL
+    Converted
 }
+
 
 public class EnemyBehaviour
 {
-    #region Behaviour Related
-    public EnemyState state;
-    public bool vulnerable = false;
-    public float necessaryTimeToAction; // Utile que pour les comportements triggered juste avant un beat.
-    #endregion
-
-
-    public void Behaviour()
+    public EnemyState state { get; private set; }
+    public bool vulnerable
     {
-        Debug.LogWarning("Le Behaviour " + state.ToString() + " n'a pas été override et l'ennemi essaie de l'utiliser.");
+        get { return false; }
+        private set { vulnerable = value; }//////////////Stack Overflow, il set necessary vulnerable et en essayant de le set il le reset etc etc...
     }
+    /// <summary>
+    /// Temps en pourcentage nécessaire pour changer de behaviour en milieu de beat.
+    /// 0 = le behaviour peut changer jusqu'à une frame avant le prochain beat,
+    /// 1 = a besoin de la durée complète du beat pour changer.
+    /// (Utile que pour les comportements triggered juste avant un beat.)
+    /// </summary>
+    public float necessaryTimeToAction
+    {
+        get { return 1f; }
+        private set { necessaryTimeToAction = value; } //////////////Stack Overflow, il set necessary time to action et en essayant de le set il le reset etc etc...
+    }
+
+    public System.Action behaviour;
 
     #region Contructors
     public EnemyBehaviour(EnemyState _state)
@@ -57,6 +63,7 @@ public class EnemyBehaviour
     #endregion
 }
 
+
 /// <summary>
 /// EnemyBase contient la base de fonctionnement de tous les ennemis. Faire hériter le nouveau script d'ennemi de ce script.
 /// </summary>
@@ -73,41 +80,42 @@ public abstract class EnemyBase : MonoBehaviour
 
     # region Behaviour
     /// <summary>
-    /// Est true quand je joueur est dans le même écran que l'ennemi, false si le joueur est dans un écran voisin.
+    /// Est true quand je joueur est dans le même écran que l'ennemi, false si le joueur est dans un autre écran.
     /// </summary>
     protected bool activated;
     protected bool triggered;
     protected bool converted;
-    protected bool canBeDamaged; /// <summary>
-    /// ////////////////////////////////////////////////
-    /// </summary>
-    protected int currentStateIndex;
-    protected EnemyState currentState;
-    protected EnemyState nextState;
+    protected bool canBeDamaged; /////////////////////////////////////////////////////
+    protected int currentBehaviourIndex;
+    protected int nextBehaviourIndex;
+    protected EnemyBehaviour currentBehaviour = null;
+    protected EnemyBehaviour nextBehaviour = null;
 
     /// <summary>
     /// Suite des comportements qu'a l'ennemi quand le joueur est hors de sa range d'aggro.
     /// </summary>
-    protected abstract EnemyState[] passivePattern { get; }
+    protected abstract EnemyBehaviour[] passivePattern { get; }
 
     /// <summary>
     /// Suite des comportements qu'a l'ennemi dès que le joueur est rentré dans sa range d'aggro.
     /// </summary>
-    protected abstract EnemyState[] triggeredPattern { get; }
-
-    /// <summary>
-    /// Le code derrière les enemyStates.
-    /// </summary>
-    protected abstract EnemyBehaviour[] behaviours { get ; }
+    protected abstract EnemyBehaviour[] triggeredPattern { get; }
     #endregion
 
     #region Code Related
-    protected Transform player; // à transformer en script plus précis si nécessaire
+    protected Transform player;
+    protected Transform playerTransformStartOfBeat;
+    protected Transform transformStartOfBeat;
+
+    protected EnemyBehaviour nullBehaviour = new EnemyBehaviour(EnemyState.NULL);
+    protected EnemyBehaviour convertedBehaviour = new EnemyBehaviour(EnemyState.Converted);
+
+    protected Rigidbody2D rb2D;
     #endregion
 
     #endregion
 
-
+    #region Méthodes à override
     protected abstract void Init();
 
     /* Pour se servir des behaviour il faut les override comme ça :
@@ -141,9 +149,18 @@ public abstract class EnemyBase : MonoBehaviour
         Debug.LogWarning("Ce Behaviour n'a pas été override et l'ennemi essaie de l'utiliser.");
     }
     protected abstract void ConvertedBehaviour();
+    #endregion
 
     private void Awake()
     {
+        rb2D = GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
+        if (rb2D == null)
+        {
+            Debug.LogError("le rigidbody n'a pas été trouvé");
+        }
+
+        BehavioursSetUp();
+
         Init();
     }
 
@@ -152,7 +169,6 @@ public abstract class EnemyBase : MonoBehaviour
         activated = false;
         triggered = false;
         converted = false;
-        currentState = EnemyState.NULL;
         player = GameManager.Instance.player.transform;
 
         enemyCurrentHP = enemyMaxHP;
@@ -162,98 +178,154 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (activated)
         {
-            if (currentState != EnemyState.Converted)
+            if(currentBehaviour == nullBehaviour)
             {
-                if (GameManager.Instance.Beat.onBeatSingleFrame)
-                {
-                    currentState = nextState;
-                    nextState = NextBehaviour();
-                }
+                NextBehaviour();
+            }
 
-                CurrentBehaviour();
-            }
-            else
+            if (GameManager.Instance.Beat.onBeatSingleFrame)
             {
-                ConvertedBehaviour();
+                Changebehaviour();
             }
+
+            CurrentBehaviour();
         }
         else
         {
-            currentState = EnemyState.NULL;
+            currentBehaviour = nullBehaviour;
         }
     }
 
+    #region Méthodes uniques au fonctionnement général des ennemis
     private void CurrentBehaviour()
     {
-        switch (currentState)
-        {
-            case EnemyState.Action:
-                ActionBehaviour();
-                break;
-            case EnemyState.Defense:
-                DefenseBehaviour();
-                break;
-            case EnemyState.Vulnerable:
-                VulnerableBehaviour();
-                break;
-            case EnemyState.Moving:
-                MovingBehaviour();
-                break;
-            case EnemyState.Idle:
-                IdleBehaviour();
-                break;
-            case EnemyState.Triggered:
-                TriggeredBehaviour();
-                break;
-            case EnemyState.NULL:
-                Debug.LogWarning("Enemy " + name + " deactivated.");
-                break;
-            default:
-                break;
-        }
+        currentBehaviour.behaviour.Invoke();
     }
 
-    private EnemyState NextBehaviour()
+    private EnemyBehaviour NextBehaviour()
     {
-        int nextStateIndex = currentStateIndex + 1;
-        if (triggered)
+        if (converted)
         {
-            if (nextStateIndex <= triggeredPattern.Length)
-            {
-                return triggeredPattern[nextStateIndex];
-            }
-            else
-            {
-                nextStateIndex = 0;
-                triggered = false;
-                return passivePattern[nextStateIndex];
-            }
+            return convertedBehaviour;
+        }
+        else if (currentBehaviour == nullBehaviour)
+        {
+            nextBehaviourIndex = 0;
+            return passivePattern[nextBehaviourIndex];
         }
         else
         {
-            if (nextStateIndex <= passivePattern.Length)
+            nextBehaviourIndex = currentBehaviourIndex + 1;
+            if (triggered)
             {
-                return passivePattern[nextStateIndex];
+                if (nextBehaviourIndex <= triggeredPattern.Length)
+                {
+                    return triggeredPattern[nextBehaviourIndex];
+                }
+                else
+                {
+                    nextBehaviourIndex = 0;
+                    triggered = false;
+                    return passivePattern[nextBehaviourIndex];
+                }
             }
             else
             {
-                nextStateIndex = 0;
-                return passivePattern[nextStateIndex];
+                if (nextBehaviourIndex <= passivePattern.Length)
+                {
+                    return passivePattern[nextBehaviourIndex];
+                }
+                else
+                {
+                    nextBehaviourIndex = 0;
+                    return passivePattern[nextBehaviourIndex];
+                }
             }
         }
 
     }
 
+    private void Changebehaviour()
+    {
+        currentBehaviour = nextBehaviour;
+        currentBehaviourIndex = nextBehaviourIndex;
+        nextBehaviour = NextBehaviour();
+        playerTransformStartOfBeat = player;
+        transformStartOfBeat = transform;
+    }
+
+    private void BehavioursSetUp()
+    {
+        AssignBehaviourToEnemyBehaviourClass(passivePattern);
+        AssignBehaviourToEnemyBehaviourClass(triggeredPattern);
+
+        convertedBehaviour.behaviour = ConvertedBehaviour;
+    }
+
+    private void AssignBehaviourToEnemyBehaviourClass(EnemyBehaviour[] pattern)
+    {
+        foreach (EnemyBehaviour enemyBehaviour in pattern)
+        {
+            switch (enemyBehaviour.state)
+            {
+                case EnemyState.Action:
+                    enemyBehaviour.behaviour = ActionBehaviour;
+                    break;
+                case EnemyState.Defense:
+                    enemyBehaviour.behaviour = DefenseBehaviour;
+                    break;
+                case EnemyState.Vulnerable:
+                    enemyBehaviour.behaviour = VulnerableBehaviour;
+                    break;
+                case EnemyState.Moving:
+                    enemyBehaviour.behaviour = MovingBehaviour;
+                    break;
+                case EnemyState.Idle:
+                    enemyBehaviour.behaviour = IdleBehaviour;
+                    break;
+                case EnemyState.Triggered:
+                    enemyBehaviour.behaviour = TriggeredBehaviour;
+                    break;
+                case EnemyState.Converted:
+                    enemyBehaviour.behaviour = ConvertedBehaviour;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private bool IHaveTimeToChangeBehaviour(EnemyBehaviour desiredBehaviour)
+    {
+        if (desiredBehaviour.necessaryTimeToAction < GameManager.Instance.Beat.currentBeatProgression)
+            return true;
+        else
+            return false;
+    }
+    #endregion
+
+    #region Méthodes utiles à la création de behaviours
     protected bool PlayerIsInAggroRange()
     {
         if (Vector2.Distance(player.position, transform.position) < aggroRange)
         {
-            nextState = NextBehaviour();
+            nextBehaviour = NextBehaviour();
             return true;
         }
         else
         {
             return false;
+        }
+    }
+
+    protected void GetTriggered()
+    {
+        triggered = true;
+        currentBehaviourIndex = -1;
+        nextBehaviour = NextBehaviour();
+        if (IHaveTimeToChangeBehaviour(nextBehaviour))
+        {
+            Changebehaviour();
         }
     }
 
@@ -279,10 +351,11 @@ public abstract class EnemyBase : MonoBehaviour
     /// </summary>
     protected void Convert()
     {
-        currentState = EnemyState.Converted;
+        currentBehaviour = convertedBehaviour;
         converted = true;
         // Convertir l'ennemi
         // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
         Debug.LogWarning("<color=green> I AM CONVERTED OH NO.");
     }
+    #endregion
 }

@@ -20,7 +20,7 @@ public class BeatManager : MonoBehaviour
     private bool musicStarted;
     [HideInInspector] public float beatTime;
     private float timeBeforeNextBeat;
-    private float currentBeatProgression;
+    [HideInInspector] public float currentBeatProgression;
     private float nextBeatStartTime;
     private float offBeatStartTime;
     private float songStartTime;
