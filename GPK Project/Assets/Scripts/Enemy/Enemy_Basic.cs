@@ -7,33 +7,29 @@ public class Enemy_Basic : EnemyBase
     [SerializeField] [Range(1, 5)] private float movementDistance = 2f;
     public AnimationCurve movementCurve;
 
+    [Tooltip("Quand l'ennemi est triggered, le temps minimum pour qu'il effectue son behaviour \"Triggered\" avant la fin du beat.")]
+    [SerializeField] [Range(0, 1)] private float necessaryTimeToTriggerOnNextBeat = 0.5f;
+
     private CircleCollider2D attackCollider;
+    //private SpriteRenderer attackRenderer;
+
     private float maxRadiusAttack;
     #endregion
-    protected override EnemyState[] passivePattern => new EnemyState[]
-    {
-        EnemyState.Moving
-    };
-    protected override EnemyState[] triggeredPattern => new EnemyState[] 
-    {
-        EnemyState.Triggered,
-        EnemyState.Action,
-        EnemyState.Vulnerable
-    };
 
-
-    protected override EnemyBehaviour[] behaviours => new EnemyBehaviour[] 
-    // je peux pas remonter la hiérarchie / je peux pas avoir accès à des fonctions créées dans les enfants
-    // il faut que les refs de fonction soient dans la base donc go essayer de faire des scriptable objects qui auront chacun leur fonctionnement dedans.
+    protected override EnemyBehaviour[] passivePattern => new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Triggered)
-        
-        // N'utilise pas les constructors, je ne sais pas comment utiliser le switch du CurrentBehaviour 
-        // puisque je ne sais pas comment transmettre le state pour le test
+        new EnemyBehaviour(EnemyState.Moving)
+    };
+    protected override EnemyBehaviour[] triggeredPattern => new EnemyBehaviour[]
+    {
+        new EnemyBehaviour(EnemyState.Triggered, necessaryTimeToTriggerOnNextBeat),
+        new EnemyBehaviour(EnemyState.Action),
+        new EnemyBehaviour(EnemyState.Vulnerable, true)
     };
 
     protected override void Init()
     {
+        attackCollider = GetComponent<CircleCollider2D>();
         attackCollider.enabled = false;
     }
 
@@ -63,8 +59,13 @@ public class Enemy_Basic : EnemyBase
 
     protected override void MovingBehaviour()
     {
-        Vector2 endOfDash = Vector2.ClampMagnitude(playerTransformStartOfBeat.position - transformStartOfBeat.position,movementDistance);
+        Vector2 endOfDash = Vector2.ClampMagnitude(playerTransformStartOfBeat.position - transformStartOfBeat.position, movementDistance);
         transform.position = Vector2.Lerp(player.position, endOfDash, movementCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression * 2));
+
+        if (PlayerIsInAggroRange())
+        {
+            GetTriggered();
+        }
     }
 
     protected override void VulnerableBehaviour()
