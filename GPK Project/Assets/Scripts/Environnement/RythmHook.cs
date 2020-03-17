@@ -11,8 +11,9 @@ public class RythmHook : Hook
     private int currentLoopProgression;
     private bool locked;
 
-    public bool IsBlink;
     public Animator animator;
+    SpriteRenderer spriteRenderer;
+
 
     void Start()
     {
