@@ -384,6 +384,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   lockLoop: 00010001
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
+  animator: {fileID: 0}
 --- !u!114 &334711840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,6 +408,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &620873239
 GameObject:
@@ -653,6 +655,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &689116095
 GameObject:
@@ -693,6 +696,7 @@ MonoBehaviour:
   onBeatSingleFrame: 0
   onBeatFirstFrame: 0
   beatTime: 0
+  currentBeatProgression: 0
 --- !u!82 &689116097
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1008,6 +1012,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &925195058
 GameObject:
@@ -1019,6 +1024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 925195060}
   - component: {fileID: 925195059}
+  - component: {fileID: 925195062}
   - component: {fileID: 925195061}
   m_Layer: 0
   m_Name: Scripts
@@ -1054,6 +1060,8 @@ MonoBehaviour:
   timingEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
     type: 3}
   beatManager: {fileID: 689116096}
+  blinkDisparition: {fileID: 454773728962842249, guid: 22dc9e6388d18a944ba0bb83b8cc7995,
+    type: 3}
   currentRange: 0
 --- !u!4 &925195060
 Transform:
@@ -1214,6 +1222,89 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &925195062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925195058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a35c74761bbdf34080b3e4df828ca1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beatManager: {fileID: 689116096}
+  initialCooldown: 0.1
+  launchCurveVisual:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.71919775
+      outSlope: 0.71919775
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.024553174
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.80826163
+      outSlope: -0.80826163
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.021432638
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveVisualForce: 5
+  launchCurveProgression:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4.3396225
+      outSlope: 4.3396225
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.48772565
+    - serializedVersion: 3
+      time: 0.07626112
+      value: 0.23780715
+      inSlope: 1.0558072
+      outSlope: 1.0558072
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.95243084
+      value: 0.8034022
+      inSlope: 1.3018656
+      outSlope: 1.3018656
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 5.547174
+      outSlope: 5.547174
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07643198
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speakerPrefab: {fileID: 4057624523111242387, guid: db40fd77ba9ad334e87b2fc7bf2d802c,
+    type: 3}
 --- !u!1 &1009938553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,6 +1554,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &1291309599
 GameObject:
@@ -1571,6 +1663,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   lockLoop: 00010001
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
+  animator: {fileID: 0}
 --- !u!58 &1291309603
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1610,6 +1703,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &1294224424
 GameObject:
@@ -1734,6 +1828,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   lockLoop: 000101
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
+  animator: {fileID: 0}
 --- !u!114 &1294224429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,6 +1852,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &1636733462
 GameObject:
@@ -1851,6 +1947,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   lockLoop: 000101
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
+  animator: {fileID: 0}
 --- !u!4 &1636733465
 Transform:
   m_ObjectHideFlags: 0
@@ -1904,6 +2001,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &1754378322
 GameObject:
@@ -2152,6 +2250,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &1914526070
 GameObject:
@@ -2302,6 +2401,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   lockLoop: 000101
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
+  animator: {fileID: 0}
 --- !u!58 &1954684499
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2341,6 +2441,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
 --- !u!1 &1998885114
 GameObject:
@@ -2799,6 +2900,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   lockLoop: 00010001
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
+  animator: {fileID: 0}
 --- !u!114 &2120972285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2822,4 +2924,5 @@ MonoBehaviour:
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  animator: {fileID: 0}
   converted: 0
