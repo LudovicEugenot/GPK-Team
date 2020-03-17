@@ -26,12 +26,16 @@ public class TemporaryHook : Hook
     {
         if(isBroken)
         {
-            blink.RespawnPlayer();
+            StartCoroutine(blink.RespawnPlayer());
         }
         else
         {
             yield return new WaitForSeconds(timeBeforeBroke);
             isBroken = true;
+            if((Vector2)blink.transform.parent.position == (Vector2)transform.position)
+            {
+                StartCoroutine(blink.RespawnPlayer());
+            }
         }
     }
 
@@ -50,7 +54,7 @@ public class TemporaryHook : Hook
             }
         }
 
-        if (Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange && !isBroken)
+        if (Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange)
         {
             blinkable = true;
         }
