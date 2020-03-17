@@ -136,7 +136,8 @@ public class Blink : MonoBehaviour
 
     public IEnumerator RespawnPlayer()
     {
+        currentTimedCombo = 0;
         yield return new WaitForSeconds(0.2f);
-        transform.position = lastSecureHook.transform.position;
+        transform.parent.position = lastSecureHook.transform.position;
     }
 }
