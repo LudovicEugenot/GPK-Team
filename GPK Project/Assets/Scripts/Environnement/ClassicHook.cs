@@ -11,6 +11,7 @@ public class ClassicHook : Hook
     SpriteRenderer spriteRenderer;
 
     [HideInInspector] public bool converted;
+    [HideInInspector] public bool isDisabled;
 
     void Start()
     {
@@ -26,7 +27,7 @@ public class ClassicHook : Hook
 
     public override void StateUpdate()
     {
-        if(Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted)
+        if((Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted) && !isDisabled)
         {
             blinkable = true;
         }

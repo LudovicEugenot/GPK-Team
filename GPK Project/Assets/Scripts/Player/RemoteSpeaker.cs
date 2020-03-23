@@ -52,7 +52,9 @@ public class RemoteSpeaker : MonoBehaviour
             remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / beatManager.beatTime)) * curveVisualForce);
             yield return new WaitForFixedUpdate();
             currentLaunchTime += Time.fixedDeltaTime;
+            speakerHook.isDisabled = true;
         }
+        speakerHook.isDisabled = false;
         speakerPlaced = true;
         speakerHook.converted = true;
         remoteSpeakerO.transform.position = targetPos;
