@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6842381197443081502}
   - component: {fileID: 1676285664936947095}
-  - component: {fileID: 2117318712416328708}
   - component: {fileID: 6459566988972973607}
+  - component: {fileID: 1914926425291559867}
   m_Layer: 8
   m_Name: Speaker
   m_TagString: Untagged
@@ -83,32 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2117318712416328708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4057624523111242387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  beatManager: {fileID: 0}
-  blink: {fileID: 0}
-  isSecureHook: 0
-  blinkableColor: {r: 0.83921576, g: 0.10588236, b: 0.14509805, a: 1}
-  selectedColor: {r: 0.9245283, g: 0.63234246, b: 0.6479675, a: 1}
-  unselectableColor: {r: 0.6320754, g: 0.18187074, b: 0.20594604, a: 1}
-  selected: 0
-  blinkable: 0
-  sprite: {fileID: 0}
-  convertable: 1
-  convertedColor: {r: 0.83921576, g: 0.10588236, b: 0.14509805, a: 1}
-  animator: {fileID: 0}
-  converted: 0
-  isDisabled: 0
 --- !u!58 &6459566988972973607
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -125,3 +99,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2
+--- !u!114 &1914926425291559867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057624523111242387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de9f7d8394b4a3448853f2c8508700b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beatManager: {fileID: 0}
+  blink: {fileID: 0}
+  isSecureHook: 0
+  blinkableColor: {r: 0.83921576, g: 0.10588236, b: 0.14509805, a: 1}
+  selectedColor: {r: 0.8679245, g: 0.40530434, b: 0.40530434, a: 1}
+  unselectableColor: {r: 0.254717, g: 0.03484337, b: 0.03484337, a: 1}
+  selected: 0
+  blinkable: 0
+  sprite: {fileID: 0}
+  remoteSpeaker: {fileID: 0}
+  animator: {fileID: 0}
+  isDisabled: 0

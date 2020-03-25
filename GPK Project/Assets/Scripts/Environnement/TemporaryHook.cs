@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TemporaryHook : Hook
 {
-    public float repairTime;
-    public float timeBeforeBroke;
+    public int beatRepairTime;
+    public int beatTimeBeforeBroke;
     public Color brokenColor;
 
     private bool isBroken;
@@ -30,7 +30,7 @@ public class TemporaryHook : Hook
         }
         else
         {
-            yield return new WaitForSeconds(timeBeforeBroke);
+            yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.beatTime + GameManager.Instance.Beat.timingThreshold / 2);
             isBroken = true;
             if((Vector2)blink.transform.parent.position == (Vector2)transform.position)
             {
@@ -43,7 +43,7 @@ public class TemporaryHook : Hook
     {
         if(isBroken)
         {
-            if(currentTimeBeforeRepair < repairTime)
+            if(currentTimeBeforeRepair < beatRepairTime * GameManager.Instance.Beat.beatTime)
             {
                 currentTimeBeforeRepair += Time.deltaTime;
             }

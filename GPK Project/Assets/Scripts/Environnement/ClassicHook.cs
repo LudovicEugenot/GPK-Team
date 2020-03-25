@@ -8,14 +8,11 @@ public class ClassicHook : Hook
     public bool convertable;
     public Color convertedColor;
     public Animator animator;
-    SpriteRenderer spriteRenderer;
 
     [HideInInspector] public bool converted;
-    [HideInInspector] public bool isDisabled;
 
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         HandlerStart();
         converted = false;
     }
@@ -27,7 +24,7 @@ public class ClassicHook : Hook
 
     public override void StateUpdate()
     {
-        if((Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted) && !isDisabled)
+        if((Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted))
         {
             blinkable = true;
         }

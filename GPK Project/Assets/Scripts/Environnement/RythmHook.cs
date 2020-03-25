@@ -29,9 +29,9 @@ public class RythmHook : Hook
 
     private void BlinkableUpdate()
     {
-        if(beatManager.onBeatSingleFrame)
+        if(GameManager.Instance.Beat.onBeatSingleFrame)
         {
-            Invoke("IncreaseProgression", beatManager.beatTime / 2);
+            Invoke("IncreaseProgression", GameManager.Instance.Beat.beatTime / 2);
         }
     }
 
