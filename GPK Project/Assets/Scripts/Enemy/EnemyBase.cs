@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System;
 
 public enum EnemyState
 {
@@ -13,14 +14,18 @@ public enum EnemyState
     Converted
 }
 
-
 public class EnemyBehaviour
 {
-    public EnemyState state { get; private set; }
-    public bool vulnerable
+    #region Personal
+    private float necessaryTimeToAction = 1f;
+    private bool vulnerable = false;
+    #endregion
+
+    public EnemyState State { get; private set; }
+    public bool Vulnerable
     {
-        get { return false; }
-        private set { vulnerable = value; }//////////////Stack Overflow, il set necessary vulnerable et en essayant de le set il le reset etc etc...
+        get { return vulnerable; }
+        private set { vulnerable = value; }
     }
     /// <summary>
     /// Temps en pourcentage nécessaire pour changer de behaviour en milieu de beat.
@@ -28,39 +33,44 @@ public class EnemyBehaviour
     /// 1 = a besoin de la durée complète du beat pour changer.
     /// (Utile que pour les comportements triggered juste avant un beat.)
     /// </summary>
-    public float necessaryTimeToAction
+    public float NecessaryTimeToAction
     {
-        get { return 1f; }
-        private set { necessaryTimeToAction = value; } //////////////Stack Overflow, il set necessary time to action et en essayant de le set il le reset etc etc...
+        get { return necessaryTimeToAction; }
+        private set { necessaryTimeToAction = value; }
     }
 
-    public System.Action behaviour;
+    public Action behaviour = () => Debug.LogWarning("Je n'ai pas de behaviour.");
 
     #region Contructors
     public EnemyBehaviour(EnemyState _state)
     {
-        state = _state;
+        State = _state;
     }
 
     public EnemyBehaviour(EnemyState _state, bool _vulnerable)
     {
-        state = _state;
+        State = _state;
         vulnerable = _vulnerable;
     }
 
     public EnemyBehaviour(EnemyState _state, float _necessaryTimeToAction)
     {
-        state = _state;
+        State = _state;
         necessaryTimeToAction = _necessaryTimeToAction;
     }
 
     public EnemyBehaviour(EnemyState _state, bool _vulnerable, float _necessaryTimeToAction)
     {
-        state = _state;
+        State = _state;
         vulnerable = _vulnerable;
         necessaryTimeToAction = _necessaryTimeToAction;
     }
     #endregion
+
+    public void SetBehaviour(Action _behaviour)
+    {
+        behaviour = _behaviour;
+    }
 }
 
 
@@ -85,28 +95,43 @@ public abstract class EnemyBase : MonoBehaviour
     protected bool activated;
     protected bool triggered;
     protected bool converted;
-    protected bool canBeDamaged; /////////////////////////////////////////////////////
-    protected int currentBehaviourIndex;
-    protected int nextBehaviourIndex;
+    protected bool canBeDamaged;
+
+    /// <summary>
+    /// Sert à séquencer un mouvement s'il a lieu sur plusieurs temps.
+    /// </summary>
+    protected int sameBehaviourIndex = 0;
+
     protected EnemyBehaviour currentBehaviour = null;
     protected EnemyBehaviour nextBehaviour = null;
 
     /// <summary>
     /// Suite des comportements qu'a l'ennemi quand le joueur est hors de sa range d'aggro.
     /// </summary>
-    protected abstract EnemyBehaviour[] passivePattern { get; }
+	protected abstract EnemyBehaviour[] PassivePattern { get; }
 
     /// <summary>
     /// Suite des comportements qu'a l'ennemi dès que le joueur est rentré dans sa range d'aggro.
     /// </summary>
-    protected abstract EnemyBehaviour[] triggeredPattern { get; }
+    protected abstract EnemyBehaviour[] TriggeredPattern { get; }
     #endregion
 
     #region Code Related
     protected Transform player;
-    protected Transform playerTransformStartOfBeat;
-    protected Transform transformStartOfBeat;
+    protected Vector3 playerPositionStartOfBeat;
+    protected Transform parent;
+    protected Vector3 positionStartOfBeat;
 
+    /// <summary>
+    /// Suit la progression du tableau de patterns actuel.
+    /// </summary>
+    protected int currentBehaviourIndex;
+    protected int nextBehaviourIndex;
+    
+    protected void NullBehaviour()
+    {
+        //does nothing
+    }
     protected EnemyBehaviour nullBehaviour = new EnemyBehaviour(EnemyState.NULL);
     protected EnemyBehaviour convertedBehaviour = new EnemyBehaviour(EnemyState.Converted);
 
@@ -153,12 +178,13 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void Awake()
     {
-        rb2D = GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
+        parent = transform.parent.transform;
+        Debug.Log(parent.name);
+        rb2D = parent.GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
         if (rb2D == null)
         {
-            Debug.LogError("le rigidbody n'a pas été trouvé");
+            Debug.LogError("Le rigidbody n'a pas été trouvé");
         }
-
         BehavioursSetUp();
 
         Init();
@@ -166,21 +192,23 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void Start()
     {
-        activated = false;
+        activated = true; ///////////////////
         triggered = false;
         converted = false;
         player = GameManager.Instance.player.transform;
 
+        currentBehaviour = nullBehaviour;
         enemyCurrentHP = enemyMaxHP;
     }
 
     private void Update()
     {
+        Debug.Log(currentBehaviour.State.ToString());
         if (activated)
         {
             if(currentBehaviour == nullBehaviour)
             {
-                NextBehaviour();
+                nextBehaviour = NextBehaviour();
             }
 
             if (GameManager.Instance.Beat.onBeatSingleFrame)
@@ -211,34 +239,44 @@ public abstract class EnemyBase : MonoBehaviour
         else if (currentBehaviour == nullBehaviour)
         {
             nextBehaviourIndex = 0;
-            return passivePattern[nextBehaviourIndex];
+            return PassivePattern[nextBehaviourIndex];
         }
         else
         {
             nextBehaviourIndex = currentBehaviourIndex + 1;
             if (triggered)
             {
-                if (nextBehaviourIndex <= triggeredPattern.Length)
+                if (nextBehaviourIndex < TriggeredPattern.Length)
                 {
-                    return triggeredPattern[nextBehaviourIndex];
+                    if (TriggeredPattern[nextBehaviourIndex] == currentBehaviour)
+                    {
+                        sameBehaviourIndex++;
+                    }
+                    return TriggeredPattern[nextBehaviourIndex];
                 }
                 else
                 {
                     nextBehaviourIndex = 0;
+                    sameBehaviourIndex = 0;
                     triggered = false;
-                    return passivePattern[nextBehaviourIndex];
+                    return PassivePattern[nextBehaviourIndex];
                 }
             }
             else
             {
-                if (nextBehaviourIndex <= passivePattern.Length)
+                if (nextBehaviourIndex < PassivePattern.Length)
                 {
-                    return passivePattern[nextBehaviourIndex];
+                    if (PassivePattern[nextBehaviourIndex] == currentBehaviour)
+                    {
+                        sameBehaviourIndex++;
+                    }
+                    return PassivePattern[nextBehaviourIndex];
                 }
                 else
                 {
                     nextBehaviourIndex = 0;
-                    return passivePattern[nextBehaviourIndex];
+                    sameBehaviourIndex = 0;
+                    return PassivePattern[nextBehaviourIndex];
                 }
             }
         }
@@ -250,44 +288,46 @@ public abstract class EnemyBase : MonoBehaviour
         currentBehaviour = nextBehaviour;
         currentBehaviourIndex = nextBehaviourIndex;
         nextBehaviour = NextBehaviour();
-        playerTransformStartOfBeat = player;
-        transformStartOfBeat = transform;
+        playerPositionStartOfBeat = player.position;
+        positionStartOfBeat = parent.transform.position;
     }
 
     private void BehavioursSetUp()
     {
-        AssignBehaviourToEnemyBehaviourClass(passivePattern);
-        AssignBehaviourToEnemyBehaviourClass(triggeredPattern);
+        AssignBehaviourToEnemyBehaviourClass(PassivePattern);
+        AssignBehaviourToEnemyBehaviourClass(TriggeredPattern);
 
-        convertedBehaviour.behaviour = ConvertedBehaviour;
+        convertedBehaviour.SetBehaviour(ConvertedBehaviour);
+
+        nullBehaviour.SetBehaviour(NullBehaviour);
     }
 
     private void AssignBehaviourToEnemyBehaviourClass(EnemyBehaviour[] pattern)
     {
         foreach (EnemyBehaviour enemyBehaviour in pattern)
         {
-            switch (enemyBehaviour.state)
+            switch (enemyBehaviour.State)
             {
                 case EnemyState.Action:
-                    enemyBehaviour.behaviour = ActionBehaviour;
+                    enemyBehaviour.SetBehaviour(ActionBehaviour);
                     break;
                 case EnemyState.Defense:
-                    enemyBehaviour.behaviour = DefenseBehaviour;
+                    enemyBehaviour.SetBehaviour(DefenseBehaviour);
                     break;
                 case EnemyState.Vulnerable:
-                    enemyBehaviour.behaviour = VulnerableBehaviour;
+                    enemyBehaviour.SetBehaviour(VulnerableBehaviour);
                     break;
                 case EnemyState.Moving:
-                    enemyBehaviour.behaviour = MovingBehaviour;
+                    enemyBehaviour.SetBehaviour(MovingBehaviour);
                     break;
                 case EnemyState.Idle:
-                    enemyBehaviour.behaviour = IdleBehaviour;
+                    enemyBehaviour.SetBehaviour(IdleBehaviour);
                     break;
                 case EnemyState.Triggered:
-                    enemyBehaviour.behaviour = TriggeredBehaviour;
+                    enemyBehaviour.SetBehaviour(TriggeredBehaviour);
                     break;
                 case EnemyState.Converted:
-                    enemyBehaviour.behaviour = ConvertedBehaviour;
+                    enemyBehaviour.SetBehaviour(ConvertedBehaviour);
                     break;
                 default:
                     break;
@@ -297,7 +337,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     private bool IHaveTimeToChangeBehaviour(EnemyBehaviour desiredBehaviour)
     {
-        if (desiredBehaviour.necessaryTimeToAction < GameManager.Instance.Beat.currentBeatProgression)
+        if (desiredBehaviour.NecessaryTimeToAction > GameManager.Instance.Beat.currentBeatProgression)
             return true;
         else
             return false;
@@ -309,7 +349,6 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (Vector2.Distance(player.position, transform.position) < aggroRange)
         {
-            nextBehaviour = NextBehaviour();
             return true;
         }
         else
@@ -329,12 +368,12 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    protected void DealDamage()
+    public void DealDamage()
     {
         // Player.life --;
     }
 
-    protected void TakeDamage()
+    public void TakeDamage()
     {
         if (enemyCurrentHP > 1)
         {
@@ -342,14 +381,58 @@ public abstract class EnemyBase : MonoBehaviour
         }
         else
         {
-            Convert();
+            GetConverted();
+        }
+    }
+
+    /// <summary>
+    /// Permet d'ajuster "currentBeatProgression" pour accélérer, décélérer, et décaler la plage d'action.
+    /// </summary>
+    /// <param name="multiplier">Multiplie la vitesse de déroulement : 2 accélère par 2 la vitesse de déroulement de l'action, 0,5 ralentit le temps par 2.</param>
+    /// <param name="offset">0 le rend actif dès la première frame du beat, 1 le rend actif à la dernière frame.</param>
+    /// <returns></returns>
+    protected float CurrentBeatProgressionAdjusted(float multiplier, float offset)
+    {
+        float progression = GameManager.Instance.Beat.currentBeatProgression;
+
+        float progressionExpected = (progression - offset) * multiplier;
+
+        progressionExpected= Mathf.Clamp(progressionExpected, 0, 1);
+
+        return progressionExpected;
+    }
+
+    /// <summary>
+    /// Returns false between deactivationStart and deactivationEnd. Returns true before and after those times.
+    /// </summary>
+    /// <param name="deactivationStart">0 returns false from the first frame, 1 returns true until the last frame.</param>
+    /// <param name="deactivationEnd">0 returns true from the first frame, 1 returns false until the last frame.</param>
+    /// <returns></returns>
+    protected bool FalseDuringBeatProgression(float deactivationStart, float deactivationEnd)
+    {
+        if (deactivationEnd <= deactivationStart)
+        {
+            Debug.LogWarning("Cette fonction n'est pas utilisée correctement.");
+        }
+        float beatProgression = GameManager.Instance.Beat.currentBeatProgression;
+        if (beatProgression < deactivationStart)
+        {
+            return true;
+        }
+        else if (beatProgression > deactivationEnd)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
     /// <summary>
     /// I get converted.
     /// </summary>
-    protected void Convert()
+    protected void GetConverted()
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
@@ -357,5 +440,44 @@ public abstract class EnemyBase : MonoBehaviour
         // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
         Debug.LogWarning("<color=green> I AM CONVERTED OH NO.");
     }
+
+    //D'autres méthodes utiles pour autre chose que les behaviours :
+    /// <summary>
+    /// Find a component in the complete hierarchy of this gameObject (children, parent, children of parents...).
+    /// </summary>
+    /// <typeparam name="T">Type of the component.</typeparam>
+    /// <returns></returns>
+    protected T FindComponentInHierarchy<T>()
+    {
+        T component = parent.GetComponent<T>() != null ? GetComponent<T>() : GetComponentInChildren<T>();
+        if (component == null)
+        {
+            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé");
+        }
+        return component;
+    }
+
+    /// <summary>
+    /// Find a component of a specific gameObject in the complete hierarchy of this gameObject (children, parent, children of parents...).
+    /// </summary>
+    /// <typeparam name="T">Type of the component.</typeparam>
+    /// <param name="objectName">Name of the gameObject.</param>
+    /// <returns></returns>
+    protected T FindComponentInHierarchy<T>(string objectName)
+    {
+        Transform child = parent.Find(objectName).name == name ? transform : parent.Find(objectName);
+        T component = child.GetComponent<T>();
+        if (component == null)
+        {
+            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé dans l'enfant " + objectName + ".");
+        }
+        return component;
+    }
     #endregion
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
+    }
 }
