@@ -11,6 +11,9 @@ public class Blink : MonoBehaviour
     public BeatManager beatManager;
 
     private Hook lastSecureHook;
+    public GameObject blinkDisparition;
+    [HideInInspector] public Hook currentHook;
+
     [HideInInspector] public float currentRange;
     private int currentTimedCombo;
     private Vector2 worldMousePos;
@@ -19,19 +22,22 @@ public class Blink : MonoBehaviour
     private bool blinkReachDestination;
     private Vector2 blinkOrigin;
     private Vector2 blinkDestination;
+    private PlayerManager playerManager;
 
     private LineRenderer lineCircle;
     #endregion
     Animator animator;
-    bool IsBlink;
+    SpriteRenderer spriteRenderer;
     void Start()
     {
-        IsBlink = false;
         currentTimedCombo = 0;
         lineCircle = GetComponent<LineRenderer>();
         currentRange = blinkRangeProgression[0];
         transform.parent.position = startHook.transform.position;
         lastSecureHook = startHook;
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
 
@@ -70,7 +76,7 @@ public class Blink : MonoBehaviour
         {
             float distanceToHook;
             distanceToHook = Vector2.Distance(hookHover[i].transform.position, worldMousePos);
-            if (distanceToHook < minDistanceToHook && hookHover[i].GetComponent<Hook>().blinkable && transform.position != hookHover[i].transform.position)
+            if (distanceToHook < minDistanceToHook && hookHover[i].GetComponent<Hook>().blinkable && (Vector2)transform.position != (Vector2)hookHover[i].transform.position)
             {
                 minDistanceToHook = distanceToHook;
                 if (selectedHook != null)
@@ -120,6 +126,7 @@ public class Blink : MonoBehaviour
 
     private void BlinkMove()
     {
+        Instantiate(blinkDisparition, transform.position, Quaternion.identity);
         transform.parent.position = blinkDestination;
         if (beatManager.OnBeat() && blinkReachDestination)
         {
@@ -130,13 +137,17 @@ public class Blink : MonoBehaviour
         {
             currentTimedCombo = 0;
         }
+        currentHook = selectedHook;
         selectedHook.selected = false;
         selectedHook = null;
     }
 
     public IEnumerator RespawnPlayer()
     {
+        currentTimedCombo = 0;
+        playerManager.TakeDamage(1);
         yield return new WaitForSeconds(0.2f);
-        transform.position = lastSecureHook.transform.position;
+        transform.parent.position = lastSecureHook.transform.position;
+        currentHook = lastSecureHook;
     }
 }

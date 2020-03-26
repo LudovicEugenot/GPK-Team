@@ -5,7 +5,7 @@ public abstract class Hook : MonoBehaviour
 {
     #region Initialization
     [Header("Temporary references")]
-    public BeatManager beatManager;
+    //public BeatManager beatManager;
     public Blink blink;
     [Header("General Hook Options")]
     public bool isSecureHook;

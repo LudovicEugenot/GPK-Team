@@ -7,6 +7,7 @@ public class ClassicHook : Hook
     [Header("Classic Hook Options")]
     public bool convertable;
     public Color convertedColor;
+    public Animator animator;
 
     [HideInInspector] public bool converted;
 
@@ -23,7 +24,7 @@ public class ClassicHook : Hook
 
     public override void StateUpdate()
     {
-        if(Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted)
+        if((Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted))
         {
             blinkable = true;
         }
@@ -33,11 +34,16 @@ public class ClassicHook : Hook
         }
 
         sprite.color = blinkable ? (selected ? selectedColor : (converted ? convertedColor : blinkableColor)) : unselectableColor;
+
+        if(animator != null)
+        {
+            animator.SetBool("IsConvert", converted);
+        }
     }
 
     public override IEnumerator BlinkReaction()
     {
         converted = convertable ? true : false;
-        yield return null; // conversion animation effect
+        yield return null;
     }
 }

@@ -11,8 +11,9 @@ public class RythmHook : Hook
     private int currentLoopProgression;
     private bool locked;
 
-    public bool IsBlink;
     public Animator animator;
+    SpriteRenderer spriteRenderer;
+
 
     void Start()
     {
@@ -28,9 +29,9 @@ public class RythmHook : Hook
 
     private void BlinkableUpdate()
     {
-        if(beatManager.onBeatSingleFrame)
+        if(GameManager.Instance.Beat.onBeatSingleFrame)
         {
-            Invoke("IncreaseProgression", beatManager.beatTime / 2);
+            Invoke("IncreaseProgression", GameManager.Instance.Beat.beatTime / 2);
         }
     }
 

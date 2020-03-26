@@ -16,8 +16,13 @@ public class GameManager : MonoBehaviour
 
     #region Initialization
     public BeatManager Beat; //majuscule parce que manager
-    public GameObject player; 
+    public GameObject player;
+    [HideInInspector] public Blink blink;
     #endregion
 
-
+    private void Start()
+    {
+        ProgressionManager.currentProgression = ProgressionManager.ProgressionState.Tutorial1;
+        blink = player.GetComponentInChildren<Blink>();
+    }
 }
