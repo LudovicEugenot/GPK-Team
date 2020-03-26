@@ -24,7 +24,7 @@ public class ClassicHook : Hook
 
     public override void StateUpdate()
     {
-        if((Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange || converted))
+        if((Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange || converted))
         {
             blinkable = true;
         }

@@ -48,7 +48,7 @@ public class Hookterruptor : Hook
     {
         if (stayPressedUntilNextBlink)
         {
-            if(pressed && (Vector2)blink.transform.position != (Vector2)transform.position)
+            if(pressed && (Vector2)GameManager.Instance.blink.transform.position != (Vector2)transform.position)
             {
                 pressed = false;
             }
@@ -62,7 +62,7 @@ public class Hookterruptor : Hook
             }
         }
 
-        if (Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange)
+        if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
         {
             blinkable = true;
         }

@@ -26,15 +26,15 @@ public class TemporaryHook : Hook
     {
         if(isBroken)
         {
-            StartCoroutine(blink.RespawnPlayer());
+            StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
         }
         else
         {
             yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.beatTime + GameManager.Instance.Beat.timingThreshold / 2);
             isBroken = true;
-            if((Vector2)blink.transform.parent.position == (Vector2)transform.position)
+            if((Vector2)GameManager.Instance.blink.transform.parent.position == (Vector2)transform.position)
             {
-                StartCoroutine(blink.RespawnPlayer());
+                StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
             }
         }
     }
@@ -54,7 +54,7 @@ public class TemporaryHook : Hook
             }
         }
 
-        if (Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange)
+        if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
         {
             blinkable = true;
         }

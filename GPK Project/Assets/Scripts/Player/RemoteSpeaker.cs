@@ -63,7 +63,6 @@ public class RemoteSpeaker : MonoBehaviour
 
         remoteSpeakerO = Instantiate(speakerPrefab, transform.position, Quaternion.identity);
         speakerHook = remoteSpeakerO.GetComponent<SpeakerHook>();
-        speakerHook.blink = GetComponent<Blink>();
         speakerHook.remoteSpeaker = this;
         while (currentLaunchTime < beatManager.beatTime)
         {

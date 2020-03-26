@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     public Sprite halfHp;
     public Color emptyHpColor;
 
-    private int currentHealth;
+    [HideInInspector] public int currentHealth;
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
