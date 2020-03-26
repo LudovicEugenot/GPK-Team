@@ -57,13 +57,15 @@ public class NPCDialogue : MonoBehaviour
     {
         if (Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == hookToTalk && !isTalking)
         {
-            isTalking = true;
-            currentDialogueStep = 0;
-            sentenceStarted = false;
             currentDialogue = GetCurrentDialogue();
-            dialogueTextO = Instantiate(textPrefab, Camera.main.WorldToScreenPoint((Vector2)transform.position + bubbleOffset), Quaternion.identity, dialogueTransform);
-            dialogueText = dialogueTextO.GetComponent<Text>();
-            Debug.Log("Dialogue started");
+            if(currentDialogue != null)
+            {
+                isTalking = true;
+                currentDialogueStep = 0;
+                sentenceStarted = false;
+                dialogueTextO = Instantiate(textPrefab, Camera.main.WorldToScreenPoint((Vector2)transform.position + bubbleOffset), Quaternion.identity, dialogueTransform);
+                dialogueText = dialogueTextO.GetComponent<Text>();
+            }
         }
 
         if (isTalking && currentDialogue != null)
@@ -72,7 +74,6 @@ public class NPCDialogue : MonoBehaviour
             {
                 canGoNext = false;
                 StartCoroutine(DisplaySentence());
-                Debug.Log(currentDialogue.sentences[currentDialogueStep]);
                 sentenceStarted = true;
             }
 
@@ -102,6 +103,10 @@ public class NPCDialogue : MonoBehaviour
         int i = 0;
         foreach(char letter in currentDialogue.sentences[currentDialogueStep].ToCharArray())
         {
+            if(!isTalking)
+            {
+                break;
+            }
             dialogueText.text += letter;
             i++;
             if(i >= numberOfLetterByBeat)
@@ -124,7 +129,6 @@ public class NPCDialogue : MonoBehaviour
     {
         Destroy(dialogueTextO);
         isTalking = false;
-        Debug.Log("Dialogue ended");
     }
 
     private Dialogue GetCurrentDialogue()
