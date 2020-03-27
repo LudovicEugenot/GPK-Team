@@ -74,11 +74,15 @@ public class TransitionManager : MonoBehaviour
         currentTransitionHooks = transitionHooks;
         currentPlayerRendererO = playerRendererO;
         currentPlayerRendererO.SetActive(false);
+
+        yield return new WaitForEndOfFrame();
+
         if (newPlayerHp != 0)
         {
             GameManager.Instance.playerManager.currentHealth = newPlayerHp;
             GameManager.Instance.playerManager.UpdateHealthBar();
         }
+
         foreach (TransitionHook transitionHook in currentTransitionHooks)
         {
             if (transitionHook.direction == currentStartDirection)
