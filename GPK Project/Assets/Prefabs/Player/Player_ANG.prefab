@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3822639273655229813}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.51, y: 0.34, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3822639274368582668}
   - {fileID: 3822639275442409411}
@@ -93,10 +93,11 @@ MonoBehaviour:
   timingEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
     type: 3}
   beatManager: {fileID: 0}
-  blinkDisparition: {fileID: 454773728962842249, guid: 22dc9e6388d18a944ba0bb83b8cc7995,
+  blinkDisparition: {fileID: 83557179239868105, guid: 93f23427edaf29a479772da35e19ba7d,
     type: 3}
   currentHook: {fileID: 0}
   currentRange: 0
+  animator: {fileID: 5100342687105770818}
 --- !u!114 &3822639274368582670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +204,7 @@ MonoBehaviour:
   fullHp: {fileID: 21300000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
   halfHp: {fileID: 21300000, guid: 69dd7fd6036220040bc55db96c58deef, type: 3}
   emptyHpColor: {r: 0.20692419, g: 0.26167524, b: 0.2830189, a: 0.8156863}
+  currentHealth: 0
 --- !u!120 &3822639274368582669
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -360,6 +362,7 @@ GameObject:
   - component: {fileID: 3822639275442409414}
   - component: {fileID: 3822639275442409413}
   - component: {fileID: 3822639275442409412}
+  - component: {fileID: 5100342687105770818}
   m_Layer: 0
   m_Name: Graphics
   m_TagString: Untagged
@@ -399,7 +402,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -419,13 +422,14 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 69dd7fd6036220040bc55db96c58deef, type: 3}
-  m_Color: {r: 1, g: 0.5230235, b: 0.19339621, a: 1}
+  m_SortingOrder: 3
+  m_Sprite: {fileID: -1662340552857299927, guid: 5605325a68935cf45b2877731912b86c,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.0625, y: 2.0625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -682,3 +686,22 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!95 &5100342687105770818
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3822639275442409410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a93a19d3855405941906b543422f7aec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

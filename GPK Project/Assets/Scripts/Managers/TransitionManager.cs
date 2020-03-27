@@ -9,7 +9,12 @@ public class TransitionManager : MonoBehaviour
     public GameObject disparitionPrefab;
     public float timeBeforePlayerAppearence;
     public float timeBeforeZoneQuitting;
-
+    [Space]
+    public GameObject blackScreen;
+    public GameObject blackScreenMask;
+    [Range(0.1f,10)]
+    public float transitionLerpSpeed;
+    public float maxMaskSize;
 
     private List<TransitionHook> currentTransitionHooks;
     private TransitionDirection currentStartDirection;
@@ -59,6 +64,13 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator ZoneInitialization(List<TransitionHook> transitionHooks, GameObject playerRendererO)
     {
+        if (startHook == null)
+        {
+            startHook = GameManager.Instance.blink.startHook;
+        }
+
+        blackScreen.SetActive(true);
+        blackScreenMask.transform.localScale = Vector2.zero;
         currentTransitionHooks = transitionHooks;
         currentPlayerRendererO = playerRendererO;
         currentPlayerRendererO.SetActive(false);
@@ -74,19 +86,42 @@ public class TransitionManager : MonoBehaviour
                 startHook = transitionHook.hook;
             }
         }
+
+        GameManager.Instance.blink.transform.parent.position = startHook.transform.position;
+        blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
+        float maskLerpProgression = 0;
+        while(maskLerpProgression < 0.95f)
+        {
+            maskLerpProgression += (1 - maskLerpProgression) * transitionLerpSpeed * Time.deltaTime;
+            blackScreenMask.transform.localScale = new Vector2(maskLerpProgression * maxMaskSize, maskLerpProgression * maxMaskSize);
+            yield return new WaitForEndOfFrame();
+        }
         Instantiate(apparitionPrefab, startHook.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(timeBeforePlayerAppearence);
         currentPlayerRendererO.SetActive(true);
-        GameManager.Instance.blink.transform.parent.position = startHook.transform.position;
+        blackScreen.SetActive(false);
     }
 
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
+        blackScreen.SetActive(true);
+        blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
+        blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         newPlayerHp = GameManager.Instance.playerManager.currentHealth;
-        Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position, Quaternion.identity);
+
+        float maskLerpProgression = 0;
+        while (maskLerpProgression < 0.92f)
+        {
+            maskLerpProgression += (1 - maskLerpProgression) * transitionLerpSpeed * Time.deltaTime;
+            blackScreenMask.transform.localScale = new Vector2((1 - maskLerpProgression) * maxMaskSize, (1 - maskLerpProgression) * maxMaskSize);
+            yield return new WaitForEndOfFrame();
+        }
         currentPlayerRendererO.SetActive(false);
+        Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position, Quaternion.identity);
+
         yield return new WaitForSeconds(timeBeforeZoneQuitting);
+
         switch (transitionHook.direction)
         {
             case TransitionDirection.Down:

@@ -15,7 +15,9 @@ public class BeatManager : MonoBehaviour
 
     [HideInInspector] public bool onBeatSingleFrame;
     [HideInInspector] public bool onBeatFirstFrame;
+    [HideInInspector] public bool onBeatNextFrame;
     private bool firstFrameFlag;
+    private bool nextFrameFlag;
 
     private bool musicStarted;
     [HideInInspector] public float beatTime;
@@ -74,6 +76,11 @@ public class BeatManager : MonoBehaviour
             onBeatFirstFrame = false;
         }
 
+        if (onBeatNextFrame)
+        {
+            onBeatNextFrame = false;
+        }
+
         if (OnBeat())
         {
             if(firstFrameFlag)
@@ -81,10 +88,18 @@ public class BeatManager : MonoBehaviour
                 onBeatFirstFrame = true;
                 firstFrameFlag = false;
             }
+
+            nextFrameFlag = true;
         }
         else
         {
             firstFrameFlag = true;
+
+            if(nextFrameFlag)
+            {
+                onBeatNextFrame = true;
+                nextFrameFlag = false;
+            }
         }
 
         if (nextBeatStartTime < (float)AudioSettings.dspTime)

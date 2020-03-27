@@ -8,13 +8,17 @@ public class ClassicHook : Hook
     public bool convertable;
     public Color convertedColor;
     public Animator animator;
+    public float effectRange;
+    public GameObject effectCircleVisualO;
 
     [HideInInspector] public bool converted;
+    private Vector2 initialCircleScale;
 
     void Start()
     {
         HandlerStart();
         converted = false;
+        //initialCircleScale = effectCircleVisualO.transform.localScale;
     }
 
     void Update()
