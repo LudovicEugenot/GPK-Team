@@ -45,13 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 70
-  timingThreshold: 0.1
-  timingThresholdOffset: 0.05
+  timingThreshold: 0.2
+  timingThresholdOffset: 0
   beatStartTimeOffset: 0.38
   cameraBeatEffectLerpSpeed: 0.5
   cameraBeatEffectAmplitude: 1
   onBeatSingleFrame: 0
+  onBeatFirstFrame: 0
+  onBeatNextFrame: 0
   beatTime: 0
+  currentBeatProgression: 0
 --- !u!82 &1253643285416735864
 AudioSource:
   m_ObjectHideFlags: 0

@@ -46,14 +46,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSecureHook: 1
-  blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
-  selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
-  unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  blinkableColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0, g: 1, b: 0.9573498, a: 1}
+  unselectableColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
-  convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
+  convertedColor: {r: 0.61089355, g: 0.82040924, b: 0.9056604, a: 1}
   animator: {fileID: 0}
   effectRange: 3
   effectCircleVisualO: {fileID: 0}
@@ -97,8 +97,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 93053b894928a1f48a28d97f33585be2, type: 3}
-  m_Color: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 41e7068321383a240947a1ae1ba917a6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3822639273655229813}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.51, y: 0.34, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3822639274368582668}
@@ -90,11 +90,17 @@ MonoBehaviour:
   - 10
   - 11
   startHook: {fileID: 0}
+  unreachableHookNoMove: 1
   timingEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
     type: 3}
-  beatManager: {fileID: 0}
   blinkDisparition: {fileID: 83557179239868105, guid: 93f23427edaf29a479772da35e19ba7d,
     type: 3}
+  blinkTrailStartPrefab: {fileID: 6350454940517999626, guid: 9556751b9eca0e842abe24afaffe85ed,
+    type: 3}
+  blinkTrailEndPrefab: {fileID: 2510689312159016931, guid: 995501fa91cae414784349f4d874fb17,
+    type: 3}
+  trailStartOffset: 1
+  trailEndOffset: 1.3
   currentHook: {fileID: 0}
   currentRange: 0
   animator: {fileID: 5100342687105770818}
@@ -110,7 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a35c74761bbdf34080b3e4df828ca1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beatManager: {fileID: 0}
   initialBeatCooldown: 4
   launchCurveVisual:
     serializedVersion: 2
@@ -243,7 +248,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
