@@ -22,7 +22,7 @@ public class TemporaryHook : Hook
         HandlerUpdate();
     }
 
-    public override IEnumerator BlinkReaction()
+    public override IEnumerator BlinkSpecificReaction()
     {
         if(isBroken)
         {

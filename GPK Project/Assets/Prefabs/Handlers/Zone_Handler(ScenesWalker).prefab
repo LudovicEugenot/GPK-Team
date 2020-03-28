@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6173341646679826281}
   - component: {fileID: 6173341646679826070}
+  - component: {fileID: 445385845}
   m_Layer: 0
   m_Name: Zone_Handler(ScenesWalker)
   m_TagString: Untagged
@@ -80,12 +81,29 @@ MonoBehaviour:
     type: 3}
   disparitionPrefab: {fileID: 2061613087851263279, guid: 5c341fdb81c2d0a48863842114f46bd7,
     type: 3}
-  timeBeforePlayerAppearence: 0.2
-  timeBeforeZoneQuitting: 1.5
+  timeBeforePlayerAppearence: 0.6
+  timeBeforeZoneQuitting: 1
   blackScreen: {fileID: 6173341646428391875}
   blackScreenMask: {fileID: 6173341647272042934}
   transitionLerpSpeed: 5
   maxMaskSize: 45
+--- !u!114 &445385845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6173341646679826280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a342adae8de6fd44b22c03c3e65faee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCurrentConverted: 0
+  currentZone:
+    isConverted: 0
+    buildIndex: 0
+  zones: []
 --- !u!1 &6173341647272042934
 GameObject:
   m_ObjectHideFlags: 0

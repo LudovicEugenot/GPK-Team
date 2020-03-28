@@ -45,7 +45,7 @@ public class ClassicHook : Hook
         }
     }
 
-    public override IEnumerator BlinkReaction()
+    public override IEnumerator BlinkSpecificReaction()
     {
         converted = convertable ? true : false;
         yield return null;

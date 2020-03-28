@@ -6,6 +6,7 @@ public class Blink : MonoBehaviour
     #region Initialization
     public float[] blinkRangeProgression;
     public Hook startHook;
+    public bool unreachableHookNoMove;
 
     public GameObject timingEffectPrefab;
     public GameObject blinkDisparition;
@@ -122,7 +123,14 @@ public class Blink : MonoBehaviour
         }
         else
         {
-            blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
+            if(!unreachableHookNoMove)
+            {
+                blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
+            }
+            else
+            {
+                blinkDestination = transform.parent.position;
+            }
         }
     }
 

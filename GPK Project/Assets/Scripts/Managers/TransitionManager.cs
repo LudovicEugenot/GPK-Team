@@ -22,6 +22,7 @@ public class TransitionManager : MonoBehaviour
 
     private Hook startHook;
     private int newPlayerHp;
+    private ZoneHandler zoneHandler;
 
     public enum TransitionDirection { Up, Down, Right, Left };
 
@@ -34,7 +35,8 @@ public class TransitionManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(this);
+            Destroy(this.gameObject);
+        zoneHandler = GetComponent<ZoneHandler>();
     }
     #endregion
 
@@ -47,7 +49,14 @@ public class TransitionManager : MonoBehaviour
             {
                 if ((Vector2)GameManager.Instance.blink.transform.position == (Vector2)transitionHook.hook.transform.position)
                 {
-                    StartCoroutine(TransitionToConnectedZone(transitionHook));
+                    if(transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings)
+                    {
+                        StartCoroutine(TransitionToConnectedZone(transitionHook));
+                    }
+                    else
+                    {
+                        Debug.LogWarning("The transition hook : " + transitionHook.hook.gameObject.name + " leads to an inexistant scene buildIndex");
+                    }
                 }
             }
         }
@@ -69,16 +78,38 @@ public class TransitionManager : MonoBehaviour
             startHook = GameManager.Instance.blink.startHook;
         }
 
+        ZoneHandler.Zone potentialZone = null;
+        int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
+        foreach (ZoneHandler.Zone zone in zoneHandler.zones)
+        {
+            if(zone.buildIndex == currentBuildIndex)
+            {
+                potentialZone = zone;
+            }
+        }
+
+        if(potentialZone == null)
+        {
+            potentialZone = new ZoneHandler.Zone(currentBuildIndex, SceneManager.GetActiveScene().name);
+            zoneHandler.zones.Add(potentialZone);
+        }
+
+        zoneHandler.InitializeZone(potentialZone);
+
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.zero;
         currentTransitionHooks = transitionHooks;
         currentPlayerRendererO = playerRendererO;
         currentPlayerRendererO.SetActive(false);
+
+        yield return new WaitForEndOfFrame();
+
         if (newPlayerHp != 0)
         {
             GameManager.Instance.playerManager.currentHealth = newPlayerHp;
             GameManager.Instance.playerManager.UpdateHealthBar();
         }
+
         foreach (TransitionHook transitionHook in currentTransitionHooks)
         {
             if (transitionHook.direction == currentStartDirection)

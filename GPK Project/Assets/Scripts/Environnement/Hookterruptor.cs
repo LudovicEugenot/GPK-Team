@@ -22,7 +22,7 @@ public class Hookterruptor : Hook
         HandlerUpdate();
     }
 
-    public override IEnumerator BlinkReaction()
+    public override IEnumerator BlinkSpecificReaction()
     {
         foreach(SwitchElement element in connectedElements)
         {

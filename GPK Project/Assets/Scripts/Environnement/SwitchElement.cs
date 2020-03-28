@@ -33,7 +33,10 @@ public class SwitchElement : MonoBehaviour
 
     public void SwitchOff()
     {
-        active = !enableState;
+        if(!stayActive)
+        {
+            active = !enableState;
+        }
     }
 
     public bool SwitchOnce()
@@ -57,7 +60,7 @@ public class SwitchElement : MonoBehaviour
         {
             currentRemainingActiveTime -= Time.deltaTime;
         }
-        else
+        else if(!stayActive)
         {
             active = !enableState;
         }

@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class RemoteSpeaker : MonoBehaviour
 {
-    [Header("Temporary references")]
-    public BeatManager beatManager;
     [Header("Speaker options")]
     public int initialBeatCooldown;
     public AnimationCurve launchCurveVisual;
@@ -31,7 +29,7 @@ public class RemoteSpeaker : MonoBehaviour
     {
         if(speakerPlaced)
         {
-            if(beatCooldownRemaining > 0 && beatManager.onBeatFirstFrame)
+            if(beatCooldownRemaining > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 beatCooldownRemaining--;
             }
@@ -42,7 +40,7 @@ public class RemoteSpeaker : MonoBehaviour
         }
         else
         {
-            if(beatCooldownRemaining < initialBeatCooldown && beatManager.onBeatFirstFrame)
+            if(beatCooldownRemaining < initialBeatCooldown && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 beatCooldownRemaining++;
             }
@@ -64,10 +62,10 @@ public class RemoteSpeaker : MonoBehaviour
         remoteSpeakerO = Instantiate(speakerPrefab, transform.position, Quaternion.identity);
         speakerHook = remoteSpeakerO.GetComponent<SpeakerHook>();
         speakerHook.remoteSpeaker = this;
-        while (currentLaunchTime < beatManager.beatTime)
+        while (currentLaunchTime < GameManager.Instance.Beat.beatTime)
         {
-            Vector2 realPos = Vector2.Lerp(transform.position, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / beatManager.beatTime));
-            remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / beatManager.beatTime)) * curveVisualForce);
+            Vector2 realPos = Vector2.Lerp(transform.position, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.beatTime));
+            remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.beatTime)) * curveVisualForce);
             yield return new WaitForFixedUpdate();
             currentLaunchTime += Time.fixedDeltaTime;
             speakerHook.isDisabled = true;
@@ -75,7 +73,7 @@ public class RemoteSpeaker : MonoBehaviour
         speakerHook.isDisabled = false;
         speakerPlaced = true;
         remoteSpeakerO.transform.position = targetPos;
-        if (beatManager.OnBeat())
+        if (GameManager.Instance.Beat.OnBeat())
         {
             StartCoroutine(SpeakerEffect());
         }
