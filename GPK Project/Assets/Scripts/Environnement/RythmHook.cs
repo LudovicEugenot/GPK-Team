@@ -43,7 +43,7 @@ public class RythmHook : Hook
         sprite.color = !locked ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : lockedColor;
     }
 
-    public override IEnumerator BlinkReaction()
+    public override IEnumerator BlinkSpecificReaction()
     {
         yield return null;
     }

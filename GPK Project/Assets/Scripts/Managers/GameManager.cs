@@ -11,14 +11,18 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(this);
+            Destroy(this.gameObject);
 
-        FirstStart();
     }
     #endregion
 
+    private void Start()
+    {
+        FirstStart();
+    }
+
     #region Initialization
-    public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
+    [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
     public GameObject player;
     public List<TransitionManager.TransitionHook> transitionHooks;
     [HideInInspector] public Blink blink;
@@ -28,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     void FirstStart()
     {
+        Beat = BeatManager.Instance;
         ProgressionManager.currentProgression = ProgressionManager.ProgressionState.Tutorial1;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();

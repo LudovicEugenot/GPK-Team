@@ -30,19 +30,31 @@ public class BeatManager : MonoBehaviour
     private AudioSource source;
 
     private float initialCameraSize;
-    private Camera mainCamera;
     #endregion
 
 
+    #region Singleton
+    public static BeatManager Instance { get; private set; }
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this.gameObject);
+    }
+    #endregion
+
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         source = GetComponent<AudioSource>();
         musicStarted = false;
         beatTime = 60 / bpm;
         onBeatSingleFrame = false;
 
-        mainCamera = Camera.main;
-        initialCameraSize = mainCamera.orthographicSize;
+        initialCameraSize = Camera.main.orthographicSize;
     }
 
     private void Update()
@@ -121,13 +133,13 @@ public class BeatManager : MonoBehaviour
 
     private IEnumerator BeatEffect(float amplitude)
     {
-        mainCamera.orthographicSize = initialCameraSize + cameraBeatEffectAmplitude * amplitude;
-        while (mainCamera.orthographicSize > initialCameraSize + 0.01f)
+        Camera.main.orthographicSize = initialCameraSize + cameraBeatEffectAmplitude * amplitude;
+        while (Camera.main.orthographicSize > initialCameraSize + 0.01f)
         {
-            mainCamera.orthographicSize -= cameraBeatEffectLerpSpeed * (mainCamera.orthographicSize - initialCameraSize) * Time.fixedDeltaTime * 50;
+            Camera.main.orthographicSize -= cameraBeatEffectLerpSpeed * (Camera.main.orthographicSize - initialCameraSize) * Time.fixedDeltaTime * 50;
             yield return new WaitForFixedUpdate();
         }
-        mainCamera.orthographicSize = initialCameraSize;
+        Camera.main.orthographicSize = initialCameraSize;
     }
 
     public bool OnBeat()

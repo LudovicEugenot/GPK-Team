@@ -35,7 +35,7 @@ public class TransitionManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(this);
+            Destroy(this.gameObject);
         zoneHandler = GetComponent<ZoneHandler>();
     }
     #endregion

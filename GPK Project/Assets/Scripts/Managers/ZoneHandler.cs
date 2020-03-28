@@ -45,7 +45,7 @@ public class ZoneHandler : MonoBehaviour
         currentZone = newZone;
         isCurrentConverted = newZone.isConverted;
 
-        Debug.Log("Zone" + currentZone.name + " is " + (currentZone.isConverted ? "converted" : " still in sadness :,("));
+        //Debug.Log("Zone" + currentZone.name + " is " + (currentZone.isConverted ? "converted" : " still in sadness :,("));
     }
 
     [System.Serializable]

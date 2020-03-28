@@ -713,6 +713,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Music Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 1253643285416735864, guid: affca58f18a03de4ab50b436ab9d9a85,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: bc5e171b916df7140927c01d41a03218, type: 3}
+    - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
+        type: 3}
+      propertyPath: bpm
+      value: 106
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
+        type: 3}
+      propertyPath: beatStartTimeOffset
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1253643285416735867, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -751,7 +766,7 @@ PrefabInstance:
     - target: {fileID: 1253643285416735867, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1253643285416735867, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
@@ -1226,7 +1241,7 @@ PrefabInstance:
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
@@ -1656,7 +1671,7 @@ PrefabInstance:
     - target: {fileID: 4788072604953352801, guid: 496ffa6e7d4717f4ba0aecc5b688735a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4788072604953352801, guid: 496ffa6e7d4717f4ba0aecc5b688735a,
         type: 3}
