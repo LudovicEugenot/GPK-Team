@@ -12,8 +12,9 @@ public class PlayerManager : MonoBehaviour
     public Sprite fullHp;
     public Sprite halfHp;
     public Color emptyHpColor;
+    public Animator animator;
 
-    private int currentHealth;
+    [HideInInspector] public int currentHealth;
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
@@ -29,6 +30,7 @@ public class PlayerManager : MonoBehaviour
     {
         currentHealth -= damage;
         UpdateHealthBar();
+        animator.SetTrigger("Damage");
         if(currentHealth <= 0)
         {
             Die();

@@ -182,7 +182,7 @@ public abstract class EnemyBase : MonoBehaviour
     private void Awake()
     {
         parent = transform.parent.transform;
-        Debug.Log(parent.name);
+        //Debug.Log(parent.name);
         rb2D = parent.GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
         if (rb2D == null)
         {

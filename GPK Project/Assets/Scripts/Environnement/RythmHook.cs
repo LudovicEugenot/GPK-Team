@@ -38,12 +38,12 @@ public class RythmHook : Hook
     public override void StateUpdate()
     {
         locked = !lockLoop[currentLoopProgression];
-        blinkable = !locked && Vector2.Distance(blink.transform.position, transform.position) <= blink.currentRange;
+        blinkable = !locked && Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange;
 
         sprite.color = !locked ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : lockedColor;
     }
 
-    public override IEnumerator BlinkReaction()
+    public override IEnumerator BlinkSpecificReaction()
     {
         yield return null;
     }

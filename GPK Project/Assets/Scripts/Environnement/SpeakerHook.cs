@@ -34,7 +34,7 @@ public class SpeakerHook : Hook
         sprite.color = blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor;
     }
 
-    public override IEnumerator BlinkReaction()
+    public override IEnumerator BlinkSpecificReaction()
     {
         //Animation récupération de la capacité versatile
         StartCoroutine(remoteSpeaker.PickupSpeaker());

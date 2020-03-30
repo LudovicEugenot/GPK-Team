@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy_Basic : EnemyBase
@@ -7,16 +8,21 @@ public class Enemy_Basic : EnemyBase
     [SerializeField] [Range(0, 5)] private float movementDistance = 1f;
     public AnimationCurve movementCurve;
     public AnimationCurve jumpCurve;
+    public int attackDamage;
 
     private GameObject attackParent;
-    private CircleCollider2D attackCollider;
-    private SpriteRenderer attackRenderer;
+    public CircleCollider2D attackCollider;
+    public SpriteRenderer attackRenderer;
+    public Animator animator;
 
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
     protected override EnemyBehaviour[] TriggeredPattern => triggeredPattern;
 
     private float maxRadiusAttack;
+
+    private bool hasAttacked;
+    private ContactFilter2D playerFilter = new ContactFilter2D();
     #endregion
 
 
@@ -36,16 +42,19 @@ public class Enemy_Basic : EnemyBase
     protected override void Init()
     {
         attackParent = parent.Find("Attack").gameObject;
-        attackCollider = FindComponentInHierarchy<CircleCollider2D>();
-        attackRenderer = FindComponentInHierarchy<SpriteRenderer>("Attack");
+        //attackCollider = FindComponentInHierarchy<CircleCollider2D>();
+        //attackRenderer = FindComponentInHierarchy<SpriteRenderer>("Attack");
         attackParent.SetActive(false);
         maxRadiusAttack = attackParent.transform.localScale.x;
+        hasAttacked = false;
     }
 
     protected override void ConvertedBehaviour()
     {
         // juste un état passif où on s'assure que l'animator est au bon endroit toussa
         // (le fait de convertir se fait pas ici)
+        animator.SetBool("Converted", true);
+        attackParent.SetActive(false);
     }
 
     protected override void TriggeredBehaviour()
@@ -61,12 +70,29 @@ public class Enemy_Basic : EnemyBase
         attackParent.SetActive(true);
         float attackScale= Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
         attackParent.transform.localScale = new Vector3(attackScale,attackScale);
-        if (GameManager.Instance.Beat.currentBeatProgression > 0.9)
+        if (GameManager.Instance.Beat.currentBeatProgression > 0.9f)
         {
             attackParent.SetActive(false);
         }
 
         //zone dangeureuse autour de l'ennemi
+        playerFilter.useTriggers = true;
+        playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
+        List<Collider2D> colliders = new List<Collider2D>();
+        if(GameManager.Instance.Beat.currentBeatProgression > 0.1f)
+        {
+            Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
+        }
+        else
+        {
+            hasAttacked = false;
+        }
+
+        if(colliders.Count > 0 && !hasAttacked)
+        {
+            hasAttacked = true;
+            GameManager.Instance.playerManager.TakeDamage(attackDamage);
+        }
     }
 
     protected override void MovingBehaviour()

@@ -6,12 +6,18 @@ public class Blink : MonoBehaviour
     #region Initialization
     public float[] blinkRangeProgression;
     public Hook startHook;
+    public bool unreachableHookNoMove;
 
     public GameObject timingEffectPrefab;
-    public BeatManager beatManager;
+    public GameObject blinkDisparition;
+
+    [Space]
+    public GameObject blinkTrailStartPrefab;
+    public GameObject blinkTrailEndPrefab;
+    public float trailStartOffset;
+    public float trailEndOffset;
 
     private Hook lastSecureHook;
-    public GameObject blinkDisparition;
     [HideInInspector] public Hook currentHook;
 
     [HideInInspector] public float currentRange;
@@ -25,9 +31,8 @@ public class Blink : MonoBehaviour
     private PlayerManager playerManager;
 
     private LineRenderer lineCircle;
+    public Animator animator;
     #endregion
-    Animator animator;
-    SpriteRenderer spriteRenderer;
     void Start()
     {
         currentTimedCombo = 0;
@@ -35,8 +40,6 @@ public class Blink : MonoBehaviour
         currentRange = blinkRangeProgression[0];
         transform.parent.position = startHook.transform.position;
         lastSecureHook = startHook;
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         playerManager = GetComponent<PlayerManager>();
     }
 
@@ -120,23 +123,35 @@ public class Blink : MonoBehaviour
         }
         else
         {
-            blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
+            if(!unreachableHookNoMove)
+            {
+                blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
+            }
+            else
+            {
+                blinkDestination = transform.parent.position;
+            }
         }
     }
 
     private void BlinkMove()
     {
+        Vector2 direction = blinkDestination - (Vector2)transform.parent.position;
+        direction.Normalize();
+        Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0,0,Vector2.SignedAngle(Vector2.right, direction)));
         Instantiate(blinkDisparition, transform.position, Quaternion.identity);
         transform.parent.position = blinkDestination;
-        if (beatManager.OnBeat() && blinkReachDestination)
+        if (GameManager.Instance.Beat.OnBeat() && blinkReachDestination)
         {
             currentTimedCombo++;
-            Instantiate(timingEffectPrefab, transform.position, Quaternion.identity);
+            Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
         }
         else
         {
             currentTimedCombo = 0;
         }
+        Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - direction * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+        animator.SetTrigger("Blink");
         currentHook = selectedHook;
         selectedHook.selected = false;
         selectedHook = null;
