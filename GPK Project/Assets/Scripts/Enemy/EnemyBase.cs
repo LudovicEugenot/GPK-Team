@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -118,9 +119,11 @@ public abstract class EnemyBase : MonoBehaviour
 
     #region Code Related
     protected Transform player;
-    protected Vector3 playerPositionStartOfBeat;
+    protected Vector2 playerPositionStartOfBeat;
     protected Transform parent;
-    protected Vector3 positionStartOfBeat;
+    protected Vector2 positionStartOfBeat;
+
+    protected List<Vector2> lastSeenPlayerPosition;
 
     /// <summary>
     /// Suit la progression du tableau de patterns actuel.
@@ -203,7 +206,6 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(currentBehaviour.State.ToString());
         if (activated)
         {
             if(currentBehaviour == nullBehaviour)
@@ -288,7 +290,7 @@ public abstract class EnemyBase : MonoBehaviour
         currentBehaviour = nextBehaviour;
         currentBehaviourIndex = nextBehaviourIndex;
         nextBehaviour = NextBehaviour();
-        playerPositionStartOfBeat = player.position;
+        playerPositionStartOfBeat = GetLastSeenPlayerPosition();
         positionStartOfBeat = parent.transform.position;
     }
 
@@ -355,6 +357,43 @@ public abstract class EnemyBase : MonoBehaviour
         {
             return false;
         }
+    }
+
+    protected Vector2 GetLastSeenPlayerPosition()
+    {
+        if (NoObstacleBetweenMeAndThere(player.position))
+        {
+            lastSeenPlayerPosition.Insert(0, player.position);
+            return player.position;
+        }
+        else
+        {
+            for (int i = 0; i < lastSeenPlayerPosition.Count; i++)
+            {
+                if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
+                {
+                    return lastSeenPlayerPosition[i];
+                }
+            }
+
+            return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-aggroRange, aggroRange), UnityEngine.Random.Range(-aggroRange, aggroRange));
+        }
+    }
+    
+    protected bool NoObstacleBetweenMeAndThere(Vector2 positionToGetTo)
+    {
+        RaycastHit2D travelPathHitObject = Physics2D.Raycast
+            (
+                transform.position,
+                positionToGetTo - (Vector2)transform.position,
+                Vector2.Distance(positionToGetTo, transform.position),
+                LayerMask.GetMask("Obstacle")
+            );
+
+        if (travelPathHitObject)
+            return false;
+        else
+            return true;
     }
 
     protected void GetTriggered()
