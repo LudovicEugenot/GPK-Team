@@ -23,6 +23,7 @@ public class Enemy_Basic : EnemyBase
 
     private bool hasAttacked;
     private ContactFilter2D playerFilter = new ContactFilter2D();
+    Vector2 endOfDash = Vector2.zero;
     #endregion
 
 
@@ -31,7 +32,7 @@ public class Enemy_Basic : EnemyBase
         new EnemyBehaviour(EnemyState.Moving)
     };
 
-    private EnemyBehaviour[] triggeredPattern =  new EnemyBehaviour[]
+    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[]
     {
         new EnemyBehaviour(EnemyState.Triggered, 0.4f),
         new EnemyBehaviour(EnemyState.Action),
@@ -42,7 +43,7 @@ public class Enemy_Basic : EnemyBase
     protected override void Init()
     {
         attackParent = parent.Find("Attack").gameObject;
-        //attackCollider = FindComponentInHierarchy<CircleCollider2D>();
+        attackCollider = FindComponentInHierarchy<CircleCollider2D>();
         //attackRenderer = FindComponentInHierarchy<SpriteRenderer>("Attack");
         attackParent.SetActive(false);
         maxRadiusAttack = attackParent.transform.localScale.x;
@@ -68,8 +69,8 @@ public class Enemy_Basic : EnemyBase
     protected override void ActionBehaviour()
     {
         attackParent.SetActive(true);
-        float attackScale= Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
-        attackParent.transform.localScale = new Vector3(attackScale,attackScale);
+        float attackScale = Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
+        attackParent.transform.localScale = new Vector3(attackScale, attackScale);
         if (GameManager.Instance.Beat.currentBeatProgression > 0.9f)
         {
             attackParent.SetActive(false);
@@ -79,7 +80,7 @@ public class Enemy_Basic : EnemyBase
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         List<Collider2D> colliders = new List<Collider2D>();
-        if(GameManager.Instance.Beat.currentBeatProgression > 0.1f)
+        if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
         {
             Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
         }
@@ -88,7 +89,7 @@ public class Enemy_Basic : EnemyBase
             hasAttacked = false;
         }
 
-        if(colliders.Count > 0 && !hasAttacked)
+        if (colliders.Count > 0 && !hasAttacked)
         {
             hasAttacked = true;
             GameManager.Instance.playerManager.TakeDamage(attackDamage);
@@ -97,14 +98,25 @@ public class Enemy_Basic : EnemyBase
 
     protected override void MovingBehaviour()
     {
-        canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
-        Vector2 endOfDash = Vector2.ClampMagnitude(playerPositionStartOfBeat- positionStartOfBeat, movementDistance);
-        while (!NoObstacleBetweenMeAndThere(endOfDash))
+        if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
-            endOfDash = endOfDash + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+            endOfDash = Vector2.ClampMagnitude(playerPositionStartOfBeat - positionStartOfBeat, movementDistance);
+            while (!NoObstacleBetweenMeAndThere(endOfDash))
+            {
+                if (
+                    !NoObstacleBetweenMeAndThere(Vector2.down) &&
+                    !NoObstacleBetweenMeAndThere(Vector2.left) &&
+                    !NoObstacleBetweenMeAndThere(Vector2.up) &&
+                    !NoObstacleBetweenMeAndThere(Vector2.right))
+                {
+                    break;
+                }
+                endOfDash = new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+            }
         }
+        canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
         float progression = CurrentBeatProgressionAdjusted(2, 0);
-        Jump((Vector2)positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
 
         if (PlayerIsInAggroRange())
         {

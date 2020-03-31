@@ -233,7 +233,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &334711835
 GameObject:
@@ -347,11 +347,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -370,17 +373,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &620873239
 GameObject:
@@ -427,11 +435,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 364e037e66f0ad043a0479c8dfc37366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.65484995, g: 0.8392157, b: 0.15294118, a: 1}
   selectedColor: {r: 0.9433962, g: 0.93148595, b: 0.53844786, a: 1}
   unselectableColor: {r: 0.5660378, g: 0.08276967, b: 0.3432323, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -615,17 +626,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &689116095
 GameObject:
@@ -665,6 +681,7 @@ MonoBehaviour:
   cameraBeatEffectAmplitude: 1
   onBeatSingleFrame: 0
   onBeatFirstFrame: 0
+  onBeatNextFrame: 0
   beatTime: 0
   currentBeatProgression: 0
 --- !u!82 &689116097
@@ -775,7 +792,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &841148638 stripped
 MonoBehaviour:
@@ -1015,30 +1032,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
---- !u!114 &925195059 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3822639274368582667, guid: 309abdd403ce9a44b8df601b7d582cbb,
-    type: 3}
-  m_PrefabInstance: {fileID: 3822639273511165752}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2421d7b185e61944be72d3fd7fb3f04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1009938553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1098,7 @@ Transform:
   m_LocalScale: {x: 3.8889132, y: 1.09, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.586006}
 --- !u!212 &1009938556
 SpriteRenderer:
@@ -1230,7 +1240,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1156541185
 GameObject:
@@ -1343,17 +1353,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!224 &1170996027 stripped
 RectTransform:
@@ -1361,6 +1376,80 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5004474343798607615}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1179263598
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6173341646679826280, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_Name
+      value: Zone_Handler(ScenesWalker)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826280, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.5371094
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.44307
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f1c25c4228af07741987752a99ea4c1a, type: 3}
 --- !u!1 &1291309599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1457,11 +1546,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -1496,17 +1588,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &1294224424
 GameObject:
@@ -1620,11 +1717,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -1643,17 +1743,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &1636733462
 GameObject:
@@ -1737,11 +1842,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -1790,17 +1898,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &1747305030
 GameObject:
@@ -1833,7 +1946,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Beat: {fileID: 689116096}
   player: {fileID: 146424397}
+  transitionHooks:
+  - hook: {fileID: 0}
+    direction: 0
+    connectedSceneBuildIndex: 0
   blink: {fileID: 0}
+  playerManager: {fileID: 0}
+  spriteRendererO: {fileID: 0}
 --- !u!4 &1747305032
 Transform:
   m_ObjectHideFlags: 0
@@ -1846,7 +1965,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1754378322
 GameObject:
@@ -1959,11 +2078,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e55c2038b6485d449ac95dacf6a52b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.58143467, g: 0.8867924, b: 0.7925678, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -2083,17 +2205,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1001 &1828553823
 PrefabInstance:
@@ -2145,7 +2272,7 @@ PrefabInstance:
     - target: {fileID: 4338167949085861395, guid: 7cc35ec62cab77a42a3c741b655a0a84,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4338167949085861395, guid: 7cc35ec62cab77a42a3c741b655a0a84,
         type: 3}
@@ -2210,7 +2337,7 @@ Transform:
   - {fileID: 1754378323}
   - {fileID: 620873240}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1954684495
 GameObject:
@@ -2308,11 +2435,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -2347,17 +2477,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &2120972280
 GameObject:
@@ -2471,11 +2606,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0748bb2ae83634488f86c7f43d15adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 0
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -2494,17 +2632,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blink: {fileID: 925195059}
   isSecureHook: 1
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  agressiveHook: 0
+  agressionRange: 0
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
   animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1001 &3822639273511165752
 PrefabInstance:
@@ -2556,7 +2699,7 @@ PrefabInstance:
     - target: {fileID: 3822639273655229814, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3822639273655229814, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}

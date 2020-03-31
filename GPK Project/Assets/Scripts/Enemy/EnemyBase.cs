@@ -123,7 +123,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected Transform parent;
     protected Vector2 positionStartOfBeat;
 
-    protected List<Vector2> lastSeenPlayerPosition;
+    protected List<Vector2> lastSeenPlayerPosition = new List<Vector2>();
 
     /// <summary>
     /// Suit la progression du tableau de patterns actuel.
@@ -229,6 +229,7 @@ public abstract class EnemyBase : MonoBehaviour
     #region Méthodes uniques au fonctionnement général des ennemis
     private void CurrentBehaviour()
     {
+        //Debug.Log(currentBehaviour.State.ToString());
         currentBehaviour.behaviour.Invoke();
     }
 
@@ -488,7 +489,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// <returns></returns>
     protected T FindComponentInHierarchy<T>()
     {
-        T component = parent.GetComponent<T>() != null ? GetComponent<T>() : GetComponentInChildren<T>();
+        T component = parent.GetComponent<T>() != null ? GetComponent<T>() : GetComponentInChildren<T>(true);
         if (component == null)
         {
             Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé");
