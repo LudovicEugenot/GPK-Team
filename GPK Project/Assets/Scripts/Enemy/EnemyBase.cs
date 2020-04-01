@@ -217,6 +217,7 @@ public abstract class EnemyBase : MonoBehaviour
             {
                 Changebehaviour();
             }
+            UpdateLastSeenPosition();
 
             CurrentBehaviour();
         }
@@ -362,25 +363,17 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected Vector2 GetLastSeenPlayerPosition()
     {
-        if (NoObstacleBetweenMeAndThere(player.position))
+        for (int i = 0; i < lastSeenPlayerPosition.Count; i++)
         {
-            lastSeenPlayerPosition.Insert(0, player.position);
-            return player.position;
-        }
-        else
-        {
-            for (int i = 0; i < lastSeenPlayerPosition.Count; i++)
+            if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
             {
-                if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
-                {
-                    return lastSeenPlayerPosition[i];
-                }
+                return lastSeenPlayerPosition[i];
             }
-
-            return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-aggroRange, aggroRange), UnityEngine.Random.Range(-aggroRange, aggroRange));
         }
+
+        return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-aggroRange, aggroRange), UnityEngine.Random.Range(-aggroRange, aggroRange));
     }
-    
+
     protected bool NoObstacleBetweenMeAndThere(Vector2 positionToGetTo)
     {
         RaycastHit2D travelPathHitObject = Physics2D.Raycast
@@ -482,6 +475,18 @@ public abstract class EnemyBase : MonoBehaviour
     }
 
     //D'autres méthodes utiles pour autre chose que les behaviours :
+    private void UpdateLastSeenPosition()
+    {
+        if (NoObstacleBetweenMeAndThere(player.position))
+        {
+            if (lastSeenPlayerPosition.Contains(player.position))
+            {
+                lastSeenPlayerPosition.Remove(player.position);
+            }
+            lastSeenPlayerPosition.Insert(0, player.position);
+        }
+    }
+
     /// <summary>
     /// Find a component in the complete hierarchy of this gameObject (children, parent, children of parents...).
     /// </summary>

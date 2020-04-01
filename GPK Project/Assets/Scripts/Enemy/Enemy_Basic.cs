@@ -24,6 +24,7 @@ public class Enemy_Basic : EnemyBase
     private bool hasAttacked;
     private ContactFilter2D playerFilter = new ContactFilter2D();
     Vector2 endOfDash = Vector2.zero;
+    Vector2 playerPositionWhenTriggered = Vector2.zero;
     #endregion
 
 
@@ -62,7 +63,7 @@ public class Enemy_Basic : EnemyBase
     {
         canBeDamaged = FalseDuringBeatProgression(0.6f, 0.95f);
         float progression = CurrentBeatProgressionAdjusted(2, 0.5f);
-        Jump(playerPositionStartOfBeat, progression, jumpCurve.Evaluate(progression), 2f);
+        Jump(playerPositionWhenTriggered, progression, jumpCurve.Evaluate(progression), 2f);
         //bouge et arrive sur le prochain beat vers le joueur
     }
 
@@ -120,6 +121,7 @@ public class Enemy_Basic : EnemyBase
 
         if (PlayerIsInAggroRange())
         {
+            playerPositionWhenTriggered = player.position;
             GetTriggered();
         }
     }
