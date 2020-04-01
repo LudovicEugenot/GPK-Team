@@ -177,6 +177,10 @@ public abstract class EnemyBase : MonoBehaviour
         Debug.LogWarning("Ce Behaviour n'a pas été override et l'ennemi essaie de l'utiliser.");
     }
     protected abstract void ConvertedBehaviour();
+    protected virtual void OnConverted()
+    {
+        Debug.LogWarning("OnConverted n'a pas été override et il est appelé.");
+    }
     #endregion
 
     private void Awake()
@@ -469,9 +473,10 @@ public abstract class EnemyBase : MonoBehaviour
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
+        OnConverted();
         // Convertir l'ennemi
         // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
-        Debug.LogWarning("<color=green> I AM CONVERTED OH NO.");
+        Debug.Log("<color=green> I AM CONVERTED OH NO.");
     }
 
     //D'autres méthodes utiles pour autre chose que les behaviours :

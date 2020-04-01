@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_Basic : EnemyBase
+public class Enemy_Heavy : EnemyBase
 {
     #region Initialization
-    [SerializeField] [Range(0, 5)] private float movementDistance = 1f;
+    [SerializeField] [Range(0, 3)] private float movementDistance = 0.5f;
     public AnimationCurve movementCurve;
     public AnimationCurve jumpCurve;
     public int attackDamage;
 
     private GameObject attackParent;
     public CircleCollider2D attackCollider;
-    public SpriteRenderer attackRenderer;
     public Animator animator;
 
 
@@ -20,11 +19,11 @@ public class Enemy_Basic : EnemyBase
     protected override EnemyBehaviour[] TriggeredPattern => triggeredPattern;
 
     private float maxRadiusAttack;
+    private int consecutiveConvertedBehaviourIndex = 0;
 
     private bool hasAttacked;
     private ContactFilter2D playerFilter = new ContactFilter2D();
     Vector2 endOfDash = Vector2.zero;
-    Vector2 playerPositionWhenTriggered = Vector2.zero;
     #endregion
 
 
@@ -33,31 +32,43 @@ public class Enemy_Basic : EnemyBase
         new EnemyBehaviour(EnemyState.Moving)
     };
 
-    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[]
+    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[] // il a très potentiellement aucun triggeredPattern et tout dans le passive pattern
     {
-        new EnemyBehaviour(EnemyState.Triggered, 0.4f),
+        new EnemyBehaviour(EnemyState.Triggered,0.6f),
+        new EnemyBehaviour(EnemyState.Action),
         new EnemyBehaviour(EnemyState.Action),
         new EnemyBehaviour(EnemyState.Vulnerable, true)
     };
 
 
-    protected override void Init()
+    protected override void Init() //done
     {
         attackParent = parent.Find("Attack").gameObject;
         attackCollider = FindComponentInHierarchy<CircleCollider2D>();
-        //attackRenderer = FindComponentInHierarchy<SpriteRenderer>("Attack");
-        attackParent.SetActive(false);
         maxRadiusAttack = attackParent.transform.localScale.x;
+        attackParent.SetActive(false);
         hasAttacked = false;
     }
 
-    protected override void ConvertedBehaviour()
+    protected override void ConvertedBehaviour() //almost done
     {
-        // juste un état passif où on s'assure que l'animator est au bon endroit toussa
-        // (le fait de convertir se fait pas ici)
+        // Tous les 6 beats, il frappe le sol comme son attaque
+        if (consecutiveConvertedBehaviourIndex > 6)
+        {
+            consecutiveConvertedBehaviourIndex = 0;
+        }
+        else if(consecutiveConvertedBehaviourIndex>5)
+        {
+            attackParent.SetActive(!FalseDuringBeatProgression(0, 0.5f));
+        }
+
+        if (GameManager.Instance.Beat.onBeatSingleFrame)
+        {
+            consecutiveConvertedBehaviourIndex++;
+        }
     }
 
-    protected override void TriggeredBehaviour()
+    protected override void TriggeredBehaviour() //not done
     {
         canBeDamaged = FalseDuringBeatProgression(0.6f, 0.95f);
         float progression = CurrentBeatProgressionAdjusted(2, 0.5f);
@@ -65,7 +76,7 @@ public class Enemy_Basic : EnemyBase
         //bouge et arrive sur le prochain beat vers le joueur
     }
 
-    protected override void ActionBehaviour()
+    protected override void ActionBehaviour() //not done
     {
         attackParent.SetActive(true);
         float attackScale = Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
@@ -95,7 +106,7 @@ public class Enemy_Basic : EnemyBase
         }
     }
 
-    protected override void MovingBehaviour()
+    protected override void MovingBehaviour() //not done
     {
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
@@ -124,13 +135,12 @@ public class Enemy_Basic : EnemyBase
         }
     }
 
-    protected override void OnConverted()
+    protected override void OnConverted() //not done
     {
         animator.SetBool("Converted", true);
-        attackParent.SetActive(false);
     }
 
-    protected override void VulnerableBehaviour()
+    protected override void VulnerableBehaviour() //done
     {
         // bouge pas et attends un coup
     }
@@ -138,7 +148,7 @@ public class Enemy_Basic : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 2 * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 3 * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 }
