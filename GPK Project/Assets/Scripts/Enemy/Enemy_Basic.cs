@@ -11,9 +11,8 @@ public class Enemy_Basic : EnemyBase
     public int attackDamage;
 
     private GameObject attackParent;
-    public CircleCollider2D attackCollider;
-    public SpriteRenderer attackRenderer;
-    public Animator animator;
+    private CircleCollider2D attackCollider;
+    private Animator animator;
 
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
@@ -45,10 +44,10 @@ public class Enemy_Basic : EnemyBase
     {
         attackParent = parent.Find("Attack").gameObject;
         attackCollider = FindComponentInHierarchy<CircleCollider2D>();
-        //attackRenderer = FindComponentInHierarchy<SpriteRenderer>("Attack");
         attackParent.SetActive(false);
         maxRadiusAttack = attackParent.transform.localScale.x;
         hasAttacked = false;
+        animator = FindComponentInHierarchy<Animator>();
     }
 
     protected override void ConvertedBehaviour()
@@ -138,7 +137,7 @@ public class Enemy_Basic : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 2 * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 3 * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 }

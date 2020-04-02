@@ -375,7 +375,8 @@ public abstract class EnemyBase : MonoBehaviour
             }
         }
 
-        return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-aggroRange, aggroRange), UnityEngine.Random.Range(-aggroRange, aggroRange));
+        float distance = aggroRange > 0.1f ? aggroRange : 1f;
+        return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance));
     }
 
     protected bool NoObstacleBetweenMeAndThere(Vector2 positionToGetTo)
@@ -415,6 +416,18 @@ public abstract class EnemyBase : MonoBehaviour
         if (enemyCurrentHP > 1)
         {
             enemyCurrentHP--;
+        }
+        else
+        {
+            GetConverted();
+        }
+    }
+
+    public void TakeDamage(int damageTaken)
+    {
+        if (enemyCurrentHP > 1)
+        {
+            enemyCurrentHP -= damageTaken;
         }
         else
         {
@@ -499,7 +512,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// <returns></returns>
     protected T FindComponentInHierarchy<T>()
     {
-        T component = parent.GetComponent<T>() != null ? GetComponent<T>() : GetComponentInChildren<T>(true);
+        T component = parent.GetComponent<T>() != null ? parent.GetComponent<T>() : parent.GetComponentInChildren<T>(true);
         if (component == null)
         {
             Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé");
