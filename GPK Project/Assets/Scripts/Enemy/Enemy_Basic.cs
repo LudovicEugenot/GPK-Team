@@ -43,11 +43,11 @@ public class Enemy_Basic : EnemyBase
     protected override void Init()
     {
         attackParent = parent.Find("Attack").gameObject;
-        attackCollider = FindComponentInHierarchy<CircleCollider2D>();
+        attackCollider = parent.GetComponentInChildren<CircleCollider2D>();
         attackParent.SetActive(false);
         maxRadiusAttack = attackParent.transform.localScale.x;
         hasAttacked = false;
-        animator = FindComponentInHierarchy<Animator>();
+        animator = parent.GetComponentInChildren<Animator>();
     }
 
     protected override void ConvertedBehaviour()

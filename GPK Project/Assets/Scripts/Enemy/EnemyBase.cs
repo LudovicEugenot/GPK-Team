@@ -513,38 +513,6 @@ public abstract class EnemyBase : MonoBehaviour
             alreadyGotToLastPosition = false;
         }
     }
-
-    /// <summary>
-    /// Find a component in the complete hierarchy of this gameObject (children, parent, children of parents...).
-    /// </summary>
-    /// <typeparam name="T">Type of the component.</typeparam>
-    /// <returns></returns>
-    protected T FindComponentInHierarchy<T>()
-    {
-        T component = parent.GetComponent<T>() != null ? parent.GetComponent<T>() : parent.GetComponentInChildren<T>(true);
-        if (component == null)
-        {
-            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé");
-        }
-        return component;
-    }
-
-    /// <summary>
-    /// Find a component of a specific gameObject in the complete hierarchy of this gameObject (children, parent, children of parents...).
-    /// </summary>
-    /// <typeparam name="T">Type of the component.</typeparam>
-    /// <param name="objectName">Name of the gameObject.</param>
-    /// <returns></returns>
-    protected T FindComponentInHierarchy<T>(string objectName)
-    {
-        Transform child = parent.Find(objectName).name == name ? transform : parent.Find(objectName);
-        T component = child.GetComponent<T>();
-        if (component == null)
-        {
-            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé dans l'enfant " + objectName + ".");
-        }
-        return component;
-    }
     #endregion
 
     private void OnDrawGizmosSelected()

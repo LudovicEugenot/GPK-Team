@@ -52,17 +52,17 @@ public class Enemy_Heavy : EnemyBase
     protected override void Init()
     {
         attackParent = parent.Find("Attack").gameObject;
-        attackCollider = FindComponentInHierarchy<CircleCollider2D>("Attack");
+        attackCollider = parent.Find("Attack").GetComponentInChildren<CircleCollider2D>();
         maxRadiusAttack = attackParent.transform.localScale.x;
         attackParent.SetActive(false);
 
         convertedAttackParent = parent.Find("Converted Attack").gameObject;
-        convertedAttackCollider = FindComponentInHierarchy<CircleCollider2D>("Converted Attack");
+        convertedAttackCollider = parent.Find("Converted Attack").GetComponent< CircleCollider2D>();
         maxConvertedRadiusAttack = convertedAttackParent.transform.localScale.x;
         convertedAttackParent.SetActive(false);
 
         hasAttacked = false;
-        animator = FindComponentInHierarchy<Animator>();
+        animator = parent.GetComponentInChildren<Animator>();
 
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
