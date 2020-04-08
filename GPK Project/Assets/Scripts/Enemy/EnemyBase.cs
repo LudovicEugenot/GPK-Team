@@ -124,13 +124,14 @@ public abstract class EnemyBase : MonoBehaviour
     protected Vector2 positionStartOfBeat;
 
     protected List<Vector2> lastSeenPlayerPosition = new List<Vector2>();
+    protected bool alreadyGotToLastPosition;
 
     /// <summary>
     /// Suit la progression du tableau de patterns actuel.
     /// </summary>
     protected int currentBehaviourIndex;
     protected int nextBehaviourIndex;
-    
+
     protected void NullBehaviour()
     {
         //does nothing
@@ -177,6 +178,10 @@ public abstract class EnemyBase : MonoBehaviour
         Debug.LogWarning("Ce Behaviour n'a pas été override et l'ennemi essaie de l'utiliser.");
     }
     protected abstract void ConvertedBehaviour();
+    protected virtual void OnConverted()
+    {
+        Debug.LogWarning("OnConverted n'a pas été override et il est appelé.");
+    }
     #endregion
 
     private void Awake()
@@ -208,7 +213,7 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (activated)
         {
-            if(currentBehaviour == nullBehaviour)
+            if (currentBehaviour == nullBehaviour)
             {
                 nextBehaviour = NextBehaviour();
             }
@@ -367,20 +372,27 @@ public abstract class EnemyBase : MonoBehaviour
         {
             if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
             {
-                return lastSeenPlayerPosition[i];
+                if (Vector2.Distance(lastSeenPlayerPosition[i], parent.position) < 0.5f)
+                {
+                    alreadyGotToLastPosition = true;
+                    break;
+                }
+                else if (!alreadyGotToLastPosition)
+                    return lastSeenPlayerPosition[i];
             }
         }
 
-        return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-aggroRange, aggroRange), UnityEngine.Random.Range(-aggroRange, aggroRange));
+        float distance = aggroRange > 1f ? aggroRange : 1f;
+        return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance));
     }
 
     protected bool NoObstacleBetweenMeAndThere(Vector2 positionToGetTo)
     {
         RaycastHit2D travelPathHitObject = Physics2D.Raycast
             (
-                transform.position,
-                positionToGetTo - (Vector2)transform.position,
-                Vector2.Distance(positionToGetTo, transform.position),
+                parent.transform.position,
+                positionToGetTo - (Vector2)parent.transform.position,
+                Vector2.Distance(positionToGetTo, parent.transform.position),
                 LayerMask.GetMask("Obstacle")
             );
 
@@ -418,6 +430,18 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damageTaken)
+    {
+        if (enemyCurrentHP > 1)
+        {
+            enemyCurrentHP -= damageTaken;
+        }
+        else
+        {
+            GetConverted();
+        }
+    }
+
     /// <summary>
     /// Permet d'ajuster "currentBeatProgression" pour accélérer, décélérer, et décaler la plage d'action.
     /// </summary>
@@ -430,7 +454,7 @@ public abstract class EnemyBase : MonoBehaviour
 
         float progressionExpected = (progression - offset) * multiplier;
 
-        progressionExpected= Mathf.Clamp(progressionExpected, 0, 1);
+        progressionExpected = Mathf.Clamp(progressionExpected, 0, 1);
 
         return progressionExpected;
     }
@@ -469,9 +493,10 @@ public abstract class EnemyBase : MonoBehaviour
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
+        OnConverted();
         // Convertir l'ennemi
         // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
-        Debug.LogWarning("<color=green> I AM CONVERTED OH NO.");
+        Debug.Log("<color=green> I AM CONVERTED OH NO.");
     }
 
     //D'autres méthodes utiles pour autre chose que les behaviours :
@@ -484,39 +509,9 @@ public abstract class EnemyBase : MonoBehaviour
                 lastSeenPlayerPosition.Remove(player.position);
             }
             lastSeenPlayerPosition.Insert(0, player.position);
-        }
-    }
 
-    /// <summary>
-    /// Find a component in the complete hierarchy of this gameObject (children, parent, children of parents...).
-    /// </summary>
-    /// <typeparam name="T">Type of the component.</typeparam>
-    /// <returns></returns>
-    protected T FindComponentInHierarchy<T>()
-    {
-        T component = parent.GetComponent<T>() != null ? GetComponent<T>() : GetComponentInChildren<T>(true);
-        if (component == null)
-        {
-            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé");
+            alreadyGotToLastPosition = false;
         }
-        return component;
-    }
-
-    /// <summary>
-    /// Find a component of a specific gameObject in the complete hierarchy of this gameObject (children, parent, children of parents...).
-    /// </summary>
-    /// <typeparam name="T">Type of the component.</typeparam>
-    /// <param name="objectName">Name of the gameObject.</param>
-    /// <returns></returns>
-    protected T FindComponentInHierarchy<T>(string objectName)
-    {
-        Transform child = parent.Find(objectName).name == name ? transform : parent.Find(objectName);
-        T component = child.GetComponent<T>();
-        if (component == null)
-        {
-            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé dans l'enfant " + objectName + ".");
-        }
-        return component;
     }
     #endregion
 
