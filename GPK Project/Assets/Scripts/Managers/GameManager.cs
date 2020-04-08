@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
     public GameObject player;
     public List<TransitionManager.TransitionHook> transitionHooks;
+    public List<Hook> zoneHooks;
+    public List<EnemyBase> zoneEnemies;
+    public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public GameObject spriteRendererO;
@@ -37,6 +40,6 @@ public class GameManager : MonoBehaviour
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
-        StartCoroutine(TransitionManager.Instance.ZoneInitialization(transitionHooks, GameManager.Instance.spriteRendererO));
+        StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
     }
 }

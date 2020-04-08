@@ -9,8 +9,6 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
-    private TransitionManager transitionManager;
-
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
     void Awake()
@@ -21,8 +19,6 @@ public class ZoneHandler : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
-
-        transitionManager = GetComponent<TransitionManager>();
     }
     #endregion
 
@@ -33,10 +29,43 @@ public class ZoneHandler : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+        if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.O))
         {
             isCurrentConverted = true;
             currentZone.isConverted = true;
+        }
+
+        UpdateConversion();
+        UpdateZoneState();
+    }
+
+    private void UpdateConversion()
+    {
+        if(!isCurrentConverted)
+        {
+            bool zoneRelived = true;
+            foreach(Hook zoneHook in currentZone.zoneHooks)
+            {
+                if(!zoneHook.relived)
+                {
+                    zoneRelived = false;
+                }
+            }
+
+            if(zoneRelived)
+            {
+                isCurrentConverted = true;
+                currentZone.isConverted = true;
+                Debug.Log("The zone " + currentZone.name + " is relived ! ", gameObject);
+            }
+        }
+    }
+
+    private void UpdateZoneState()
+    {
+        for(int i = 0; i < currentZone.enemiesDead.Length; i++)
+        {
+            //if(GameManager.Instance.zoneEnemies[i].)
         }
     }
 
@@ -45,7 +74,15 @@ public class ZoneHandler : MonoBehaviour
         currentZone = newZone;
         isCurrentConverted = newZone.isConverted;
 
-        //Debug.Log("Zone" + currentZone.name + " is " + (currentZone.isConverted ? "converted" : " still in sadness :,("));
+        for(int i = 0; i < currentZone.enemiesDead.Length; i++)
+        {
+            if(currentZone.enemiesDead[i])
+            {
+                GameManager.Instance.zoneEnemies[i].gameObject.SetActive(false);
+            }
+        }
+
+
     }
 
     [System.Serializable]
@@ -54,12 +91,18 @@ public class ZoneHandler : MonoBehaviour
         public bool isConverted;
         public int buildIndex;
         public string name;
+        public List<Hook> zoneHooks;
+        public bool[] enemiesDead;
+        public bool[] elementsActivated;
 
-        public Zone(int _buildIndex, string zoneName)
+        public Zone(int _buildIndex, string zoneName, List<Hook> _zoneHooks, int enemyNumber, int elementNumber)
         {
             buildIndex = _buildIndex;
             isConverted = false;
             name = zoneName;
+            zoneHooks = _zoneHooks;
+            enemiesDead = new bool[enemyNumber];
+            elementsActivated = new bool[elementNumber];
         }
     }
 }

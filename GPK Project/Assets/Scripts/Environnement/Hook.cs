@@ -19,6 +19,7 @@ public abstract class Hook : MonoBehaviour
     [HideInInspector] public bool selected;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
+    [HideInInspector] public bool relived;
 
     private ContactFilter2D enemiFilter = new ContactFilter2D();
 
@@ -48,7 +49,7 @@ public abstract class Hook : MonoBehaviour
     {
         StartCoroutine(BlinkSpecificReaction());
 
-        if(GameManager.Instance.Beat.OnBeat())
+        if(GameManager.Instance.Beat.OnBeat(false))
         {
             rangeVisualO.SetActive(true);
             List<Collider2D> colliders = new List<Collider2D>();
@@ -64,6 +65,8 @@ public abstract class Hook : MonoBehaviour
 
             yield return new WaitForSeconds(agressionTime);
             rangeVisualO.SetActive(false);
+
+            relived = true;
         }
     }
 

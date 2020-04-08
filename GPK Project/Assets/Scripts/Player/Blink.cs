@@ -9,6 +9,7 @@ public class Blink : MonoBehaviour
     public bool unreachableHookNoMove;
 
     public GameObject timingEffectPrefab;
+    public GameObject overActionEffectPrefab;
     public GameObject blinkDisparition;
 
     [Space]
@@ -52,8 +53,16 @@ public class Blink : MonoBehaviour
 
         if (Input.GetButtonDown("Blink") && selectedHook != null)
         {
-            BlinkTest();
-            BlinkMove();
+            if(GameManager.Instance.Beat.CanAct())
+            {
+                BlinkTest();
+                BlinkMove();
+            }
+            else
+            {
+                Instantiate(overActionEffectPrefab, transform.parent.position, Quaternion.identity);
+                currentTimedCombo = 0;
+            }
         }
     }
 
@@ -141,7 +150,7 @@ public class Blink : MonoBehaviour
         Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0,0,Vector2.SignedAngle(Vector2.right, direction)));
         Instantiate(blinkDisparition, transform.position, Quaternion.identity);
         transform.parent.position = blinkDestination;
-        if (GameManager.Instance.Beat.OnBeat() && blinkReachDestination)
+        if (GameManager.Instance.Beat.OnBeat(true) && blinkReachDestination)
         {
             currentTimedCombo++;
             Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
