@@ -9,17 +9,30 @@ public class Hookterruptor : Hook
     public float pressMinTime;
     public SwitchElement[] connectedElements;
 
+    public WorldManager.EventName eventToOccur;
+    private WorldManager.WorldEvent worldEventToOccur;
+
     private bool pressed;
 
     void Start()
     {
         HandlerStart();
         pressed = false;
+
+        worldEventToOccur = WorldManager.GetWorldEvent(eventToOccur);
     }
 
     void Update()
     {
         HandlerUpdate();
+
+        if (eventToOccur != WorldManager.EventName.NullEvent)
+        {
+            if (pressed)
+            {
+                worldEventToOccur.occured = true;
+            }
+        }
     }
 
     public override IEnumerator BlinkSpecificReaction()

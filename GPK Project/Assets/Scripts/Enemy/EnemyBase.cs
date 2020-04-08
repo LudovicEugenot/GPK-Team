@@ -515,6 +515,12 @@ public abstract class EnemyBase : MonoBehaviour
     }
     #endregion
 
+
+    public bool IsConverted()
+    {
+        return converted;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

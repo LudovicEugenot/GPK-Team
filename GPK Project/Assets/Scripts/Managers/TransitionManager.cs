@@ -94,8 +94,6 @@ public class TransitionManager : MonoBehaviour
             zoneHandler.zones.Add(potentialZone);
         }
 
-        zoneHandler.InitializeZone(potentialZone);
-
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.zero;
         currentTransitionHooks = transitionHooks;
@@ -103,6 +101,8 @@ public class TransitionManager : MonoBehaviour
         currentPlayerRendererO.SetActive(false);
 
         yield return new WaitForEndOfFrame();
+
+        zoneHandler.InitializeZone(potentialZone);
 
         if (newPlayerHp != 0)
         {

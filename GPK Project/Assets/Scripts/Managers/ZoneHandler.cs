@@ -9,6 +9,8 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
+    private bool zoneInitialized;
+
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
     void Awake()
@@ -19,6 +21,9 @@ public class ZoneHandler : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
+
+        zoneInitialized = false;
+        GeneralInitialization();
     }
     #endregion
 
@@ -27,16 +32,24 @@ public class ZoneHandler : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    private void GeneralInitialization()
+    {
+        WorldManager.InitializeWorldEvents();
+    }
+
     private void Update()
     {
         if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.O))
         {
             isCurrentConverted = true;
-            currentZone.isConverted = true;
+            currentZone.isRelived = true;
         }
 
-        UpdateConversion();
-        UpdateZoneState();
+        if(zoneInitialized)
+        {
+            UpdateConversion();
+            UpdateZoneState();
+        }
     }
 
     private void UpdateConversion()
@@ -55,53 +68,61 @@ public class ZoneHandler : MonoBehaviour
             if(zoneRelived)
             {
                 isCurrentConverted = true;
-                currentZone.isConverted = true;
-                Debug.Log("The zone " + currentZone.name + " is relived ! ", gameObject);
+                currentZone.isRelived = true;
             }
         }
     }
 
     private void UpdateZoneState()
     {
-        for(int i = 0; i < currentZone.enemiesDead.Length; i++)
+        for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
-            //if(GameManager.Instance.zoneEnemies[i].)
+            currentZone.enemiesConverted[i] = GameManager.Instance.zoneEnemies[i].IsConverted();
+        }
+
+        for (int i = 0; i < currentZone.elementsActivated.Length; i++)
+        {
+            currentZone.elementsActivated[i] = GameManager.Instance.zoneElements[i].active ? GameManager.Instance.zoneElements[i].enableState : !GameManager.Instance.zoneElements[i].enableState;
         }
     }
 
     public void InitializeZone(Zone newZone)
     {
         currentZone = newZone;
-        isCurrentConverted = newZone.isConverted;
+        isCurrentConverted = newZone.isRelived;
 
-        for(int i = 0; i < currentZone.enemiesDead.Length; i++)
+        for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
-            if(currentZone.enemiesDead[i])
-            {
-                GameManager.Instance.zoneEnemies[i].gameObject.SetActive(false);
-            }
+            GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
         }
 
+        for (int i = 0; i < currentZone.elementsActivated.Length; i++)
+        {
+            GameManager.Instance.zoneElements[i].active = currentZone.elementsActivated[i] ? GameManager.Instance.zoneElements[i].enableState : !GameManager.Instance.zoneElements[i].enableState;
+        }
 
+        currentZone.zoneHooks = GameManager.Instance.zoneHooks;
+
+        zoneInitialized = true;
     }
 
     [System.Serializable]
     public class Zone
     {
-        public bool isConverted;
+        public bool isRelived;
         public int buildIndex;
         public string name;
         public List<Hook> zoneHooks;
-        public bool[] enemiesDead;
+        public bool[] enemiesConverted;
         public bool[] elementsActivated;
 
         public Zone(int _buildIndex, string zoneName, List<Hook> _zoneHooks, int enemyNumber, int elementNumber)
         {
             buildIndex = _buildIndex;
-            isConverted = false;
+            isRelived = false;
             name = zoneName;
             zoneHooks = _zoneHooks;
-            enemiesDead = new bool[enemyNumber];
+            enemiesConverted = new bool[enemyNumber];
             elementsActivated = new bool[elementNumber];
         }
     }

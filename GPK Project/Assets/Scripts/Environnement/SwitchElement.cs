@@ -8,6 +8,9 @@ public class SwitchElement : MonoBehaviour
     public float timeBeforeDeactivation;
     public bool stayActive;
 
+    public WorldManager.EventName relatedEvent;
+    private WorldManager.WorldEvent relatedWorldEvent;
+
     [HideInInspector] public bool active;
     private float currentRemainingActiveTime;
 
@@ -15,6 +18,7 @@ public class SwitchElement : MonoBehaviour
     {
         active = !enableState;
         currentRemainingActiveTime = enableState ? timeBeforeDeactivation : 0;
+        relatedWorldEvent = WorldManager.GetWorldEvent(relatedEvent);
     }
 
     public void HandlerUpdate()
@@ -22,6 +26,14 @@ public class SwitchElement : MonoBehaviour
         if(timeBeforeDeactivation > 0)
         {
             UpdateActiveTime();
+        }
+
+        if(relatedEvent != WorldManager.EventName.NullEvent)
+        {
+            if(relatedWorldEvent.occured)
+            {
+                active = enableState;
+            }
         }
     }
 

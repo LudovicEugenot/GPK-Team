@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
     public GameObject player;
     public List<TransitionManager.TransitionHook> transitionHooks;
-    public List<Hook> zoneHooks;
+    public GameObject hooksHolder;
+    [HideInInspector] public List<Hook> zoneHooks;
     public List<EnemyBase> zoneEnemies;
     public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
@@ -35,8 +36,13 @@ public class GameManager : MonoBehaviour
 
     void FirstStart()
     {
+        zoneHooks = new List<Hook>();
+        for(int i = 0; i < hooksHolder.transform.childCount; i++)
+        {
+            zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>());
+        }
         Beat = BeatManager.Instance;
-        ProgressionManager.currentProgression = ProgressionManager.ProgressionState.Tutorial1;
+        WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         playerManager = player.GetComponentInChildren<PlayerManager>();

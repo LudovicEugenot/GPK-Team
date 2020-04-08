@@ -35,19 +35,19 @@ public class NPCDialogue : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.J))
         {
-            ProgressionManager.currentProgression = ProgressionManager.ProgressionState.Tutorial1;
+            WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
         }
         else if (Input.GetKeyDown(KeyCode.K))
         {
-            ProgressionManager.currentProgression = ProgressionManager.ProgressionState.FirstFreedom2;
+            WorldManager.currentStoryStep = WorldManager.StoryStep.FirstFreedom2;
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
-            ProgressionManager.currentProgression = ProgressionManager.ProgressionState.VillageArrival3;
+            WorldManager.currentStoryStep = WorldManager.StoryStep.VillageArrival3;
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            ProgressionManager.currentProgression = ProgressionManager.ProgressionState.VillageConverted4;
+            WorldManager.currentStoryStep = WorldManager.StoryStep.VillageConverted4;
         }
 
         interactPressed = Input.GetButton("Blink");
@@ -137,7 +137,7 @@ public class NPCDialogue : MonoBehaviour
         int i = 0;
         while(selectedDia == null && i < dialogues.Length)
         {
-            if (dialogues[i].progressionNeeded == ProgressionManager.currentProgression)
+            if (dialogues[i].progressionNeeded == WorldManager.currentStoryStep)
             {
                 selectedDia = dialogues[i];
             }
@@ -151,6 +151,6 @@ public class NPCDialogue : MonoBehaviour
     {
         [TextArea(3,10)]
         public string[] sentences;
-        public ProgressionManager.ProgressionState progressionNeeded;
+        public WorldManager.StoryStep progressionNeeded;
     }
 }
