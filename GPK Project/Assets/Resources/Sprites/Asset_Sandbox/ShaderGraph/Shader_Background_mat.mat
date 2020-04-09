@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1357162960153782581
+--- !u!114 &-4184585775568457185
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: test eau
-  m_Shader: {fileID: -6465566751694194690, guid: 46003e26942f69445bffc3a7d3d9ab27,
+  m_Name: Shader_Background_mat
+  m_Shader: {fileID: -6465566751694194690, guid: 4a168dfe6a97b62469ae760762d0fafb,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -33,8 +33,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_EEF7BAD8:
-        m_Texture: {fileID: 2800000, guid: 993ed81f81f11314e8515c58013424a5, type: 3}
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -50,7 +50,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -61,24 +65,39 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_A85F54C9_Texture_1:
-        m_Texture: {fileID: 0}
+    - _SampleTexture2D_1F89544C_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 02138da5a2b60b54684b6d83501bdde2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_6DFCBAB7_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 02138da5a2b60b54684b6d83501bdde2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SubShaderWaterEffect_415EA4C4_Texture2D2378C0BD_177245805:
+        m_Texture: {fileID: 2800000, guid: 993ed81f81f11314e8515c58013424a5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_889907FA_Out_0:
+        m_Texture: {fileID: 2800000, guid: 6ef3d1a264698da4e94022413577ef50, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_9F4B56EB: 2
-    - Vector1_D2008EE: 0.05
-    - Vector1_FDB21912: -0.3
+    - PixelSnap: 0
+    - Vector1_833A86FD: 0.3
+    - Vector1_A450707E: 6
+    - Vector1_B2203827: 1
+    - Vector1_ShaderBackground: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
+    - _EnableExternalAlpha: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -95,6 +114,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_37776B40: {r: 0.00036764707, g: 0.00036764707, b: 0.00036764707, a: 0}
+    - Color_656B978B: {r: 1, g: 0, b: 0, a: 0}
+    - Color_D1388C81: {r: 0.084376216, g: 0.084376216, b: 0.010329823, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

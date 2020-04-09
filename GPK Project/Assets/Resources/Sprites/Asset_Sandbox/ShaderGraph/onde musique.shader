@@ -1,70 +1,76 @@
-﻿Shader "Hidden/onde musique"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/onde musique"
 {
-    Properties
-    {
-        _MainTex("Texture", 2D) = "white" {}
-        _CenterX("Center X", float) = 300
-        _CenterY("Center Y", float) = 250
-        _Amount("Amount", float) = 25
-        _WaveSpeed("Wave Speed", range(.50, 50)) = 20
-        _WaveAmount("Wave Amount", range(0, 20)) = 10
-    }
-        SubShader
-        {
-            // No culling or depth
-            Cull Off ZWrite Off ZTest Always
+	Properties
+	{
+		_Annulus("Annulus Radius", Float) = 1 // An annulus is the 2D version of a Torus. This is the inside radius, in local coordinates
+		_MaxRange("Outer Radius", Float) = 1 //outer radius, in local coordinates
+		_DistortionStrength("DistortionStrength", Float) = 1
+	}
+		SubShader
+	{
+		Tags { "Queue" = "Transparent" "PreviewType" = "Plane"}
+		LOD 100
 
-            Pass
-            {
-                CGPROGRAM
-                #pragma vertex vert
-                #pragma fragment frag
+		GrabPass { "_GrabTexture"}
 
-                #include "UnityCG.cginc"
+		Pass
+		{
+			ZWrite Off
+			Blend One Zero
+			Lighting Off
+			Fog { Mode Off }
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
 
-                struct appdata
-                {
-                    float4 vertex : POSITION;
-                    float2 uv : TEXCOORD0;
-                };
+			#include "UnityCG.cginc"
 
-                struct v2f
-                {
-                    float2 uv : TEXCOORD0;
-                    float4 vertex : SV_POSITION;
-                };
+			struct appdata
+			{
+				float4 vertex : POSITION;
+			};
 
-                v2f vert(appdata v)
-                {
-                    v2f o;
-                    o.vertex = UnityObjectToClipPos(v.vertex);
-                    o.uv = v.uv;
-                    return o;
-                }
+			struct v2f
+			{
+				half2 uv : TEXCOORD0; //our fragment position as a uv-coordinate of the grab-pass texture
+				half2 uv_center : TEXCOORD1; //the position of our object center on the grab-pass texture
+				float4 vertex : SV_POSITION;
+				float4 obj_vertex : TEXCOORD2; //our fragment position in local object space
+			};
 
-                sampler2D _MainTex;
-                float _CenterX;
-                float _CenterY;
-                float _Amount;
-                float _WaveSpeed;
-                float _WaveAmount;
+			sampler2D _GrabTexture;
+			half _Annulus;
+			half _MaxRange;
+			half _DistortionStrength;
 
-                fixed4 frag(v2f i) : SV_Target
-                {
-                    fixed2 center = fixed2(_CenterX / _ScreenParams.x, _CenterY / _ScreenParams.y);
-                    fixed time = _Time.y * _WaveSpeed;
-                    fixed amt = _Amount / 1000;
+			v2f vert(appdata v)
+			{
+				v2f o;
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.uv = ComputeGrabScreenPos(o.vertex);
+				o.obj_vertex = v.vertex;
+				o.uv_center = ComputeGrabScreenPos(UnityObjectToClipPos(float4(0, 0, 0, 1)));
+				return o;
+			}
 
-                    fixed2 uv = center.xy - i.uv;
-                    uv.x *= _ScreenParams.x / _ScreenParams.y;
+			fixed4 frag(v2f i) : COLOR
+			{
+				half dist = length(i.obj_vertex.xy);
+				dist = saturate((dist - _MaxRange + _Annulus) / (_Annulus)); //interpolation value with zero as the inside edge of the annulus and 1 as the outside edge
 
-                    fixed dist = sqrt(dot(uv,uv));
-                    fixed ang = dist * _WaveAmount - time;
-                    uv = i.uv + normalize(uv) * sin(ang) * amt;
-
-                    return tex2D(_MainTex, uv);
-                }
-                ENDCG
-            }
-        }
+				if (dist > 0 && dist < 1)
+				{
+					dist = dist * dist; //nonlinear distribution, so it's not just magnifying stuff. Also makes the transition smooth on the inside of the annulus, but sharp on the outside
+					return tex2D(_GrabTexture, i.uv + dist * _DistortionStrength * normalize(i.uv - i.uv_center)); //our uv, but shifted outwards (in local space)
+				}
+				else
+				{
+					return tex2D(_GrabTexture, i.uv); //no distortion
+				}
+			}
+			ENDCG
+		}
+	}
 }

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mask mat 2
+  m_Name: Shader_Props_Mat
   m_Shader: {fileID: -6465566751694194690, guid: cce269231a4590640b7c3cba223662c9,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
@@ -33,7 +33,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8c281021b4c4b4f4eb4fc2c3f5d0b9ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -44,12 +44,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_6DFCBAB7_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 02138da5a2b60b54684b6d83501bdde2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_B2203827: 1
+    - Vector1_B2203827: 0
+    - Vector1_ShaderBackground: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
