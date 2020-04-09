@@ -52,17 +52,17 @@ public class Enemy_Heavy : EnemyBase
     protected override void Init()
     {
         attackParent = parent.Find("Attack").gameObject;
-        attackCollider = FindComponentInHierarchy<CircleCollider2D>("Attack");
+        attackCollider = parent.Find("Attack").GetComponentInChildren<CircleCollider2D>();
         maxRadiusAttack = attackParent.transform.localScale.x;
         attackParent.SetActive(false);
 
         convertedAttackParent = parent.Find("Converted Attack").gameObject;
-        convertedAttackCollider = FindComponentInHierarchy<CircleCollider2D>("Converted Attack");
+        convertedAttackCollider = parent.Find("Converted Attack").GetComponent< CircleCollider2D>();
         maxConvertedRadiusAttack = convertedAttackParent.transform.localScale.x;
         convertedAttackParent.SetActive(false);
 
         hasAttacked = false;
-        animator = FindComponentInHierarchy<Animator>();
+        animator = parent.GetComponentInChildren<Animator>();
 
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
@@ -130,19 +130,20 @@ public class Enemy_Heavy : EnemyBase
     {
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
-            endOfDash = Vector2.ClampMagnitude(playerPositionStartOfBeat - positionStartOfBeat, movementDistance);
-            while (!NoObstacleBetweenMeAndThere(endOfDash))
+            Vector2 finalDirection = playerPositionStartOfBeat;
+            while (!NoObstacleBetweenMeAndThere(finalDirection))
             {
                 if (
-                    !NoObstacleBetweenMeAndThere(Vector2.down) &&
-                    !NoObstacleBetweenMeAndThere(Vector2.left) &&
-                    !NoObstacleBetweenMeAndThere(Vector2.up) &&
-                    !NoObstacleBetweenMeAndThere(Vector2.right))
+                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
+                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
+                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
+                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
                 {
                     break;
                 }
-                endOfDash = new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+                finalDirection = new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
             }
+            endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.1f, 0.3f);
         float progression = CurrentBeatProgressionAdjusted(3, 0);

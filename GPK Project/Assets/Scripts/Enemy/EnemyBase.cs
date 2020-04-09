@@ -124,13 +124,14 @@ public abstract class EnemyBase : MonoBehaviour
     protected Vector2 positionStartOfBeat;
 
     protected List<Vector2> lastSeenPlayerPosition = new List<Vector2>();
+    protected bool alreadyGotToLastPosition;
 
     /// <summary>
     /// Suit la progression du tableau de patterns actuel.
     /// </summary>
     protected int currentBehaviourIndex;
     protected int nextBehaviourIndex;
-    
+
     protected void NullBehaviour()
     {
         //does nothing
@@ -212,7 +213,7 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (activated)
         {
-            if(currentBehaviour == nullBehaviour)
+            if (currentBehaviour == nullBehaviour)
             {
                 nextBehaviour = NextBehaviour();
             }
@@ -371,11 +372,17 @@ public abstract class EnemyBase : MonoBehaviour
         {
             if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
             {
-                return lastSeenPlayerPosition[i];
+                if (Vector2.Distance(lastSeenPlayerPosition[i], parent.position) < 0.5f)
+                {
+                    alreadyGotToLastPosition = true;
+                    break;
+                }
+                else if (!alreadyGotToLastPosition)
+                    return lastSeenPlayerPosition[i];
             }
         }
 
-        float distance = aggroRange > 0.1f ? aggroRange : 1f;
+        float distance = aggroRange > 1f ? aggroRange : 1f;
         return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance));
     }
 
@@ -383,9 +390,9 @@ public abstract class EnemyBase : MonoBehaviour
     {
         RaycastHit2D travelPathHitObject = Physics2D.Raycast
             (
-                transform.position,
-                positionToGetTo - (Vector2)transform.position,
-                Vector2.Distance(positionToGetTo, transform.position),
+                parent.transform.position,
+                positionToGetTo - (Vector2)parent.transform.position,
+                Vector2.Distance(positionToGetTo, parent.transform.position),
                 LayerMask.GetMask("Obstacle")
             );
 
@@ -447,7 +454,7 @@ public abstract class EnemyBase : MonoBehaviour
 
         float progressionExpected = (progression - offset) * multiplier;
 
-        progressionExpected= Mathf.Clamp(progressionExpected, 0, 1);
+        progressionExpected = Mathf.Clamp(progressionExpected, 0, 1);
 
         return progressionExpected;
     }
@@ -502,41 +509,17 @@ public abstract class EnemyBase : MonoBehaviour
                 lastSeenPlayerPosition.Remove(player.position);
             }
             lastSeenPlayerPosition.Insert(0, player.position);
-        }
-    }
 
-    /// <summary>
-    /// Find a component in the complete hierarchy of this gameObject (children, parent, children of parents...).
-    /// </summary>
-    /// <typeparam name="T">Type of the component.</typeparam>
-    /// <returns></returns>
-    protected T FindComponentInHierarchy<T>()
-    {
-        T component = parent.GetComponent<T>() != null ? parent.GetComponent<T>() : parent.GetComponentInChildren<T>(true);
-        if (component == null)
-        {
-            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé");
+            alreadyGotToLastPosition = false;
         }
-        return component;
-    }
-
-    /// <summary>
-    /// Find a component of a specific gameObject in the complete hierarchy of this gameObject (children, parent, children of parents...).
-    /// </summary>
-    /// <typeparam name="T">Type of the component.</typeparam>
-    /// <param name="objectName">Name of the gameObject.</param>
-    /// <returns></returns>
-    protected T FindComponentInHierarchy<T>(string objectName)
-    {
-        Transform child = parent.Find(objectName).name == name ? transform : parent.Find(objectName);
-        T component = child.GetComponent<T>();
-        if (component == null)
-        {
-            Debug.LogError("Le component " + typeof(T).ToString() + " n'a pas été trouvé dans l'enfant " + objectName + ".");
-        }
-        return component;
     }
     #endregion
+
+
+    public bool IsConverted()
+    {
+        return converted;
+    }
 
     private void OnDrawGizmosSelected()
     {

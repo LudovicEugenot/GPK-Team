@@ -19,6 +19,7 @@ public abstract class Hook : MonoBehaviour
     [HideInInspector] public bool selected;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
+    [HideInInspector] public bool relived;
 
     private ContactFilter2D enemiFilter = new ContactFilter2D();
 
@@ -48,21 +49,25 @@ public abstract class Hook : MonoBehaviour
     {
         StartCoroutine(BlinkSpecificReaction());
 
-        rangeVisualO.SetActive(true);
-        List<Collider2D> colliders = new List<Collider2D>();
-        Physics2D.OverlapCircle(transform.position, agressionRange, enemiFilter, colliders);
-        if(colliders.Count > 0)
+        if(GameManager.Instance.Beat.OnBeat(false))
         {
-            foreach(Collider2D collider in colliders)
+            rangeVisualO.SetActive(true);
+            List<Collider2D> colliders = new List<Collider2D>();
+            Physics2D.OverlapCircle(transform.position, agressionRange, enemiFilter, colliders);
+            if (colliders.Count > 0)
             {
-                EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
-                enemy.TakeDamage();
-                Debug.Log("Heloooooo my name is : " + enemy.gameObject.name);
+                foreach (Collider2D collider in colliders)
+                {
+                    EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
+                    enemy.TakeDamage();
+                }
             }
-        }
 
-        yield return new WaitForSeconds(agressionTime);
-        rangeVisualO.SetActive(false);
+            yield return new WaitForSeconds(agressionTime);
+            rangeVisualO.SetActive(false);
+
+            relived = true;
+        }
     }
 
     public abstract IEnumerator BlinkSpecificReaction();

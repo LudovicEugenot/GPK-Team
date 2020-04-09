@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b54b98c5848ef74bbc591636544f12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 70
+  bpm: 106
   timingThreshold: 0.2
   timingThresholdOffset: 0
-  beatStartTimeOffset: 0.38
+  beatStartTimeOffset: 0
   cameraBeatEffectLerpSpeed: 0.5
   cameraBeatEffectAmplitude: 1
   onBeatSingleFrame: 0
@@ -65,7 +65,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4112a4455bc03e14c8b048815af41731, type: 3}
+  m_audioClip: {fileID: 8300000, guid: bc5e171b916df7140927c01d41a03218, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

@@ -9,7 +9,7 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
-    private TransitionManager transitionManager;
+    private bool zoneInitialized;
 
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
@@ -22,7 +22,8 @@ public class ZoneHandler : MonoBehaviour
         else
             Destroy(this);
 
-        transitionManager = GetComponent<TransitionManager>();
+        zoneInitialized = false;
+        GeneralInitialization();
     }
     #endregion
 
@@ -31,35 +32,98 @@ public class ZoneHandler : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    private void GeneralInitialization()
+    {
+        WorldManager.InitializeWorldEvents();
+    }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+        if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.O))
         {
             isCurrentConverted = true;
-            currentZone.isConverted = true;
+            currentZone.isRelived = true;
+        }
+
+        if(zoneInitialized)
+        {
+            UpdateConversion();
+            UpdateZoneState();
+        }
+    }
+
+    private void UpdateConversion()
+    {
+        if(!isCurrentConverted)
+        {
+            bool zoneRelived = true;
+            foreach(Hook zoneHook in currentZone.zoneHooks)
+            {
+                if(!zoneHook.relived)
+                {
+                    zoneRelived = false;
+                }
+            }
+
+            if(zoneRelived)
+            {
+                isCurrentConverted = true;
+                currentZone.isRelived = true;
+            }
+        }
+    }
+
+    private void UpdateZoneState()
+    {
+        for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
+        {
+            currentZone.enemiesConverted[i] = GameManager.Instance.zoneEnemies[i].IsConverted();
+        }
+
+        for (int i = 0; i < currentZone.elementsActivated.Length; i++)
+        {
+            currentZone.elementsActivated[i] = GameManager.Instance.zoneElements[i].active ? GameManager.Instance.zoneElements[i].enableState : !GameManager.Instance.zoneElements[i].enableState;
         }
     }
 
     public void InitializeZone(Zone newZone)
     {
         currentZone = newZone;
-        isCurrentConverted = newZone.isConverted;
+        isCurrentConverted = newZone.isRelived;
 
-        //Debug.Log("Zone" + currentZone.name + " is " + (currentZone.isConverted ? "converted" : " still in sadness :,("));
+        for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
+        {
+            GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
+        }
+
+        for (int i = 0; i < currentZone.elementsActivated.Length; i++)
+        {
+            GameManager.Instance.zoneElements[i].active = currentZone.elementsActivated[i] ? GameManager.Instance.zoneElements[i].enableState : !GameManager.Instance.zoneElements[i].enableState;
+        }
+
+        currentZone.zoneHooks = GameManager.Instance.zoneHooks;
+
+        zoneInitialized = true;
     }
 
     [System.Serializable]
     public class Zone
     {
-        public bool isConverted;
+        public bool isRelived;
         public int buildIndex;
         public string name;
+        public List<Hook> zoneHooks;
+        public bool[] enemiesConverted;
+        public bool[] elementsActivated;
 
-        public Zone(int _buildIndex, string zoneName)
+        public Zone(int _buildIndex, string zoneName, List<Hook> _zoneHooks, int enemyNumber, int elementNumber)
         {
             buildIndex = _buildIndex;
-            isConverted = false;
+            isRelived = false;
             name = zoneName;
+            zoneHooks = _zoneHooks;
+            enemiesConverted = new bool[enemyNumber];
+            elementsActivated = new bool[elementNumber];
         }
     }
 }

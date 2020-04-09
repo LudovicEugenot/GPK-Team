@@ -138,6 +138,8 @@ MonoBehaviour:
   unreachableHookNoMove: 1
   timingEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
     type: 3}
+  overActionEffectPrefab: {fileID: 7603294352137833439, guid: b5d725f43175e0c40a29206f103902b0,
+    type: 3}
   blinkDisparition: {fileID: 83557179239868105, guid: 93f23427edaf29a479772da35e19ba7d,
     type: 3}
   blinkTrailStartPrefab: {fileID: 6350454940517999626, guid: 9556751b9eca0e842abe24afaffe85ed,
@@ -161,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a35c74761bbdf34080b3e4df828ca1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialBeatCooldown: 4
+  initialBeatCooldown: 10
   launchCurveVisual:
     serializedVersion: 2
     m_Curve:
@@ -254,6 +256,7 @@ MonoBehaviour:
   fullHp: {fileID: 21300000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
   halfHp: {fileID: 21300000, guid: 69dd7fd6036220040bc55db96c58deef, type: 3}
   emptyHpColor: {r: 0.20692419, g: 0.26167524, b: 0.2830189, a: 0.8156863}
+  animator: {fileID: 0}
   currentHealth: 0
 --- !u!120 &3822639274368582669
 LineRenderer:

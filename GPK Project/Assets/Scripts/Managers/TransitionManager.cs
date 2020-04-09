@@ -71,7 +71,7 @@ public class TransitionManager : MonoBehaviour
     }
 
 
-    public IEnumerator ZoneInitialization(List<TransitionHook> transitionHooks, GameObject playerRendererO)
+    public IEnumerator ZoneInitialization(List<Hook> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber)
     {
         if (startHook == null)
         {
@@ -90,11 +90,9 @@ public class TransitionManager : MonoBehaviour
 
         if(potentialZone == null)
         {
-            potentialZone = new ZoneHandler.Zone(currentBuildIndex, SceneManager.GetActiveScene().name);
+            potentialZone = new ZoneHandler.Zone(currentBuildIndex, SceneManager.GetActiveScene().name, zoneHooks, enemyNumber, elementNumber);
             zoneHandler.zones.Add(potentialZone);
         }
-
-        zoneHandler.InitializeZone(potentialZone);
 
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.zero;
@@ -103,6 +101,8 @@ public class TransitionManager : MonoBehaviour
         currentPlayerRendererO.SetActive(false);
 
         yield return new WaitForEndOfFrame();
+
+        zoneHandler.InitializeZone(potentialZone);
 
         if (newPlayerHp != 0)
         {
