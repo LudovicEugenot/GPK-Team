@@ -78,9 +78,9 @@ SpriteMask:
   m_BackSortingLayerID: 0
   m_FrontSortingLayer: 0
   m_BackSortingLayer: 0
-  m_FrontSortingOrder: 0
-  m_BackSortingOrder: 0
-  m_IsCustomRangeActive: 0
+  m_FrontSortingOrder: 3
+  m_BackSortingOrder: -3
+  m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
 --- !u!95 &331032724071479251
 Animator:
@@ -113,4 +113,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c7f022d037ad0f40b3a5b5c58c5a0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 331032724071479251}
+  hookFX: {fileID: 0}
+  hookTemporaryFX: {fileID: 0}
