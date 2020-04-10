@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class ZoneHandler : MonoBehaviour
 {
-    [HideInInspector] public bool isCurrentConverted;
+    [HideInInspector] public bool isCurrentRelived;
     [HideInInspector] public Zone currentZone;
+    [HideInInspector] public float currentReliveProgression;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
     private bool zoneInitialized;
@@ -41,19 +42,20 @@ public class ZoneHandler : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.O))
         {
-            isCurrentConverted = true;
+            isCurrentRelived = true;
             currentZone.isRelived = true;
         }
 
         if(zoneInitialized)
         {
-            UpdateConversion();
+            UpdateRelive();
         }
     }
 
-    private void UpdateConversion()
+    private void UpdateRelive()
     {
-        if(!isCurrentConverted)
+        int hooksRelived = 0;
+        if(!isCurrentRelived)
         {
             bool zoneRelived = true;
             foreach(Hook zoneHook in currentZone.zoneHooks)
@@ -62,14 +64,21 @@ public class ZoneHandler : MonoBehaviour
                 {
                     zoneRelived = false;
                 }
+                else
+                {
+                    hooksRelived++;
+                }
             }
 
             if(zoneRelived)
             {
-                isCurrentConverted = true;
+                isCurrentRelived = true;
                 currentZone.isRelived = true;
+                hooksRelived = currentZone.zoneHooks.Count;
             }
         }
+
+        currentReliveProgression = hooksRelived / currentZone.zoneHooks.Count;
     }
 
     public void SaveZoneState()
@@ -93,7 +102,7 @@ public class ZoneHandler : MonoBehaviour
     public void InitializeZone(Zone newZone)
     {
         currentZone = newZone;
-        isCurrentConverted = newZone.isRelived;
+        isCurrentRelived = newZone.isRelived;
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
