@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Blink blink;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public GameObject spriteRendererO;
+    [HideInInspector] public ZoneHandler zoneHandler;
     #endregion
 
     void FirstStart()

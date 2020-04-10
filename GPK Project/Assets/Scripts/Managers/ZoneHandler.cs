@@ -120,6 +120,8 @@ public class ZoneHandler : MonoBehaviour
             currentZone.zoneHooks[i].relived = currentZone.hooksRelived[i];
         }
 
+        GameManager.Instance.zoneHandler = this;
+
         zoneInitialized = true;
     }
 
