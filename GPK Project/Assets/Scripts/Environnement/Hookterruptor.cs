@@ -7,12 +7,11 @@ public class Hookterruptor : Hook
     public Color pressedColor;
     public bool stayPressedUntilNextBlink;
     public float pressMinTime;
-    public SwitchElement[] connectedElements;
 
     public WorldManager.EventName eventToOccur;
     private WorldManager.WorldEvent worldEventToOccur;
 
-    private bool pressed;
+    [HideInInspector] public bool pressed;
 
     void Start()
     {
@@ -37,14 +36,6 @@ public class Hookterruptor : Hook
 
     public override IEnumerator BlinkSpecificReaction()
     {
-        foreach(SwitchElement element in connectedElements)
-        {
-            if(!stayPressedUntilNextBlink)
-            {
-                element.SwitchOnce();
-            }
-        }
-
         if(stayPressedUntilNextBlink)
         {
             pressed = true;
@@ -64,14 +55,6 @@ public class Hookterruptor : Hook
             if(pressed && (Vector2)GameManager.Instance.blink.transform.position != (Vector2)transform.position)
             {
                 pressed = false;
-            }
-
-            foreach (SwitchElement element in connectedElements)
-            {
-                if(pressed)
-                {
-                    element.SwitchOn();
-                }
             }
         }
 

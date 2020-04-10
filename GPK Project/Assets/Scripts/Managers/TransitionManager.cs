@@ -140,6 +140,7 @@ public class TransitionManager : MonoBehaviour
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         newPlayerHp = GameManager.Instance.playerManager.currentHealth;
+        zoneHandler.SaveZoneState();
 
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)

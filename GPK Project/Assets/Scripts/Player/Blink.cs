@@ -4,10 +4,16 @@ using UnityEngine;
 public class Blink : MonoBehaviour
 {
     #region Initialization
+    [Header("Blink settings")]
     public float[] blinkRangeProgression;
     public Hook startHook;
     public bool unreachableHookNoMove;
+    [Space]
+    public LineRenderer blinkTrajectoryPreviewLine;
+    public GameObject blinkTargetO;
+    public GameObject blinkInvalidTargetO;
 
+    [Header("Prefabs")]
     public GameObject timingEffectPrefab;
     public GameObject overActionEffectPrefab;
     public GameObject blinkDisparition;
@@ -55,7 +61,6 @@ public class Blink : MonoBehaviour
         {
             if(GameManager.Instance.Beat.CanAct())
             {
-                BlinkTest();
                 BlinkMove();
             }
             else
@@ -81,7 +86,7 @@ public class Blink : MonoBehaviour
     private void HookSelection()
     {
         worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+        Hook hoveredHook = null;
         Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook"));
         float minDistanceToHook = 10000f;
         for (int i = 0; i < hookHover.Length; i++)
@@ -91,54 +96,89 @@ public class Blink : MonoBehaviour
             if (distanceToHook < minDistanceToHook && hookHover[i].GetComponent<Hook>().blinkable && (Vector2)transform.position != (Vector2)hookHover[i].transform.position)
             {
                 minDistanceToHook = distanceToHook;
-                if (selectedHook != null)
+                if (hoveredHook != null)
                 {
-                    selectedHook.selected = false;
+                    hoveredHook.selected = false;
                 }
-                selectedHook = hookHover[i].GetComponent<Hook>();
-                selectedHook.selected = true;
+                hoveredHook = hookHover[i].GetComponent<Hook>();
             }
         }
 
-        if (selectedHook != null && (hookHover.Length == 0 || !selectedHook.blinkable))
+        if (hoveredHook != null && (hookHover.Length == 0 || !hoveredHook.blinkable))
         {
-            selectedHook.selected = false;
-            selectedHook = null;
+            hoveredHook.selected = false;
+            hoveredHook = null;
         }
 
         currentRange = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1];
+
+
+        if(hoveredHook != null)
+        {
+            TrajectoryTest(hoveredHook);
+        }
+        else
+        {
+            blinkTrajectoryPreviewLine.enabled = false;
+            blinkTargetO.SetActive(false);
+            blinkInvalidTargetO.SetActive(false);
+        }
     }
 
-    private void BlinkTest()
+    private void TrajectoryTest(Hook hoveredHook)
     {
         blinkReachDestination = false;
         blinkOrigin = transform.position;
         RaycastHit2D blinkHitObject = Physics2D.Raycast
             (
                 transform.position,
-                selectedHook.transform.position - transform.position,
-                Vector2.Distance(selectedHook.transform.position, transform.position),
+                hoveredHook.transform.position - transform.position,
+                Vector2.Distance(hoveredHook.transform.position, transform.position),
                 LayerMask.GetMask("Obstacle")
             );
+
         if (!blinkHitObject)
         {
+            selectedHook = hoveredHook;
             blinkDestination = selectedHook.transform.position;
             blinkReachDestination = true;
-            if(selectedHook.isSecureHook)
-            {
-                lastSecureHook = selectedHook;
-            }
-            StartCoroutine(selectedHook.BlinkReaction());
+
+            blinkTrajectoryPreviewLine.enabled = true;
+
+            Vector3[] previewPositions = new Vector3[2];
+            previewPositions[0] = transform.parent.position;
+            previewPositions[1] = selectedHook.transform.position;
+            blinkTrajectoryPreviewLine.SetPositions(previewPositions);
+
+            blinkTargetO.SetActive(true);
+            blinkTargetO.transform.position = selectedHook.transform.position;
         }
         else
         {
-            if(!unreachableHookNoMove)
+            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
+
+            blinkTrajectoryPreviewLine.enabled = true;
+
+            Vector3[] previewPositions = new Vector3[2];
+            previewPositions[0] = transform.parent.position;
+            previewPositions[1] = obstacleHitPos;
+            blinkTrajectoryPreviewLine.SetPositions(previewPositions);
+
+
+
+            if (!unreachableHookNoMove)
             {
-                blinkDestination = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
+                blinkDestination = obstacleHitPos;
+
+                blinkTargetO.SetActive(true);
+                blinkTargetO.transform.position = obstacleHitPos;
             }
             else
             {
                 blinkDestination = transform.parent.position;
+
+                blinkInvalidTargetO.SetActive(true);
+                blinkInvalidTargetO.transform.position = obstacleHitPos;
             }
         }
     }
@@ -150,6 +190,14 @@ public class Blink : MonoBehaviour
         Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0,0,Vector2.SignedAngle(Vector2.right, direction)));
         Instantiate(blinkDisparition, transform.position, Quaternion.identity);
         transform.parent.position = blinkDestination;
+
+        if (selectedHook.isSecureHook)
+        {
+            lastSecureHook = selectedHook;
+        }
+
+        StartCoroutine(selectedHook.BlinkReaction());
+
         if (GameManager.Instance.Beat.OnBeat(true) && blinkReachDestination)
         {
             currentTimedCombo++;
