@@ -49,4 +49,12 @@ public class GameManager : MonoBehaviour
         playerManager = player.GetComponentInChildren<PlayerManager>();
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
     }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            //Test whatever you want ^^
+        }
+    }
 }

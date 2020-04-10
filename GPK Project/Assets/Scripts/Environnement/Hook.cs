@@ -69,11 +69,10 @@ public abstract class Hook : MonoBehaviour
                     enemy.TakeDamage();
                 }
             }
+            relived = true;
 
             yield return new WaitForSeconds(agressionTime);
             rangeVisualO.SetActive(false);
-
-            relived = true;
         }
     }
 
