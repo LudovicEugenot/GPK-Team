@@ -2,17 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+
+
+
+
+
+
+
+
+
 public class BackgroundFX : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Material backgroundShader;
+    public Material riverShader;
+    public Material propsShader;
 
-    // Update is called once per frame
+    [HideInInspector] public float recolor;
+
     void Update()
     {
-        
+        recolor = GameManager.Instance.zoneHandler.currentReliveProgression;
+        backgroundShader.SetFloat("Vector1_Shaderbackground", recolor);
+        riverShader.SetFloat("Vector1_Shaderbackground", recolor);
+        propsShader.SetFloat("Vector1_Shaderbackground", recolor);
+        Debug.Log(propsShader.GetFloat("Vector1_Shaderbackground"));
     }
 }

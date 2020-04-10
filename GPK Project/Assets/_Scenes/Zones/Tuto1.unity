@@ -229,6 +229,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: background_greyscale
       objectReference: {fileID: 0}
+    - target: {fileID: 85692013082805951, guid: 5791b197170996846a1ebeacfb1dd3dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2154755308323811966, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -437,7 +442,7 @@ PrefabInstance:
     - target: {fileID: 3717861869360096246, guid: afb23417cf9d9ad4293f49c7aa8558fa,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3717861869360096246, guid: afb23417cf9d9ad4293f49c7aa8558fa,
         type: 3}
@@ -1580,6 +1585,28 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1110374553}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1157392593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 85692013082805951, guid: 5791b197170996846a1ebeacfb1dd3dd,
+    type: 3}
+  m_PrefabInstance: {fileID: 127568539}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1157392594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157392593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70cf386a4cad76844bb7eb6701117ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundShader: {fileID: 2100000, guid: b8a4d2db7564204419bf50cd287b286e, type: 2}
+  riverShader: {fileID: 2100000, guid: c6a41c8ba7d2005448c2d453b9b0e3de, type: 2}
+  propsShader: {fileID: 2100000, guid: b8c748e49a1460b4ba0f2b1486f0e919, type: 2}
+  recolor: 0
 --- !u!1001 &1158515012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1701,7 +1728,7 @@ Transform:
   - {fileID: 1158515013}
   - {fileID: 1527681302}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1346496890 stripped
 MonoBehaviour:
@@ -2892,7 +2919,7 @@ PrefabInstance:
     - target: {fileID: 2496210135006558564, guid: c8e1326606647124d8a1f31ca251c8b5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2496210135006558564, guid: c8e1326606647124d8a1f31ca251c8b5,
         type: 3}
