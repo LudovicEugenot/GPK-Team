@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1927,25 +1927,25 @@ PrefabInstance:
     - target: {fileID: 2154755308323811966, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3045433626247566439, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 8320cfe79c3b9ba4293a429586cbbd70,
+      objectReference: {fileID: 21300000, guid: cb984df82c7c7574ca0272540d644d71,
         type: 3}
     - target: {fileID: 5802939614182676014, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 188811f79d004e24498a8107ba11a589,
+      objectReference: {fileID: 21300000, guid: 6b1cc0cc97fd0f94c9c3ee0e89c68f70,
         type: 3}
     - target: {fileID: 8707925446753653037, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c6ca7104e1ff10e4899307a0f26dff06,
+      objectReference: {fileID: 21300000, guid: caedccc45bc266f4893f1751c6bbbbf9,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5791b197170996846a1ebeacfb1dd3dd, type: 3}
