@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.M))
         {
             //Test whatever you want ^^
+            Debug.Log(zoneHandler.currentReliveProgression);
         }
     }
 }

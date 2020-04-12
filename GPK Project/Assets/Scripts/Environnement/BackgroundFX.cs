@@ -2,17 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public class BackgroundFX : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Material backgroundShader;
+    public Material riverShader;
+    public Material propsShader;
+    [Range(0f,1f)]public float lerpSpeed;
 
-    // Update is called once per frame
+    [HideInInspector] public float recolor;
+    private float lerpStep;
+
+    private void Start()
+    {
+        recolor = 0;
+    }
     void Update()
     {
-        
+        if (lerpStep <= 0.95)
+        {
+            lerpStep += (1 - lerpStep) * lerpSpeed;
+            recolor += (GameManager.Instance.zoneHandler.currentReliveProgression - recolor) * lerpStep;
+        }
+        backgroundShader.SetFloat("Vector1_ShaderBackground", recolor);
+        riverShader.SetFloat("Vector1_ShaderBackground", recolor);
+        propsShader.SetFloat("Vector1_ShaderBackground", recolor);
     }
 }

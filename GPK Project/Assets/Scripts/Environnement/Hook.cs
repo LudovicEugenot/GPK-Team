@@ -15,16 +15,12 @@ public abstract class Hook : MonoBehaviour
     public float agressionRange;
     public GameObject rangeVisualO; // à remplacer par le mask de recoloration
     public float agressionTime;
-    public Material backgroundShader;
-    public Material riverShader;
-    public Material propsShader;
 
 
     [HideInInspector] public bool selected;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
     [HideInInspector] public bool relived;
-    [HideInInspector] public float recolor;
 
     private ContactFilter2D enemiFilter = new ContactFilter2D();
 
@@ -38,7 +34,6 @@ public abstract class Hook : MonoBehaviour
 
         selected = false;
         blinkable = true;
-     //   recolor = ZoneHandler.counts;
 
         enemiFilter.useTriggers = true;
         enemiFilter.SetLayerMask(LayerMask.GetMask("Enemi"));
