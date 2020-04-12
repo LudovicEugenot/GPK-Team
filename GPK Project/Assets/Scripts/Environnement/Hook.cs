@@ -23,13 +23,14 @@ public abstract class Hook : MonoBehaviour
     [HideInInspector] public bool relived;
 
     private ContactFilter2D enemiFilter = new ContactFilter2D();
+    protected Animator animator;
 
     #endregion
 
 
     public void HandlerStart()
     {
-
+        animator = GetComponentInChildren<Animator>();
         sprite = GetComponent<SpriteRenderer>();
 
         selected = false;
@@ -43,6 +44,11 @@ public abstract class Hook : MonoBehaviour
     public void HandlerUpdate()
     {
         StateUpdate();
+
+        if (animator != null)
+        {
+            animator.SetBool("IsConvert", relived);
+        }
     }
 
     public abstract void StateUpdate();

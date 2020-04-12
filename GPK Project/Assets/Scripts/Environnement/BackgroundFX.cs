@@ -21,12 +21,13 @@ using UnityEngine;
 
 public class BackgroundFX : MonoBehaviour
 {
-    public Material backgroundShader;
-    public Material riverShader;
-    public Material propsShader;
+    public Material recolorMaterial;
     [Range(0f,1f)]public float lerpSpeed;
+    [Range(0f, 1f)] public float maxRecolorNotFull;
+    [Range(0f, 1f)] public float startRecolorValue;
 
     [HideInInspector] public float recolor;
+    private float targetRecolorValue;
     private float lerpStep;
 
     private void Start()
@@ -35,13 +36,34 @@ public class BackgroundFX : MonoBehaviour
     }
     void Update()
     {
-        if (lerpStep <= 0.95)
+        if(GameManager.Instance.zoneHandler != null)
         {
-            lerpStep += (1 - lerpStep) * lerpSpeed;
-            recolor += (GameManager.Instance.zoneHandler.currentReliveProgression - recolor) * lerpStep;
+            targetRecolorValue = GameManager.Instance.zoneHandler.currentReliveProgression;
         }
-        backgroundShader.SetFloat("Vector1_ShaderBackground", recolor);
-        riverShader.SetFloat("Vector1_ShaderBackground", recolor);
-        propsShader.SetFloat("Vector1_ShaderBackground", recolor);
+        else
+        {
+            targetRecolorValue = 0;
+        }
+        targetRecolorValue = targetRecolorValue == 1 ? 1 : targetRecolorValue * maxRecolorNotFull;
+
+        if (recolor != targetRecolorValue)
+        {
+            if (lerpStep <= 0.99f)
+            {
+                lerpStep += (1 - lerpStep) * lerpSpeed * Time.deltaTime;
+                recolor += (targetRecolorValue - recolor) * lerpStep;
+            }
+            else
+            {
+                recolor = targetRecolorValue;
+                lerpStep = 0;
+            }
+        }
+        recolorMaterial.SetFloat("Vector1_Progression", startRecolorValue + recolor * (1 - startRecolorValue));
+    }
+
+    private IEnumerator FinishRecolor()
+    {
+        yield return null;
     }
 }

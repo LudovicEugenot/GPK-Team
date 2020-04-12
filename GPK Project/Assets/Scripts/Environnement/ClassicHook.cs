@@ -7,7 +7,6 @@ public class ClassicHook : Hook
     [Header("Classic Hook Options")]
     public bool convertable;
     public Color convertedColor;
-    public Animator animator;
     public float effectRange;
     public GameObject effectCircleVisualO;
 
@@ -38,11 +37,6 @@ public class ClassicHook : Hook
         }
 
         sprite.color = blinkable ? (selected ? selectedColor : (converted ? convertedColor : blinkableColor)) : unselectableColor;
-
-        if(animator != null)
-        {
-            animator.SetBool("IsConvert", converted);
-        }
     }
 
     public override IEnumerator BlinkSpecificReaction()

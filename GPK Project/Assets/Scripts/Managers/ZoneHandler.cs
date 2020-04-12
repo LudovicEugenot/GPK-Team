@@ -74,8 +74,11 @@ public class ZoneHandler : MonoBehaviour
             {
                 isCurrentRelived = true;
                 currentZone.isRelived = true;
-                hooksRelived = currentZone.zoneHooks.Count;
             }
+        }
+        else
+        {
+            hooksRelived = currentZone.zoneHooks.Count;
         }
         currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
     }

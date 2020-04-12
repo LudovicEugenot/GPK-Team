@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf386a4cad76844bb7eb6701117ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundShader: {fileID: 2100000, guid: ac0ccae3b2c4bee4483d127640b0d824, type: 2}
-  riverShader: {fileID: 2100000, guid: ac0ccae3b2c4bee4483d127640b0d824, type: 2}
-  propsShader: {fileID: 2100000, guid: ac0ccae3b2c4bee4483d127640b0d824, type: 2}
-  lerpSpeed: 0
+  recolorMaterial: {fileID: 2100000, guid: ac0ccae3b2c4bee4483d127640b0d824, type: 2}
+  lerpSpeed: 0.02
+  maxRecolorNotFull: 0.5
+  startRecolorValue: 0.2
   recolor: 0
 --- !u!1 &910253817050314262
 GameObject:
@@ -119,7 +119,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1182132515
-  m_SortingLayer: 7
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 03b535c673b91dd47a9e15f3866e35a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -148,7 +148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6914658622271502632
 Transform:
   m_ObjectHideFlags: 0
@@ -200,7 +200,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1918136707
-  m_SortingLayer: 5
+  m_SortingLayer: -5
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e357ea0df157ab24098e230ea21d843c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -281,7 +281,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1791857029
-  m_SortingLayer: 6
+  m_SortingLayer: -6
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 31072db49a8d55b4aac71a7942651f0c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
