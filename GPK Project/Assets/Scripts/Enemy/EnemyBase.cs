@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/* On converted s'éxécute à chaque fois qu'il reprend des dégâts
+ * 
+ * 
+ */
+
 public enum EnemyState
 {
     NULL,
@@ -420,25 +425,31 @@ public abstract class EnemyBase : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (enemyCurrentHP > 1)
+        if (!converted)
         {
-            enemyCurrentHP--;
-        }
-        else
-        {
-            GetConverted();
+            if (enemyCurrentHP > 1)
+            {
+                enemyCurrentHP--;
+            }
+            else
+            {
+                GetConverted();
+            }
         }
     }
 
     public void TakeDamage(int damageTaken)
     {
-        if (enemyCurrentHP > 1)
+        if (!converted)
         {
-            enemyCurrentHP -= damageTaken;
-        }
-        else
-        {
-            GetConverted();
+            if (enemyCurrentHP > 1)
+            {
+                enemyCurrentHP -= damageTaken;
+            }
+            else
+            {
+                GetConverted();
+            }
         }
     }
 
