@@ -75,6 +75,7 @@ public class Enemy_Basic : EnemyBase
         }
 
         //zone dangeureuse autour de l'ennemi
+        attackCollider.enabled = true;
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         List<Collider2D> colliders = new List<Collider2D>();
@@ -86,6 +87,7 @@ public class Enemy_Basic : EnemyBase
         {
             hasAttacked = false;
         }
+        attackCollider.enabled = false;
 
         if (colliders.Count > 0 && !hasAttacked)
         {

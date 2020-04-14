@@ -9,6 +9,7 @@ public class BeatManager : MonoBehaviour
     [Range(0f, 1f)] public float timingThreshold = 0.2f;
     [Range(-1f, 1f)] public float timingThresholdOffset;
     [Range(0f, 1f)] public float beatStartTimeOffset; // à supprimer pour l'adapter selon la machine qui joue la musique
+    [Range(0f, 1f)] public float minTimeForOnBeatValidation;
 
     public float cameraBeatEffectLerpSpeed;
     public float cameraBeatEffectAmplitude;
@@ -26,6 +27,9 @@ public class BeatManager : MonoBehaviour
     private float nextBeatStartTime;
     private float offBeatStartTime;
     private float songStartTime;
+    private bool beatActionUsed;
+    private float lastActionTime;
+    private bool actOnBeatPossible;
 
     private AudioSource source;
 
@@ -53,6 +57,7 @@ public class BeatManager : MonoBehaviour
         musicStarted = false;
         beatTime = 60 / bpm;
         onBeatSingleFrame = false;
+        beatActionUsed = false;
 
         initialCameraSize = Camera.main.orthographicSize;
     }
@@ -93,12 +98,14 @@ public class BeatManager : MonoBehaviour
             onBeatNextFrame = false;
         }
 
-        if (OnBeat())
+        if (OnBeat(false))
         {
             if(firstFrameFlag)
             {
                 onBeatFirstFrame = true;
                 firstFrameFlag = false;
+
+                beatActionUsed = false;
             }
 
             nextFrameFlag = true;
@@ -117,7 +124,7 @@ public class BeatManager : MonoBehaviour
         if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
-            StartCoroutine(BeatEffect(1));
+            StartCoroutine(BeatEffect(0.1f));
             onBeatSingleFrame = true;
         }
 
@@ -142,34 +149,56 @@ public class BeatManager : MonoBehaviour
         Camera.main.orthographicSize = initialCameraSize;
     }
 
-    public bool OnBeat()
+    public bool OnBeat(bool isAction)
     {
         bool onBeat = false;
         float beatTimeProgression = beatTime - timeBeforeNextBeat;
 
-        if(timingThresholdOffset >= timingThreshold / 2)
+        if(actOnBeatPossible || !isAction)
         {
-            if(beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+            if (timingThresholdOffset >= timingThreshold / 2)
             {
-                onBeat = true;
+                if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+                {
+                    onBeat = true;
+                }
             }
-        }
-        else if(timingThresholdOffset <= - timingThreshold / 2)
-        {
-            if (timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset && timeBeforeNextBeat > - timingThresholdOffset - (timingThreshold / 2))
+            else if (timingThresholdOffset <= -timingThreshold / 2)
             {
-                onBeat = true;
+                if (timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset && timeBeforeNextBeat > -timingThresholdOffset - (timingThreshold / 2))
+                {
+                    onBeat = true;
+                }
             }
-        }
-        else
-        {
-            if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
+            else
             {
-                onBeat = true;
+                if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
+                {
+                    onBeat = true;
+                }
             }
         }
 
         return onBeat;
+    }
+
+    public bool CanAct()
+    {
+        bool used = beatActionUsed;
+        if(!beatActionUsed)
+        {
+            beatActionUsed = true;
+        }
+
+        actOnBeatPossible = false;
+        if ((float)AudioSettings.dspTime - lastActionTime > minTimeForOnBeatValidation)
+        {
+            actOnBeatPossible = true;
+        }
+
+        lastActionTime = (float)AudioSettings.dspTime;
+
+        return !used;
     }
 
     private void StartMusic()

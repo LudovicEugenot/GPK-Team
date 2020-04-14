@@ -37,6 +37,20 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public void Heal(int life)
+    {
+        if(currentHealth + life <= maxhealthPoint * 2)
+        {
+            currentHealth += life;
+        }
+        else
+        {
+            currentHealth = maxhealthPoint;
+        }
+
+        UpdateHealthBar();
+    }
+
     private void InitializeHealthBar()
     {
         for (int i = 0; i < maxhealthPoint; i++)

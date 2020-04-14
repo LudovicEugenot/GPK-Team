@@ -47,8 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableState: 0
   timeBeforeDeactivation: 2
-  stayActive: 0
-  active: 0
+  stayEnable: 0
+  connectedHookterruptors: []
+  isInteractableByEvent: 0
+  relatedEvent: 0
+  isEnabled: 0
   activeColor: {r: 1, g: 1, b: 1, a: 1}
   deactiveColor: {r: 0.048593808, g: 0.22330925, b: 0.26415092, a: 1}
 --- !u!61 &2488691751857785681
@@ -113,9 +116,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 882915597
+  m_SortingLayer: -4
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

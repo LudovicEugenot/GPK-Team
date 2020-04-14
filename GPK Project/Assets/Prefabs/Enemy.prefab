@@ -235,10 +235,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   attackDamage: 2
-  attackCollider: {fileID: 7775427054055364414}
-  attackRenderer: {fileID: 7775427054055364413}
-  animator: {fileID: 1019215757}
 --- !u!50 &7775427054183306283
 Rigidbody2D:
   serializedVersion: 4
@@ -328,8 +331,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1974562565
+  m_SortingLayer: -3
   m_SortingOrder: 4
   m_Sprite: {fileID: -4241425328177460984, guid: d74b8b29adc5a27498002e162a393434,
     type: 3}

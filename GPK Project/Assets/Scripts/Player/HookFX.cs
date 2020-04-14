@@ -6,19 +6,29 @@ public class HookFX : MonoBehaviour
 {
     Animator animator;
     public ClassicHook hookFX;
+    public TemporaryHook hookTemporaryFX;
+    private SpriteMask mask;
+    private SpriteRenderer targetRenderer;
+
 
     void Start()
     {
+        targetRenderer = GetComponent<SpriteRenderer>();
+        mask = GetComponent<SpriteMask>();
         animator = gameObject.GetComponent<Animator>();
     }
 
     void Update()
     {
-        if(hookFX.converted == true)
-        {
             animator.SetBool("IsExpend", true);
-        }
+    }
 
+    void LateUpdate()
+    {
+        if (mask.sprite != targetRenderer.sprite)
+        {
+            mask.sprite = targetRenderer.sprite;
+        }
     }
 
 }
