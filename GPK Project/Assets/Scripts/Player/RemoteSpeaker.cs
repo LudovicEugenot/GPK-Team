@@ -7,6 +7,7 @@ public class RemoteSpeaker : MonoBehaviour
 {
     [Header("Speaker options")]
     public int initialBeatCooldown;
+    public int minimumBeatCooldown;
     public AnimationCurve launchCurveVisual;
     public float curveVisualForce;
     public AnimationCurve launchCurveProgression;
@@ -44,7 +45,7 @@ public class RemoteSpeaker : MonoBehaviour
             {
                 beatCooldownRemaining++;
             }
-            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null)
+            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct())
             {
                 StartCoroutine(ThrowSpeaker());
             }
@@ -90,7 +91,8 @@ public class RemoteSpeaker : MonoBehaviour
     private IEnumerator SpeakerEffect()
     {
         Instantiate(onTimeParticleEffectPrefab, remoteSpeakerO.transform.position, Quaternion.identity);
-        // conversion ennemi dans un cercle
+        StartCoroutine(speakerHook.CreateMusicArea());
+        beatCooldownRemaining = initialBeatCooldown - minimumBeatCooldown;
         yield return null;
     }
 }

@@ -76,6 +76,11 @@ public class BeatManager : MonoBehaviour
         {
             TimeCycle();
         }
+
+        if(onBeatNextFrame && !beatActionUsed)
+        {
+            GameManager.Instance.blink.FailCombo();
+        }
     }
 
     /// <summary>
@@ -104,8 +109,6 @@ public class BeatManager : MonoBehaviour
             {
                 onBeatFirstFrame = true;
                 firstFrameFlag = false;
-
-                beatActionUsed = false;
             }
 
             nextFrameFlag = true;
@@ -124,14 +127,21 @@ public class BeatManager : MonoBehaviour
         if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
-            StartCoroutine(BeatEffect(0.1f));
+            if(cameraBeatEffectAmplitude != 0)
+            {
+                StartCoroutine(BeatEffect(1.0f));
+            }
             onBeatSingleFrame = true;
         }
 
         if (offBeatStartTime < (float)AudioSettings.dspTime - beatTime / 2)
         {
             offBeatStartTime += beatTime;
-            //StartCoroutine(BeatEffect(0.2f));
+            /*if (cameraBeatEffectAmplitude != 0)
+            {
+                StartCoroutine(BeatEffect(0.2f));
+            }*/
+            beatActionUsed = false;
         }
 
         timeBeforeNextBeat = nextBeatStartTime - (float)AudioSettings.dspTime;

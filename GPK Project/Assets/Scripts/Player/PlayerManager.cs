@@ -13,8 +13,10 @@ public class PlayerManager : MonoBehaviour
     public Sprite halfHp;
     public Color emptyHpColor;
     public Animator animator;
+    public GameObject[] musicianVisualO;
 
     [HideInInspector] public int currentHealth;
+    [HideInInspector] public int currentPower;
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
@@ -24,6 +26,7 @@ public class PlayerManager : MonoBehaviour
         currentHealth = maxhealthPoint * 2;
         hpIconsState = new HpState[maxhealthPoint];
         InitializeHealthBar();
+        UseMusicians();
     }
 
     public void TakeDamage(int damage)
@@ -45,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            currentHealth = maxhealthPoint;
+            currentHealth = maxhealthPoint * 2;
         }
 
         UpdateHealthBar();
@@ -109,5 +112,24 @@ public class PlayerManager : MonoBehaviour
     public void Die()
     {
         Debug.Log("This is not victory");
+    }
+
+    public void AddMusician()
+    {
+        if(currentPower < 3)
+        {
+            currentPower++;
+        }
+
+        musicianVisualO[currentPower - 1].SetActive(true);
+    }
+
+    public void UseMusicians()
+    {
+        currentPower = 0;
+        foreach(GameObject musician in musicianVisualO)
+        {
+            musician.SetActive(false);
+        }
     }
 }

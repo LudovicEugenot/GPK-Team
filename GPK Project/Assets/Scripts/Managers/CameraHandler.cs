@@ -30,6 +30,7 @@ public class CameraHandler : MonoBehaviour
         currentLerpSpeed = baseLerpSpeed;
         cinematicBar1InitialPos = cinematicBar1.anchoredPosition;
         cinematicBar2InitialPos = cinematicBar2.anchoredPosition;
+        cameraCenterPos = Vector2.zero;
     }
 
     void Update()
