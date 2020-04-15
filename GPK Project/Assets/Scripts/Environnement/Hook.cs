@@ -24,6 +24,7 @@ public abstract class Hook : MonoBehaviour
 
     protected ContactFilter2D enemiFilter = new ContactFilter2D();
     protected Animator animator;
+    protected AnimSynchronizer animSynchronizer;
 
     #endregion
 
@@ -32,6 +33,7 @@ public abstract class Hook : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        animSynchronizer = GetComponentInChildren<AnimSynchronizer>();
 
         selected = false;
         blinkable = true;
@@ -60,6 +62,11 @@ public abstract class Hook : MonoBehaviour
         if(isPlayerOnBeat)
         {
             relived = true;
+            if (animSynchronizer != null)
+            {
+                animSynchronizer.Synchronize();
+            }
+
             if (agressiveHook)
             {
                 rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
