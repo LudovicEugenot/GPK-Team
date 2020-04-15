@@ -124,7 +124,7 @@ public class BeatManager : MonoBehaviour
         if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
-            StartCoroutine(BeatEffect(0.1f));
+            StartCoroutine(BeatEffect(0.5f));
             onBeatSingleFrame = true;
         }
 

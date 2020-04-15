@@ -198,10 +198,11 @@ public class Blink : MonoBehaviour
 
         StartCoroutine(selectedHook.BlinkReaction());
 
-        if (GameManager.Instance.Beat.OnBeat(true) && blinkReachDestination)
+        if (GameManager.Instance.Beat.OnBeat(true) /*&& blinkReachDestination*/)
         {
             currentTimedCombo++;
             Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
+            Debug.Log("Instantiated");
         }
         else
         {

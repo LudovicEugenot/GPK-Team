@@ -130,6 +130,7 @@ public class Enemy_Basic : EnemyBase
     {
         animator.SetBool("Converted", true);
         attackParent.SetActive(false);
+        GameManager.Instance.playerManager.AddMusician();
     }
 
     protected override void VulnerableBehaviour()

@@ -12,7 +12,7 @@ public abstract class Hook : MonoBehaviour
     public Color unselectableColor;
 
     public bool agressiveHook;
-    public float agressionRange;
+    public float[] agressionRanges;
     public GameObject rangeVisualO; // à remplacer par le mask de recoloration
     public float agressionTime;
 
@@ -59,9 +59,11 @@ public abstract class Hook : MonoBehaviour
 
         if(GameManager.Instance.Beat.OnBeat(false))
         {
+            //Debug.Log(GameManager.Instance.playerManager.currentPower);
+            rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
             rangeVisualO.SetActive(true);
             List<Collider2D> colliders = new List<Collider2D>();
-            Physics2D.OverlapCircle(transform.position, agressionRange, enemiFilter, colliders);
+            Physics2D.OverlapCircle(transform.position, agressionRanges[GameManager.Instance.playerManager.currentPower], enemiFilter, colliders);
             if (colliders.Count > 0)
             {
                 foreach (Collider2D collider in colliders)
