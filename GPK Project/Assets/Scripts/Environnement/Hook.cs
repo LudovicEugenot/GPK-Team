@@ -22,7 +22,7 @@ public abstract class Hook : MonoBehaviour
     [HideInInspector] public SpriteRenderer sprite;
     [HideInInspector] public bool relived;
 
-    private ContactFilter2D enemiFilter = new ContactFilter2D();
+    protected ContactFilter2D enemiFilter = new ContactFilter2D();
     protected Animator animator;
 
     #endregion

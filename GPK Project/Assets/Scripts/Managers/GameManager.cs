@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour
     public List<TransitionManager.TransitionHook> transitionHooks;
     public GameObject hooksHolder;
     [HideInInspector] public List<Hook> zoneHooks;
-    public List<EnemyBase> zoneEnemies;
+    public GameObject enemiesHolder;
+    [HideInInspector] public List<EnemyBase> zoneEnemies;
     public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public PlayerManager playerManager;
@@ -42,6 +43,16 @@ public class GameManager : MonoBehaviour
         {
             zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>());
         }
+
+        zoneEnemies = new List<EnemyBase>();
+        if(enemiesHolder != null)
+        {
+            for (int i = 0; i < enemiesHolder.transform.childCount; i++)
+            {
+                zoneEnemies.Add(enemiesHolder.transform.GetChild(i).GetComponentInChildren<EnemyBase>());
+            }
+        }
+
         Beat = BeatManager.Instance;
         WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
         spriteRendererO = player.transform.GetChild(1).gameObject;
@@ -55,7 +66,6 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.M))
         {
             //Test whatever you want ^^
-            Debug.Log(zoneHandler.currentReliveProgression);
         }
     }
 }

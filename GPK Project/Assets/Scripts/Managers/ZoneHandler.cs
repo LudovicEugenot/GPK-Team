@@ -109,6 +109,10 @@ public class ZoneHandler : MonoBehaviour
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
             GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
+            if(currentZone.enemiesConverted[i])
+            {
+                GameManager.Instance.zoneEnemies[i].GetConverted(true);
+            }
         }
 
         for (int i = 0; i < currentZone.elementsEnabled.Length; i++)
@@ -122,6 +126,7 @@ public class ZoneHandler : MonoBehaviour
             currentZone.zoneHooks[i].relived = currentZone.hooksRelived[i];
         }
 
+        GameManager.Instance.playerManager.currentPower = 0;
         GameManager.Instance.zoneHandler = this;
 
         zoneInitialized = true;

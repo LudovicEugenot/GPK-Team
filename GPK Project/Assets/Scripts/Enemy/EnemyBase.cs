@@ -433,7 +433,7 @@ public abstract class EnemyBase : MonoBehaviour
             }
             else
             {
-                GetConverted();
+                GetConverted(false);
             }
         }
     }
@@ -448,7 +448,7 @@ public abstract class EnemyBase : MonoBehaviour
             }
             else
             {
-                GetConverted();
+                GetConverted(false);
             }
         }
     }
@@ -500,14 +500,18 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// I get converted.
     /// </summary>
-    protected void GetConverted()
+    public void GetConverted(bool initialize)
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
-        OnConverted();
-        // Convertir l'ennemi
-        // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
-        Debug.Log("<color=green> I AM CONVERTED OH NO.");
+
+        if(!initialize)
+        {
+            OnConverted();
+            // Convertir l'ennemi
+            // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
+            Debug.Log("<color=green> I AM CONVERTED OH NO.");
+        }
     }
 
     //D'autres méthodes utiles pour autre chose que les behaviours :

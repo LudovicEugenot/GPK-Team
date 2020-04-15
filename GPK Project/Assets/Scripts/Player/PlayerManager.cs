@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            currentHealth = maxhealthPoint;
+            currentHealth = maxhealthPoint * 2;
         }
 
         UpdateHealthBar();
