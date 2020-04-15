@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4338167948284264020}
   - component: {fileID: 4338167948284264021}
   - component: {fileID: 4338167948284264022}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 4338167948412173632}
   - component: {fileID: 4338167948412173633}
   - component: {fileID: 4338167948412173635}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Behaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,6 +211,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  attackDamage: 1
 --- !u!50 &4338167948412173635
 Rigidbody2D:
   serializedVersion: 4
@@ -242,7 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4338167948975366050}
   - component: {fileID: 4338167948975366051}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -322,8 +323,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4338167949085861395}
-  m_Layer: 0
-  m_Name: Enemy_Test
+  m_Layer: 11
+  m_Name: Enemy_Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
