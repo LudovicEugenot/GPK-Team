@@ -76,6 +76,11 @@ public class BeatManager : MonoBehaviour
         {
             TimeCycle();
         }
+
+        if(onBeatNextFrame && !beatActionUsed)
+        {
+            GameManager.Instance.blink.FailCombo();
+        }
     }
 
     /// <summary>

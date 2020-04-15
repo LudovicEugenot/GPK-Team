@@ -11,7 +11,6 @@ public class RythmHook : Hook
     private int currentLoopProgression;
     private bool locked;
 
-    public Animator animator;
     SpriteRenderer spriteRenderer;
 
 

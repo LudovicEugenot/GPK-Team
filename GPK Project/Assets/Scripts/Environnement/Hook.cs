@@ -53,29 +53,31 @@ public abstract class Hook : MonoBehaviour
 
     public abstract void StateUpdate();
 
-    public IEnumerator BlinkReaction()
+    public IEnumerator BlinkReaction(bool isPlayerOnBeat)
     {
         StartCoroutine(BlinkSpecificReaction());
 
-        if(GameManager.Instance.Beat.OnBeat(false))
+        if(isPlayerOnBeat)
         {
-            //Debug.Log(GameManager.Instance.playerManager.currentPower);
-            rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
-            rangeVisualO.SetActive(true);
-            List<Collider2D> colliders = new List<Collider2D>();
-            Physics2D.OverlapCircle(transform.position, agressionRanges[GameManager.Instance.playerManager.currentPower], enemiFilter, colliders);
-            if (colliders.Count > 0)
-            {
-                foreach (Collider2D collider in colliders)
-                {
-                    EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
-                    enemy.TakeDamage();
-                }
-            }
             relived = true;
+            if (agressiveHook)
+            {
+                rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
+                rangeVisualO.SetActive(true);
+                List<Collider2D> colliders = new List<Collider2D>();
+                Physics2D.OverlapCircle(transform.position, agressionRanges[GameManager.Instance.playerManager.currentPower], enemiFilter, colliders);
+                if (colliders.Count > 0)
+                {
+                    foreach (Collider2D collider in colliders)
+                    {
+                        EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
+                        enemy.TakeDamage();
+                    }
+                }
 
-            yield return new WaitForSeconds(agressionTime);
-            rangeVisualO.SetActive(false);
+                yield return new WaitForSeconds(agressionTime);
+                rangeVisualO.SetActive(false);
+            }
         }
     }
 

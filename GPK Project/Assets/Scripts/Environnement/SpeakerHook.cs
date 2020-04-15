@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SpeakerHook : Hook
 {
-    [Header("Classic Hook Options")]
-    public Animator animator;
-
     [HideInInspector] public bool isDisabled;
     [HideInInspector] public RemoteSpeaker remoteSpeaker;
 
