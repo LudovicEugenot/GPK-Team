@@ -4,45 +4,56 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
-    public static string alternatePath;
+    public static string playerDataSaveFileName;
+    public static string worldDataSaveFileName;
+    public static string saveFileExtension;
+    public static string defaultSaveDirectoryName;
 
-    public static void SavePlayer(PlayerManager player, string alternateSavePath)
+    private static string savePath;
+
+
+    /// <summary>
+    /// Create the path to the directory where the save files will be created
+    /// </summary>
+    /// <param name="alternateSavePath">Create a default save path if set to null or empty</param>
+    public static void SetSavePath(string alternateSavePath)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path;
         if (alternateSavePath != null && alternateSavePath != "")
         {
-            path = alternateSavePath;
+            savePath = alternateSavePath;
         }
         else
         {
-            path = Application.persistentDataPath + "/Saves";
-            Directory.CreateDirectory(path);
+            savePath = Application.persistentDataPath + defaultSaveDirectoryName;
+            Directory.CreateDirectory(savePath);
         }
-        path += "/playerData.save";
-
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        PlayerData playerData = new PlayerData(player);
-
-        formatter.Serialize(stream, playerData);
-        stream.Close();
-
-        Debug.Log("PLayer saved in " + path);
     }
 
-    public static PlayerData LoadPlayer(string alternateSavePath)
+    public static void SavePlayer(PlayerManager player)
     {
-        string path;
-        if (alternateSavePath != null && alternateSavePath != "")
+        if(savePath != "" && savePath != null)
         {
-            path = alternateSavePath;
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = savePath + playerDataSaveFileName + saveFileExtension;
+
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            PlayerData playerData = new PlayerData(player);
+
+            formatter.Serialize(stream, playerData);
+            stream.Close();
+
+            Debug.Log("Player saved in " + path);
         }
         else
         {
-            path = Application.persistentDataPath + "/Saves";
+            Debug.LogError("The savePath has not been set");
         }
-        path += "/playerData.save";
+    }
+
+    public static PlayerData LoadPlayer()
+    {
+        string path = savePath + playerDataSaveFileName + saveFileExtension;
 
         if(File.Exists(path))
         {
@@ -56,6 +67,52 @@ public static class SaveSystem
             Debug.Log("PLayer loaded from " + path);
 
             return playerData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    public static void SaveWorld(ZoneHandler zoneHandler)
+    {
+        if (savePath != "" && savePath != null)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = savePath + worldDataSaveFileName + saveFileExtension;
+
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            WorldData worldData = new WorldData(zoneHandler);
+
+            formatter.Serialize(stream, worldData);
+            stream.Close();
+
+            Debug.Log("World saved in " + path);
+        }
+        else
+        {
+            Debug.LogError("The savePath has not been set");
+        }
+    }
+
+    public static WorldData LoadWorld()
+    {
+        string path = savePath + worldDataSaveFileName + saveFileExtension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            WorldData worldData = formatter.Deserialize(stream) as WorldData;
+            stream.Close();
+
+            Debug.Log("World loaded from " + path);
+
+            return worldData;
         }
         else
         {

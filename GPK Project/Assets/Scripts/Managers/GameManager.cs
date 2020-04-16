@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public List<TransitionManager.TransitionHook> transitionHooks;
     public GameObject hooksHolder;
-    [HideInInspector] public List<Hook> zoneHooks;
+    [HideInInspector] public List<HookState> zoneHooks;
     public GameObject enemiesHolder;
     [HideInInspector] public List<EnemyBase> zoneEnemies;
     public List<SwitchElement> zoneElements;
@@ -34,17 +35,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
-
-    [Space]
-    public string alternateSavePath;
     #endregion
 
     void FirstStart()
     {
-        zoneHooks = new List<Hook>();
+        zoneHooks = new List<HookState>();
         for(int i = 0; i < hooksHolder.transform.childCount; i++)
         {
-            zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>());
+            zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>().hookState);
         }
 
         zoneEnemies = new List<EnemyBase>();
@@ -68,30 +66,25 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.M))
         {
-            //Test whatever you want ^^
+            ZoneHandler.Instance.SaveZoneState();
             SaveGame();
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            //Test whatever you want ^^
-            LoadGame();
+            SceneManager.LoadScene(0);
         }
     }
 
     public void SaveGame()
     {
-        SaveSystem.SavePlayer(playerManager, alternateSavePath);
-    }
-
-    public void LoadGame()
-    {
-        LoadPlayer();
+        SaveSystem.SavePlayer(playerManager);
+        SaveSystem.SaveWorld(zoneHandler);
     }
 
     private void LoadPlayer()
     {
-        PlayerData player = SaveSystem.LoadPlayer(alternateSavePath);
+        PlayerData player = SaveSystem.LoadPlayer();
         if(player != null)
         {
             playerManager.maxhealthPoint = player.maxHealthPoint;

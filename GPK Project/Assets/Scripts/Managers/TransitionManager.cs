@@ -21,7 +21,8 @@ public class TransitionManager : MonoBehaviour
     private GameObject currentPlayerRendererO;
 
     private Hook startHook;
-    private int newPlayerHp;
+    [HideInInspector] public Vector2 savePos;
+    [HideInInspector] public int newPlayerHp;
     private ZoneHandler zoneHandler;
 
     public enum TransitionDirection { Up, Down, Right, Left };
@@ -33,10 +34,14 @@ public class TransitionManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         if (Instance == null)
+        {
             Instance = this;
+            zoneHandler = GetComponent<ZoneHandler>();
+        }
         else
+        {
             Destroy(this.gameObject);
-        zoneHandler = GetComponent<ZoneHandler>();
+        }
     }
     #endregion
 
@@ -71,7 +76,7 @@ public class TransitionManager : MonoBehaviour
     }
 
 
-    public IEnumerator ZoneInitialization(List<Hook> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber)
+    public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber)
     {
         if (startHook == null)
         {
@@ -110,15 +115,25 @@ public class TransitionManager : MonoBehaviour
             GameManager.Instance.playerManager.UpdateHealthBar();
         }
 
-        foreach (TransitionHook transitionHook in currentTransitionHooks)
+
+        if(savePos == Vector2.zero)
         {
-            if (transitionHook.direction == currentStartDirection)
+            foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
-                startHook = transitionHook.hook;
+                if (transitionHook.direction == currentStartDirection)
+                {
+                    startHook = transitionHook.hook;
+                }
             }
+            GameManager.Instance.playerManager.transform.parent.position = startHook.transform.position;
+        }
+        else
+        {
+            GameManager.Instance.playerManager.transform.parent.position = savePos;
+            savePos = Vector2.zero;
         }
 
-        GameManager.Instance.blink.transform.parent.position = startHook.transform.position;
+
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         float maskLerpProgression = 0;
         while(maskLerpProgression < 0.95f)

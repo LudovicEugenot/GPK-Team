@@ -87,6 +87,8 @@ MonoBehaviour:
   blackScreenMask: {fileID: 6173341647272042934}
   transitionLerpSpeed: 5
   maxMaskSize: 45
+  savePos: {x: 0, y: 0}
+  newPlayerHp: 0
 --- !u!114 &445385845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,11 +101,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a342adae8de6fd44b22c03c3e65faee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCurrentConverted: 0
+  isCurrentRelived: 0
   currentZone:
-    isConverted: 0
+    isRelived: 0
     buildIndex: 0
     name: 
+    zoneHooks: []
+    hooksRelived: 
+    enemiesConverted: 
+    elementsEnabled: 
+  currentReliveProgression: 0
   zones: []
 --- !u!1 &6173341647272042934
 GameObject:
