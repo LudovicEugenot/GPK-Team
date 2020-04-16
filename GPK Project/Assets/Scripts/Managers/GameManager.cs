@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
+
+    [Space]
+    public string alternateSavePath;
     #endregion
 
     void FirstStart()
@@ -66,6 +69,39 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.M))
         {
             //Test whatever you want ^^
+            SaveGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            //Test whatever you want ^^
+            LoadGame();
+        }
+    }
+
+    public void SaveGame()
+    {
+        SaveSystem.SavePlayer(playerManager, alternateSavePath);
+    }
+
+    public void LoadGame()
+    {
+        LoadPlayer();
+    }
+
+    private void LoadPlayer()
+    {
+        PlayerData player = SaveSystem.LoadPlayer(alternateSavePath);
+        if(player != null)
+        {
+            playerManager.maxhealthPoint = player.maxHealthPoint;
+            playerManager.currentHealth = player.health;
+            Vector2 position;
+            position.x = player.position[0];
+            position.y = player.position[1];
+            playerManager.transform.parent.position = position;
+
+            playerManager.UpdateHealthBar();
         }
     }
 }

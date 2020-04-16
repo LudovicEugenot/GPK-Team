@@ -826,7 +826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca74dd053f982ec4ca7d8fb087dae82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 7400000, guid: 4500e87d17765644da0f8f82bd919c10, type: 2}
 --- !u!1001 &425955290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1514,7 +1513,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: e923ac148be04954e9590d1fe97daa60, type: 3}
+      objectReference: {fileID: 8300000, guid: c714874b9417ba34ca716f9495c901b6, type: 3}
     - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
       propertyPath: minTimeForOnBeatValidation
@@ -1523,7 +1522,7 @@ PrefabInstance:
     - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
       propertyPath: bpm
-      value: 126
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
@@ -1533,7 +1532,7 @@ PrefabInstance:
     - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
       propertyPath: cameraBeatEffectAmplitude
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1253643285416735867, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
@@ -1619,7 +1618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1095964725
 Transform:
   m_ObjectHideFlags: 0
@@ -2325,6 +2324,11 @@ PrefabInstance:
       propertyPath: enemiesHolder
       value: 
       objectReference: {fileID: 1095964724}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: alternateSavePath
+      value: C:\Users\gruge\Documents\My Games\DyeTheSilence_Save
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x

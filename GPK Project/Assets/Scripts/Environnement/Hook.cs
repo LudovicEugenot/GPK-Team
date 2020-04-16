@@ -61,12 +61,7 @@ public abstract class Hook : MonoBehaviour
 
         if(isPlayerOnBeat)
         {
-            relived = true;
-            if (animSynchronizer != null)
-            {
-                animSynchronizer.Synchronize();
-            }
-
+            Relive();
             if (agressiveHook)
             {
                 rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
@@ -89,4 +84,13 @@ public abstract class Hook : MonoBehaviour
     }
 
     public abstract IEnumerator BlinkSpecificReaction();
+
+    public void Relive()
+    {
+        relived = true;
+        if (animSynchronizer != null)
+        {
+            animSynchronizer.Synchronize();
+        }
+    }
 }

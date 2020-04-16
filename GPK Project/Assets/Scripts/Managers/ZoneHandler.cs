@@ -123,7 +123,10 @@ public class ZoneHandler : MonoBehaviour
         currentZone.zoneHooks = GameManager.Instance.zoneHooks;
         for (int i = 0; i < currentZone.hooksRelived.Length; i++)
         {
-            currentZone.zoneHooks[i].relived = currentZone.hooksRelived[i];
+            if(currentZone.hooksRelived[i])
+            {
+                currentZone.zoneHooks[i].Relive();
+            }
         }
 
         GameManager.Instance.playerManager.currentPower = 0;
