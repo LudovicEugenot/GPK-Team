@@ -387,6 +387,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: background_greyscale
       objectReference: {fileID: 0}
+    - target: {fileID: 85692013082805951, guid: 5791b197170996846a1ebeacfb1dd3dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4264826504462573691, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: maxRecolorNotFull
@@ -3201,6 +3206,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101581320752791167, guid: c8e1326606647124d8a1f31ca251c8b5,
+        type: 3}
+      propertyPath: LightsModule.enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7106098082897635461, guid: c8e1326606647124d8a1f31ca251c8b5,
         type: 3}
