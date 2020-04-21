@@ -6,6 +6,8 @@ public static class SaveSystem
 {
     public static string playerDataSaveFileName;
     public static string worldDataSaveFileName;
+    public static string previewDataSaveFileName;
+    public static string screenPreviewFileName;
     public static string saveFileExtension;
     public static string defaultSaveDirectoryName;
 
@@ -113,6 +115,52 @@ public static class SaveSystem
             Debug.Log("World loaded from " + path);
 
             return worldData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    public static void SavePreview(ZoneHandler zoneHandler, Texture2D screenTexture)
+    {
+        if (savePath != "" && savePath != null)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = savePath + previewDataSaveFileName + saveFileExtension;
+
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            PreviewData previewData = new PreviewData(zoneHandler, screenTexture);
+
+            formatter.Serialize(stream, previewData);
+            stream.Close();
+
+            Debug.Log("Preview saved in " + path);
+        }
+        else
+        {
+            Debug.LogError("The savePath has not been set");
+        }
+    }
+
+    public static PreviewData LoadPreview()
+    {
+        string path = savePath + previewDataSaveFileName + saveFileExtension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PreviewData previewData = formatter.Deserialize(stream) as PreviewData;
+            stream.Close();
+
+            Debug.Log("Preview loaded from " + path);
+
+            return previewData;
         }
         else
         {

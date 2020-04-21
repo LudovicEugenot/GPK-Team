@@ -55,7 +55,7 @@ public class NPCDialogue : MonoBehaviour
 
     void UpdateDialogueState()
     {
-        if (Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == hookToTalk && !isTalking)
+        if (Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == hookToTalk && !isTalking && !GameManager.Instance.paused)
         {
             currentDialogue = GetCurrentDialogue();
             if(currentDialogue != null)

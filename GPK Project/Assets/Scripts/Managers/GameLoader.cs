@@ -10,24 +10,43 @@ public class GameLoader : MonoBehaviour
     [Tooltip("Leave empty to use default save file")] public string specifiedSaveFilePath; 
     public string playerDataSaveFileName;
     public string worldDataSaveFileName;
+    public string previewDataSaveFileName;
+    public string screenPreviewFileName;
     public string saveFileExtension;
     public string defaultSaveDirectoryName;
 
-    private WorldData worldData;
-    private PlayerData playerData;
+
+    [HideInInspector] public WorldData worldData;
+    [HideInInspector] public PlayerData playerData;
+
+    private void Start()
+    {
+        SetupSaveSystem();
+    }
 
     public void StartNewGame()
     {
-        SetupSaveSystem();
         SceneManager.LoadScene(startSceneBuildIndex);
     }
 
     public void LoadGame()
     {
-        SetupSaveSystem();
         LoadWorldData();
         LoadPlayerData();
-        SceneManager.LoadScene(worldData.savedZoneBuildIndex);
+
+        StartGame();
+    }
+
+    public void StartGame()
+    {
+        if(worldData != null && playerData != null)
+        {
+            SceneManager.LoadScene(worldData.savedZoneBuildIndex);
+        }
+        else
+        {
+            Debug.LogError("Save data has not been loaded");
+        }
     }
 
     private void SetupSaveSystem()
@@ -37,6 +56,8 @@ public class GameLoader : MonoBehaviour
         SaveSystem.worldDataSaveFileName = worldDataSaveFileName;
         SaveSystem.saveFileExtension = saveFileExtension;
         SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
+        SaveSystem.previewDataSaveFileName = previewDataSaveFileName;
+        SaveSystem.screenPreviewFileName = screenPreviewFileName;
     }
 
     private void LoadWorldData()

@@ -1,70 +1,25 @@
 fileFormatVersion: 2
-guid: 78624c7bbc89f5d4ca75e2de995fa6d7
+guid: ff596dbf5babae04a92c1caf0c207fdf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4238846665746869188
-    second: hook_teleportation_0
+      213: 8267257138453848699
+    second: hook_friable_anim2_sheet_0
   - first:
-      213: 687881126186526207
-    second: hook_teleportation_1
+      213: 9121346484141583069
+    second: hook_friable_anim2_sheet_1
   - first:
-      213: 3246268054241733769
-    second: hook_teleportation_2
+      213: -5236681887765976571
+    second: hook_friable_anim2_sheet_2
   - first:
-      213: 518967174134389001
-    second: hook_teleportation_3
+      213: -8834007317848924038
+    second: hook_friable_anim2_sheet_3
   - first:
-      213: 5128533476780945272
-    second: hook_teleportation_4
+      213: 7993818757016476189
+    second: hook_friable_anim2_sheet_4
   - first:
-      213: 1607357922900426254
-    second: hook_teleportation_5
-  - first:
-      213: 189056066664047202
-    second: hook_teleportation_6
-  - first:
-      213: 4135908445773397209
-    second: hook_teleportation_7
-  - first:
-      213: 6145512180519468301
-    second: hook_teleportation_8
-  - first:
-      213: -4479553755612585224
-    second: hook_teleportation_9
-  - first:
-      213: -4430185260183083974
-    second: hook_teleportation_10
-  - first:
-      213: -611759520156817434
-    second: hook_teleportation_11
-  - first:
-      213: 5381491730255365173
-    second: hook_teleportation_12
-  - first:
-      213: 8140479265533530874
-    second: hook_teleportation_13
-  - first:
-      213: -3082420111088846014
-    second: hook_teleportation_14
-  - first:
-      213: 1048986461225591124
-    second: hook_teleportation_15
-  - first:
-      213: 1815371298796775788
-    second: hook_teleportation_16
-  - first:
-      213: -2612572165222265938
-    second: hook_teleportation_17
-  - first:
-      213: 1446716326543506913
-    second: hook_teleportation_18
-  - first:
-      213: -6074078116062768666
-    second: hook_teleportation_19
-  - first:
-      213: 5625006821073691761
-    second: hook_teleportation_20
+      213: -8396478958818330424
+    second: hook_friable_anim2_sheet_5
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -123,10 +78,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -135,10 +90,10 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -149,13 +104,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hook_teleportation_0
+      name: hook_friable_anim2_sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 73
-        height: 80
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cbe039859863da30800000000000000
-      internalID: 4238846665746869188
+      spriteID: b72aa5cc0923bb270800000000000000
+      internalID: 8267257138453848699
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hook_teleportation_1
+      name: hook_friable_anim2_sheet_1
       rect:
         serializedVersion: 2
-        x: 73
+        x: 64
         y: 0
-        width: 73
-        height: 80
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,20 +139,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ff52b0e5d38db8900800000000000000
-      internalID: 687881126186526207
+      spriteID: dda6484ec48859e70800000000000000
+      internalID: 9121346484141583069
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hook_teleportation_2
+      name: hook_friable_anim2_sheet_2
       rect:
         serializedVersion: 2
-        x: 146
+        x: 128
         y: 0
-        width: 73
-        height: 80
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,20 +160,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98ce6ca889f0d0d20800000000000000
-      internalID: 3246268054241733769
+      spriteID: 50aacf571919357b0800000000000000
+      internalID: -5236681887765976571
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hook_teleportation_3
+      name: hook_friable_anim2_sheet_3
       rect:
         serializedVersion: 2
-        x: 219
+        x: 192
         y: 0
-        width: 73
-        height: 80
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,20 +181,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9095e5035edb33700800000000000000
-      internalID: 518967174134389001
+      spriteID: a70e964262d476580800000000000000
+      internalID: -8834007317848924038
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hook_teleportation_4
+      name: hook_friable_anim2_sheet_4
       rect:
         serializedVersion: 2
-        x: 292
+        x: 256
         y: 0
-        width: 73
-        height: 80
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 87f2a3666063c2740800000000000000
-      internalID: 5128533476780945272
+      spriteID: d1a52d27ecfbfee60800000000000000
+      internalID: 7993818757016476189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hook_teleportation_5
+      name: hook_friable_anim2_sheet_5
       rect:
         serializedVersion: 2
-        x: 365
+        x: 320
         y: 0
-        width: 73
-        height: 80
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,8 +223,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e0eb365c38b7e4610800000000000000
-      internalID: 1607357922900426254
+      spriteID: 8c877979fd6b97b80800000000000000
+      internalID: -8396478958818330424
       vertices: []
       indices: 
       edges: []

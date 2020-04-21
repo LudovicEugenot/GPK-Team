@@ -219,4 +219,16 @@ public class BeatManager : MonoBehaviour
 
         songStartTime = (float)AudioSettings.dspTime;
     }
+
+    public void PauseMusic()
+    {
+        if (source != null)
+            source.Pause();
+    }
+
+    public void UnPauseMusic()
+    {
+        if(source != null)
+            source.UnPause();
+    }
 }
