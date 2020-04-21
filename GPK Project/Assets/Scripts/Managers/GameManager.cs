@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,8 +27,9 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public List<TransitionManager.TransitionHook> transitionHooks;
     public GameObject hooksHolder;
-    [HideInInspector] public List<Hook> zoneHooks;
-    public List<EnemyBase> zoneEnemies;
+    [HideInInspector] public List<HookState> zoneHooks;
+    public GameObject enemiesHolder;
+    [HideInInspector] public List<EnemyBase> zoneEnemies;
     public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public PlayerManager playerManager;
@@ -37,11 +39,21 @@ public class GameManager : MonoBehaviour
 
     void FirstStart()
     {
-        zoneHooks = new List<Hook>();
+        zoneHooks = new List<HookState>();
         for(int i = 0; i < hooksHolder.transform.childCount; i++)
         {
-            zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>());
+            zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>().hookState);
         }
+
+        zoneEnemies = new List<EnemyBase>();
+        if(enemiesHolder != null)
+        {
+            for (int i = 0; i < enemiesHolder.transform.childCount; i++)
+            {
+                zoneEnemies.Add(enemiesHolder.transform.GetChild(i).GetComponentInChildren<EnemyBase>());
+            }
+        }
+
         Beat = BeatManager.Instance;
         WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
         spriteRendererO = player.transform.GetChild(1).gameObject;
@@ -54,8 +66,35 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.M))
         {
-            //Test whatever you want ^^
-            Debug.Log(zoneHandler.currentReliveProgression);
+            ZoneHandler.Instance.SaveZoneState();
+            SaveGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    public void SaveGame()
+    {
+        SaveSystem.SavePlayer(playerManager);
+        SaveSystem.SaveWorld(zoneHandler);
+    }
+
+    private void LoadPlayer()
+    {
+        PlayerData player = SaveSystem.LoadPlayer();
+        if(player != null)
+        {
+            playerManager.maxhealthPoint = player.maxHealthPoint;
+            playerManager.currentHealth = player.health;
+            Vector2 position;
+            position.x = player.position[0];
+            position.y = player.position[1];
+            playerManager.transform.parent.position = position;
+
+            playerManager.UpdateHealthBar();
         }
     }
 }

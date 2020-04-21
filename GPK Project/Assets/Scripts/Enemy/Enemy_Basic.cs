@@ -75,24 +75,27 @@ public class Enemy_Basic : EnemyBase
         }
 
         //zone dangeureuse autour de l'ennemi
-        attackCollider.enabled = true;
-        playerFilter.useTriggers = true;
-        playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
-        List<Collider2D> colliders = new List<Collider2D>();
-        if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
+        if(attackCollider != null)
         {
-            Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
-        }
-        else
-        {
-            hasAttacked = false;
-        }
-        attackCollider.enabled = false;
+            attackCollider.enabled = true;
+            playerFilter.useTriggers = true;
+            playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
+            List<Collider2D> colliders = new List<Collider2D>();
+            if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
+            {
+                Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
+            }
+            else
+            {
+                hasAttacked = false;
+            }
+            attackCollider.enabled = false;
 
-        if (colliders.Count > 0 && !hasAttacked)
-        {
-            hasAttacked = true;
-            GameManager.Instance.playerManager.TakeDamage(attackDamage);
+            if (colliders.Count > 0 && !hasAttacked)
+            {
+                hasAttacked = true;
+                GameManager.Instance.playerManager.TakeDamage(attackDamage);
+            }
         }
     }
 
@@ -130,6 +133,7 @@ public class Enemy_Basic : EnemyBase
     {
         animator.SetBool("Converted", true);
         attackParent.SetActive(false);
+        GameManager.Instance.playerManager.AddMusician();
     }
 
     protected override void VulnerableBehaviour()

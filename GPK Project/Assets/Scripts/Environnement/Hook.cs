@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class Hook : MonoBehaviour
 {
     #region Initialization
@@ -12,18 +13,18 @@ public abstract class Hook : MonoBehaviour
     public Color unselectableColor;
 
     public bool agressiveHook;
-    public float agressionRange;
+    public float[] agressionRanges;
     public GameObject rangeVisualO; // à remplacer par le mask de recoloration
     public float agressionTime;
-
 
     [HideInInspector] public bool selected;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
-    [HideInInspector] public bool relived;
 
-    private ContactFilter2D enemiFilter = new ContactFilter2D();
+    protected ContactFilter2D enemiFilter = new ContactFilter2D();
     protected Animator animator;
+    protected AnimSynchronizer animSynchronizer;
+    [HideInInspector] public HookState hookState;
 
     #endregion
 
@@ -32,6 +33,7 @@ public abstract class Hook : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        animSynchronizer = GetComponentInChildren<AnimSynchronizer>();
 
         selected = false;
         blinkable = true;
@@ -47,35 +49,52 @@ public abstract class Hook : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("IsConvert", relived);
+            animator.SetBool("IsConvert", hookState.relived);
+        }
+
+        if(hookState.relived)
+        {
+            Synch();
         }
     }
 
     public abstract void StateUpdate();
 
-    public IEnumerator BlinkReaction()
+    public IEnumerator BlinkReaction(bool isPlayerOnBeat)
     {
         StartCoroutine(BlinkSpecificReaction());
 
-        if(GameManager.Instance.Beat.OnBeat(false))
+        if(isPlayerOnBeat)
         {
-            rangeVisualO.SetActive(true);
-            List<Collider2D> colliders = new List<Collider2D>();
-            Physics2D.OverlapCircle(transform.position, agressionRange, enemiFilter, colliders);
-            if (colliders.Count > 0)
+            hookState.Relive();
+            if (agressiveHook)
             {
-                foreach (Collider2D collider in colliders)
+                rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
+                rangeVisualO.SetActive(true);
+                List<Collider2D> colliders = new List<Collider2D>();
+                Physics2D.OverlapCircle(transform.position, agressionRanges[GameManager.Instance.playerManager.currentPower], enemiFilter, colliders);
+                if (colliders.Count > 0)
                 {
-                    EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
-                    enemy.TakeDamage();
+                    foreach (Collider2D collider in colliders)
+                    {
+                        EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
+                        enemy.TakeDamage();
+                    }
                 }
-            }
-            relived = true;
 
-            yield return new WaitForSeconds(agressionTime);
-            rangeVisualO.SetActive(false);
+                yield return new WaitForSeconds(agressionTime);
+                rangeVisualO.SetActive(false);
+            }
         }
     }
 
     public abstract IEnumerator BlinkSpecificReaction();
+
+    private void Synch()
+    {
+        if (animSynchronizer != null)
+        {
+            animSynchronizer.Synchronize();
+        }
+    }
 }

@@ -24,6 +24,9 @@ public class Blink : MonoBehaviour
     public float trailStartOffset;
     public float trailEndOffset;
 
+    [Space]
+    public float rangeCenterLerpSpeed;
+
     private Hook lastSecureHook;
     [HideInInspector] public Hook currentHook;
 
@@ -37,6 +40,8 @@ public class Blink : MonoBehaviour
     private Vector2 blinkDestination;
     private PlayerManager playerManager;
 
+    private Vector2 lineRangeCenter;
+    private float currentRadius;
     private LineRenderer lineCircle;
     public Animator animator;
     #endregion
@@ -48,6 +53,7 @@ public class Blink : MonoBehaviour
         transform.parent.position = startHook.transform.position;
         lastSecureHook = startHook;
         playerManager = GetComponent<PlayerManager>();
+        lineRangeCenter = transform.parent.position;
     }
 
 
@@ -66,19 +72,22 @@ public class Blink : MonoBehaviour
             else
             {
                 Instantiate(overActionEffectPrefab, transform.parent.position, Quaternion.identity);
-                currentTimedCombo = 0;
+                FailCombo();
             }
         }
     }
 
     private void DrawHookRange(float radius, Vector2 center)
     {
+        lineRangeCenter = Vector2.Lerp(lineRangeCenter, center, rangeCenterLerpSpeed * Time.deltaTime);
+        currentRadius += (radius - currentRadius) * rangeCenterLerpSpeed * Time.deltaTime;
+
         Vector3[] circleLinePos = new Vector3[50];
         for (int i = 0; i < circleLinePos.Length; i++)
         {
             circleLinePos[i] = new Vector2(Mathf.Cos(((2 * Mathf.PI) / 50) * i), Mathf.Sin(((2 * Mathf.PI) / 50) * i));
-            circleLinePos[i] *= radius;
-            circleLinePos[i] += (Vector3)center;
+            circleLinePos[i] *= currentRadius;
+            circleLinePos[i] += (Vector3)lineRangeCenter;
         }
         lineCircle.SetPositions(circleLinePos);
     }
@@ -122,6 +131,7 @@ public class Blink : MonoBehaviour
             blinkTrajectoryPreviewLine.enabled = false;
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
+            blinkDestination = transform.position;
         }
     }
 
@@ -185,41 +195,56 @@ public class Blink : MonoBehaviour
 
     private void BlinkMove()
     {
-        Vector2 direction = blinkDestination - (Vector2)transform.parent.position;
-        direction.Normalize();
-        Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0,0,Vector2.SignedAngle(Vector2.right, direction)));
-        Instantiate(blinkDisparition, transform.position, Quaternion.identity);
-        transform.parent.position = blinkDestination;
-
-        if (selectedHook.isSecureHook)
+        if(blinkDestination != (Vector2)transform.position)
         {
-            lastSecureHook = selectedHook;
-        }
+            Vector2 direction = blinkDestination - (Vector2)transform.parent.position;
+            direction.Normalize();
+            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            Instantiate(blinkDisparition, transform.position, Quaternion.identity);
+            transform.parent.position = blinkDestination;
 
-        StartCoroutine(selectedHook.BlinkReaction());
+            if (selectedHook.isSecureHook)
+            {
+                lastSecureHook = selectedHook;
+            }
 
-        if (GameManager.Instance.Beat.OnBeat(true) && blinkReachDestination)
-        {
-            currentTimedCombo++;
-            Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
+
+            if (GameManager.Instance.Beat.OnBeat(true) && blinkReachDestination)
+            {
+                StartCoroutine(selectedHook.BlinkReaction(true));
+
+                currentTimedCombo++;
+                Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
+            }
+            else
+            {
+                StartCoroutine(selectedHook.BlinkReaction(false));
+
+                FailCombo();
+            }
+            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - direction * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            animator.SetTrigger("Blink");
+            currentHook = selectedHook;
+            selectedHook.selected = false;
+            selectedHook = null;
         }
         else
         {
-            currentTimedCombo = 0;
+            //No move effect
         }
-        Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - direction * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
-        animator.SetTrigger("Blink");
-        currentHook = selectedHook;
-        selectedHook.selected = false;
-        selectedHook = null;
     }
 
     public IEnumerator RespawnPlayer()
     {
-        currentTimedCombo = 0;
+        FailCombo();
         playerManager.TakeDamage(1);
         yield return new WaitForSeconds(0.2f);
         transform.parent.position = lastSecureHook.transform.position;
         currentHook = lastSecureHook;
+    }
+
+    public void FailCombo()
+    {
+        currentTimedCombo = 0;
     }
 }

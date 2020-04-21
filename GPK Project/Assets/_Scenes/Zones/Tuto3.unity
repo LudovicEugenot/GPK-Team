@@ -1148,6 +1148,7 @@ GameObject:
   - component: {fileID: 813070018}
   - component: {fileID: 813070020}
   - component: {fileID: 813070019}
+  - component: {fileID: 813070021}
   m_Layer: 0
   m_Name: "b\xFBcheron_greyscale"
   m_TagString: Untagged
@@ -1179,7 +1180,7 @@ Animator:
   m_GameObject: {fileID: 813070017}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: da829522127c6064e830d18da8d6c718, type: 2}
+  m_Controller: {fileID: 22100000, guid: b28187850138c61478f0ce05ba9f41fc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1238,6 +1239,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &813070021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813070017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca74dd053f982ec4ca7d8fb087dae82d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &918021731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1966,12 +1979,12 @@ PrefabInstance:
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: transitionHooks.Array.data[1].connectedSceneBuildIndex
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: transitionHooks.Array.data[0].connectedSceneBuildIndex
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}

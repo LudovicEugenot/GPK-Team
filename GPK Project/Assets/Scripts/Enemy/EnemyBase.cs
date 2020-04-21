@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/* On converted s'éxécute à chaque fois qu'il reprend des dégâts
+ * 
+ * 
+ */
+
 public enum EnemyState
 {
     NULL,
@@ -420,25 +425,31 @@ public abstract class EnemyBase : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (enemyCurrentHP > 1)
+        if (!converted)
         {
-            enemyCurrentHP--;
-        }
-        else
-        {
-            GetConverted();
+            if (enemyCurrentHP > 1)
+            {
+                enemyCurrentHP--;
+            }
+            else
+            {
+                GetConverted(false);
+            }
         }
     }
 
     public void TakeDamage(int damageTaken)
     {
-        if (enemyCurrentHP > 1)
+        if (!converted)
         {
-            enemyCurrentHP -= damageTaken;
-        }
-        else
-        {
-            GetConverted();
+            if (enemyCurrentHP > 1)
+            {
+                enemyCurrentHP -= damageTaken;
+            }
+            else
+            {
+                GetConverted(false);
+            }
         }
     }
 
@@ -489,14 +500,18 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// I get converted.
     /// </summary>
-    protected void GetConverted()
+    public void GetConverted(bool initialize)
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
-        OnConverted();
-        // Convertir l'ennemi
-        // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
-        Debug.Log("<color=green> I AM CONVERTED OH NO.");
+
+        if(!initialize)
+        {
+            OnConverted();
+            // Convertir l'ennemi
+            // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
+            Debug.Log("<color=green> I AM CONVERTED OH NO.");
+        }
     }
 
     //D'autres méthodes utiles pour autre chose que les behaviours :
