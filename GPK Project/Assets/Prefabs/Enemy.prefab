@@ -74,7 +74,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7775427054055364412
 Transform:
   m_ObjectHideFlags: 0
@@ -200,48 +200,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMaxHP: 1
-  aggroRange: 2.42
-  movementDistance: 1.94
+  aggroRange: 2.5
+  movementDistance: 2
   movementCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.8113208
-      outSlope: 1.8113208
+      inSlope: 1.2407844
+      outSlope: 1.2407844
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.125
+      outWeight: 0.5421133
     - serializedVersion: 3
       time: 0.5
       value: 0.5
-      inSlope: 0.6492786
-      outSlope: 0.6492786
+      inSlope: 0.24880563
+      outSlope: 0.24880563
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.28333336
-      outWeight: 0.52640074
+      inWeight: 0.22817767
+      outWeight: 0.23430324
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1.9407002
-      outSlope: 1.9407002
+      inSlope: 1.7325486
+      outSlope: 1.7325486
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.116666675
+      inWeight: 0.1837672
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   jumpCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.8963912
+      outSlope: 1.8963912
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.32159266
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.5789752
+      outSlope: -3.5789752
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.22052062
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  attackDamage: 2
+  attackDamage: 1
 --- !u!50 &7775427054183306283
 Rigidbody2D:
   serializedVersion: 4

@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-/* On converted s'éxécute à chaque fois qu'il reprend des dégâts
- * 
- * 
- */
-
 public enum EnemyState
 {
     NULL,
@@ -509,8 +504,6 @@ public abstract class EnemyBase : MonoBehaviour
         {
             OnConverted();
             // Convertir l'ennemi
-            // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
-            Debug.Log("<color=green> I AM CONVERTED OH NO.");
         }
     }
 

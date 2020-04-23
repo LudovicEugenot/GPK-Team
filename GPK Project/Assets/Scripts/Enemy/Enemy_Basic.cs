@@ -43,8 +43,11 @@ public class Enemy_Basic : EnemyBase
     protected override void Init()
     {
         attackParent = parent.Find("Attack").gameObject;
+        attackParent.SetActive(true);
         attackCollider = parent.GetComponentInChildren<CircleCollider2D>();
         attackParent.SetActive(false);
+        playerFilter.useTriggers = true;
+        playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         maxRadiusAttack = attackParent.transform.localScale.x;
         hasAttacked = false;
         animator = parent.GetComponentInChildren<Animator>();
@@ -78,12 +81,16 @@ public class Enemy_Basic : EnemyBase
         if(attackCollider != null)
         {
             attackCollider.enabled = true;
-            playerFilter.useTriggers = true;
-            playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
             List<Collider2D> colliders = new List<Collider2D>();
             if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
             {
+                Debug.Log("Attack collider est " + attackCollider.ToString());
+                Debug.Log("Player filter est " + playerFilter.layerMask);
                 Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
+                Debug.Log("Colliders est " + colliders.ToString()+". Il y a "+colliders.Count+ " Colliders dedans.");
+                Debug.Log("la taille de l'attaque est de " + attackCollider.radius);
+                Debug.Log("distance between me and player is" + Vector2.Distance(attackCollider.transform.position, player.position) * attackCollider.transform.localScale.x);
+                Debug.Log("Le premier collider s'appelle : " + colliders[0].name);
             }
             else
             {
