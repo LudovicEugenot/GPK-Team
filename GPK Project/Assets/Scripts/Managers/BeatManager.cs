@@ -64,7 +64,7 @@ public class BeatManager : MonoBehaviour
 
     private void Update()
     {
-        if (!musicStarted && Input.GetButtonDown("Blink"))
+        if (!musicStarted)
         {
             StartMusic();
 

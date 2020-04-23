@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class Hook : MonoBehaviour
 {
     #region Initialization
@@ -16,15 +17,14 @@ public abstract class Hook : MonoBehaviour
     public GameObject rangeVisualO; // à remplacer par le mask de recoloration
     public float agressionTime;
 
-
     [HideInInspector] public bool selected;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
-    [HideInInspector] public bool relived;
 
     protected ContactFilter2D enemiFilter = new ContactFilter2D();
     protected Animator animator;
     protected AnimSynchronizer animSynchronizer;
+    [HideInInspector] public HookState hookState;
 
     #endregion
 
@@ -49,7 +49,12 @@ public abstract class Hook : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetBool("IsConvert", relived);
+            animator.SetBool("IsConvert", hookState.relived);
+        }
+
+        if(hookState.relived)
+        {
+            Synch();
         }
     }
 
@@ -61,12 +66,7 @@ public abstract class Hook : MonoBehaviour
 
         if(isPlayerOnBeat)
         {
-            relived = true;
-            if (animSynchronizer != null)
-            {
-                animSynchronizer.Synchronize();
-            }
-
+            hookState.Relive();
             if (agressiveHook)
             {
                 rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
@@ -89,4 +89,12 @@ public abstract class Hook : MonoBehaviour
     }
 
     public abstract IEnumerator BlinkSpecificReaction();
+
+    private void Synch()
+    {
+        if (animSynchronizer != null)
+        {
+            animSynchronizer.Synchronize();
+        }
+    }
 }

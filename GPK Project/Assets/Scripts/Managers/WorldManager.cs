@@ -8,7 +8,10 @@ public static class WorldManager
 {
     public enum StoryStep {Tutorial1, FirstFreedom2, VillageArrival3, VillageConverted4}
 
-    public enum EventName {NullEvent, RemoteDestruction, ShortCut1, TalkedToLuthier1}
+    /// <summary>
+    /// To add an event you need to open the WorldManager script and add a name to the enum list
+    /// </summary>
+    public enum EventName {NullEvent, RemoteDestruction, ShortCut1, TalkedToLuthier1} // Add an event in there
 
     public static StoryStep currentStoryStep;
 

@@ -17,14 +17,17 @@ public class ZoneHandler : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-
         if (Instance == null)
+        {
             Instance = this;
-        else
-            Destroy(this);
+            GeneralInitialization();
 
-        zoneInitialized = false;
-        GeneralInitialization();
+            zoneInitialized = false;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
     #endregion
 
@@ -58,7 +61,7 @@ public class ZoneHandler : MonoBehaviour
         if(!isCurrentRelived)
         {
             bool zoneRelived = true;
-            foreach(Hook zoneHook in currentZone.zoneHooks)
+            foreach(HookState zoneHook in currentZone.zoneHooks)
             {
                 if(!zoneHook.relived)
                 {
@@ -123,7 +126,10 @@ public class ZoneHandler : MonoBehaviour
         currentZone.zoneHooks = GameManager.Instance.zoneHooks;
         for (int i = 0; i < currentZone.hooksRelived.Length; i++)
         {
-            currentZone.zoneHooks[i].relived = currentZone.hooksRelived[i];
+            if(currentZone.hooksRelived[i])
+            {
+                currentZone.zoneHooks[i].Relive();
+            }
         }
 
         GameManager.Instance.playerManager.currentPower = 0;
@@ -138,12 +144,12 @@ public class ZoneHandler : MonoBehaviour
         public bool isRelived;
         public int buildIndex;
         public string name;
-        public List<Hook> zoneHooks;
+        public List<HookState> zoneHooks;
         public bool[] hooksRelived;
         public bool[] enemiesConverted;
         public bool[] elementsEnabled;
 
-        public Zone(int _buildIndex, string zoneName, List<Hook> _zoneHooks, int enemyNumber, int elementNumber)
+        public Zone(int _buildIndex, string zoneName, List<HookState> _zoneHooks, int enemyNumber, int elementNumber)
         {
             buildIndex = _buildIndex;
             isRelived = false;

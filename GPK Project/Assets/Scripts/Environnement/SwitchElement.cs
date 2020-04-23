@@ -32,9 +32,9 @@ public class SwitchElement : MonoBehaviour
 
         if (relatedEvent != WorldManager.EventName.NullEvent && !isInteractableByEvent)
         {
-            if(relatedWorldEvent.occured)
+            if (relatedWorldEvent.occured)
             {
-                active = enableState;
+                isEnabled = true;
             }
         }
     }
@@ -62,7 +62,7 @@ public class SwitchElement : MonoBehaviour
             }
         }
 
-        if(elementEnabled)
+        if(elementEnabled && connectedHookterruptors.Count > 0)
         {
             isEnabled = true;
             if(!stayEnable)
@@ -70,7 +70,6 @@ public class SwitchElement : MonoBehaviour
                 currentRemainingActiveTime = timeBeforeDeactivation;
             }
         }
-
         active = isEnabled ? enableState : !enableState;
     }
 
