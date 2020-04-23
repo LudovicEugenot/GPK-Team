@@ -56,6 +56,7 @@ public class PlayerManager : MonoBehaviour
 
     private void InitializeHealthBar()
     {
+
         for (int i = 0; i < maxhealthPoint; i++)
         {
             GameObject newIcon;

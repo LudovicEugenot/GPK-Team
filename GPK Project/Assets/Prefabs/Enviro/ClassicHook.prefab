@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 6405902346724256933}
   - component: {fileID: 4747918219657966855}
   - component: {fileID: 6405902346724256939}
+  - component: {fileID: 8041818756792354879}
   - component: {fileID: 6405902346724256934}
   m_Layer: 8
   m_Name: ClassicHook
@@ -194,7 +195,7 @@ Transform:
   m_GameObject: {fileID: 6405902346724256938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5144924, y: -0.86971635, z: 2.3544235}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 278280208290792041}
   m_Father: {fileID: 0}
@@ -227,7 +228,8 @@ MonoBehaviour:
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
-  relived: 0
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.61089355, g: 0.82040924, b: 0.9056604, a: 1}
   effectRange: 3
@@ -272,7 +274,8 @@ SpriteRenderer:
   m_SortingLayerID: 882915597
   m_SortingLayer: -4
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 41e7068321383a240947a1ae1ba917a6, type: 3}
+  m_Sprite: {fileID: -6094368461168777665, guid: ec89a636eb01ddb47a0239724300b304,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -283,6 +286,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8041818756792354879
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6405902346724256938}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c7db32c139ab43e4ca5b604fa4cf81df, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!58 &6405902346724256934
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -298,4 +320,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1

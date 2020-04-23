@@ -18,6 +18,6 @@ public class AnimSynchronizer : MonoBehaviour
     public void Synchronize()
     {
         //anim.frameRate = (float)frameNumber * GameManager.Instance.Beat.beatTime;
-        animator.SetFloat("Speed", 1 / GameManager.Instance.Beat.beatTime);
+        animator.SetFloat("Speed", 1 / GameManager.Instance.Beat.BeatTime);
     }
 }

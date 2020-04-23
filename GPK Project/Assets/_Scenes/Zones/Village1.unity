@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1459,6 +1459,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1264865294}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1439148263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4673692787861499570, guid: 25034624d0a6cb942b829e19fc2c8444,
+    type: 3}
+  m_PrefabInstance: {fileID: 1599668499}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1599668499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1531,6 +1537,16 @@ PrefabInstance:
       propertyPath: transitionHooks.Array.data[2].connectedSceneBuildIndex
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: hooksHolder
+      value: 
+      objectReference: {fileID: 54949494}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: pausePanel
+      value: 
+      objectReference: {fileID: 1439148263}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1584,6 +1600,11 @@ PrefabInstance:
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673692787861499570, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1989,6 +2010,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: badda6853ba62ec478061bc8bb22ebda,
         type: 3}
+    - target: {fileID: 5224762872954944369, guid: c8e1326606647124d8a1f31ca251c8b5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 5224762873146534380, guid: c8e1326606647124d8a1f31ca251c8b5,
         type: 3}
       propertyPath: m_Intensity
@@ -2005,6 +2031,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 776bcf5d192403c49a00a4cb6d1c43b8,
         type: 3}
+    - target: {fileID: 5224762874150221984, guid: c8e1326606647124d8a1f31ca251c8b5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 5224762874150221985, guid: c8e1326606647124d8a1f31ca251c8b5,
         type: 3}
       propertyPath: m_Name

@@ -114,11 +114,11 @@ public class NPCDialogue : MonoBehaviour
                 i = 0;
                 if(interactPressed)
                 {
-                    yield return new WaitForSeconds(GameManager.Instance.Beat.beatTime / theVaribale.x);
+                    yield return new WaitForSeconds(GameManager.Instance.Beat.BeatTime / theVaribale.x);
                 }
                 else
                 {
-                    yield return new WaitForSeconds(GameManager.Instance.Beat.beatTime / theVaribale.y);
+                    yield return new WaitForSeconds(GameManager.Instance.Beat.BeatTime / theVaribale.y);
                 }
             }
         }

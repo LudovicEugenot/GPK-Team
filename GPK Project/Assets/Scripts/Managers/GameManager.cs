@@ -59,13 +59,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        paused = false;
+        pausePanel.SetActive(false);
         Beat = BeatManager.Instance;
         WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
-        UnPause();
     }
 
     private void Update()
@@ -111,13 +112,15 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator AndQuit()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSecondsRealtime(0.2f);
         Application.Quit();
     }
 
     private IEnumerator AndBackToMainMenu()
     {
-        yield return new WaitForSeconds(0.2f);
+        Destroy(Beat.gameObject);
+        Destroy(zoneHandler.gameObject);
+        yield return new WaitForSecondsRealtime(0.2f);
         SceneManager.LoadScene(0);
     }
 

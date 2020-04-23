@@ -30,7 +30,7 @@ public class RythmHook : Hook
     {
         if(GameManager.Instance.Beat.onBeatSingleFrame)
         {
-            Invoke("IncreaseProgression", GameManager.Instance.Beat.beatTime / 2);
+            Invoke("IncreaseProgression", GameManager.Instance.Beat.BeatTime / 2);
         }
     }
 

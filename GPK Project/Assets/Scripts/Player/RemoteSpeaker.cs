@@ -63,10 +63,10 @@ public class RemoteSpeaker : MonoBehaviour
         remoteSpeakerO = Instantiate(speakerPrefab, transform.position, Quaternion.identity);
         speakerHook = remoteSpeakerO.GetComponent<SpeakerHook>();
         speakerHook.remoteSpeaker = this;
-        while (currentLaunchTime < GameManager.Instance.Beat.beatTime)
+        while (currentLaunchTime < GameManager.Instance.Beat.BeatTime)
         {
-            Vector2 realPos = Vector2.Lerp(transform.position, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.beatTime));
-            remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.beatTime)) * curveVisualForce);
+            Vector2 realPos = Vector2.Lerp(transform.position, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.BeatTime));
+            remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.BeatTime)) * curveVisualForce);
             yield return new WaitForFixedUpdate();
             currentLaunchTime += Time.fixedDeltaTime;
             speakerHook.isDisabled = true;

@@ -6,9 +6,11 @@ public class TemporaryHook : Hook
 {
     public int beatRepairTime;
     public int beatTimeBeforeBroke;
+    public float addedTBBTime;
     public Color brokenColor;
 
     private bool isBroken;
+    private bool unstable;
     private float currentTimeBeforeRepair;
 
     void Start()
@@ -20,6 +22,9 @@ public class TemporaryHook : Hook
     void Update()
     {
         HandlerUpdate();
+
+        animator.SetBool("Broken", isBroken);
+        animator.SetBool("Unstable", unstable);
     }
 
     public override IEnumerator BlinkSpecificReaction()
@@ -30,12 +35,15 @@ public class TemporaryHook : Hook
         }
         else
         {
-            yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.beatTime + GameManager.Instance.Beat.timingThreshold / 2);
-            isBroken = true;
+            unstable = true;
+            yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.BeatTime + GameManager.Instance.Beat.timingThreshold / 2);
             if((Vector2)GameManager.Instance.blink.transform.parent.position == (Vector2)transform.position)
             {
                 StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
             }
+            yield return new WaitForSeconds(addedTBBTime);
+            unstable = false;
+            isBroken = true;
         }
     }
 
@@ -43,7 +51,7 @@ public class TemporaryHook : Hook
     {
         if(isBroken)
         {
-            if(currentTimeBeforeRepair < beatRepairTime * GameManager.Instance.Beat.beatTime)
+            if(currentTimeBeforeRepair < beatRepairTime * GameManager.Instance.Beat.BeatTime)
             {
                 currentTimeBeforeRepair += Time.deltaTime;
             }
