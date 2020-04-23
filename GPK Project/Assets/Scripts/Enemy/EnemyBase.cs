@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-/* On converted s'éxécute à chaque fois qu'il reprend des dégâts
- * 
- * 
- */
-
 public enum EnemyState
 {
     NULL,
