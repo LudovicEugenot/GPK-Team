@@ -24,7 +24,6 @@ public class SwitchElement : MonoBehaviour
         active = !enableState;
         currentRemainingActiveTime = enableState ? timeBeforeDeactivation : 0;
         relatedWorldEvent = WorldManager.GetWorldEvent(relatedEvent);
-        Debug.Log(gameObject.name + " : " + relatedWorldEvent.occured);
     }
 
     public void HandlerUpdate()

@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
         Destroy(Beat.gameObject);
         Destroy(zoneHandler.gameObject);
         yield return new WaitForSecondsRealtime(0.2f);
+        UnPause();
         SceneManager.LoadScene(0);
     }
 
