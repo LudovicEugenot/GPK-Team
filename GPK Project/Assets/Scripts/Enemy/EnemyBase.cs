@@ -504,8 +504,6 @@ public abstract class EnemyBase : MonoBehaviour
         {
             OnConverted();
             // Convertir l'ennemi
-            // Ennemi devient un hook (active un bool dans un autre script "ennemi hook")
-            Debug.Log("<color=green> I AM CONVERTED OH NO.");
         }
     }
 
