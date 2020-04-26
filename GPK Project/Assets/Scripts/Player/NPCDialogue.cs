@@ -6,19 +6,18 @@ using UnityEngine.UI;
 public class NPCDialogue : MonoBehaviour
 {
     public Hook hookToTalk;
+    public Transform cinematicLookPos;
+    [Range(0.0f, 10.0f)] public float cinematicLookZoom;
     public Dialogue[] dialogues;
-    public GameObject textPrefab;
-    public Vector2 bubbleOffset;
-    public RectTransform dialogueTransform;
+    public GameObject dialogueBoxO;
     public int numberOfLetterByBeat;
-    public Vector2 theVaribale;
+    public Vector2 accelerations;
 
     private int currentDialogueStep;
     private bool isTalking;
     private bool sentenceStarted;
     private Dialogue currentDialogue;
     private Text dialogueText;
-    private GameObject dialogueTextO;
     private bool canGoNext;
     private bool interactPressed;
 
@@ -27,44 +26,24 @@ public class NPCDialogue : MonoBehaviour
         isTalking = false;
         sentenceStarted = false;
         canGoNext = false;
+        dialogueText = dialogueBoxO.GetComponentInChildren<Text>();
     }
 
     void Update()
     {
         UpdateDialogueState();
 
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.FirstFreedom2;
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.VillageArrival3;
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.VillageConverted4;
-        }
-
-        interactPressed = Input.GetButton("Blink");
+        interactPressed = Input.GetButton("Interact");
     }
 
     void UpdateDialogueState()
     {
-        if (Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == hookToTalk && !isTalking && !GameManager.Instance.paused)
+        if (Input.GetButtonDown("Interact") && GameManager.Instance.blink.currentHook == hookToTalk && !isTalking && !GameManager.Instance.paused)
         {
             currentDialogue = GetCurrentDialogue();
             if(currentDialogue != null)
             {
-                isTalking = true;
-                currentDialogueStep = 0;
-                sentenceStarted = false;
-                dialogueTextO = Instantiate(textPrefab, Camera.main.WorldToScreenPoint((Vector2)transform.position + bubbleOffset), Quaternion.identity, dialogueTransform);
-                dialogueText = dialogueTextO.GetComponent<Text>();
+                StartDialogue();
             }
         }
 
@@ -77,7 +56,7 @@ public class NPCDialogue : MonoBehaviour
                 sentenceStarted = true;
             }
 
-            if(canGoNext && Input.GetButtonDown("Blink"))
+            if(canGoNext && Input.GetButtonDown("Interact"))
             {
                 if (currentDialogueStep < currentDialogue.sentences.Length - 1)
                 {
@@ -114,21 +93,34 @@ public class NPCDialogue : MonoBehaviour
                 i = 0;
                 if(interactPressed)
                 {
-                    yield return new WaitForSeconds(GameManager.Instance.Beat.BeatTime / theVaribale.x);
+                    yield return new WaitForSeconds(GameManager.Instance.Beat.BeatTime / accelerations.x);
                 }
                 else
                 {
-                    yield return new WaitForSeconds(GameManager.Instance.Beat.BeatTime / theVaribale.y);
+                    yield return new WaitForSeconds(GameManager.Instance.Beat.BeatTime / accelerations.y);
                 }
             }
         }
         canGoNext = true;
     }
 
+    void StartDialogue()
+    {
+        isTalking = true;
+        currentDialogueStep = 0;
+        sentenceStarted = false;
+        dialogueBoxO.SetActive(true);
+        dialogueText.text = "";
+        StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(cinematicLookPos.position, cinematicLookZoom, false));
+        GameManager.Instance.playerManager.isInControl = false;
+    }
+
     void EndDialogue()
     {
-        Destroy(dialogueTextO);
+        dialogueBoxO.SetActive(false);
         isTalking = false;
+        StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
+        GameManager.Instance.playerManager.isInControl = true;
     }
 
     private Dialogue GetCurrentDialogue()

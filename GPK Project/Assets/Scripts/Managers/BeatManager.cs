@@ -31,6 +31,7 @@ public class BeatManager : MonoBehaviour
     }
     private double timeBeforeNextBeat;
     [HideInInspector] public float currentBeatProgression;
+    [HideInInspector] public bool useCameraBeatShake;
     private double nextBeatStartTime;
     private double offBeatStartTime;
     private double songStartTime;
@@ -70,6 +71,7 @@ public class BeatManager : MonoBehaviour
 
         initialCameraSize = Camera.main.orthographicSize;
         audioDspTimeDelay = 0;
+        useCameraBeatShake = true;
     }
 
     private void Update()
@@ -138,7 +140,7 @@ public class BeatManager : MonoBehaviour
         if (nextBeatStartTime < audioPlayTime)
         {
             nextBeatStartTime += _beatTime;
-            if(cameraBeatEffectAmplitude != 0)
+            if(cameraBeatEffectAmplitude != 0 && useCameraBeatShake)
             {
                 StartCoroutine(BeatEffect(1.0f));
             }
@@ -148,7 +150,7 @@ public class BeatManager : MonoBehaviour
         if (offBeatStartTime < audioPlayTime - _beatTime / 2)
         {
             offBeatStartTime += _beatTime;
-            /*if (cameraBeatEffectAmplitude != 0)
+            /*if (cameraBeatEffectAmplitude != 0 && useCamearBeatShake)
             {
                 StartCoroutine(BeatEffect(0.2f));
             }*/

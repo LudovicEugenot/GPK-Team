@@ -17,6 +17,8 @@ public class PlayerManager : MonoBehaviour
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentPower;
+    [HideInInspector] public bool ownSpeaker;
+    [HideInInspector] public bool isInControl;
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
@@ -27,6 +29,7 @@ public class PlayerManager : MonoBehaviour
         hpIconsState = new HpState[maxhealthPoint];
         InitializeHealthBar();
         UseMusicians();
+        isInControl = true;
     }
 
     public void TakeDamage(int damage)

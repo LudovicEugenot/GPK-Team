@@ -11,7 +11,6 @@ public class GameLoader : MonoBehaviour
     public string playerDataSaveFileName;
     public string worldDataSaveFileName;
     public string previewDataSaveFileName;
-    public string screenPreviewFileName;
     public string saveFileExtension;
     public string defaultSaveDirectoryName;
 
@@ -51,13 +50,12 @@ public class GameLoader : MonoBehaviour
 
     private void SetupSaveSystem()
     {
+        SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
         SaveSystem.SetSavePath(specifiedSaveFilePath);
         SaveSystem.playerDataSaveFileName = playerDataSaveFileName;
         SaveSystem.worldDataSaveFileName = worldDataSaveFileName;
         SaveSystem.saveFileExtension = saveFileExtension;
-        SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
         SaveSystem.previewDataSaveFileName = previewDataSaveFileName;
-        SaveSystem.screenPreviewFileName = screenPreviewFileName;
     }
 
     private void LoadWorldData()

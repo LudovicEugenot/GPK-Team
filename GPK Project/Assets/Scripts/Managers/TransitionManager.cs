@@ -48,7 +48,7 @@ public class TransitionManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("SpecialButton"))
+        if(Input.GetButtonDown("Interact"))
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {

@@ -807,16 +807,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blinkRangeProgression:
+  - 4
+  - 4.5
   - 5
-  - 5.3
-  - 5.8
-  - 6.5
-  - 7
-  - 7.5
-  - 8
-  - 8.8
-  - 10
-  - 11
+  - 5.5
+  - 6
+  - 6.3
+  - 6.6
+  - 6.9
+  - 7.1
+  - 7.3
   startHook: {fileID: 0}
   unreachableHookNoMove: 1
   blinkTrajectoryPreviewLine: {fileID: 1110374556}
@@ -851,7 +851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialBeatCooldown: 10
-  minimumBeatCooldown: 0
+  minimumBeatCooldown: 3
   launchCurveVisual:
     serializedVersion: 2
     m_Curve:
@@ -941,8 +941,8 @@ MonoBehaviour:
   distanceBetweenHp: 80
   hpIconPrefab: {fileID: 4903183659854579373, guid: da3f917cbd2418949af21a43d69c7138,
     type: 3}
-  fullHp: {fileID: 21300000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
-  halfHp: {fileID: 21300000, guid: 69dd7fd6036220040bc55db96c58deef, type: 3}
+  fullHp: {fileID: 3954000364236442063, guid: 28d926ac1fd6a5e4e8ec626ffd8d565f, type: 3}
+  halfHp: {fileID: 5269600635209090971, guid: 402e0bc779c4e9543a2ad44a869cfda4, type: 3}
   emptyHpColor: {r: 0.20692419, g: 0.26167524, b: 0.2830189, a: 0.8156863}
   animator: {fileID: 5100342687105770818}
   musicianVisualO:
@@ -951,6 +951,8 @@ MonoBehaviour:
   - {fileID: 555399284}
   currentHealth: 0
   currentPower: 0
+  ownSpeaker: 0
+  isInControl: 0
 --- !u!120 &3822639274368582669
 LineRenderer:
   m_ObjectHideFlags: 0

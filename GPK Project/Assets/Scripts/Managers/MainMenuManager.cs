@@ -72,4 +72,9 @@ public class MainMenuManager : MonoBehaviour
     {
         savePanel.SetActive(false);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

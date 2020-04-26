@@ -8,16 +8,19 @@ public class GameManager : MonoBehaviour
     #region Initialization
     [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
     public GameObject player;
+    [HideInInspector] public Camera mainCamera;
     public List<TransitionManager.TransitionHook> transitionHooks;
     public GameObject hooksHolder;
     [HideInInspector] public List<HookState> zoneHooks;
     public GameObject enemiesHolder;
     [HideInInspector] public List<EnemyBase> zoneEnemies;
-    public List<SwitchElement> zoneElements;
+    public GameObject elementsHolder;
+    [HideInInspector] public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
+    [HideInInspector] public CameraHandler cameraHandler;
     [Space]
     public GameObject pausePanel;
     [HideInInspector] public bool paused;
@@ -59,9 +62,21 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
+        zoneElements = new List<SwitchElement>();
+        if (elementsHolder != null)
+        {
+            for (int i = 0; i < elementsHolder.transform.childCount; i++)
+            {
+                zoneElements.Add(elementsHolder.transform.GetChild(i).GetComponentInChildren<SwitchElement>());
+            }
+        }
+
         paused = false;
         pausePanel.SetActive(false);
         Beat = BeatManager.Instance;
+        mainCamera = Camera.main;
+        cameraHandler = mainCamera.GetComponent<CameraHandler>();
         WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();

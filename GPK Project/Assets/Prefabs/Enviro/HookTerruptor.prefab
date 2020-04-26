@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 3717861869360096246}
   - component: {fileID: 3717861869360096243}
   - component: {fileID: 3717861869360096240}
+  - component: {fileID: 5167041344435325913}
   - component: {fileID: 3717861869360096241}
   m_Layer: 8
   m_Name: HookTerruptor
@@ -282,6 +283,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &5167041344435325913
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3717861869360096247}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c360d05b1a57c984db44d65f38e1462a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!58 &3717861869360096241
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -297,4 +317,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1

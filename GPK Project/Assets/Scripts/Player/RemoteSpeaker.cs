@@ -28,24 +28,32 @@ public class RemoteSpeaker : MonoBehaviour
 
     private void Update()
     {
-        if(speakerPlaced)
+        if(GameManager.Instance.playerManager.ownSpeaker)
         {
-            if(beatCooldownRemaining > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
+            UpdateSpeaker();
+        }
+    }
+
+    private void UpdateSpeaker()
+    {
+        if (speakerPlaced)
+        {
+            if (beatCooldownRemaining > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 beatCooldownRemaining--;
             }
-            else if(beatCooldownRemaining == 0 && remoteSpeakerO != null)
+            else if (beatCooldownRemaining == 0 && remoteSpeakerO != null)
             {
                 StartCoroutine(PickupSpeaker());
             }
         }
         else
         {
-            if(beatCooldownRemaining < initialBeatCooldown && GameManager.Instance.Beat.onBeatFirstFrame)
+            if (beatCooldownRemaining < initialBeatCooldown && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 beatCooldownRemaining++;
             }
-            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused)
+            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
                 StartCoroutine(ThrowSpeaker());
             }

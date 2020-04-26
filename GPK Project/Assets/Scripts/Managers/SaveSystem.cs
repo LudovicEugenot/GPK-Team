@@ -7,7 +7,6 @@ public static class SaveSystem
     public static string playerDataSaveFileName;
     public static string worldDataSaveFileName;
     public static string previewDataSaveFileName;
-    public static string screenPreviewFileName;
     public static string saveFileExtension;
     public static string defaultSaveDirectoryName;
 
@@ -45,7 +44,7 @@ public static class SaveSystem
             formatter.Serialize(stream, playerData);
             stream.Close();
 
-            Debug.Log("Player saved in " + path);
+            //Debug.Log("Player saved in " + path);
         }
         else
         {
@@ -66,7 +65,7 @@ public static class SaveSystem
             PlayerData playerData = formatter.Deserialize(stream) as PlayerData;
             stream.Close();
 
-            Debug.Log("PLayer loaded from " + path);
+            //Debug.Log("PLayer loaded from " + path);
 
             return playerData;
         }
@@ -91,7 +90,7 @@ public static class SaveSystem
             formatter.Serialize(stream, worldData);
             stream.Close();
 
-            Debug.Log("World saved in " + path);
+            //Debug.Log("World saved in " + path);
         }
         else
         {
@@ -112,7 +111,7 @@ public static class SaveSystem
             WorldData worldData = formatter.Deserialize(stream) as WorldData;
             stream.Close();
 
-            Debug.Log("World loaded from " + path);
+            //Debug.Log("World loaded from " + path);
 
             return worldData;
         }
@@ -137,7 +136,7 @@ public static class SaveSystem
             formatter.Serialize(stream, previewData);
             stream.Close();
 
-            Debug.Log("Preview saved in " + path);
+            //Debug.Log("Preview saved in " + path);
         }
         else
         {
@@ -158,7 +157,7 @@ public static class SaveSystem
             PreviewData previewData = formatter.Deserialize(stream) as PreviewData;
             stream.Close();
 
-            Debug.Log("Preview loaded from " + path);
+            //Debug.Log("Preview loaded from " + path);
 
             return previewData;
         }

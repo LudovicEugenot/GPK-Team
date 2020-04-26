@@ -18,12 +18,14 @@ public class SwitchElement : MonoBehaviour
     [HideInInspector] public bool isEnabled;
     protected bool active;
     private float currentRemainingActiveTime;
+    protected Animator animator;
 
     public void HandlerStart()
     {
         active = !enableState;
         currentRemainingActiveTime = enableState ? timeBeforeDeactivation : 0;
         relatedWorldEvent = WorldManager.GetWorldEvent(relatedEvent);
+        animator = GetComponent<Animator>();
     }
 
     public void HandlerUpdate()

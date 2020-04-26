@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1642546021053289277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1604544358366920508}
+  m_Layer: 0
+  m_Name: CinematicFocusPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1604544358366920508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642546021053289277}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4584789732411709867}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4584789732411709870
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +42,7 @@ GameObject:
   - component: {fileID: 4584789732411709868}
   - component: {fileID: 4584789732411709869}
   m_Layer: 0
-  m_Name: xX__SuperNPCDialogueTrial__Xx
+  m_Name: PNJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +58,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: 1, w: -0.0000012964009}
   m_LocalPosition: {x: -3.92, y: -2.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1604544358366920508}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.00002}
@@ -95,6 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookToTalk: {fileID: 0}
+  cinematicLookPos: {fileID: 1604544358366920508}
+  cinematicLookZoom: 3
   dialogues:
   - sentences:
     - Hellooooo, je m'appelle xX__SuperNPCDialogueTrial__Xx, comment vas tu ?
@@ -113,9 +146,6 @@ MonoBehaviour:
     - Heip Hop ! je m'appelle Axel, tu viens faire du jogging avec moi ?
     - Non ?! bon bah cahlut poto !
     progressionNeeded: 1
-  textPrefab: {fileID: 4221331080994822762, guid: 72b3f4a53ab544b4ba873d0e311ca46e,
-    type: 3}
-  bubbleOffset: {x: 4.5, y: 3.5}
-  dialogueTransform: {fileID: 0}
+  dialogueBoxO: {fileID: 0}
   numberOfLetterByBeat: 1
-  theVaribale: {x: 100, y: 25}
+  accelerations: {x: 100, y: 25}

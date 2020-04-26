@@ -25,6 +25,8 @@ public class Hookterruptor : Hook
     {
         HandlerUpdate();
 
+        animator.SetBool("Pressed", pressed);
+
         if (eventToOccur != WorldManager.EventName.NullEvent)
         {
             if (pressed)
@@ -54,7 +56,7 @@ public class Hookterruptor : Hook
         {
             if(pressed && (Vector2)GameManager.Instance.blink.transform.position != (Vector2)transform.position)
             {
-                pressed = false;
+                Invoke("Unpress", pressMinTime);
             }
         }
 
@@ -68,5 +70,10 @@ public class Hookterruptor : Hook
         }
 
         sprite.color = !pressed ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : pressedColor;
+    }
+
+    private void Unpress()
+    {
+        pressed = false;
     }
 }
