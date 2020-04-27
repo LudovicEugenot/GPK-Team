@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameLoader : MonoBehaviour
 {
     public int startSceneBuildIndex;
+    public GameObject musicManager;
     [Space]
     [Tooltip("Leave empty to use default save file")] public string specifiedSaveFilePath; 
     public string playerDataSaveFileName;
@@ -25,6 +26,7 @@ public class GameLoader : MonoBehaviour
 
     public void StartNewGame()
     {
+        //StartMusicManager();
         SceneManager.LoadScene(startSceneBuildIndex);
     }
 
@@ -32,7 +34,7 @@ public class GameLoader : MonoBehaviour
     {
         LoadWorldData();
         LoadPlayerData();
-
+        //StartMusicManager();
         StartGame();
     }
 
@@ -71,5 +73,10 @@ public class GameLoader : MonoBehaviour
         TransitionManager.Instance.savePos.x = playerData.position[0];
         TransitionManager.Instance.savePos.y = playerData.position[1];
         TransitionManager.Instance.newPlayerHp = playerData.health;
+    }
+
+    private void StartMusicManager()
+    {
+        musicManager.SetActive(true);
     }
 }

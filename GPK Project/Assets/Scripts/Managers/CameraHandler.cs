@@ -71,6 +71,10 @@ public class CameraHandler : MonoBehaviour
         else
         {
             mainCamera.orthographicSize = currentOrthographicSize;
+            if(mainCamera.orthographicSize == baseOrthographicSize)
+            {
+                GameManager.Instance.Beat.useCameraBeatShake = true;
+            }
         }
     }
 
@@ -104,7 +108,6 @@ public class CameraHandler : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-        GameManager.Instance.Beat.useCameraBeatShake = true;
     }
 
     public IEnumerator StartCinematicLook(Vector2 lookPosition, float orthographicSize, bool useBars)
@@ -138,6 +141,5 @@ public class CameraHandler : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-        GameManager.Instance.Beat.useCameraBeatShake = true;
     }
 }

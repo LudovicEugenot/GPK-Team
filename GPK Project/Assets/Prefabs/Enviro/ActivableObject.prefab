@@ -47,10 +47,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableState: 0
-  timeBeforeDeactivation: 2.64
+  beatsBeforeDeactivation: 2
   stayEnable: 1
   connectedHookterruptors:
   - {fileID: 0}
+  needAllPressed: 1
   isInteractableByEvent: 0
   relatedEvent: 0
   isEnabled: 0

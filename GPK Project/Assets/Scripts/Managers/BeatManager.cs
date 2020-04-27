@@ -62,7 +62,6 @@ public class BeatManager : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
         source = GetComponent<AudioSource>();
         musicStarted = false;
         _beatTime = 60 / bpm;

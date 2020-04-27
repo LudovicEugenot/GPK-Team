@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject hpIconPrefab;
     public Sprite fullHp;
     public Sprite halfHp;
-    public Color emptyHpColor;
+    public Sprite emptyHp;
     public Animator animator;
     public GameObject[] musicianVisualO;
 
@@ -22,11 +22,11 @@ public class PlayerManager : MonoBehaviour
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
+    private bool healthBarInitialized;
 
     void Start()
     {
         currentHealth = maxhealthPoint * 2;
-        hpIconsState = new HpState[maxhealthPoint];
         InitializeHealthBar();
         UseMusicians();
         isInControl = true;
@@ -57,16 +57,26 @@ public class PlayerManager : MonoBehaviour
         UpdateHealthBar();
     }
 
-    private void InitializeHealthBar()
+    public bool InitializeHealthBar()
     {
-
-        for (int i = 0; i < maxhealthPoint; i++)
+        if(!healthBarInitialized)
         {
-            GameObject newIcon;
-            hpIcons.Add(newIcon = Instantiate(hpIconPrefab, firstHealthPointPos));
-            newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
+            healthBarInitialized = true;
+            hpIconsState = new HpState[maxhealthPoint];
+            for (int i = 0; i < maxhealthPoint; i++)
+            {
+                GameObject newIcon;
+                hpIcons.Add(newIcon = Instantiate(hpIconPrefab, firstHealthPointPos));
+                newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
+            }
+            UpdateHealthBar();
+            return true;
         }
-        UpdateHealthBar();
+        else
+        {
+            //Debug.Log("The health bar has already been initialized");
+            return false;
+        }
     }
 
     public void UpdateHealthBar()
@@ -106,8 +116,8 @@ public class PlayerManager : MonoBehaviour
                     break;
 
                 case HpState.Empty:
-                    icon.sprite = fullHp;
-                    icon.color = emptyHpColor;
+                    icon.sprite = emptyHp;
+                    icon.color = Color.white;
                     break;
             }
         }

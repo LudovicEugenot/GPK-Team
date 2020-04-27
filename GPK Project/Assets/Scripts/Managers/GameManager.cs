@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     void FirstStart()
     {
         zoneHooks = new List<HookState>();
-        for(int i = 0; i < hooksHolder.transform.childCount; i++)
+        for (int i = 0; i < hooksHolder.transform.childCount; i++)
         {
             zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>().hookState);
         }

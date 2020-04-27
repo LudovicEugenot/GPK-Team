@@ -121,6 +121,7 @@ public class ZoneHandler : MonoBehaviour
             }
         }
 
+
         for (int i = 0; i < currentZone.elementsEnabled.Length; i++)
         {
             if(i < GameManager.Instance.zoneElements.Count)

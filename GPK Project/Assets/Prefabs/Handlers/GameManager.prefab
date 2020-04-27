@@ -49,8 +49,14 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   transitionHooks:
   - hook: {fileID: 0}
+    direction: 0
+    connectedSceneBuildIndex: 6
+  - hook: {fileID: 0}
     direction: 2
-    connectedSceneBuildIndex: 2
+    connectedSceneBuildIndex: 8
+  - hook: {fileID: 0}
+    direction: 1
+    connectedSceneBuildIndex: 4
   hooksHolder: {fileID: 0}
   zoneHooks:
   - relived: 0

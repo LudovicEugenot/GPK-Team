@@ -59,7 +59,7 @@ public class Blink : MonoBehaviour
 
     void Update()
     {
-        if(!GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+        if (!GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
         {
             DrawHookRange(currentRange, transform.position);
             HookSelection();
