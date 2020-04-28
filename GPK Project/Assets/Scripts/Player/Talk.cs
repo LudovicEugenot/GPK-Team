@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Dialogue
+public class Talk
 {
     [TextArea(3, 10)]
     public string[] sentences;
-    public WorldManager.StoryStep progressionNeeded;
 }

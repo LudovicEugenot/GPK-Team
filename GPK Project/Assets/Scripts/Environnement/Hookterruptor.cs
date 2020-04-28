@@ -54,7 +54,7 @@ public class Hookterruptor : Hook
     {
         if (stayPressedUntilNextBlink)
         {
-            if(pressed && (Vector2)GameManager.Instance.blink.transform.position != (Vector2)transform.position)
+            if(pressed && GameManager.Instance.blink.currentHook != this)
             {
                 Invoke("Unpress", pressMinTime);
             }

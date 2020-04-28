@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public DialogueManager dialogueManager;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
     [HideInInspector] public CameraHandler cameraHandler;
@@ -77,10 +78,11 @@ public class GameManager : MonoBehaviour
         Beat = BeatManager.Instance;
         mainCamera = Camera.main;
         cameraHandler = mainCamera.GetComponent<CameraHandler>();
-        WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
+        WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
+        dialogueManager = player.GetComponentInChildren<DialogueManager>();
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
     }
 

@@ -52,7 +52,7 @@ public class TransitionManager : MonoBehaviour
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
-                if ((Vector2)GameManager.Instance.blink.transform.position == (Vector2)transitionHook.hook.transform.position)
+                if (GameManager.Instance.blink.currentHook == transitionHook.hook)
                 {
                     if(transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                     {

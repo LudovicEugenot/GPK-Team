@@ -129,23 +129,22 @@ MonoBehaviour:
   cinematicLookPos: {fileID: 1604544358366920508}
   cinematicLookZoom: 3
   dialogues:
-  - sentences:
-    - Hellooooo, je m'appelle xX__SuperNPCDialogueTrial__Xx, comment vas tu ?
-    - 'Trop bien je suis content pour toi ! '
-    - "Le gameplay au c\u0153ur du jeu est bas\xE9 sur le rythme de la musique. Pendant
-      toute la\r\ndur\xE9e du jeu, le joueur est accompagn\xE9 avec de la musique
-      qui donne au joueur un rythme\r\nr\xE9gulier. La majorit\xE9 des \xE9v\xE8nements
-      ayant lieu dans le jeu sont synchronis\xE9s avec les beats\r\nde la musique.
-      Nous allons appeler \xAB Beats \xBB les moments exactes o\xF9 la musique marque
-      un\r\ntemps. A l\u2019inverse un \xAB temps \xBB est la dur\xE9e entre chaque
-      beat. Nous allons aussi utiliser le\r\nterme \xAB Off-Beat \xBB pour d\xE9signer
-      les actions qui ne sont pas effectuer sur les beats.\r\nLe joueur devra effectuer
-      ses actions en rythme."
+  - talk:
+      sentences:
+      - Hello ma boi ! Je suis xX_SuperDialogueTrial_Xx, tu va te demander ce que
+        je vais dire n'est ce pas ??
+      - ...
+      - Rien
+    triggeredEvent: 0
     progressionNeeded: 0
-  - sentences:
-    - Heip Hop ! je m'appelle Axel, tu viens faire du jogging avec moi ?
-    - Non ?! bon bah cahlut poto !
+    requiredEvents: 
+    compromisingEvents: 
+  - talk:
+      sentences:
+      - "Deuxi\xE8me dialogue ! In ..."
+      - croy ...
+      - yable !!!!
+    triggeredEvent: 0
     progressionNeeded: 1
-  dialogueBoxO: {fileID: 0}
-  numberOfLetterByBeat: 1
-  accelerations: {x: 100, y: 25}
+    requiredEvents: 
+    compromisingEvents: 
