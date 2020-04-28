@@ -22,12 +22,12 @@ public class DialogueManager : MonoBehaviour
         isTalking = false;
         sentenceStarted = false;
         canGoNext = false;
+        dialogueBoxO.SetActive(false);
         dialogueText = dialogueBoxO.GetComponentInChildren<Text>();
     }
     void Update()
     {
         UpdateDialogueState();
-        dialogueBoxO.SetActive(false);
         interactPressed = Input.GetButton("Interact");
     }
 
