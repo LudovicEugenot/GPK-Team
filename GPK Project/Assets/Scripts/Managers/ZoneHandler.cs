@@ -138,6 +138,18 @@ public class ZoneHandler : MonoBehaviour
         zoneInitialized = true;
     }
 
+    public bool AllEnemiesConverted()
+    {
+        foreach (bool enemyConverted in currentZone.enemiesConverted)
+        {
+            if (!enemyConverted)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     [System.Serializable]
     public class Zone
     {

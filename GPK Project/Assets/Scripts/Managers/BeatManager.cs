@@ -8,7 +8,7 @@ public class BeatManager : MonoBehaviour
     [Tooltip("L'intervalle de temps dont le joueur dispose pour effectuer son action et être en rythme.")]
     [Range(0f, 1f)] public float timingThreshold = 0.2f;
     [Range(-1f, 1f)] public float timingThresholdOffset;
-    [Range(0f, 1f)] public float beatStartTimeOffset; // à supprimer pour l'adapter selon la machine qui joue la musique
+    [Range(0f, 1f)] public float beatStartTimeOffset;
     [Range(0f, 1f)] public float minTimeForOnBeatValidation;
 
     public float cameraBeatEffectLerpSpeed;
@@ -26,12 +26,15 @@ public class BeatManager : MonoBehaviour
     [HideInInspector] public float currentBeatProgression;
     private float nextBeatStartTime;
     private float offBeatStartTime;
-    private float songStartTime;
+    private double songStartTime;
     private bool beatActionUsed;
     private float lastActionTime;
     private bool actOnBeatPossible;
 
-    private AudioSource source;
+    private AudioSource switchingSource;
+    private AudioSource otherSource;
+    private AudioSource source1;
+    private AudioSource source2;
 
     private float initialCameraSize;
     #endregion
@@ -44,7 +47,14 @@ public class BeatManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         if (Instance == null)
+        {
             Instance = this;
+
+            AudioSource[] sources = GetComponents<AudioSource>();
+            source1 = sources[0];
+            source2 = sources[1];
+            switchingSource = source1;
+        }
         else
             Destroy(this.gameObject);
     }
@@ -52,12 +62,8 @@ public class BeatManager : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
-        source = GetComponent<AudioSource>();
         musicStarted = false;
-        beatTime = 60 / bpm;
-        onBeatSingleFrame = false;
-        beatActionUsed = false;
+        MusicInit();
 
         initialCameraSize = Camera.main.orthographicSize;
     }
@@ -77,7 +83,7 @@ public class BeatManager : MonoBehaviour
             TimeCycle();
         }
 
-        if(onBeatNextFrame && !beatActionUsed)
+        if (onBeatNextFrame && !beatActionUsed)
         {
             GameManager.Instance.blink.FailCombo();
         }
@@ -88,7 +94,7 @@ public class BeatManager : MonoBehaviour
     /// </summary>
     private void TimeCycle()
     {
-        if(onBeatSingleFrame)
+        if (onBeatSingleFrame)
         {
             onBeatSingleFrame = false;
         }
@@ -105,7 +111,7 @@ public class BeatManager : MonoBehaviour
 
         if (OnBeat(false))
         {
-            if(firstFrameFlag)
+            if (firstFrameFlag)
             {
                 onBeatFirstFrame = true;
                 firstFrameFlag = false;
@@ -117,7 +123,7 @@ public class BeatManager : MonoBehaviour
         {
             firstFrameFlag = true;
 
-            if(nextFrameFlag)
+            if (nextFrameFlag)
             {
                 onBeatNextFrame = true;
                 nextFrameFlag = false;
@@ -127,7 +133,7 @@ public class BeatManager : MonoBehaviour
         if (nextBeatStartTime < (float)AudioSettings.dspTime)
         {
             nextBeatStartTime += beatTime;
-            if(cameraBeatEffectAmplitude != 0)
+            if (cameraBeatEffectAmplitude != 0)
             {
                 StartCoroutine(BeatEffect(1.0f));
             }
@@ -164,7 +170,7 @@ public class BeatManager : MonoBehaviour
         bool onBeat = false;
         float beatTimeProgression = beatTime - timeBeforeNextBeat;
 
-        if(actOnBeatPossible || !isAction)
+        if (actOnBeatPossible || !isAction)
         {
             if (timingThresholdOffset >= timingThreshold / 2)
             {
@@ -195,7 +201,7 @@ public class BeatManager : MonoBehaviour
     public bool CanAct()
     {
         bool used = beatActionUsed;
-        if(!beatActionUsed)
+        if (!beatActionUsed)
         {
             beatActionUsed = true;
         }
@@ -215,8 +221,57 @@ public class BeatManager : MonoBehaviour
     {
         musicStarted = true;
 
-        source.Play();
+        switchingSource.Play();
 
-        songStartTime = (float)AudioSettings.dspTime;
+        songStartTime = AudioSettings.dspTime;
+    }
+
+    private void MusicInit()
+    {
+        beatTime = 60 / bpm;
+        onBeatSingleFrame = false;
+        beatActionUsed = false;
+    }
+
+    public void LoadMusic(AudioClip clip)
+    {
+        switchingSource.clip = clip;
+        switchingSource.Play();
+    }
+
+    public void LoadMusic(AudioClip clip, double timeUntilStart)
+    {
+        SwitchSource();
+        switchingSource.clip = clip;
+        switchingSource.PlayScheduled(AudioSettings.dspTime + timeUntilStart);
+        StartCoroutine(StopMusic(otherSource, (float)timeUntilStart));
+    }
+
+    public void PlayThisClipAtThisTimer(AudioClip clip, double timerUntilPlayed, double timerEntryMusic)
+    {
+        SwitchSource();
+        switchingSource.clip = clip;
+        switchingSource.time = (float)timerEntryMusic;
+        switchingSource.PlayScheduled(AudioSettings.dspTime + timerUntilPlayed);
+        StartCoroutine(StopMusic(otherSource, (float)timerUntilPlayed));
+    }
+
+    void SwitchSource()
+    {
+        if (switchingSource == source1)
+        {
+            switchingSource = source2;
+            otherSource = source1;
+        }
+        else
+        {
+            switchingSource = source1;
+            otherSource = source2;
+        }
+    }
+    IEnumerator StopMusic(AudioSource source, float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        source.Pause();
     }
 }
