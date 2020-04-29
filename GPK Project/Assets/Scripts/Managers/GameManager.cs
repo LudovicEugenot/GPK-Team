@@ -5,6 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Initialization
+    [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
+    public GameObject player;
+    [HideInInspector] public Camera mainCamera;
+    public List<TransitionManager.TransitionHook> transitionHooks;
+    public GameObject hooksHolder;
+    [HideInInspector] public List<HookState> zoneHooks;
+    public GameObject enemiesHolder;
+    [HideInInspector] public List<EnemyBase> zoneEnemies;
+    public GameObject elementsHolder;
+    [HideInInspector] public List<SwitchElement> zoneElements;
+    [HideInInspector] public Blink blink;
+    [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public DialogueManager dialogueManager;
+    [HideInInspector] public GameObject spriteRendererO;
+    [HideInInspector] public ZoneHandler zoneHandler;
+    [HideInInspector] public CameraHandler cameraHandler;
+    [Space]
+    public GameObject pausePanel;
+    [HideInInspector] public bool paused;
+
+    #endregion
+
+
     #region Singleton
     public static GameManager Instance { get; private set; }
     void Awake()
@@ -22,25 +46,10 @@ public class GameManager : MonoBehaviour
         FirstStart();
     }
 
-    #region Initialization
-    [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
-    public GameObject player;
-    public List<TransitionManager.TransitionHook> transitionHooks;
-    public GameObject hooksHolder;
-    [HideInInspector] public List<HookState> zoneHooks;
-    public GameObject enemiesHolder;
-    [HideInInspector] public List<EnemyBase> zoneEnemies;
-    public List<SwitchElement> zoneElements;
-    [HideInInspector] public Blink blink;
-    [HideInInspector] public PlayerManager playerManager;
-    [HideInInspector] public GameObject spriteRendererO;
-    [HideInInspector] public ZoneHandler zoneHandler;
-    #endregion
-
     void FirstStart()
     {
         zoneHooks = new List<HookState>();
-        for(int i = 0; i < hooksHolder.transform.childCount; i++)
+        for (int i = 0; i < hooksHolder.transform.childCount; i++)
         {
             zoneHooks.Add(hooksHolder.transform.GetChild(i).GetComponent<Hook>().hookState);
         }
@@ -54,11 +63,26 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
+        zoneElements = new List<SwitchElement>();
+        if (elementsHolder != null)
+        {
+            for (int i = 0; i < elementsHolder.transform.childCount; i++)
+            {
+                zoneElements.Add(elementsHolder.transform.GetChild(i).GetComponentInChildren<SwitchElement>());
+            }
+        }
+
+        paused = false;
+        pausePanel.SetActive(false);
         Beat = BeatManager.Instance;
-        WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
+        mainCamera = Camera.main;
+        cameraHandler = mainCamera.GetComponent<CameraHandler>();
+        WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
+        dialogueManager = player.GetComponentInChildren<DialogueManager>();
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
     }
 
@@ -66,35 +90,81 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.M))
         {
-            ZoneHandler.Instance.SaveZoneState();
-            SaveGame();
+            // test whatever
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if(Input.GetButtonDown("Cancel"))
         {
-            SceneManager.LoadScene(0);
+            if(paused)
+            {
+                UnPause();
+            }
+            else
+            {
+                Pause();
+            }
         }
     }
 
     public void SaveGame()
     {
+        UnPause();
+        ZoneHandler.Instance.SaveZoneState();
         SaveSystem.SavePlayer(playerManager);
         SaveSystem.SaveWorld(zoneHandler);
+        StartCoroutine(SavePreview());
     }
 
-    private void LoadPlayer()
+    public void SaveAndQuit()
     {
-        PlayerData player = SaveSystem.LoadPlayer();
-        if(player != null)
-        {
-            playerManager.maxhealthPoint = player.maxHealthPoint;
-            playerManager.currentHealth = player.health;
-            Vector2 position;
-            position.x = player.position[0];
-            position.y = player.position[1];
-            playerManager.transform.parent.position = position;
+        SaveGame();
+        StartCoroutine(AndQuit());
+    }
 
-            playerManager.UpdateHealthBar();
-        }
+    public void SaveAndBackToMainMenu()
+    {
+        //SaveGame();
+        StartCoroutine(AndBackToMainMenu());
+    }
+
+    private IEnumerator AndQuit()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        Application.Quit();
+    }
+
+    private IEnumerator AndBackToMainMenu()
+    {
+        Destroy(Beat.gameObject);
+        Destroy(zoneHandler.gameObject);
+        yield return new WaitForSecondsRealtime(0.2f);
+        UnPause();
+        SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator SavePreview()
+    {
+        yield return new WaitForEndOfFrame();
+        Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
+        yield return new WaitForEndOfFrame();
+        SaveSystem.SavePreview(zoneHandler, screenTexture);
+    }
+
+    public void Pause()
+    {
+        pausePanel.SetActive(true);
+        Beat.PauseMusic();
+        Time.timeScale = 0;
+        Time.fixedDeltaTime = 0;
+        paused = true;
+    }
+
+    public void UnPause()
+    {
+        pausePanel.SetActive(false);
+        Beat.UnPauseMusic();
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = 0.02f;
+        paused = false;
     }
 }

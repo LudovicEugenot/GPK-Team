@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 221133669}
-  - component: {fileID: 221133670}
+  - component: {fileID: 8621235624526885932}
   m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
@@ -31,19 +31,32 @@ Transform:
   m_Father: {fileID: 3822639273655229814}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &221133670
-BoxCollider:
+--- !u!61 &8621235624526885932
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221133668}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.06}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.49935502, y: 0.7708907, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.38, y: 0.91}
+  m_EdgeRadius: 0
 --- !u!1 &379275231
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,6 +773,7 @@ GameObject:
   - component: {fileID: 3822639274368582670}
   - component: {fileID: 3822639274368582671}
   - component: {fileID: 3822639274368582669}
+  - component: {fileID: 7556608464088615825}
   m_Layer: 10
   m_Name: Scripts
   m_TagString: Untagged
@@ -794,16 +808,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blinkRangeProgression:
+  - 4
+  - 4.5
   - 5
-  - 5.3
-  - 5.8
-  - 6.5
-  - 7
-  - 7.5
-  - 8
-  - 8.8
-  - 10
-  - 11
+  - 5.5
+  - 6
+  - 6.3
+  - 6.6
+  - 6.9
+  - 7.1
+  - 7.3
   startHook: {fileID: 0}
   unreachableHookNoMove: 1
   blinkTrajectoryPreviewLine: {fileID: 1110374556}
@@ -838,6 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialBeatCooldown: 10
+  minimumBeatCooldown: 3
   launchCurveVisual:
     serializedVersion: 2
     m_Curve:
@@ -927,9 +942,9 @@ MonoBehaviour:
   distanceBetweenHp: 80
   hpIconPrefab: {fileID: 4903183659854579373, guid: da3f917cbd2418949af21a43d69c7138,
     type: 3}
-  fullHp: {fileID: 21300000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
-  halfHp: {fileID: 21300000, guid: 69dd7fd6036220040bc55db96c58deef, type: 3}
-  emptyHpColor: {r: 0.20692419, g: 0.26167524, b: 0.2830189, a: 0.8156863}
+  fullHp: {fileID: 3954000364236442063, guid: 28d926ac1fd6a5e4e8ec626ffd8d565f, type: 3}
+  halfHp: {fileID: 1597336106967987599, guid: 60deabc6f9cdb1c4b870a8be01a925c1, type: 3}
+  emptyHp: {fileID: 5269600635209090971, guid: 402e0bc779c4e9543a2ad44a869cfda4, type: 3}
   animator: {fileID: 5100342687105770818}
   musicianVisualO:
   - {fileID: 379275231}
@@ -937,6 +952,8 @@ MonoBehaviour:
   - {fileID: 555399284}
   currentHealth: 0
   currentPower: 0
+  ownSpeaker: 0
+  isInControl: 0
 --- !u!120 &3822639274368582669
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1082,6 +1099,22 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &7556608464088615825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3822639274368582666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f194de2cbde6b54482d17789e504454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBoxO: {fileID: 0}
+  initialWrittingSpeed: 50
+  acceleratedWrittingSpeed: 100
+  numberOfLetterByBeat: 1
 --- !u!1 &3822639275442409410
 GameObject:
   m_ObjectHideFlags: 0

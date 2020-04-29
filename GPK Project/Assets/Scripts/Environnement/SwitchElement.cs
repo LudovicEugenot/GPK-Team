@@ -5,10 +5,10 @@ using UnityEngine;
 public class SwitchElement : MonoBehaviour
 {
     public bool enableState;
-    [Range(0.01f, 10)] public float timeBeforeDeactivation;
+    [Range(0, 30)] public int beatsBeforeDeactivation;
     public bool stayEnable;
     public List<Hookterruptor> connectedHookterruptors;
-
+    public bool needAllPressed;
 
     [Tooltip("False means that it will be activated by the event if it's not null")]
     public bool isInteractableByEvent;
@@ -18,12 +18,14 @@ public class SwitchElement : MonoBehaviour
     [HideInInspector] public bool isEnabled;
     protected bool active;
     private float currentRemainingActiveTime;
+    protected Animator animator;
 
     public void HandlerStart()
     {
         active = !enableState;
-        currentRemainingActiveTime = enableState ? timeBeforeDeactivation : 0;
+        currentRemainingActiveTime = enableState ? beatsBeforeDeactivation * BeatManager.Instance.BeatTime + 0.1f : 0;
         relatedWorldEvent = WorldManager.GetWorldEvent(relatedEvent);
+        animator = GetComponent<Animator>();
     }
 
     public void HandlerUpdate()
@@ -41,7 +43,7 @@ public class SwitchElement : MonoBehaviour
 
     private void UpdateEnableState()
     {
-        if (timeBeforeDeactivation > 0)
+        if (beatsBeforeDeactivation * BeatManager.Instance.BeatTime + 0.1f > 0)
         {
             if (currentRemainingActiveTime > 0)
             {
@@ -53,12 +55,27 @@ public class SwitchElement : MonoBehaviour
             }
         }
 
-        bool elementEnabled = true;
-        foreach(Hookterruptor hookterruptor in connectedHookterruptors)
+        bool elementEnabled;
+        if(needAllPressed)
         {
-            if(!hookterruptor.pressed)
+            elementEnabled = true;
+            foreach (Hookterruptor hookterruptor in connectedHookterruptors)
             {
-                elementEnabled = false;
+                if (!hookterruptor.pressed)
+                {
+                    elementEnabled = false;
+                }
+            }
+        }
+        else
+        {
+            elementEnabled = false;
+            foreach (Hookterruptor hookterruptor in connectedHookterruptors)
+            {
+                if (hookterruptor.pressed)
+                {
+                    elementEnabled = true;
+                }
             }
         }
 
@@ -67,7 +84,7 @@ public class SwitchElement : MonoBehaviour
             isEnabled = true;
             if(!stayEnable)
             {
-                currentRemainingActiveTime = timeBeforeDeactivation;
+                currentRemainingActiveTime = beatsBeforeDeactivation * BeatManager.Instance.BeatTime + 0.1f;
             }
         }
         active = isEnabled ? enableState : !enableState;
@@ -77,7 +94,7 @@ public class SwitchElement : MonoBehaviour
     public void SwitchOn()
     {
         active = enableState;
-        currentRemainingActiveTime = timeBeforeDeactivation;
+        currentRemainingActiveTime = beatsBeforeDeactivation;
     }
 
     public void SwitchOff()
@@ -95,9 +112,9 @@ public class SwitchElement : MonoBehaviour
             active = !active;
         }
 
-        if(enableState && timeBeforeDeactivation > 0)
+        if(enableState && beatsBeforeDeactivation > 0)
         {
-            currentRemainingActiveTime = timeBeforeDeactivation;
+            currentRemainingActiveTime = beatsBeforeDeactivation;
         }
 
         return active;

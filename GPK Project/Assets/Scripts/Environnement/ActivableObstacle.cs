@@ -21,12 +21,17 @@ public class ActivableObstacle : SwitchElement
     void Update()
     {
         HandlerUpdate();
-        UpdateCollision();
+        UpdateState();
     }
 
-    private void UpdateCollision()
+    private void UpdateState()
     {
-        if(active)
+        if(animator != null)
+        {
+            animator.SetBool("Activated", active);
+        }
+
+        if (active)
         {
             obstacleCollider.enabled = true;
             sprite.color = activeColor;

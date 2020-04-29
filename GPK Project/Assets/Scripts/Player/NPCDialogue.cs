@@ -6,130 +6,38 @@ using UnityEngine.UI;
 public class NPCDialogue : MonoBehaviour
 {
     public Hook hookToTalk;
+    public Transform cinematicLookPos;
+    [Range(0.0f, 10.0f)] public float cinematicLookZoom;
     public Dialogue[] dialogues;
-    public GameObject textPrefab;
-    public Vector2 bubbleOffset;
-    public RectTransform dialogueTransform;
-    public int numberOfLetterByBeat;
-    public Vector2 theVaribale;
 
-    private int currentDialogueStep;
-    private bool isTalking;
-    private bool sentenceStarted;
     private Dialogue currentDialogue;
-    private Text dialogueText;
-    private GameObject dialogueTextO;
-    private bool canGoNext;
-    private bool interactPressed;
 
     void Start()
     {
-        isTalking = false;
-        sentenceStarted = false;
-        canGoNext = false;
+        foreach(Dialogue dialogue in dialogues)
+        {
+            dialogue.SetupWorldEvents();
+        }
     }
 
     void Update()
     {
-        UpdateDialogueState();
-
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial1;
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.FirstFreedom2;
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.VillageArrival3;
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            WorldManager.currentStoryStep = WorldManager.StoryStep.VillageConverted4;
-        }
-
-        interactPressed = Input.GetButton("Blink");
+        TestDialogueStart();
     }
 
-    void UpdateDialogueState()
+    void TestDialogueStart()
     {
-        if (Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == hookToTalk && !isTalking)
+        if (Input.GetButtonDown("Interact") && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused)
         {
             currentDialogue = GetCurrentDialogue();
             if(currentDialogue != null)
             {
-                isTalking = true;
-                currentDialogueStep = 0;
-                sentenceStarted = false;
-                dialogueTextO = Instantiate(textPrefab, Camera.main.WorldToScreenPoint((Vector2)transform.position + bubbleOffset), Quaternion.identity, dialogueTransform);
-                dialogueText = dialogueTextO.GetComponent<Text>();
+                GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
+                WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
             }
-        }
-
-        if (isTalking && currentDialogue != null)
-        {
-            if (!sentenceStarted)
-            {
-                canGoNext = false;
-                StartCoroutine(DisplaySentence());
-                sentenceStarted = true;
-            }
-
-            if(canGoNext && Input.GetButtonDown("Blink"))
-            {
-                if (currentDialogueStep < currentDialogue.sentences.Length - 1)
-                {
-                    currentDialogueStep++;
-                    sentenceStarted = false;
-                }
-                else
-                {
-                    EndDialogue();
-                }
-            }
-        }
-
-        if(isTalking && GameManager.Instance.blink.currentHook != hookToTalk)
-        {
-            EndDialogue();
         }
     }
 
-    private IEnumerator DisplaySentence()
-    {
-        dialogueText.text = "";
-        int i = 0;
-        foreach(char letter in currentDialogue.sentences[currentDialogueStep].ToCharArray())
-        {
-            if(!isTalking)
-            {
-                break;
-            }
-            dialogueText.text += letter;
-            i++;
-            if(i >= numberOfLetterByBeat)
-            {
-                i = 0;
-                if(interactPressed)
-                {
-                    yield return new WaitForSeconds(GameManager.Instance.Beat.beatTime / theVaribale.x);
-                }
-                else
-                {
-                    yield return new WaitForSeconds(GameManager.Instance.Beat.beatTime / theVaribale.y);
-                }
-            }
-        }
-        canGoNext = true;
-    }
-
-    void EndDialogue()
-    {
-        Destroy(dialogueTextO);
-        isTalking = false;
-    }
 
     private Dialogue GetCurrentDialogue()
     {
@@ -137,7 +45,7 @@ public class NPCDialogue : MonoBehaviour
         int i = 0;
         while(selectedDia == null && i < dialogues.Length)
         {
-            if (dialogues[i].progressionNeeded == WorldManager.currentStoryStep)
+            if (dialogues[i].IsValid())
             {
                 selectedDia = dialogues[i];
             }
@@ -149,8 +57,55 @@ public class NPCDialogue : MonoBehaviour
     [System.Serializable]
     public class Dialogue
     {
-        [TextArea(3,10)]
-        public string[] sentences;
+        public Talk talk;
+        public WorldManager.EventName triggeredEvent;
         public WorldManager.StoryStep progressionNeeded;
+        public List<WorldManager.EventName> requiredEvents;
+        [HideInInspector] WorldManager.WorldEvent[] requiredWorldEvents;
+        public List<WorldManager.EventName> compromisingEvents;
+        [HideInInspector] WorldManager.WorldEvent[] compromisingWorldEvents;
+
+        public void SetupWorldEvents()
+        {
+            requiredWorldEvents = new WorldManager.WorldEvent[requiredEvents.Count];
+            for(int i = 0; i < requiredEvents.Count; i++)
+            {
+                requiredWorldEvents[i] = WorldManager.GetWorldEvent(requiredEvents[i]);
+            }
+
+            compromisingWorldEvents = new WorldManager.WorldEvent[compromisingEvents.Count];
+            for (int i = 0; i < compromisingEvents.Count; i++)
+            {
+                compromisingWorldEvents[i] = WorldManager.GetWorldEvent(compromisingEvents[i]);
+            }
+        }
+
+        public bool IsValid()
+        {
+            if(progressionNeeded >= WorldManager.currentStoryStep)
+            {
+                foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
+                {
+                    if(!worldEvent.occured)
+                    {
+                        return false;
+                    }
+                }
+
+                foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
+                {
+                    if (worldEvent.occured)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

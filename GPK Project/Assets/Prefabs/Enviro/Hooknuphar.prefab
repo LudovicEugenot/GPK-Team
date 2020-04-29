@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 4956746632899320879}
   - component: {fileID: 4956746632899320878}
   - component: {fileID: 4956746632899320876}
+  - component: {fileID: 394276811297199819}
   - component: {fileID: 4956746632899320877}
   m_Layer: 8
   m_Name: Hooknuphar
@@ -194,7 +195,7 @@ Transform:
   m_GameObject: {fileID: 4956746632899320864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.65, y: 0.69, z: 2.3544235}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 511936660569397252}
   m_Father: {fileID: 0}
@@ -213,19 +214,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSecureHook: 0
-  blinkableColor: {r: 0, g: 0.75294125, b: 0.023529414, a: 1}
-  selectedColor: {r: 0.8862746, g: 0.86274517, b: 0.08627451, a: 1}
-  unselectableColor: {r: 0.099857606, g: 0.6415094, b: 0.11678422, a: 1}
+  blinkableColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 1, g: 1, b: 1, a: 1}
+  unselectableColor: {r: 1, g: 1, b: 1, a: 1}
+  decorationAnimator: {fileID: 0}
   agressiveHook: 0
-  agressionRange: 2
+  agressionRanges: []
   rangeVisualO: {fileID: 4229144373759376428}
   agressionTime: 0.3
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
-  relived: 0
-  beatRepairTime: 1
+  hookState:
+    relived: 0
+  beatRepairTime: 5
   beatTimeBeforeBroke: 1
+  addedTBBTime: 0.4
   brokenColor: {r: 0.19590655, g: 0.21698111, b: 0.091091126, a: 1}
 --- !u!212 &4956746632899320876
 SpriteRenderer:
@@ -266,8 +270,9 @@ SpriteRenderer:
   m_SortingLayerID: 882915597
   m_SortingLayer: -4
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 41e7068321383a240947a1ae1ba917a6, type: 3}
-  m_Color: {r: 0, g: 0.754717, b: 0.022627814, a: 1}
+  m_Sprite: {fileID: 1294983989194883087, guid: 05fff341911d70a4fb3a3d0a8eca271c,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -277,6 +282,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &394276811297199819
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4956746632899320864}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2d3cfecf8aa7c6743a72343bf236d39f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!58 &4956746632899320877
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -292,4 +316,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 1

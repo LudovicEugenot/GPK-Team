@@ -11,6 +11,7 @@ public abstract class Hook : MonoBehaviour
     public Color blinkableColor;
     public Color selectedColor;
     public Color unselectableColor;
+    public Animator decorationAnimator;
 
     public bool agressiveHook;
     public float[] agressionRanges;
@@ -31,7 +32,7 @@ public abstract class Hook : MonoBehaviour
 
     public void HandlerStart()
     {
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         animSynchronizer = GetComponentInChildren<AnimSynchronizer>();
 
@@ -47,9 +48,9 @@ public abstract class Hook : MonoBehaviour
     {
         StateUpdate();
 
-        if (animator != null)
+        if (decorationAnimator != null)
         {
-            animator.SetBool("IsConvert", hookState.relived);
+            decorationAnimator.SetBool("IsConvert", hookState.relived);
         }
 
         if(hookState.relived)

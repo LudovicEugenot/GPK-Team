@@ -85,14 +85,6 @@ public class Enemy_Basic : EnemyBase
             if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
             {
                 Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
-                /*
-                Debug.Log("Attack collider est " + attackCollider.ToString());
-                Debug.Log("Player filter est " + playerFilter.layerMask);
-                Debug.Log("Colliders est " + colliders.ToString()+". Il y a "+colliders.Count+ " Colliders dedans.");
-                Debug.Log("la taille de l'attaque est de " + attackCollider.radius);
-                Debug.Log("distance between me and player is" + Vector2.Distance(attackCollider.transform.position, player.position) * attackCollider.transform.localScale.x);
-                Debug.Log("Le premier collider s'appelle : " + colliders[0].name);
-                */
             }
             else
             {
@@ -123,7 +115,7 @@ public class Enemy_Basic : EnemyBase
                 {
                     break;
                 }
-                finalDirection = new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+                finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
             }
             endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
         }

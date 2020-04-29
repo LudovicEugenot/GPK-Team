@@ -6,37 +6,58 @@ using UnityEngine.SceneManagement;
 public class GameLoader : MonoBehaviour
 {
     public int startSceneBuildIndex;
+    public GameObject musicManager;
     [Space]
     [Tooltip("Leave empty to use default save file")] public string specifiedSaveFilePath; 
     public string playerDataSaveFileName;
     public string worldDataSaveFileName;
+    public string previewDataSaveFileName;
     public string saveFileExtension;
     public string defaultSaveDirectoryName;
 
-    private WorldData worldData;
-    private PlayerData playerData;
+
+    [HideInInspector] public WorldData worldData;
+    [HideInInspector] public PlayerData playerData;
+
+    private void Start()
+    {
+        SetupSaveSystem();
+    }
 
     public void StartNewGame()
     {
-        SetupSaveSystem();
+        //StartMusicManager();
         SceneManager.LoadScene(startSceneBuildIndex);
     }
 
     public void LoadGame()
     {
-        SetupSaveSystem();
         LoadWorldData();
         LoadPlayerData();
-        SceneManager.LoadScene(worldData.savedZoneBuildIndex);
+        //StartMusicManager();
+        StartGame();
+    }
+
+    public void StartGame()
+    {
+        if(worldData != null && playerData != null)
+        {
+            SceneManager.LoadScene(worldData.savedZoneBuildIndex);
+        }
+        else
+        {
+            Debug.LogError("Save data has not been loaded");
+        }
     }
 
     private void SetupSaveSystem()
     {
+        SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
         SaveSystem.SetSavePath(specifiedSaveFilePath);
         SaveSystem.playerDataSaveFileName = playerDataSaveFileName;
         SaveSystem.worldDataSaveFileName = worldDataSaveFileName;
         SaveSystem.saveFileExtension = saveFileExtension;
-        SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
+        SaveSystem.previewDataSaveFileName = previewDataSaveFileName;
     }
 
     private void LoadWorldData()
@@ -52,5 +73,10 @@ public class GameLoader : MonoBehaviour
         TransitionManager.Instance.savePos.x = playerData.position[0];
         TransitionManager.Instance.savePos.y = playerData.position[1];
         TransitionManager.Instance.newPlayerHp = playerData.health;
+    }
+
+    private void StartMusicManager()
+    {
+        musicManager.SetActive(true);
     }
 }

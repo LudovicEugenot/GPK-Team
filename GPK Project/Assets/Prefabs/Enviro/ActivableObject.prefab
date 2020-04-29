@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2488691751857785686}
   - component: {fileID: 2488691751857785681}
   - component: {fileID: 2488691751857785680}
+  - component: {fileID: 5091497926726227458}
   m_Layer: 9
   m_Name: ActivableObject
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2488691751857785685}
-  m_LocalRotation: {x: -0, y: -0, z: -0.4790088, w: -0.8778101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.95, y: 2.59, z: 0}
-  m_LocalScale: {x: 3.8889132, y: 1.09, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 57.241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2488691751857785686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,14 +47,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableState: 0
-  timeBeforeDeactivation: 2
-  stayEnable: 0
-  connectedHookterruptors: []
+  beatsBeforeDeactivation: 2
+  stayEnable: 1
+  connectedHookterruptors:
+  - {fileID: 0}
+  needAllPressed: 1
   isInteractableByEvent: 0
   relatedEvent: 0
   isEnabled: 0
   activeColor: {r: 1, g: 1, b: 1, a: 1}
-  deactiveColor: {r: 0.048593808, g: 0.22330925, b: 0.26415092, a: 1}
+  deactiveColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!61 &2488691751857785681
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -67,18 +70,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.030869722, y: -0.3509035}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.93826056, y: 1.1872416}
   m_EdgeRadius: 0
 --- !u!212 &2488691751857785680
 SpriteRenderer:
@@ -119,7 +122,8 @@ SpriteRenderer:
   m_SortingLayerID: 882915597
   m_SortingLayer: -4
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ba9a2e664f8a915458cbef9f955a4e05, type: 3}
+  m_Sprite: {fileID: -9121855220748837865, guid: 4f60ce205f745564cbffea214a5802b5,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -130,3 +134,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &5091497926726227458
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2488691751857785685}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 15e22f834e78fe946bdeeec7ca90b109, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

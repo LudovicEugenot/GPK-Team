@@ -21,14 +21,25 @@ public class BeatManager : MonoBehaviour
     private bool nextFrameFlag;
 
     private bool musicStarted;
-    [HideInInspector] public float beatTime;
-    private float timeBeforeNextBeat;
+    private double _beatTime;
+    public float BeatTime
+    {
+        get
+        {
+            return (float)_beatTime;
+        }
+    }
+    private double timeBeforeNextBeat;
     [HideInInspector] public float currentBeatProgression;
-    private float nextBeatStartTime;
-    private float offBeatStartTime;
+    [HideInInspector] public bool useCameraBeatShake;
+    private double nextBeatStartTime;
+    private double offBeatStartTime;
     private double songStartTime;
+    private double audioDspTimeDelay;
+    private double pauseStartTime;
+    private double audioPlayTime;
     private bool beatActionUsed;
-    private float lastActionTime;
+    private double lastActionTime;
     private bool actOnBeatPossible;
 
     private AudioSource switchingSource;
@@ -38,7 +49,6 @@ public class BeatManager : MonoBehaviour
 
     private float initialCameraSize;
     #endregion
-
 
     #region Singleton
     public static BeatManager Instance { get; private set; }
@@ -66,6 +76,8 @@ public class BeatManager : MonoBehaviour
         MusicInit();
 
         initialCameraSize = Camera.main.orthographicSize;
+        audioDspTimeDelay = 0;
+        useCameraBeatShake = true;
     }
 
     private void Update()
@@ -74,11 +86,12 @@ public class BeatManager : MonoBehaviour
         {
             StartMusic();
 
-            nextBeatStartTime = (float)AudioSettings.dspTime + beatStartTimeOffset;
+            nextBeatStartTime = beatStartTimeOffset;
             offBeatStartTime = nextBeatStartTime;
         }
 
-        if (musicStarted)
+        audioPlayTime = (float)AudioSettings.dspTime - songStartTime - audioDspTimeDelay;
+        if (musicStarted && !GameManager.Instance.paused)
         {
             TimeCycle();
         }
@@ -130,28 +143,28 @@ public class BeatManager : MonoBehaviour
             }
         }
 
-        if (nextBeatStartTime < (float)AudioSettings.dspTime)
+        if (nextBeatStartTime < audioPlayTime)
         {
-            nextBeatStartTime += beatTime;
-            if (cameraBeatEffectAmplitude != 0)
+            nextBeatStartTime += _beatTime;
+            if(cameraBeatEffectAmplitude != 0 && useCameraBeatShake)
             {
                 StartCoroutine(BeatEffect(1.0f));
             }
             onBeatSingleFrame = true;
         }
 
-        if (offBeatStartTime < (float)AudioSettings.dspTime - beatTime / 2)
+        if (offBeatStartTime < audioPlayTime - _beatTime / 2)
         {
-            offBeatStartTime += beatTime;
-            /*if (cameraBeatEffectAmplitude != 0)
+            offBeatStartTime += _beatTime;
+            /*if (cameraBeatEffectAmplitude != 0 && useCamearBeatShake)
             {
                 StartCoroutine(BeatEffect(0.2f));
             }*/
             beatActionUsed = false;
         }
 
-        timeBeforeNextBeat = nextBeatStartTime - (float)AudioSettings.dspTime;
-        currentBeatProgression = 1 - (timeBeforeNextBeat / beatTime);
+        timeBeforeNextBeat = nextBeatStartTime - audioPlayTime;
+        currentBeatProgression = (float)(1 - (timeBeforeNextBeat / _beatTime));
     }
 
     private IEnumerator BeatEffect(float amplitude)
@@ -168,13 +181,13 @@ public class BeatManager : MonoBehaviour
     public bool OnBeat(bool isAction)
     {
         bool onBeat = false;
-        float beatTimeProgression = beatTime - timeBeforeNextBeat;
+        double _beatTimeProgression = _beatTime - timeBeforeNextBeat;
 
         if (actOnBeatPossible || !isAction)
         {
             if (timingThresholdOffset >= timingThreshold / 2)
             {
-                if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+                if (_beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && _beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
                 {
                     onBeat = true;
                 }
@@ -188,7 +201,7 @@ public class BeatManager : MonoBehaviour
             }
             else
             {
-                if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
+                if (_beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
                 {
                     onBeat = true;
                 }
@@ -207,12 +220,12 @@ public class BeatManager : MonoBehaviour
         }
 
         actOnBeatPossible = false;
-        if ((float)AudioSettings.dspTime - lastActionTime > minTimeForOnBeatValidation)
+        if (audioPlayTime - lastActionTime > minTimeForOnBeatValidation)
         {
             actOnBeatPossible = true;
         }
 
-        lastActionTime = (float)AudioSettings.dspTime;
+        lastActionTime = audioPlayTime;
 
         return !used;
     }
@@ -224,6 +237,21 @@ public class BeatManager : MonoBehaviour
         switchingSource.Play();
 
         songStartTime = AudioSettings.dspTime;
+    }
+
+    public void PauseMusic()
+    {
+        if (source != null)
+            source.Pause();
+        pauseStartTime = audioPlayTime;
+    }
+
+    public void UnPauseMusic()
+    {
+        if(source != null)
+            source.UnPause();
+
+        audioDspTimeDelay += audioPlayTime - pauseStartTime;
     }
 
     private void MusicInit()

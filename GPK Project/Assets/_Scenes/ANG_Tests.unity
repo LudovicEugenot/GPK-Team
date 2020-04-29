@@ -243,12 +243,18 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   lockLoop: 00010001
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
-  animator: {fileID: 0}
 --- !u!114 &334711840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,12 +271,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!4 &620873240 stripped
 Transform:
@@ -393,12 +407,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &689116095
 GameObject:
@@ -434,13 +456,14 @@ MonoBehaviour:
   timingThreshold: 0.2
   timingThresholdOffset: 0
   beatStartTimeOffset: 0
+  minTimeForOnBeatValidation: 0
   cameraBeatEffectLerpSpeed: 0.5
   cameraBeatEffectAmplitude: 1
   onBeatSingleFrame: 0
   onBeatFirstFrame: 0
   onBeatNextFrame: 0
-  beatTime: 0
   currentBeatProgression: 0
+  useCameraBeatShake: 0
 --- !u!82 &689116097
 AudioSource:
   m_ObjectHideFlags: 0
@@ -678,12 +701,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!114 &1009938554 stripped
 MonoBehaviour:
@@ -878,12 +909,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!224 &1170996027 stripped
 RectTransform:
@@ -991,12 +1030,18 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   lockLoop: 00010001
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
-  animator: {fileID: 0}
 --- !u!58 &1291309603
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1029,12 +1074,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &1294224424
 GameObject:
@@ -1152,12 +1205,18 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   lockLoop: 000101
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
-  animator: {fileID: 0}
 --- !u!114 &1294224429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,12 +1233,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &1636733462
 GameObject:
@@ -1267,12 +1334,18 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   lockLoop: 000101
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
-  animator: {fileID: 0}
 --- !u!4 &1636733465
 Transform:
   m_ObjectHideFlags: 0
@@ -1319,12 +1392,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!4 &1754378323 stripped
 Transform:
@@ -1447,12 +1528,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 1
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!224 &1853943156 stripped
 RectTransform:
@@ -1602,12 +1691,18 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   lockLoop: 000101
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
-  animator: {fileID: 0}
 --- !u!58 &1954684499
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1640,12 +1735,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1 &2120972280
 GameObject:
@@ -1763,12 +1866,18 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   lockLoop: 00010001
   lockedColor: {r: 0.22828409, g: 0.28131145, b: 0.509434, a: 1}
-  animator: {fileID: 0}
 --- !u!114 &2120972285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1785,12 +1894,20 @@ MonoBehaviour:
   blinkableColor: {r: 0.15294118, g: 0.83921576, b: 0.627451, a: 1}
   selectedColor: {r: 0.8867924, g: 0.8645586, b: 0.08784264, a: 1}
   unselectableColor: {r: 0.1262905, g: 0.6226415, b: 0.4694818, a: 1}
+  decorationAnimator: {fileID: 0}
+  agressiveHook: 0
+  agressionRanges: []
+  rangeVisualO: {fileID: 0}
+  agressionTime: 0
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
+  hookState:
+    relived: 0
   convertable: 0
   convertedColor: {r: 0.097232126, g: 0.6664798, b: 0.8962264, a: 1}
-  animator: {fileID: 0}
+  effectRange: 0
+  effectCircleVisualO: {fileID: 0}
   converted: 0
 --- !u!1001 &1099073888880813540
 PrefabInstance:
@@ -2158,7 +2275,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -2568,7 +2685,7 @@ PrefabInstance:
     - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6173341646679826281, guid: f1c25c4228af07741987752a99ea4c1a,
         type: 3}

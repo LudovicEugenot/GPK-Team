@@ -28,24 +28,32 @@ public class RemoteSpeaker : MonoBehaviour
 
     private void Update()
     {
-        if(speakerPlaced)
+        if(GameManager.Instance.playerManager.ownSpeaker)
         {
-            if(beatCooldownRemaining > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
+            UpdateSpeaker();
+        }
+    }
+
+    private void UpdateSpeaker()
+    {
+        if (speakerPlaced)
+        {
+            if (beatCooldownRemaining > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 beatCooldownRemaining--;
             }
-            else if(beatCooldownRemaining == 0 && remoteSpeakerO != null)
+            else if (beatCooldownRemaining == 0 && remoteSpeakerO != null)
             {
                 StartCoroutine(PickupSpeaker());
             }
         }
         else
         {
-            if(beatCooldownRemaining < initialBeatCooldown && GameManager.Instance.Beat.onBeatFirstFrame)
+            if (beatCooldownRemaining < initialBeatCooldown && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 beatCooldownRemaining++;
             }
-            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct())
+            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
                 StartCoroutine(ThrowSpeaker());
             }
@@ -63,10 +71,10 @@ public class RemoteSpeaker : MonoBehaviour
         remoteSpeakerO = Instantiate(speakerPrefab, transform.position, Quaternion.identity);
         speakerHook = remoteSpeakerO.GetComponent<SpeakerHook>();
         speakerHook.remoteSpeaker = this;
-        while (currentLaunchTime < GameManager.Instance.Beat.beatTime)
+        while (currentLaunchTime < GameManager.Instance.Beat.BeatTime)
         {
-            Vector2 realPos = Vector2.Lerp(transform.position, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.beatTime));
-            remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.beatTime)) * curveVisualForce);
+            Vector2 realPos = Vector2.Lerp(transform.position, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.BeatTime));
+            remoteSpeakerO.transform.position = new Vector2(realPos.x, realPos.y + launchCurveVisual.Evaluate(launchCurveProgression.Evaluate(currentLaunchTime / GameManager.Instance.Beat.BeatTime)) * curveVisualForce);
             yield return new WaitForFixedUpdate();
             currentLaunchTime += Time.fixedDeltaTime;
             speakerHook.isDisabled = true;

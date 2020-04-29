@@ -59,11 +59,13 @@ public class Blink : MonoBehaviour
 
     void Update()
     {
-        DrawHookRange(currentRange, transform.position);
+        if (!GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+        {
+            DrawHookRange(currentRange, transform.position);
+            HookSelection();
+        }
 
-        HookSelection();
-
-        if (Input.GetButtonDown("Blink") && selectedHook != null)
+        if (Input.GetButtonDown("Blink") && selectedHook != null && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
         {
             if(GameManager.Instance.Beat.CanAct())
             {

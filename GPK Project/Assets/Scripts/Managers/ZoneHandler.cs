@@ -95,7 +95,10 @@ public class ZoneHandler : MonoBehaviour
 
         for (int i = 0; i < currentZone.elementsEnabled.Length; i++)
         {
-            currentZone.elementsEnabled[i] = GameManager.Instance.zoneElements[i].isEnabled;
+            if (i < GameManager.Instance.zoneElements.Count)
+            {
+                currentZone.elementsEnabled[i] = GameManager.Instance.zoneElements[i].isEnabled;
+            }
         }
 
         for (int i = 0; i < currentZone.hooksRelived.Length; i++)
@@ -118,9 +121,13 @@ public class ZoneHandler : MonoBehaviour
             }
         }
 
+
         for (int i = 0; i < currentZone.elementsEnabled.Length; i++)
         {
-            GameManager.Instance.zoneElements[i].isEnabled = currentZone.elementsEnabled[i];
+            if(i < GameManager.Instance.zoneElements.Count)
+            {
+                GameManager.Instance.zoneElements[i].isEnabled = currentZone.elementsEnabled[i];
+            }
         }
 
         currentZone.zoneHooks = GameManager.Instance.zoneHooks;
