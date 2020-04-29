@@ -59,22 +59,35 @@ public class Blink : MonoBehaviour
 
     void Update()
     {
+        DrawHookRange(currentRange, transform.position);
         if (!GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
         {
-            DrawHookRange(currentRange, transform.position);
             HookSelection();
         }
-
-        if (Input.GetButtonDown("Blink") && selectedHook != null && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+        else
         {
-            if(GameManager.Instance.Beat.CanAct())
+            blinkTrajectoryPreviewLine.enabled = false;
+            blinkTargetO.SetActive(false);
+            blinkInvalidTargetO.SetActive(false);
+        }
+
+        if(Input.GetButtonDown("Blink") || Input.GetButtonDown("Attack"))
+        {
+            if (selectedHook != null && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
-                BlinkMove();
-            }
-            else
-            {
-                Instantiate(overActionEffectPrefab, transform.parent.position, Quaternion.identity);
-                FailCombo();
+                if (GameManager.Instance.Beat.CanAct())
+                {
+                    BlinkMove();
+                    if (Input.GetButtonDown("Attack"))
+                    {
+                        GameManager.Instance.attack.StartCharge();
+                    }
+                }
+                else
+                {
+                    Instantiate(overActionEffectPrefab, transform.parent.position, Quaternion.identity);
+                    FailCombo();
+                }
             }
         }
     }
@@ -119,6 +132,7 @@ public class Blink : MonoBehaviour
         {
             hoveredHook.selected = false;
             hoveredHook = null;
+            selectedHook = null;
         }
 
         currentRange = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1];
@@ -134,6 +148,7 @@ public class Blink : MonoBehaviour
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
             blinkDestination = transform.position;
+            selectedHook = null;
         }
     }
 

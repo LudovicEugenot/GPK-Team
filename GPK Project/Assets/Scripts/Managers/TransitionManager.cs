@@ -23,6 +23,7 @@ public class TransitionManager : MonoBehaviour
     private Hook startHook;
     [HideInInspector] public Vector2 savePos;
     [HideInInspector] public int newPlayerHp;
+    [HideInInspector] public bool firstInit;
     private ZoneHandler zoneHandler;
 
     public enum TransitionDirection { Up, Down, Right, Left , WIP};
@@ -37,6 +38,7 @@ public class TransitionManager : MonoBehaviour
         {
             Instance = this;
             zoneHandler = GetComponent<ZoneHandler>();
+            firstInit = true;
         }
         else
         {
@@ -78,11 +80,6 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber)
     {
-        if (startHook == null)
-        {
-            startHook = GameManager.Instance.blink.startHook;
-        }
-
         ZoneHandler.Zone potentialZone = null;
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         foreach (ZoneHandler.Zone zone in zoneHandler.zones)
@@ -119,7 +116,12 @@ public class TransitionManager : MonoBehaviour
         }
 
 
-        if(savePos == Vector2.zero)
+        if (startHook == null)
+        {
+            startHook = GameManager.Instance.blink.startHook;
+        }
+
+        if (!firstInit)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
@@ -133,9 +135,12 @@ public class TransitionManager : MonoBehaviour
         else
         {
             GameManager.Instance.playerManager.transform.parent.position = savePos;
-            savePos = Vector2.zero;
+            if(savePos == Vector2.zero)
+            {
+                GameManager.Instance.playerManager.transform.parent.position = startHook.transform.position;
+            }
         }
-
+        GameManager.Instance.blink.currentHook = startHook;
 
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         float maskLerpProgression = 0;
@@ -145,7 +150,8 @@ public class TransitionManager : MonoBehaviour
             blackScreenMask.transform.localScale = new Vector2(maskLerpProgression * maxMaskSize, maskLerpProgression * maxMaskSize);
             yield return new WaitForEndOfFrame();
         }
-        Instantiate(apparitionPrefab, savePos == Vector2.zero ? startHook.transform.position : (Vector3)savePos, Quaternion.identity);
+        Instantiate(apparitionPrefab, !firstInit ? startHook.transform.position : (Vector3)savePos, Quaternion.identity);
+        firstInit = false;
         yield return new WaitForSeconds(timeBeforePlayerAppearence);
         currentPlayerRendererO.SetActive(true);
         blackScreen.SetActive(false);

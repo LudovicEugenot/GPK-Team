@@ -68,7 +68,7 @@ public abstract class Hook : MonoBehaviour
         if(isPlayerOnBeat)
         {
             hookState.Relive();
-            if (agressiveHook)
+            /*if (agressiveHook)
             {
                 rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
                 rangeVisualO.SetActive(true);
@@ -85,8 +85,9 @@ public abstract class Hook : MonoBehaviour
 
                 yield return new WaitForSeconds(agressionTime);
                 rangeVisualO.SetActive(false);
-            }
+            }*/
         }
+        yield return null;
     }
 
     public abstract IEnumerator BlinkSpecificReaction();

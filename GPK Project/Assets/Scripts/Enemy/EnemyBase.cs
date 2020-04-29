@@ -122,6 +122,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected Vector2 playerPositionStartOfBeat;
     protected Transform parent;
     protected Vector2 positionStartOfBeat;
+    protected Animator animator;
 
     protected List<Vector2> lastSeenPlayerPosition = new List<Vector2>();
     protected bool alreadyGotToLastPosition;
@@ -186,8 +187,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void Awake()
     {
-        parent = transform.parent.transform;
-        //Debug.Log(parent.name);
+        parent = transform.parent;
+        animator = parent.GetComponentInChildren<Animator>();
         rb2D = parent.GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
         if (rb2D == null)
         {
@@ -422,14 +423,12 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (!converted)
         {
-            if (enemyCurrentHP > 1)
-            {
-                enemyCurrentHP--;
-            }
-            else
+            enemyCurrentHP--;
+            if (enemyCurrentHP <= 0)
             {
                 GetConverted(false);
             }
+            animator.SetTrigger("Hurt");
         }
     }
 
@@ -437,14 +436,12 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (!converted)
         {
-            if (enemyCurrentHP > 1)
-            {
-                enemyCurrentHP -= damageTaken;
-            }
-            else
+            enemyCurrentHP -= damageTaken;
+            if (enemyCurrentHP <= 0)
             {
                 GetConverted(false);
             }
+            animator.SetTrigger("Hurt");
         }
     }
 

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject elementsHolder;
     [HideInInspector] public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
+    [HideInInspector] public BlinkAttack attack;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public DialogueManager dialogueManager;
     [HideInInspector] public GameObject spriteRendererO;
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
         WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
+        attack = player.GetComponentInChildren<BlinkAttack>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
         dialogueManager = player.GetComponentInChildren<DialogueManager>();
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));

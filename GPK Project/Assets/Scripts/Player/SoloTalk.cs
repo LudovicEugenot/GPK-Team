@@ -6,6 +6,7 @@ public class SoloTalk : MonoBehaviour
 {
     public Talk commentary;
     public Hook nearbyHook;
+    public bool autoTrigger;
     public float camZoom;
     public WorldManager.StoryStep storyStepRequired;
     public WorldManager.EventName[] requiredEvents;
@@ -20,9 +21,13 @@ public class SoloTalk : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && GameManager.Instance.blink.currentHook == nearbyHook && storyStepRequired <= WorldManager.currentStoryStep && IsValid())
+        if(GameManager.Instance.blink.currentHook == nearbyHook && storyStepRequired <= WorldManager.currentStoryStep && IsValid())
         {
-            GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+            if (Input.GetButtonDown("Interact") || autoTrigger)
+            {
+                GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                autoTrigger = false;
+            }
         }
     }
 

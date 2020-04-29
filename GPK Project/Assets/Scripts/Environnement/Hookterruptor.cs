@@ -6,18 +6,19 @@ public class Hookterruptor : Hook
 {
     public Color pressedColor;
     public bool stayPressedUntilNextBlink;
-    public float pressMinTime;
+    public float pressBeatTime;
 
     public WorldManager.EventName eventToOccur;
     private WorldManager.WorldEvent worldEventToOccur;
 
     [HideInInspector] public bool pressed;
+    private float pressTimeRemaining;
 
     void Start()
     {
         HandlerStart();
         pressed = false;
-
+        pressTimeRemaining = 0;
         worldEventToOccur = WorldManager.GetWorldEvent(eventToOccur);
     }
 
@@ -38,26 +39,30 @@ public class Hookterruptor : Hook
 
     public override IEnumerator BlinkSpecificReaction()
     {
-        if(stayPressedUntilNextBlink)
-        {
-            pressed = true;
-        }
-        else
-        {
-            pressed = true;
-            yield return new WaitForSeconds(pressMinTime);
-            pressed = false;
-        }
+        pressed = true;
+        pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime;
+        yield return null;
     }
 
     public override void StateUpdate()
     {
-        if (stayPressedUntilNextBlink)
+        if(pressTimeRemaining > 0)
         {
-            if(pressed && GameManager.Instance.blink.currentHook != this)
+            if (stayPressedUntilNextBlink)
             {
-                Invoke("Unpress", pressMinTime);
+                if(GameManager.Instance.blink.currentHook != this)
+                {
+                    pressTimeRemaining -= Time.deltaTime;
+                }
             }
+            else
+            {
+                pressTimeRemaining -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            pressed = false;
         }
 
         if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
