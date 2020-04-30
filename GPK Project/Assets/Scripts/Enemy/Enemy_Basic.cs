@@ -12,7 +12,6 @@ public class Enemy_Basic : EnemyBase
 
     private GameObject attackParent;
     private CircleCollider2D attackCollider;
-    private Animator animator;
 
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
@@ -29,7 +28,7 @@ public class Enemy_Basic : EnemyBase
 
     private EnemyBehaviour[] passivePattern = new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Moving)
+        new EnemyBehaviour(EnemyState.Moving, true)
     };
 
     private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[]
@@ -50,7 +49,6 @@ public class Enemy_Basic : EnemyBase
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         maxRadiusAttack = attackParent.transform.localScale.x;
         hasAttacked = false;
-        animator = parent.GetComponentInChildren<Animator>();
     }
 
     protected override void ConvertedBehaviour()

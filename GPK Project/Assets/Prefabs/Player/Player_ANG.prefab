@@ -820,8 +820,11 @@ MonoBehaviour:
   - 6.9
   - 7.1
   - 7.3
+  allowedConsecutiveOnbeatMiss: 1
+  comboMalus: 2
   startHook: {fileID: 0}
   unreachableHookNoMove: 1
+  holdToBlink: 0
   blinkTrajectoryPreviewLine: {fileID: 1110374556}
   blinkTargetO: {fileID: 2046862579}
   blinkInvalidTargetO: {fileID: 1834549838}
@@ -853,9 +856,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff90bebf2f38f3c469dd1de8d35f7e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 0
-  attackInitialRange: {x: 0, y: 0}
+  attackDamage: 1
+  attackInitialRange: {x: 5, y: 1.5}
+  attackMissRange: 2
+  attackKnockbackSpeed: 5
+  attackKnockbackTime: 0.3
   attackDirectionPreview: {fileID: 8918600143203410014}
+  chargeBeginParticle: {fileID: 1007985462191729336, guid: a4e2a1183ca6c6749af403dbf5e423fe,
+    type: 3}
+  attackFx: {fileID: 7490181753717713072, guid: 586c07c9c540a6d46926f0c5a21fe049,
+    type: 3}
+  missAttackFx: {fileID: 4090550013682170832, guid: da77a1887e2917c4c97e4e8a5ee7d94e,
+    type: 3}
 --- !u!114 &3822639274368582670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,6 +967,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxhealthPoint: 5
+  playerOffBeated: 0
+  beatAndOffBeatAllowed: 0
   firstHealthPointPos: {fileID: 0}
   distanceBetweenHp: 80
   hpIconPrefab: {fileID: 4903183659854579373, guid: da3f917cbd2418949af21a43d69c7138,

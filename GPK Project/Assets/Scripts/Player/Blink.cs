@@ -6,8 +6,11 @@ public class Blink : MonoBehaviour
     #region Initialization
     [Header("Blink settings")]
     public float[] blinkRangeProgression;
+    public int allowedConsecutiveOnbeatMiss;
+    public int comboMalus;
     public Hook startHook;
     public bool unreachableHookNoMove;
+    public bool holdToBlink;
     [Space]
     public LineRenderer blinkTrajectoryPreviewLine;
     public GameObject blinkTargetO;
@@ -32,6 +35,7 @@ public class Blink : MonoBehaviour
 
     [HideInInspector] public float currentRange;
     private int currentTimedCombo;
+    private int consecutiveMiss;
     private Vector2 worldMousePos;
     private Hook selectedHook = null;
 
@@ -71,7 +75,7 @@ public class Blink : MonoBehaviour
             blinkInvalidTargetO.SetActive(false);
         }
 
-        if(Input.GetButtonDown("Blink") || Input.GetButtonDown("Attack"))
+        if(holdToBlink ? Input.GetButton("Blink") : (Input.GetButtonDown("Blink")) || Input.GetButtonDown("Attack"))
         {
             if (selectedHook != null && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
@@ -226,11 +230,12 @@ public class Blink : MonoBehaviour
             }
 
 
-            if (GameManager.Instance.Beat.OnBeat(true) && blinkReachDestination)
+            if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,true) && blinkReachDestination)
             {
                 StartCoroutine(selectedHook.BlinkReaction(true));
 
                 currentTimedCombo++;
+                consecutiveMiss = 0;
                 Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
             }
             else
@@ -262,6 +267,17 @@ public class Blink : MonoBehaviour
 
     public void FailCombo()
     {
-        currentTimedCombo = 0;
+        if(consecutiveMiss < allowedConsecutiveOnbeatMiss)
+        {
+            consecutiveMiss++;
+        }
+        else
+        {
+            currentTimedCombo -= comboMalus;
+            if(currentTimedCombo < 0)
+            {
+                currentTimedCombo = 0;
+            }
+        }
     }
 }

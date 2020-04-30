@@ -30,10 +30,11 @@ public class BeatManager : MonoBehaviour
         }
     }
     private double timeBeforeNextBeat;
+    private double timeBeforeNextOffBeat;
     [HideInInspector] public float currentBeatProgression;
     [HideInInspector] public bool useCameraBeatShake;
     private double nextBeatStartTime;
-    private double offBeatStartTime;
+    private double nextOffBeatStartTime;
     private double songStartTime;
     private double audioDspTimeDelay;
     private double pauseStartTime;
@@ -80,7 +81,7 @@ public class BeatManager : MonoBehaviour
             StartMusic();
 
             nextBeatStartTime = beatStartTimeOffset;
-            offBeatStartTime = nextBeatStartTime;
+            nextOffBeatStartTime = nextBeatStartTime;
         }
 
         audioPlayTime = (float)AudioSettings.dspTime - songStartTime - audioDspTimeDelay;
@@ -115,7 +116,7 @@ public class BeatManager : MonoBehaviour
             onBeatNextFrame = false;
         }
 
-        if (OnBeat(false))
+        if (OnBeat(GameManager.Instance.playerManager.playerOffBeated ,false))
         {
             if(firstFrameFlag)
             {
@@ -139,24 +140,38 @@ public class BeatManager : MonoBehaviour
         if (nextBeatStartTime < audioPlayTime)
         {
             nextBeatStartTime += _beatTime;
-            if(cameraBeatEffectAmplitude != 0 && useCameraBeatShake)
-            {
-                StartCoroutine(BeatEffect(1.0f));
-            }
             onBeatSingleFrame = true;
+            if (!GameManager.Instance.playerManager.playerOffBeated)
+            {
+                if (cameraBeatEffectAmplitude != 0 && useCameraBeatShake)
+                {
+                    StartCoroutine(BeatEffect(1.0f));
+                }
+            }
+            if(GameManager.Instance.playerManager.playerOffBeated || GameManager.Instance.playerManager.beatAndOffBeatAllowed)
+            {
+                beatActionUsed = false;
+            }
         }
 
-        if (offBeatStartTime < audioPlayTime - _beatTime / 2)
+        if (nextOffBeatStartTime < audioPlayTime - _beatTime / 2)
         {
-            offBeatStartTime += _beatTime;
-            /*if (cameraBeatEffectAmplitude != 0 && useCamearBeatShake)
+            nextOffBeatStartTime += _beatTime;
+            if(GameManager.Instance.playerManager.playerOffBeated)
             {
-                StartCoroutine(BeatEffect(0.2f));
-            }*/
-            beatActionUsed = false;
+                if (cameraBeatEffectAmplitude != 0 && useCameraBeatShake)
+                {
+                    StartCoroutine(BeatEffect(1.0f));
+                }
+            }
+            if (!GameManager.Instance.playerManager.playerOffBeated || GameManager.Instance.playerManager.beatAndOffBeatAllowed)
+            {
+                beatActionUsed = false;
+            }
         }
 
         timeBeforeNextBeat = nextBeatStartTime - audioPlayTime;
+        timeBeforeNextOffBeat = nextOffBeatStartTime - audioPlayTime + _beatTime * 0.5f;
         currentBeatProgression = (float)(1 - (timeBeforeNextBeat / _beatTime));
     }
 
@@ -171,36 +186,68 @@ public class BeatManager : MonoBehaviour
         Camera.main.orthographicSize = initialCameraSize;
     }
 
-    public bool OnBeat(bool isAction)
+    public bool OnBeat(bool offBeat, bool isAction)
     {
         bool onBeat = false;
-        double _beatTimeProgression = _beatTime - timeBeforeNextBeat;
-
-        if(actOnBeatPossible || !isAction)
+        double beatTimeProgression;
+        if(!offBeat || GameManager.Instance.playerManager.beatAndOffBeatAllowed)
         {
-            if (timingThresholdOffset >= timingThreshold / 2)
+            beatTimeProgression = _beatTime - timeBeforeNextBeat;
+            if (actOnBeatPossible || !isAction)
             {
-                if (_beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && _beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+                if (timingThresholdOffset >= timingThreshold / 2)
                 {
-                    onBeat = true;
+                    if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+                    {
+                        onBeat = true;
+                    }
                 }
-            }
-            else if (timingThresholdOffset <= -timingThreshold / 2)
-            {
-                if (timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset && timeBeforeNextBeat > -timingThresholdOffset - (timingThreshold / 2))
+                else if (timingThresholdOffset <= -timingThreshold / 2)
                 {
-                    onBeat = true;
+                    if (timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset && timeBeforeNextBeat > -timingThresholdOffset - (timingThreshold / 2))
+                    {
+                        onBeat = true;
+                    }
                 }
-            }
-            else
-            {
-                if (_beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
+                else
                 {
-                    onBeat = true;
+                    if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextBeat < (timingThreshold / 2) - timingThresholdOffset)
+                    {
+                        onBeat = true;
+                    }
                 }
             }
         }
 
+        if(offBeat || GameManager.Instance.playerManager.beatAndOffBeatAllowed)
+        {
+            beatTimeProgression = _beatTime - timeBeforeNextOffBeat;
+
+            if (actOnBeatPossible || !isAction)
+            {
+                if (timingThresholdOffset >= timingThreshold / 2)
+                {
+                    if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset && beatTimeProgression > timingThresholdOffset - (timingThreshold / 2))
+                    {
+                        onBeat = true;
+                    }
+                }
+                else if (timingThresholdOffset <= -timingThreshold / 2)
+                {
+                    if (timeBeforeNextOffBeat < (timingThreshold / 2) - timingThresholdOffset && timeBeforeNextOffBeat> -timingThresholdOffset - (timingThreshold / 2))
+                    {
+                        onBeat = true;
+                    }
+                }
+                else
+                {
+                    if (beatTimeProgression < (timingThreshold / 2) + timingThresholdOffset || timeBeforeNextOffBeat< (timingThreshold / 2) - timingThresholdOffset)
+                    {
+                        onBeat = true;
+                    }
+                }
+            }
+        }
         return onBeat;
     }
 

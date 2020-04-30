@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     public int maxhealthPoint;
+    public bool playerOffBeated;
+    public bool beatAndOffBeatAllowed;
     public RectTransform firstHealthPointPos;
     public float distanceBetweenHp;
     public GameObject hpIconPrefab;

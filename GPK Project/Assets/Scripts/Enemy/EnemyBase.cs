@@ -421,7 +421,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (!converted)
+        if (!converted && canBeDamaged)
         {
             enemyCurrentHP--;
             if (enemyCurrentHP <= 0)
@@ -432,9 +432,9 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damageTaken)
+    public void TakeDamage(int damageTaken, Vector2 knockbackDirectedSpeed, float knockbackTime)
     {
-        if (!converted)
+        if (!converted && canBeDamaged)
         {
             enemyCurrentHP -= damageTaken;
             if (enemyCurrentHP <= 0)
@@ -442,6 +442,18 @@ public abstract class EnemyBase : MonoBehaviour
                 GetConverted(false);
             }
             animator.SetTrigger("Hurt");
+            KnockBack(knockbackDirectedSpeed, knockbackTime);
+        }
+    }
+
+    public IEnumerator KnockBack(Vector2 directedForce, float knockbackTime)
+    {
+        float timer = knockbackTime;
+        while(timer > 0)
+        {
+            parent.position += (Vector3)directedForce * Time.fixedDeltaTime;
+            timer -= Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
     }
 

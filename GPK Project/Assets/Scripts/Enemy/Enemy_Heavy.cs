@@ -15,7 +15,6 @@ public class Enemy_Heavy : EnemyBase
     private CircleCollider2D attackCollider;
     private GameObject convertedAttackParent;
     private CircleCollider2D convertedAttackCollider;
-    private Animator animator;
 
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
@@ -62,7 +61,6 @@ public class Enemy_Heavy : EnemyBase
         convertedAttackParent.SetActive(false);
 
         hasAttacked = false;
-        animator = parent.GetComponentInChildren<Animator>();
 
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
