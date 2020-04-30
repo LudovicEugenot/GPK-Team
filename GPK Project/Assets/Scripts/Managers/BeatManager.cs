@@ -29,6 +29,7 @@ public class BeatManager : MonoBehaviour
             return (float)_beatTime;
         }
     }
+    public double audioTime { get { return AudioSettings.dspTime; } }
     private double timeBeforeNextBeat;
     [HideInInspector] public float currentBeatProgression;
     [HideInInspector] public bool useCameraBeatShake;
@@ -236,27 +237,27 @@ public class BeatManager : MonoBehaviour
 
         switchingSource.Play();
 
-        songStartTime = AudioSettings.dspTime;
+        songStartTime = audioTime;
     }
 
     public void PauseMusic()
     {
-        if (source != null)
-            source.Pause();
+        if (switchingSource != null)
+            switchingSource.Pause();
         pauseStartTime = audioPlayTime;
     }
 
     public void UnPauseMusic()
     {
-        if(source != null)
-            source.UnPause();
+        if(switchingSource != null)
+            switchingSource.UnPause();
 
         audioDspTimeDelay += audioPlayTime - pauseStartTime;
     }
 
     private void MusicInit()
     {
-        beatTime = 60 / bpm;
+        _beatTime = 60 / bpm;
         onBeatSingleFrame = false;
         beatActionUsed = false;
     }

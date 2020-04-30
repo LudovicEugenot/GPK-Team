@@ -5,13 +5,6 @@ using UnityEngine;
  *  DONE Ajouter un feedback qui montre au joueur qu’il peut pas changer de zone quand il essaie de le faire
  *  Changer la musique quand un combat se déclenche
  *  Synchroniser la musique de combat avec la musique de non combat
- *  
- *  Je peux transitionner sur le 4ème beat
- *  break moment calme
- *  into drop
- *  into boucle (moment énervé) qui peuvent s'enchaîner dans n'importe quel ordre
- *  
- *  début : 
  */
 
 public class MusicManager : MonoBehaviour
@@ -28,6 +21,42 @@ public class MusicManager : MonoBehaviour
     }
 
 
+    AudioClip ChooseAppropriateMusic(AudioClip currentMusic)
+    {
+        if (MusicIsInArray(currentMusic, musicSO.drop))
+        {
+            return musicSO.combatLoop[Random.Range(0, musicSO.combatLoop.Length)];
+        }
+
+        if (ZoneHandler.Instance.AllEnemiesConverted())
+        {
+            if (MusicIsInArray(currentMusic, musicSO.combatLoop))
+                return musicSO.breaks[Random.Range(0, musicSO.breaks.Length)];
+            else
+            //if (MusicIsInArray(currentMusic, musicSO.breaks))
+                return musicSO.calmLoop;
+        }
+        else
+        {
+            if (MusicIsInArray(currentMusic, musicSO.combatLoop))
+            {
+                if (musicSO.combatLoop.Length > 1)
+                {
+                    AudioClip music = musicSO.combatLoop[Random.Range(0, musicSO.combatLoop.Length)];
+                    while (music == currentMusic)
+                    {
+                        music = musicSO.combatLoop[Random.Range(0, musicSO.combatLoop.Length)];
+                    }
+                    return music;
+                }
+            }
+            if (currentMusic == musicSO.calmLoop)
+                return musicSO.drop[Random.Range(0, musicSO.drop.Length)];
+            else
+            //if (MusicIsInArray(currentMusic, musicSO.breaks))
+                return musicSO.combatLoop[Random.Range(0, musicSO.combatLoop.Length)];
+        }
+    }
 
     void ScriptableObjectSetUp()
     {
@@ -38,7 +67,16 @@ public class MusicManager : MonoBehaviour
         beatManager.cameraBeatEffectLerpSpeed = musicSO.cameraBeatEffectLerpSpeed;
         beatManager.cameraBeatEffectAmplitude = musicSO.cameraBeatEffectAmplitude;
 
-        //beatManager.LoadMusic(musicSO.explorationLoop, musicSO.explorationBeatStartTimeOffset);
-        beatManager.LoadMusic(musicSO.explorationLoop);
+        beatManager.LoadMusic(musicSO.calmLoop, musicSO.calmMusicStartTimeOffset); /////////// à changer
+    }
+
+    bool MusicIsInArray(AudioClip clip, AudioClip[] array)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (clip == array[i])
+                return true;
+        }
+        return false;
     }
 }
