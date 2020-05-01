@@ -99,7 +99,7 @@ public class RemoteSpeaker : MonoBehaviour
     private IEnumerator SpeakerEffect()
     {
         Instantiate(onTimeParticleEffectPrefab, remoteSpeakerO.transform.position, Quaternion.identity);
-        StartCoroutine(speakerHook.CreateMusicArea());
+        //StartCoroutine(speakerHook.CreateMusicArea());
         beatCooldownRemaining = initialBeatCooldown - minimumBeatCooldown;
         yield return null;
     }

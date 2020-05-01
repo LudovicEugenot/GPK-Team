@@ -38,7 +38,7 @@ public class SpeakerHook : Hook
         yield return null;
     }
 
-    public IEnumerator CreateMusicArea()
+    /*public IEnumerator CreateMusicArea()
     {
         rangeVisualO.SetActive(true);
         List<Collider2D> colliders = new List<Collider2D>();
@@ -54,5 +54,5 @@ public class SpeakerHook : Hook
 
         yield return new WaitForSeconds(agressionTime);
         rangeVisualO.SetActive(false);
-    }
+    }*/
 }

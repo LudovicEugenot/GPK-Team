@@ -10,8 +10,9 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("Put writting Speeds to 1 to accurate use")] public float numberOfLetterByBeat;
 
     private Text dialogueText;
+    private Text pnjNameText;
     private int currentDialogueStep;
-    private bool isTalking;
+    [HideInInspector] public bool isTalking;
     private bool sentenceStarted;
     private Talk currentDialogue;
     private bool canGoNext;
@@ -23,7 +24,8 @@ public class DialogueManager : MonoBehaviour
         sentenceStarted = false;
         canGoNext = false;
         dialogueBoxO.SetActive(false);
-        dialogueText = dialogueBoxO.GetComponentInChildren<Text>();
+        dialogueText = dialogueBoxO.transform.GetChild(0).GetComponentInChildren<Text>();
+        pnjNameText = dialogueBoxO.transform.GetChild(1).GetComponentInChildren<Text>();
     }
     void Update()
     {
@@ -40,9 +42,11 @@ public class DialogueManager : MonoBehaviour
             sentenceStarted = false;
             dialogueBoxO.SetActive(true);
             dialogueText.text = "";
+            pnjNameText.text = dialogue.pnjName;
             currentDialogue = dialogue;
             StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint.position, zoom, false));
             GameManager.Instance.playerManager.isInControl = false;
+            GameManager.Instance.PauseEnemyBehaviour();
         }
     }
 
@@ -105,5 +109,6 @@ public class DialogueManager : MonoBehaviour
         isTalking = false;
         StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
         GameManager.Instance.playerManager.isInControl = true;
+        GameManager.Instance.UnpauseEnemyBehaviour();
     }
 }

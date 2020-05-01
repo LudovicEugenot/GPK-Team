@@ -782,7 +782,7 @@ MonoBehaviour:
   rotatePoints: 0
   ignoreObstacles: 1
   rangePointNumber: 30
-  rangeBeatAmplitude: 1
+  rangeBeatAmplitude: 0.3
   rangePointPrefab: {fileID: 6464136630308475468, guid: d170934ab4cd76447bf893da94441d16,
     type: 3}
   rangePointsParent: {fileID: 6496044257526629447}
@@ -918,7 +918,7 @@ MonoBehaviour:
   playerOffBeated: 0
   beatAndOffBeatAllowed: 0
   firstHealthPointPos: {fileID: 0}
-  distanceBetweenHp: 60
+  distanceBetweenHp: 50
   hpIconPrefab: {fileID: 4903183659854579373, guid: da3f917cbd2418949af21a43d69c7138,
     type: 3}
   fullHp: {fileID: 3954000364236442063, guid: 28d926ac1fd6a5e4e8ec626ffd8d565f, type: 3}
@@ -1044,8 +1044,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBoxO: {fileID: 0}
   initialWrittingSpeed: 50
-  acceleratedWrittingSpeed: 100
+  acceleratedWrittingSpeed: 200
   numberOfLetterByBeat: 1
+  isTalking: 0
 --- !u!1 &3822639275442409410
 GameObject:
   m_ObjectHideFlags: 0

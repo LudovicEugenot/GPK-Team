@@ -27,7 +27,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 644786801414756552}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -44,12 +45,92 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commentary:
+    pnjName: Clarinetto
     sentences:
     - "Il y a une m\xE9lodie \xE9crite sur ce mur."
     - "C'est \xE9trange qu'un seigneur qui d\xE9teste la musique orne son temple
       comme ca"
     - "Peut \xEAtre ce temple \xE9tait d\xE9di\xE9e \xE0 la musique dans le pass\xE9."
   nearbyHook: {fileID: 0}
+  autoTrigger: 0
+  manualTrigger: 1
+  previousTalk: {fileID: 0}
   camZoom: 1.5
   storyStepRequired: 0
   requiredEvents: 
+  talkStarted: 0
+--- !u!1001 &5728210990512682667
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1346479616893670629}
+    m_Modifications:
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.036782786
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.9161606
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.9893719
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5280969256866668641, guid: faf183f1b7df532488d810d40de25578,
+        type: 3}
+      propertyPath: m_Name
+      value: ShinyCurious
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: faf183f1b7df532488d810d40de25578, type: 3}
+--- !u!4 &644786801414756552 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5155512879504485987, guid: faf183f1b7df532488d810d40de25578,
+    type: 3}
+  m_PrefabInstance: {fileID: 5728210990512682667}
+  m_PrefabAsset: {fileID: 0}

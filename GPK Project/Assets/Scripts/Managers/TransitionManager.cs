@@ -50,7 +50,7 @@ public class TransitionManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting())
+        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
@@ -153,6 +153,7 @@ public class TransitionManager : MonoBehaviour
         Instantiate(apparitionPrefab, !firstInit ? startHook.transform.position : (Vector3)savePos, Quaternion.identity);
         firstInit = false;
         yield return new WaitForSeconds(timeBeforePlayerAppearence);
+        StartCoroutine(startHook.BlinkReaction(true));
         currentPlayerRendererO.SetActive(true);
         blackScreen.SetActive(false);
     }

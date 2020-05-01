@@ -79,7 +79,6 @@ public class GameManager : MonoBehaviour
         Beat = BeatManager.Instance;
         mainCamera = Camera.main;
         cameraHandler = mainCamera.GetComponent<CameraHandler>();
-        WorldManager.currentStoryStep = WorldManager.StoryStep.Tutorial;
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         attack = player.GetComponentInChildren<BlinkAttack>();
@@ -168,5 +167,21 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.02f;
         paused = false;
+    }
+
+    public void PauseEnemyBehaviour()
+    {
+        foreach(EnemyBase enemy in zoneEnemies)
+        {
+            enemy.enabled = false;
+        }
+    }
+
+    public void UnpauseEnemyBehaviour()
+    {
+        foreach (EnemyBase enemy in zoneEnemies)
+        {
+            enemy.enabled = true;
+        }
     }
 }

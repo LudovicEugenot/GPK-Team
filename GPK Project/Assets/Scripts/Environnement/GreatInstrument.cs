@@ -12,6 +12,7 @@ public class GreatInstrument : MonoBehaviour
     private Animator animator;
     void Start()
     {
+        ZoneHandler.Instance.isInstrumentPresent = true;
         animator = GetComponent<Animator>();
         triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
         if(triggeredWorldEvent.occured)
@@ -24,6 +25,15 @@ public class GreatInstrument : MonoBehaviour
 
     void Update()
     {
+        if(isRelived)
+        {
+            ZoneHandler.Instance.currentReliveProgression = 1;
+        }
+        else
+        {
+            ZoneHandler.Instance.currentReliveProgression = 0;
+        }
+
         if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position)
         {
             isRelived = true;

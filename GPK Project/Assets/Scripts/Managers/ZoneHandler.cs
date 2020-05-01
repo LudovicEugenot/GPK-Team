@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ZoneHandler : MonoBehaviour
 {
-    [HideInInspector] public bool isCurrentRelived;
+    [HideInInspector] public bool isInstrumentPresent;
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public float currentReliveProgression;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
@@ -45,7 +45,6 @@ public class ZoneHandler : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.O))
         {
-            isCurrentRelived = true;
             currentZone.isRelived = true;
         }
 
@@ -58,7 +57,7 @@ public class ZoneHandler : MonoBehaviour
     private void UpdateRelive()
     {
         int hooksRelived = 0;
-        if(!isCurrentRelived)
+        if(!currentZone.isRelived)
         {
             bool zoneRelived = true;
             foreach(HookState zoneHook in currentZone.zoneHooks)
@@ -75,7 +74,6 @@ public class ZoneHandler : MonoBehaviour
 
             if(zoneRelived)
             {
-                isCurrentRelived = true;
                 currentZone.isRelived = true;
             }
         }
@@ -83,7 +81,11 @@ public class ZoneHandler : MonoBehaviour
         {
             hooksRelived = currentZone.zoneHooks.Count;
         }
-        currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
+
+        if(!isInstrumentPresent)
+        {
+            currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
+        }
     }
 
     public void SaveZoneState()
@@ -110,7 +112,7 @@ public class ZoneHandler : MonoBehaviour
     public void InitializeZone(Zone newZone)
     {
         currentZone = newZone;
-        isCurrentRelived = newZone.isRelived;
+        isInstrumentPresent = false;
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {

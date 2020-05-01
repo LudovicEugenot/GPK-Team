@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class Instrument : SwitchElement
 {
-    public Color relivedColor;
-
-    private SpriteRenderer spriteRenderer;
-    private Color initialColor;
-
     void Start()
     {
         HandlerStart();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        initialColor = spriteRenderer.color;
+        ZoneHandler.Instance.isInstrumentPresent = true;
     }
 
     void Update()
@@ -24,13 +18,20 @@ public class Instrument : SwitchElement
 
     private void UpdateState()
     {
+        ZoneHandler.Instance.isInstrumentPresent = true;
+        animator.SetBool("Relived", active);
         if(active)
         {
-            spriteRenderer.color = relivedColor;
+            ZoneHandler.Instance.currentReliveProgression = 1;
+            ZoneHandler.Instance.currentZone.isRelived = true;
+            foreach(HookState hook in GameManager.Instance.zoneHooks)
+            {
+                hook.Relive();
+            }
         }
         else
         {
-            spriteRenderer.color = initialColor;
+            ZoneHandler.Instance.currentReliveProgression = 0;
         }
     }
 }
