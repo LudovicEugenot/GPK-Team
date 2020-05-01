@@ -27,7 +27,7 @@ public class NPCDialogue : MonoBehaviour
 
     void TestDialogueStart()
     {
-        if (Input.GetButtonDown("Interact") && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused)
+        if (Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused)
         {
             currentDialogue = GetCurrentDialogue();
             if(currentDialogue != null)

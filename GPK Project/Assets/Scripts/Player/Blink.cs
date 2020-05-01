@@ -11,10 +11,14 @@ public class Blink : MonoBehaviour
     public Hook startHook;
     public bool unreachableHookNoMove;
     public bool holdToBlink;
+    public float selectingTimeOffset;
     [Space]
     public LineRenderer blinkTrajectoryPreviewLine;
+    public GameObject blinkTrajectoryStartPreviewO;
     public GameObject blinkTargetO;
     public GameObject blinkInvalidTargetO;
+    [Space]
+    public float rangeCenterLerpSpeed;
 
     [Header("Prefabs")]
     public GameObject timingEffectPrefab;
@@ -28,7 +32,12 @@ public class Blink : MonoBehaviour
     public float trailEndOffset;
 
     [Space]
-    public float rangeCenterLerpSpeed;
+    public bool rotatePoints;
+    public bool ignoreObstacles;
+    public int rangePointNumber;
+    public float rangeBeatAmplitude;
+    public GameObject rangePointPrefab;
+    public Transform rangePointsParent;
 
     private Hook lastSecureHook;
     [HideInInspector] public Hook currentHook;
@@ -44,20 +53,24 @@ public class Blink : MonoBehaviour
     private Vector2 blinkDestination;
     private PlayerManager playerManager;
 
-    private Vector2 lineRangeCenter;
+    private Vector2 rangeCenter;
     private float currentRadius;
-    private LineRenderer lineCircle;
+    private GameObject[] rangePoints;
+    public LineRenderer rangeLine;
+
+    private float lastSelectionTime;
     public Animator animator;
     #endregion
     void Start()
     {
         currentTimedCombo = 0;
-        lineCircle = GetComponent<LineRenderer>();
         currentRange = blinkRangeProgression[0];
         transform.parent.position = startHook.transform.position;
         lastSecureHook = startHook;
         playerManager = GetComponent<PlayerManager>();
-        lineRangeCenter = transform.parent.position;
+        rangeCenter = transform.parent.position;
+        rangePoints = new GameObject[rangePointNumber];
+        CreateHookRange();
     }
 
 
@@ -73,42 +86,70 @@ public class Blink : MonoBehaviour
             blinkTrajectoryPreviewLine.enabled = false;
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
+            blinkTrajectoryStartPreviewO.SetActive(false);
         }
 
-        if(holdToBlink ? Input.GetButton("Blink") : (Input.GetButtonDown("Blink")) || Input.GetButtonDown("Attack"))
+
+        if (holdToBlink ? Input.GetButton("Blink") : (Input.GetButtonDown("Blink")) && selectedHook != null && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
         {
-            if (selectedHook != null && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+            if (GameManager.Instance.Beat.CanAct())
             {
-                if (GameManager.Instance.Beat.CanAct())
-                {
-                    BlinkMove();
-                    if (Input.GetButtonDown("Attack"))
-                    {
-                        GameManager.Instance.attack.StartCharge();
-                    }
-                }
-                else
-                {
-                    Instantiate(overActionEffectPrefab, transform.parent.position, Quaternion.identity);
-                    FailCombo();
-                }
+                BlinkMove();
+                GameManager.Instance.attack.HasBlinked();
+            }
+            else
+            {
+                Instantiate(overActionEffectPrefab, transform.parent.position, Quaternion.identity);
+                FailCombo();
             }
         }
+
+        UpdateSelecting();
+    }
+
+    private void CreateHookRange()
+    {
+        for (int i = 0; i < rangePointNumber; i++)
+        {
+            rangePoints[i] = Instantiate(rangePointPrefab, transform.position, Quaternion.identity, rangePointsParent);
+        }
+        rangeLine.enabled = false;
     }
 
     private void DrawHookRange(float radius, Vector2 center)
     {
-        lineRangeCenter = Vector2.Lerp(lineRangeCenter, center, rangeCenterLerpSpeed * Time.deltaTime);
+        rangeCenter = Vector2.Lerp(rangeCenter, center, rangeCenterLerpSpeed * Time.deltaTime);
         currentRadius += (radius - currentRadius) * rangeCenterLerpSpeed * Time.deltaTime;
-
-        Vector3[] circleLinePos = new Vector3[50];
-        for (int i = 0; i < circleLinePos.Length; i++)
+        if(BeatManager.Instance.onBeatSingleFrame)
         {
-            circleLinePos[i] = new Vector2(Mathf.Cos(((2 * Mathf.PI) / 50) * i), Mathf.Sin(((2 * Mathf.PI) / 50) * i));
-            circleLinePos[i] *= currentRadius;
-            circleLinePos[i] += (Vector3)lineRangeCenter;
+            currentRadius += rangeBeatAmplitude;
         }
-        lineCircle.SetPositions(circleLinePos);
+
+        Vector3[] circlePointPos = new Vector3[rangePointNumber];
+        for (int i = 0; i < rangePointNumber; i++)
+        {
+            circlePointPos[i] = new Vector2(Mathf.Cos(((2 * Mathf.PI) / (rangePointNumber)) * i), Mathf.Sin(((2 * Mathf.PI) / (rangePointNumber)) * i));
+            circlePointPos[i] *= currentRadius;
+            circlePointPos[i] += (Vector3)rangeCenter;
+            Vector2 pointVector = (Vector2)circlePointPos[i] - rangeCenter;
+            if(!ignoreObstacles)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointVector.normalized, pointVector.magnitude, LayerMask.GetMask("Obstacle"));
+                if (hit)
+                {
+                    circlePointPos[i] = hit.point;
+                }
+            }
+
+            rangePoints[i].transform.position = circlePointPos[i];
+            if(rotatePoints)
+            {
+                rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointVector));
+            }
+
+            rangeLine.positionCount = rangePointNumber;
+            rangeLine.SetPositions(circlePointPos);
+        }
     }
 
     private void HookSelection()
@@ -151,6 +192,7 @@ public class Blink : MonoBehaviour
             blinkTrajectoryPreviewLine.enabled = false;
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
+            blinkTrajectoryStartPreviewO.SetActive(false);
             blinkDestination = transform.position;
             selectedHook = null;
         }
@@ -174,7 +216,10 @@ public class Blink : MonoBehaviour
             blinkDestination = selectedHook.transform.position;
             blinkReachDestination = true;
 
-            blinkTrajectoryPreviewLine.enabled = true;
+            Vector2 blinkDirection = blinkDestination - (Vector2)transform.parent.position;
+            blinkDirection.Normalize();
+
+            //blinkTrajectoryPreviewLine.enabled = true;
 
             Vector3[] previewPositions = new Vector3[2];
             previewPositions[0] = transform.parent.position;
@@ -183,12 +228,17 @@ public class Blink : MonoBehaviour
 
             blinkTargetO.SetActive(true);
             blinkTargetO.transform.position = selectedHook.transform.position;
+            blinkTargetO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
+            blinkTrajectoryStartPreviewO.SetActive(true);
+            blinkTrajectoryStartPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
+
+            blinkInvalidTargetO.SetActive(false);
         }
         else
         {
             Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
 
-            blinkTrajectoryPreviewLine.enabled = true;
+            //blinkTrajectoryPreviewLine.enabled = true;
 
             Vector3[] previewPositions = new Vector3[2];
             previewPositions[0] = transform.parent.position;
@@ -265,11 +315,35 @@ public class Blink : MonoBehaviour
         currentHook = lastSecureHook;
     }
 
+    private void UpdateSelecting()
+    {
+        if(selectedHook != null)
+        {
+            lastSelectionTime = Time.time;
+        }
+    }
+
+    public bool IsSelecting()
+    {
+        if(Time.time - lastSelectionTime < selectingTimeOffset || selectedHook != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void FailCombo()
     {
         if(consecutiveMiss < allowedConsecutiveOnbeatMiss)
         {
             consecutiveMiss++;
+            if(currentTimedCombo > blinkRangeProgression.Length)
+            {
+                currentTimedCombo = blinkRangeProgression.Length;
+            }
         }
         else
         {

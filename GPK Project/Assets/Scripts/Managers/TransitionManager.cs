@@ -50,7 +50,7 @@ public class TransitionManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Interact"))
+        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting())
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {

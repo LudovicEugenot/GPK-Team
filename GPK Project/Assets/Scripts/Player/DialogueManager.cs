@@ -28,7 +28,7 @@ public class DialogueManager : MonoBehaviour
     void Update()
     {
         UpdateDialogueState();
-        interactPressed = Input.GetButton("Interact");
+        interactPressed = Input.GetButton("Blink");
     }
 
     public void StartTalk(Talk dialogue, Transform camFocusPoint, float zoom)
@@ -57,7 +57,7 @@ public class DialogueManager : MonoBehaviour
                 sentenceStarted = true;
             }
 
-            if (canGoNext && Input.GetButtonDown("Interact"))
+            if (canGoNext && Input.GetButtonDown("Blink"))
             {
                 if (currentDialogueStep < currentDialogue.sentences.Length - 1)
                 {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlinkAttack : MonoBehaviour
 {
+    public float minHoldTimeToStartCharge;
     public int attackDamage;
     public Vector2 attackInitialRange;
     public float attackMissRange;
@@ -18,17 +19,42 @@ public class BlinkAttack : MonoBehaviour
     private float attackDirectionAngle;
     private Vector2 worldMousePos;
     private ContactFilter2D enemyFilter;
+    private float remainingHoldingTime;
 
     void Start()
     {
         enemyFilter = new ContactFilter2D();
         enemyFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
         enemyFilter.useTriggers = true;
+        remainingHoldingTime = -10;
     }
 
     void Update()
     {
+        UpdateHold();
         UpdateCharge();
+    }
+
+
+    private void UpdateHold()
+    {
+        if (Input.GetButton("Blink"))
+        {
+            if (remainingHoldingTime > 0)
+            {
+                remainingHoldingTime -= Time.deltaTime;
+            }
+            else if (remainingHoldingTime != -10)
+            {
+                isCharging = true;
+                //Instantiate(chargeBeginParticle, transform.position, Quaternion.identity);
+                remainingHoldingTime = -10;
+            }
+        }
+        else
+        {
+            remainingHoldingTime = -10;
+        }
     }
 
     private void UpdateCharge()
@@ -43,7 +69,7 @@ public class BlinkAttack : MonoBehaviour
             attackDirectionAngle = Vector2.SignedAngle(Vector2.right, attackDirection);
             attackDirectionPreview.transform.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle - 90));
 
-            if(Input.GetButtonUp("Attack"))
+            if(Input.GetButtonUp("Blink"))
             {
                 if(BeatManager.Instance.CanAct())
                 {
@@ -51,6 +77,8 @@ public class BlinkAttack : MonoBehaviour
                 }
                 else
                 {
+                    Instantiate(GameManager.Instance.blink.overActionEffectPrefab, transform.parent.position, Quaternion.identity);
+                    GameManager.Instance.blink.FailCombo();
                     StopCharge();
                 }
             }
@@ -61,10 +89,9 @@ public class BlinkAttack : MonoBehaviour
         }
     }
 
-    public void StartCharge()
+    public void HasBlinked()
     {
-        isCharging = true;
-        Instantiate(chargeBeginParticle, transform.position, Quaternion.identity);
+        remainingHoldingTime = minHoldTimeToStartCharge;
     }
 
     private void Attack(bool boosted)

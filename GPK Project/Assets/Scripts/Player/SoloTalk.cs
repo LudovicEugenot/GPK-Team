@@ -23,7 +23,7 @@ public class SoloTalk : MonoBehaviour
     {
         if(GameManager.Instance.blink.currentHook == nearbyHook && storyStepRequired <= WorldManager.currentStoryStep && IsValid())
         {
-            if (Input.GetButtonDown("Interact") || autoTrigger)
+            if ((Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting()) || autoTrigger)
             {
                 GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
                 autoTrigger = false;

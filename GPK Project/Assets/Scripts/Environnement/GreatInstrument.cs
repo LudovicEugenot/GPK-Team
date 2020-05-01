@@ -24,7 +24,7 @@ public class GreatInstrument : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position)
+        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position)
         {
             isRelived = true;
             triggeredWorldEvent.occured = true;
