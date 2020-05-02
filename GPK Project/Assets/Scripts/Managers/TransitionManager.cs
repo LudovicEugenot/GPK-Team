@@ -59,7 +59,15 @@ public class TransitionManager : MonoBehaviour
                 {
                     if(transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                     {
-                        StartCoroutine(TransitionToConnectedZone(transitionHook));
+                        zoneHandler.SaveZoneState();
+                        if (zoneHandler.AllEnemiesConverted())
+                        {
+                            StartCoroutine(TransitionToConnectedZone(transitionHook));
+                        }
+                        else
+                        {
+                            //feedback de non chagement de zone
+                        }
                     }
                     else
                     {
