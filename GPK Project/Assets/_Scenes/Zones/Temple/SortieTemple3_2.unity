@@ -2213,6 +2213,16 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 1436761275403019742}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneNameO
+      value: 
+      objectReference: {fileID: 1436761277255982251}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneName
+      value: Passage du Temple
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3286,6 +3296,12 @@ RectTransform:
 --- !u!224 &1436761277255982250 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 743321316, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1436761277255982247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1436761277255982251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2559815872563482925, guid: 75167e81401de544b87618bf9064b5e0,
     type: 3}
   m_PrefabInstance: {fileID: 1436761277255982247}
   m_PrefabAsset: {fileID: 0}

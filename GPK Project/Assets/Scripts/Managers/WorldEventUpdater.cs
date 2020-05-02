@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WorldEventUpdater : MonoBehaviour
 {
+    public bool zoneNameUnknownUntilRecolor;
     public WorldManager.StoryStep storyStepSkip;
 
     private void Start()
@@ -13,7 +14,7 @@ public class WorldEventUpdater : MonoBehaviour
             WorldManager.currentStoryStep = storyStepSkip;
         }
 
-        InvokeRepeating("UpdateStoryStep", 0.0f, 1.0f);
+        InvokeRepeating("UpdateStoryStep", 1.0f, 1.0f);
     }
 
     void UpdateStoryStep()
@@ -21,14 +22,15 @@ public class WorldEventUpdater : MonoBehaviour
         ChechVillageReliving();
         CheckTutorialEnd();
         CheckVillageArrival();
+        UpdateZoneDiscovery();
     }
 
     private void ChechVillageReliving()
     {
-        if ((ZoneHandler.Instance.currentZone.name == "Village1"
-            || ZoneHandler.Instance.currentZone.name == "Village2"
-            || ZoneHandler.Instance.currentZone.name == "Village3"
-            || ZoneHandler.Instance.currentZone.name == "Village4")
+        if ((ZoneHandler.Instance.currentZone.name == "Entrée du village"
+            || ZoneHandler.Instance.currentZone.name == "Village Nord-Ouest"
+            || ZoneHandler.Instance.currentZone.name == "Village Nord-Est"
+            || ZoneHandler.Instance.currentZone.name == "Village Sud-Ouest")
             && WorldManager.GetWorldEvent(WorldManager.EventName.TambourRelived).occured
             && WorldManager.GetWorldEvent(WorldManager.EventName.ViolonRelived).occured
             && WorldManager.GetWorldEvent(WorldManager.EventName.FluteRelived).occured
@@ -42,7 +44,7 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckTutorialEnd()
     {
-        if(ZoneHandler.Instance.currentZone.name == "TrajetVillage1"
+        if(ZoneHandler.Instance.currentZone.name == "Pied du grand Sole"
             && WorldManager.currentStoryStep == WorldManager.StoryStep.Tutorial)
         {
             Debug.Log("Le tutoriel est fini");
@@ -52,11 +54,19 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckVillageArrival()
     {
-        if (ZoneHandler.Instance.currentZone.name == "Village1"
+        if (ZoneHandler.Instance.currentZone.name == "Entrée du village"
             && WorldManager.currentStoryStep == WorldManager.StoryStep.GoingToVillage)
         {
             Debug.Log("Nous sommes au village");
             WorldManager.currentStoryStep = WorldManager.StoryStep.ArrivedToVillage;
+        }
+    }
+
+    private void UpdateZoneDiscovery()
+    {
+        if (zoneNameUnknownUntilRecolor && !ZoneHandler.Instance.currentZone.isRelived)
+        {
+            GameManager.Instance.zoneName = "???";
         }
     }
 }

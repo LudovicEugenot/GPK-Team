@@ -72,4 +72,18 @@ public abstract class Hook : MonoBehaviour
             animSynchronizer.Synchronize();
         }
     }
+
+    protected bool PlayerInSight()
+    {
+        Vector2 playerDirection = transform.position - GameManager.Instance.player.transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(GameManager.Instance.player.transform.position, playerDirection, playerDirection.magnitude, LayerMask.GetMask("Obstacle"));
+        if (!hit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

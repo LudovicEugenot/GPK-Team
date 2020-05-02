@@ -354,7 +354,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -10
+  m_SortingLayer: -14
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 37a2b89cce51d97498b6ec2294028f15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -702,7 +702,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -9
+  m_SortingLayer: -13
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4f8fcd4a90cf3f841a2baa774ab6b704, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1365,7 +1365,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1918136707
-  m_SortingLayer: -5
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8b8b702f31c852843a5107b5b4969068, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1570,7 +1570,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -10
+  m_SortingLayer: -14
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f21aee9dbc5d2854bb1269507eae93fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1816,7 +1816,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -9
+  m_SortingLayer: -13
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7f44c151079438041892b1df4d6f3c75, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2290,7 +2290,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1791857029
-  m_SortingLayer: -6
+  m_SortingLayer: -8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 37a2b89cce51d97498b6ec2294028f15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3010,6 +3010,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 889117125676240263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &889117125676240267 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2559815872563482925, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 889117125676240263}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &889117125736116480
 Transform:
   m_ObjectHideFlags: 0
@@ -3338,6 +3344,16 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 889117126439744766}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneNameO
+      value: 
+      objectReference: {fileID: 889117125676240267}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneName
+      value: Croisement du Temple
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -2810,6 +2810,16 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 1529308075406990833}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneNameO
+      value: 
+      objectReference: {fileID: 1529308077244490905}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneName
+      value: "Cirque des Monts enneig\xE9s"
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2904,7 +2914,7 @@ PrefabInstance:
     - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
       propertyPath: bpm
-      value: 63
+      value: 126
       objectReference: {fileID: 0}
     - target: {fileID: 1253643285416735865, guid: affca58f18a03de4ab50b436ab9d9a85,
         type: 3}
@@ -3891,6 +3901,12 @@ RectTransform:
 --- !u!224 &1529308077244490904 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1988104392, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1529308077244490900}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1529308077244490905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2559815872563482925, guid: 75167e81401de544b87618bf9064b5e0,
     type: 3}
   m_PrefabInstance: {fileID: 1529308077244490900}
   m_PrefabAsset: {fileID: 0}

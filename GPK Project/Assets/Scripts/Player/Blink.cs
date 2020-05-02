@@ -135,6 +135,7 @@ public class Blink : MonoBehaviour
             if(!ignoreObstacles)
             {
                 RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointVector.normalized, pointVector.magnitude, LayerMask.GetMask("Obstacle"));
+
                 if (hit)
                 {
                     circlePointPos[i] = hit.point;

@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     #region Initialization
     [HideInInspector] public BeatManager Beat; //majuscule parce que manager >>>> Oui mais non
     public GameObject player;
+    [Space]
+    public string zoneName;
+    public GameObject zoneNameO;
+    public float zoneNameDisplaySpeed;
+    public float zoneNameDisplayTime;
     [HideInInspector] public Camera mainCamera;
+    [Space]
     public List<TransitionManager.TransitionHook> transitionHooks;
     public GameObject hooksHolder;
     [HideInInspector] public List<HookState> zoneHooks;
@@ -26,6 +33,9 @@ public class GameManager : MonoBehaviour
     [Space]
     public GameObject pausePanel;
     [HideInInspector] public bool paused;
+
+    private RectTransform zoneNameTransform;
+    private Vector2 initialZoneNamePos;
 
     #endregion
 
@@ -74,6 +84,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        zoneNameTransform = zoneNameO.GetComponent<RectTransform>();
+        initialZoneNamePos = zoneNameTransform.anchoredPosition;
+        zoneNameO.SetActive(false);
         paused = false;
         pausePanel.SetActive(false);
         Beat = BeatManager.Instance;
@@ -107,6 +120,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region Menu
     public void SaveGame()
     {
         UnPause();
@@ -169,6 +183,8 @@ public class GameManager : MonoBehaviour
         paused = false;
     }
 
+    #endregion
+
     public void PauseEnemyBehaviour()
     {
         foreach(EnemyBase enemy in zoneEnemies)
@@ -183,5 +199,28 @@ public class GameManager : MonoBehaviour
         {
             enemy.enabled = true;
         }
+    }
+
+    public IEnumerator DisplayZoneName()
+    {
+        zoneNameO.GetComponentInChildren<Text>().text = zoneName;
+        Vector2 hiddenPos = initialZoneNamePos + new Vector2(0, - initialZoneNamePos.y * 2 + 10);
+        zoneNameTransform.anchoredPosition = hiddenPos;
+        zoneNameO.SetActive(true);
+
+        while (Vector2.Distance(initialZoneNamePos, zoneNameTransform.anchoredPosition) > 1f)
+        {
+            zoneNameTransform.anchoredPosition = Vector2.Lerp(zoneNameTransform.anchoredPosition, initialZoneNamePos, Time.deltaTime * zoneNameDisplaySpeed);
+            yield return new WaitForEndOfFrame();
+        }
+        zoneNameTransform.anchoredPosition = initialZoneNamePos;
+        yield return new WaitForSeconds(zoneNameDisplayTime);
+
+        while (Vector2.Distance(hiddenPos, zoneNameTransform.anchoredPosition) > 1f)
+        {
+            zoneNameTransform.anchoredPosition = Vector2.Lerp(zoneNameTransform.anchoredPosition, hiddenPos, Time.deltaTime * zoneNameDisplaySpeed);
+            yield return new WaitForEndOfFrame();
+        }
+        zoneNameO.SetActive(false);
     }
 }

@@ -623,6 +623,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 769079400}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &769079407 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2559815872563482925, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 769079400}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963032784
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,6 +1212,16 @@ PrefabInstance:
       propertyPath: elementsHolder
       value: 
       objectReference: {fileID: 2122677873}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneNameO
+      value: 
+      objectReference: {fileID: 769079407}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneName
+      value: Village Nord-Ouest
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x

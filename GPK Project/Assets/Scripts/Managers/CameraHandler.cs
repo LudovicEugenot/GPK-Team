@@ -83,6 +83,8 @@ public class CameraHandler : MonoBehaviour
         cameraCentered = false;
         cameraFinalPos = lookPosition;
         currentOrthographicSize = orthographicSize;
+        cinematicBar1.gameObject.SetActive(true);
+        cinematicBar2.gameObject.SetActive(true);
         GameManager.Instance.Beat.useCameraBeatShake = false;
         if(useBars)
         {
@@ -108,6 +110,8 @@ public class CameraHandler : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+        cinematicBar1.gameObject.SetActive(false);
+        cinematicBar2.gameObject.SetActive(false);
     }
 
     public IEnumerator StartCinematicLook(Vector2 lookPosition, float orthographicSize, bool useBars)
@@ -115,6 +119,8 @@ public class CameraHandler : MonoBehaviour
         cameraCentered = false;
         cameraFinalPos = lookPosition;
         currentOrthographicSize = orthographicSize;
+        cinematicBar1.gameObject.SetActive(true);
+        cinematicBar2.gameObject.SetActive(true);
         GameManager.Instance.Beat.useCameraBeatShake = false;
         if (useBars)
         {
@@ -141,5 +147,7 @@ public class CameraHandler : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+        cinematicBar1.gameObject.SetActive(false);
+        cinematicBar2.gameObject.SetActive(false);
     }
 }

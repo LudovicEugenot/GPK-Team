@@ -31,7 +31,7 @@ public class LifeHook : Hook
 
     public override void StateUpdate()
     {
-        blinkable = Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange;
+        blinkable = Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight();
 
 
         sprite.color = blinkable ? (selected ? selectedColor : (used ? usedColor : blinkableColor)) : unselectableColor;

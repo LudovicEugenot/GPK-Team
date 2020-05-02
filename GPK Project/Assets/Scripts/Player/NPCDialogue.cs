@@ -27,9 +27,9 @@ public class NPCDialogue : MonoBehaviour
 
     void TestDialogueStart()
     {
-        if (Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused)
+        if (Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking)
         {
-            currentDialogue = GetCurrentDialogue();
+            currentDialogue = GetValidDialogue();
             if(currentDialogue != null)
             {
                 GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
@@ -39,19 +39,18 @@ public class NPCDialogue : MonoBehaviour
     }
 
 
-    private Dialogue GetCurrentDialogue()
+    private Dialogue GetValidDialogue()
     {
-        Dialogue selectedDia = null;
-        int i = 0;
-        while(selectedDia == null && i < dialogues.Length)
+        List<Dialogue> validDialogues = new List<Dialogue>();
+        foreach(Dialogue dialogue in dialogues)
         {
-            if (dialogues[i].IsValid())
+            if (dialogue.IsValid())
             {
-                selectedDia = dialogues[i];
+                validDialogues.Add(dialogue);
             }
-            i++;
         }
-        return selectedDia;
+
+        return validDialogues[Random.Range(0, validDialogues.Count - 1)];
     }
 
     [System.Serializable]

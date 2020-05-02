@@ -7,6 +7,8 @@ public class DialogueManager : MonoBehaviour
     public GameObject dialogueBoxO;
     public float initialWrittingSpeed;
     public float acceleratedWrittingSpeed;
+    public AudioClip[] letterClips;
+    public int letterNumberBySound;
     [Tooltip("Put writting Speeds to 1 to accurate use")] public float numberOfLetterByBeat;
 
     private Text dialogueText;
@@ -17,6 +19,7 @@ public class DialogueManager : MonoBehaviour
     private Talk currentDialogue;
     private bool canGoNext;
     private bool interactPressed;
+    private AudioSource voiceSource;
 
     void Start()
     {
@@ -26,6 +29,7 @@ public class DialogueManager : MonoBehaviour
         dialogueBoxO.SetActive(false);
         dialogueText = dialogueBoxO.transform.GetChild(0).GetComponentInChildren<Text>();
         pnjNameText = dialogueBoxO.transform.GetChild(1).GetComponentInChildren<Text>();
+        voiceSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -44,7 +48,7 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text = "";
             pnjNameText.text = dialogue.pnjName;
             currentDialogue = dialogue;
-            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint.position, zoom, false));
+            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint.position, zoom, true));
             GameManager.Instance.playerManager.isInControl = false;
             GameManager.Instance.PauseEnemyBehaviour();
         }
@@ -79,12 +83,24 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueText.text = "";
         int i = 0;
+        int l = 0;
         foreach (char letter in currentDialogue.sentences[currentDialogueStep].ToCharArray())
         {
             if (!isTalking)
             {
                 break;
             }
+
+            if(l <= 0)
+            {
+                voiceSource.PlayOneShot(letterClips[Random.Range(0,letterClips.Length - 1)]);
+                l = letterNumberBySound;
+            }
+            else
+            {
+                l--;
+            }
+
             dialogueText.text += letter;
             i++;
             if (i >= numberOfLetterByBeat)

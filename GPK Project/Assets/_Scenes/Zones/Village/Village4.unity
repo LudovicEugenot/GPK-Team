@@ -2777,6 +2777,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8878479897011435894}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8878479897011435900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2559815872563482925, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 8878479897011435894}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8878479897069192688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3499,6 +3505,16 @@ PrefabInstance:
       propertyPath: transitionHooks.Array.data[1].hook
       value: 
       objectReference: {fileID: 302730422}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneNameO
+      value: 
+      objectReference: {fileID: 8878479897011435900}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneName
+      value: Village Sud-Est
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x

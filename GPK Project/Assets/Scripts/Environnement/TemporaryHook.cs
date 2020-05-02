@@ -31,6 +31,14 @@ public class TemporaryHook : Hook
     {
         if(isBroken)
         {
+            foreach(TransitionManager.TransitionHook tHook in GameManager.Instance.transitionHooks)
+            {
+                if (tHook.hook == this)
+                {
+
+                }
+            }
+
             StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
         }
         else
@@ -62,7 +70,7 @@ public class TemporaryHook : Hook
             }
         }
 
-        if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
+        if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight())
         {
             blinkable = true;
         }

@@ -37,7 +37,7 @@ public class RythmHook : Hook
     public override void StateUpdate()
     {
         locked = !lockLoop[currentLoopProgression];
-        blinkable = !locked && Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange;
+        blinkable = !locked && Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight();
 
         sprite.color = !locked ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : lockedColor;
     }

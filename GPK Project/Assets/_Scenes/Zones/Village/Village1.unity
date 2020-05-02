@@ -1697,6 +1697,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 769079400}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &769079405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2559815872563482925, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 769079400}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &779603010 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
@@ -2838,6 +2844,16 @@ PrefabInstance:
       propertyPath: enemiesHolder
       value: 
       objectReference: {fileID: 367265131}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneNameO
+      value: 
+      objectReference: {fileID: 769079405}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: zoneName
+      value: "Entr\xE9e du village"
+      objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: m_LocalPosition.x

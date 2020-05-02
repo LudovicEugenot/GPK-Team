@@ -24,6 +24,7 @@ public class TransitionManager : MonoBehaviour
     [HideInInspector] public Vector2 savePos;
     [HideInInspector] public int newPlayerHp;
     [HideInInspector] public bool firstInit;
+    private bool isTransitionning;
     private ZoneHandler zoneHandler;
 
     public enum TransitionDirection { Up, Down, Right, Left , WIP};
@@ -50,7 +51,7 @@ public class TransitionManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking)
+        if(!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
@@ -73,8 +74,14 @@ public class TransitionManager : MonoBehaviour
     public class TransitionHook
     {
         public Hook hook;
+        public bool isTemporary;
         public TransitionDirection direction;
         public int connectedSceneBuildIndex;
+    }
+
+    private void CheckTransitionStart()
+    {
+
     }
 
 
@@ -92,7 +99,7 @@ public class TransitionManager : MonoBehaviour
 
         if(potentialZone == null)
         {
-            potentialZone = new ZoneHandler.Zone(currentBuildIndex, SceneManager.GetActiveScene().name, zoneHooks, enemyNumber, elementNumber);
+            potentialZone = new ZoneHandler.Zone(currentBuildIndex, GameManager.Instance.zoneName, zoneHooks, enemyNumber, elementNumber);
             zoneHandler.zones.Add(potentialZone);
         }
 
@@ -153,14 +160,18 @@ public class TransitionManager : MonoBehaviour
         Instantiate(apparitionPrefab, !firstInit ? startHook.transform.position : (Vector3)savePos, Quaternion.identity);
         firstInit = false;
         yield return new WaitForSeconds(timeBeforePlayerAppearence);
+        isTransitionning = false;
         StartCoroutine(startHook.BlinkReaction(true));
         currentPlayerRendererO.SetActive(true);
         blackScreen.SetActive(false);
+
+        StartCoroutine(GameManager.Instance.DisplayZoneName());
     }
 
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
+        isTransitionning = true;
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;

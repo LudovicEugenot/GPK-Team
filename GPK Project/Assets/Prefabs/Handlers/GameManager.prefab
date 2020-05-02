@@ -45,19 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62968ee24dcf7e4995eebdc1fcbea79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Beat: {fileID: 0}
+  Beat: {fileID: 8743550665662995545, guid: a35b79b28ddbcde4682721ebe659b2ef, type: 3}
   player: {fileID: 0}
+  zoneName: Porte du Temple
+  zoneNameO: {fileID: 0}
+  zoneNameDisplaySpeed: 8
+  zoneNameDisplayTime: 2
   mainCamera: {fileID: 0}
   transitionHooks:
   - hook: {fileID: 0}
-    direction: 0
-    connectedSceneBuildIndex: 6
-  - hook: {fileID: 0}
-    direction: 2
+    direction: 1
     connectedSceneBuildIndex: 8
   - hook: {fileID: 0}
-    direction: 1
-    connectedSceneBuildIndex: 4
+    direction: 2
+    connectedSceneBuildIndex: 13
+  - hook: {fileID: 0}
+    direction: 3
+    connectedSceneBuildIndex: 12
   hooksHolder: {fileID: 0}
   zoneHooks:
   - relived: 0
@@ -98,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fb554c1c4a2cd4c8c09a7c7404d1c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneNameUnknownUntilRecolor: 0
   storyStepSkip: 0
 --- !u!1 &1122493874185290590
 GameObject:
