@@ -12,11 +12,19 @@ public class TemporaryHook : Hook
     private bool isBroken;
     private bool unstable;
     private float currentTimeBeforeRepair;
+    private TransitionManager.TransitionHook transitionHook;
 
     void Start()
     {
         HandlerStart();
         currentTimeBeforeRepair = 0;
+        foreach (TransitionManager.TransitionHook tHook in GameManager.Instance.transitionHooks)
+        {
+            if (tHook.hook == this)
+            {
+                transitionHook = tHook;
+            }
+        }
     }
 
     void Update()
@@ -31,23 +39,15 @@ public class TemporaryHook : Hook
     {
         if(isBroken)
         {
-            foreach(TransitionManager.TransitionHook tHook in GameManager.Instance.transitionHooks)
-            {
-                if (tHook.hook == this)
-                {
-
-                }
-            }
-
-            StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
+            FallEffect();
         }
         else
         {
             unstable = true;
             yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.BeatTime + GameManager.Instance.Beat.timingThreshold / 2);
-            if((Vector2)GameManager.Instance.blink.transform.parent.position == (Vector2)transform.position)
+            if(GameManager.Instance.blink.currentHook == this)
             {
-                StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
+                FallEffect();
             }
             yield return new WaitForSeconds(addedTBBTime);
             unstable = false;
@@ -80,5 +80,17 @@ public class TemporaryHook : Hook
         }
 
         sprite.color = !isBroken ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : brokenColor;
+    }
+
+    private void FallEffect()
+    {
+        if (transitionHook == null)
+        {
+            StartCoroutine(GameManager.Instance.blink.RespawnPlayer());
+        }
+        else
+        {
+            TransitionManager.Instance.StartSecretTransition(transitionHook);
+        }
     }
 }

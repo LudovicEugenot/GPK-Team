@@ -288,22 +288,22 @@ public class BeatManager : MonoBehaviour
 
     public void PauseMusic()
     {
-        if (source != null)
-            source.Pause();
+        if (source1 != null)
+            source1.Pause();
         pauseStartTime = audioPlayTime;
     }
 
     public void UnPauseMusic()
     {
-        if(source != null)
-            source.UnPause();
+        if(source1 != null)
+            source1.UnPause();
 
         audioDspTimeDelay += audioPlayTime - pauseStartTime;
     }
 
     private void MusicInit()
     {
-        beatTime = 60 / bpm;
+        _beatTime = 60 / bpm;
         onBeatSingleFrame = false;
         beatActionUsed = false;
     }

@@ -48,7 +48,7 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text = "";
             pnjNameText.text = dialogue.pnjName;
             currentDialogue = dialogue;
-            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint.position, zoom, true));
+            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint.position, zoom, false));
             GameManager.Instance.playerManager.isInControl = false;
             GameManager.Instance.PauseEnemyBehaviour();
         }

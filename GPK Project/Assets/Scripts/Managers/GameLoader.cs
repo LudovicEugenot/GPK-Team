@@ -70,9 +70,7 @@ public class GameLoader : MonoBehaviour
     private void LoadPlayerData()
     {
         playerData = SaveSystem.LoadPlayer();
-        TransitionManager.Instance.savePos.x = playerData.position[0];
-        TransitionManager.Instance.savePos.y = playerData.position[1];
-        TransitionManager.Instance.newPlayerHp = playerData.health;
+        TransitionManager.Instance.newPlayerData = playerData;
     }
 
     private void StartMusicManager()

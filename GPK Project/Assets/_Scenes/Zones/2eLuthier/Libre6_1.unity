@@ -4058,6 +4058,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4840234036705611925}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &4840234036705611931 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5004474345233113995, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 4840234036705611925}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4840234036717312962
 Transform:
   m_ObjectHideFlags: 0
@@ -4405,8 +4411,7 @@ PrefabInstance:
         type: 3}
       propertyPath: firstHealthPointPos
       value: 
-      objectReference: {fileID: 3261158131732211806, guid: a35b79b28ddbcde4682721ebe659b2ef,
-        type: 3}
+      objectReference: {fileID: 4840234036705611931}
     - target: {fileID: 7556608464088615825, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
       propertyPath: dialogueBoxO

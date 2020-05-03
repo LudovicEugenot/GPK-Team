@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-    public int maxhealthPoint;
+    public int maxhealthPoint; //A Health point is 2 health
     public bool playerOffBeated;
     public bool beatAndOffBeatAllowed;
+    [Space]
     public RectTransform firstHealthPointPos;
     public float distanceBetweenHp;
     public GameObject hpIconPrefab;
@@ -25,11 +26,12 @@ public class PlayerManager : MonoBehaviour
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
     private bool healthBarInitialized;
+    private int heartContainerOwned;
 
     void Start()
     {
-        currentHealth = maxhealthPoint * 2;
-        InitializeHealthBar();
+        //currentHealth = maxhealthPoint * 2;
+        //InitializeHealthBar();
         UseMusicians();
         isInControl = true;
     }
@@ -61,24 +63,32 @@ public class PlayerManager : MonoBehaviour
 
     public bool InitializeHealthBar()
     {
-        if(!healthBarInitialized)
+        /*if(!healthBarInitialized)
         {
             healthBarInitialized = true;
-            hpIconsState = new HpState[maxhealthPoint];
-            for (int i = 0; i < maxhealthPoint; i++)
-            {
-                GameObject newIcon;
-                hpIcons.Add(newIcon = Instantiate(hpIconPrefab, firstHealthPointPos));
-                newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
-            }
-            UpdateHealthBar();
             return true;
         }
         else
         {
             //Debug.Log("The health bar has already been initialized");
             return false;
+        }*/
+
+        foreach(GameObject hpIcon in hpIcons)
+        {
+            Destroy(hpIcon);
         }
+        hpIcons.Clear();
+        hpIconsState = new HpState[maxhealthPoint];
+        for (int i = 0; i < maxhealthPoint; i++)
+        {
+            GameObject newIcon;
+            hpIcons.Add(newIcon = Instantiate(hpIconPrefab, firstHealthPointPos));
+            newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
+        }
+        UpdateHealthBar();
+
+        return healthBarInitialized;
     }
 
     public void UpdateHealthBar()
@@ -109,19 +119,25 @@ public class PlayerManager : MonoBehaviour
             {
                 case HpState.Full:
                     icon.sprite = fullHp;
-                    icon.color = Color.white;
                     break;
 
                 case HpState.Half:
                     icon.sprite = halfHp;
-                    icon.color = Color.white;
                     break;
 
                 case HpState.Empty:
                     icon.sprite = emptyHp;
-                    icon.color = Color.white;
                     break;
             }
+        }
+    }
+
+    public void ObtainHeartContainer()
+    {
+        heartContainerOwned++;
+        if(heartContainerOwned >= 2)
+        {
+            maxhealthPoint++;
         }
     }
 

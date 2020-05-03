@@ -7,6 +7,8 @@ public class Hookterruptor : Hook
     public Color pressedColor;
     public bool stayPressedUntilNextBlink;
     public float pressBeatTime;
+    public float addedPressTime;
+    public bool switchInterruptor;
 
     public WorldManager.EventName eventToOccur;
     private WorldManager.WorldEvent worldEventToOccur;
@@ -39,30 +41,53 @@ public class Hookterruptor : Hook
 
     public override IEnumerator BlinkSpecificReaction()
     {
-        pressed = true;
-        pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime;
+        if(!switchInterruptor)
+        {
+            pressed = true;
+            pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime + addedPressTime;
+        }
+        else
+        {
+            pressed = !pressed;
+        }
+
         yield return null;
     }
 
     public override void StateUpdate()
     {
-        if(pressTimeRemaining > 0)
+        if(!switchInterruptor)
         {
             if (stayPressedUntilNextBlink)
             {
-                if(GameManager.Instance.blink.currentHook != this)
+                if (GameManager.Instance.blink.currentHook == this)
                 {
-                    pressTimeRemaining -= Time.deltaTime;
+                    pressed = true;
+                    pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime + addedPressTime;
+                }
+                else
+                {
+                    if (pressTimeRemaining > 0)
+                    {
+                        pressTimeRemaining -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        pressed = false;
+                    }
                 }
             }
             else
             {
-                pressTimeRemaining -= Time.deltaTime;
+                if (pressTimeRemaining > 0)
+                {
+                    pressTimeRemaining -= Time.deltaTime;
+                }
+                else
+                {
+                    pressed = false;
+                }
             }
-        }
-        else
-        {
-            pressed = false;
         }
 
         if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
@@ -75,10 +100,5 @@ public class Hookterruptor : Hook
         }
 
         sprite.color = !pressed ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : pressedColor;
-    }
-
-    private void Unpress()
-    {
-        pressed = false;
     }
 }

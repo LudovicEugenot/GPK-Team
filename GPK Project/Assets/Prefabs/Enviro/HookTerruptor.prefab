@@ -218,10 +218,6 @@ MonoBehaviour:
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   unselectableColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   decorationAnimator: {fileID: 0}
-  agressiveHook: 0
-  agressionRanges: []
-  rangeVisualO: {fileID: 1183478725772786214}
-  agressionTime: 0.3
   selected: 0
   blinkable: 0
   sprite: {fileID: 0}
@@ -230,6 +226,7 @@ MonoBehaviour:
   pressedColor: {r: 1, g: 1, b: 1, a: 1}
   stayPressedUntilNextBlink: 1
   pressBeatTime: 1
+  addedPressTime: 0.3
   eventToOccur: 0
   pressed: 0
 --- !u!212 &3717861869360096240

@@ -134,6 +134,11 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
+    public void StartStopCinematicLook()
+    {
+        StartCoroutine(StopCinematicLook());
+    }
+
     public IEnumerator StopCinematicLook()
     {
         cameraCentered = true;
@@ -144,7 +149,6 @@ public class CameraHandler : MonoBehaviour
         {
             cinematicBar1.anchoredPosition = Vector2.Lerp(cinematicBar1.anchoredPosition, cinematicBar1InitialPos, barLerpSpeed);
             cinematicBar2.anchoredPosition = Vector2.Lerp(cinematicBar2.anchoredPosition, cinematicBar2InitialPos, barLerpSpeed);
-
             yield return new WaitForEndOfFrame();
         }
         cinematicBar1.gameObject.SetActive(false);

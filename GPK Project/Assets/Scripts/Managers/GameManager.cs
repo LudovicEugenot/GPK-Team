@@ -216,11 +216,15 @@ public class GameManager : MonoBehaviour
         zoneNameTransform.anchoredPosition = initialZoneNamePos;
         yield return new WaitForSeconds(zoneNameDisplayTime);
 
-        while (Vector2.Distance(hiddenPos, zoneNameTransform.anchoredPosition) > 1f)
+        while (zoneNameTransform != null && Vector2.Distance(hiddenPos, zoneNameTransform.anchoredPosition) > 1f)
         {
             zoneNameTransform.anchoredPosition = Vector2.Lerp(zoneNameTransform.anchoredPosition, hiddenPos, Time.deltaTime * zoneNameDisplaySpeed);
             yield return new WaitForEndOfFrame();
         }
-        zoneNameO.SetActive(false);
+
+        if (zoneNameO != null)
+        {
+            zoneNameO.SetActive(false);
+        }
     }
 }

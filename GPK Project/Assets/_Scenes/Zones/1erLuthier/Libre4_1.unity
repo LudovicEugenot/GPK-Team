@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -495,6 +495,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hooknuphar (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4956746632899320878, guid: 3bab7edcbd7a16f429eaf06d4c277abf,
+        type: 3}
+      propertyPath: beatTimeBeforeBroke
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4956746632899320879, guid: 3bab7edcbd7a16f429eaf06d4c277abf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -558,6 +563,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 416843305}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &416843307 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4956746632899320878, guid: 3bab7edcbd7a16f429eaf06d4c277abf,
+    type: 3}
+  m_PrefabInstance: {fileID: 416843305}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364e037e66f0ad043a0479c8dfc37366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &490938788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2229,7 +2246,7 @@ PrefabInstance:
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: transitionHooks.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
@@ -2246,8 +2263,7 @@ PrefabInstance:
         type: 3}
       propertyPath: transitionHooks.Array.data[2].hook
       value: 
-      objectReference: {fileID: 3013328830184997407, guid: a35b79b28ddbcde4682721ebe659b2ef,
-        type: 3}
+      objectReference: {fileID: 416843307}
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: hooksHolder
@@ -2307,6 +2323,21 @@ PrefabInstance:
         type: 3}
       propertyPath: zoneName
       value: Champ Fertile Est
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].connectedSceneBuildIndex
+      value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].direction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].isTemporary
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
