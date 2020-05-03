@@ -149,6 +149,7 @@ public class ZoneHandler : MonoBehaviour
 
     public bool AllEnemiesConverted()
     {
+        SaveZoneState();
         foreach (bool enemyConverted in currentZone.EnemiesConverted)
         {
             if (!enemyConverted)
@@ -172,7 +173,6 @@ public class ZoneHandler : MonoBehaviour
         { 
             get
             {
-                Instance.SaveZoneState();
                 return enemiesConverted;
             }
             set

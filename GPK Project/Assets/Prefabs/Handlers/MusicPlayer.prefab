@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1253643285416735864}
   - component: {fileID: 1659893556083519090}
   m_Layer: 0
-  m_Name: Music Manager
+  m_Name: MusicPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 140
+  fadeOutTime: 0.3
   timingThreshold: 0.2
   timingThresholdOffset: 0
   beatStartTimeOffset: 0.15
@@ -57,6 +58,14 @@ MonoBehaviour:
   onBeatNextFrame: 0
   currentBeatProgression: 0
   useCameraBeatShake: 0
+  currentSongName: 
+  newMusicPlaying: 0
+  currentEnemyStatus: 0
+  currentBarProgression: 1
+  currentSongProgression: 0
+  beatToSwitchTo: 4
+  changingMusicZone: 0
+  currentMusicSOName: 
 --- !u!82 &1253643285416735864
 AudioSource:
   m_ObjectHideFlags: 0
@@ -67,7 +76,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c714874b9417ba34ca716f9495c901b6, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.2
   m_Pitch: 1

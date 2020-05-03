@@ -25,7 +25,7 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         beatManager = BeatManager.Instance;
-        if(musicSO.name != beatManager.currentMusicSOName || beatManager.currentMusicSOName == null)
+        if(musicSO.name != beatManager.currentMusicSOName || beatManager.currentMusicSOName == "")
         {
             beatManager.changingMusicZone = true;
             beatManager.currentMusicSOName = musicSO.name;

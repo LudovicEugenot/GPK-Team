@@ -85,7 +85,6 @@ public class BeatManager : MonoBehaviour
     {
         musicStarted = false;
         MusicInit();
-
         initialCameraSize = Camera.main.orthographicSize;
         audioDspTimeDelay = 0;
         useCameraBeatShake = true;
@@ -317,6 +316,7 @@ public class BeatManager : MonoBehaviour
         onBeatSingleFrame = false;
         beatActionUsed = false;
         newMusicPlaying = true;
+        RefreshSongInfos(1.0f);
     }
 
     public void LoadMusic(AudioClip clip)
