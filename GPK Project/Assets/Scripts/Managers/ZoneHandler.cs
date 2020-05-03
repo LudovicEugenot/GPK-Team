@@ -10,7 +10,7 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public float currentReliveProgression;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
-    private bool zoneInitialized;
+    [HideInInspector] public bool zoneInitialized;
 
     #region Singleton
     public static ZoneHandler Instance { get; private set; }

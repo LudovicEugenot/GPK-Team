@@ -20,25 +20,22 @@ public class MusicManager : MonoBehaviour
     //Ce manager n'est pas DontDestroyOnLoad donc toutes les infos persistentes sont gardées sur le beatManager
     public MusicSO musicSO;
     BeatManager beatManager;
+
+    private bool startFlag;
     #endregion
 
     private void Start()
     {
-        beatManager = BeatManager.Instance;
-        if(musicSO.name != beatManager.currentMusicSOName || beatManager.currentMusicSOName == "")
-        {
-            beatManager.changingMusicZone = true;
-            beatManager.currentMusicSOName = musicSO.name;
-            ScriptableObjectSetUp();
-            beatManager.currentEnemyStatus = ZoneHandler.Instance.AllEnemiesConverted();
-        }
+        startFlag = true;
     }
 
     private void Update()
     {
-        if (beatManager.onBeatSingleFrame)
+        StartManager();
+
+        if (!startFlag && beatManager.onBeatSingleFrame)
         {
-            beatManager.currentBarProgression = beatManager.currentBarProgression == beatManager.beatToSwitchTo ? 1 : beatManager.currentBarProgression++;
+            beatManager.currentBarProgression = beatManager.currentBarProgression == beatManager.beatToSwitchTo ? 1 : beatManager.currentBarProgression + 1;
             beatManager.currentSongProgression++;
 
             if (beatManager.newMusicPlaying)
@@ -66,6 +63,23 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+
+    private void StartManager()
+    {
+        if(ZoneHandler.Instance.zoneInitialized && startFlag)
+        {
+            startFlag = false;
+            beatManager = BeatManager.Instance;
+            if (musicSO.name != beatManager.currentMusicSOName || beatManager.currentMusicSOName == "")
+            {
+                beatManager.changingMusicZone = true;
+                beatManager.currentMusicSOName = musicSO.name;
+                beatManager.currentSongName = musicSO.calmLoop.name;
+                ScriptableObjectSetUp();
+                beatManager.currentEnemyStatus = ZoneHandler.Instance.AllEnemiesConverted();
+            }
+        }
+    }
 
     void LoadNextMusic()
     {
@@ -195,7 +209,7 @@ public class MusicManager : MonoBehaviour
                 return false;
         }
 
-        if (currentMusic == musicSO.name)
+        if (currentMusic == musicSO.calmLoop.name)
         {
             if (beatManager.currentSongProgression > musicSO.numberOfBeatsUntilLoop - beatManager.beatToSwitchTo)
                 return true;

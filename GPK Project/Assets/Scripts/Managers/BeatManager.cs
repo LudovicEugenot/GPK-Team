@@ -75,6 +75,7 @@ public class BeatManager : MonoBehaviour
             source1 = sources[0];
             source2 = sources[1];
             switchingSource = source1;
+            otherSource = source2;
         }
         else
             Destroy(this.gameObject);
@@ -316,7 +317,7 @@ public class BeatManager : MonoBehaviour
         onBeatSingleFrame = false;
         beatActionUsed = false;
         newMusicPlaying = true;
-        RefreshSongInfos(1.0f);
+        RefreshSongInfos(0.1f);
     }
 
     public void LoadMusic(AudioClip clip)
@@ -360,6 +361,7 @@ public class BeatManager : MonoBehaviour
             otherSource = source2;
         }
     }
+
     IEnumerator FadeOutMusic(AudioSource source, float timeUntilFadeOut, float fadeTime)
     {
         yield return new WaitForSeconds(timeUntilFadeOut);
