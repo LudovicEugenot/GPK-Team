@@ -50,7 +50,14 @@ public class NPCDialogue : MonoBehaviour
             }
         }
 
-        return validDialogues[Random.Range(0, validDialogues.Count - 1)];
+        if(validDialogues.Count > 0)
+        {
+            return validDialogues[Random.Range(0, validDialogues.Count)];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     [System.Serializable]

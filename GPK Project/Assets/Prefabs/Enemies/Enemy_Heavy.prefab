@@ -202,7 +202,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7850036113657970737}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.43, y: -0.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -210,6 +210,7 @@ Transform:
   - {fileID: 7850036113564793217}
   - {fileID: 7850036115541776503}
   - {fileID: 3668146226503317530}
+  - {fileID: 8596803832024640463}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -257,9 +258,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2017042af61bea43a9c8cdf696b80b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMaxHP: 1
+  enemyMaxHP: 3
   aggroRange: 0
-  movementDistance: 1
+  movementDistance: 0.3
   movementCurve:
     serializedVersion: 2
     m_Curve:
@@ -326,8 +327,84 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpHeight: 2
+  jumpHeight: 1
+  beatNumberBetweenAttack: 3
   attackDamage: 1
+  aoeScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.88789177
+      inSlope: 2.3445086
+      outSlope: 2.3445086
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.32479718
+    - serializedVersion: 3
+      time: 0.12636878
+      value: 0.9936641
+      inSlope: -0.012972566
+      outSlope: -0.012972566
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.29933956
+    - serializedVersion: 3
+      time: 0.723941
+      value: 0.7887347
+      inSlope: -1.1763928
+      outSlope: -1.1763928
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.22410515
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9996563
+      value: -0.00050735474
+      inSlope: -3.4254382
+      outSlope: -3.4254382
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.12376761
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  knockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.7499998
+      outSlope: 3.7499998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.033333335
+    - serializedVersion: 3
+      time: 0.3439563
+      value: 0.79840857
+      inSlope: 0.9066409
+      outSlope: 0.9066409
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5583551
+      outWeight: 0.27133495
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.044519767
+      outSlope: 0.044519767
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.37083334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!50 &7850036115137010528
 Rigidbody2D:
   serializedVersion: 4
@@ -447,3 +524,60 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!1 &8963187249617814235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8596803832024640463}
+  - component: {fileID: 8220164217852405326}
+  m_Layer: 11
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8596803832024640463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8963187249617814235}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7850036113657970736}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &8220164217852405326
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8963187249617814235}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5343461, y: 0.609452}
+  m_EdgeRadius: 0

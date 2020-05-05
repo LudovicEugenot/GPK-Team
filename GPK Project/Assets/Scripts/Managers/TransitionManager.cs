@@ -66,7 +66,7 @@ public class TransitionManager : MonoBehaviour
 
     private void CheckTransitionStart()
     {
-        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
+        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.paused && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
@@ -78,6 +78,11 @@ public class TransitionManager : MonoBehaviour
                         if (zoneHandler.AllEnemiesConverted())
                         {
                             StartCoroutine(TransitionToConnectedZone(transitionHook));
+                            if(GameManager.Instance.usePlaytestRecord)
+                            {
+                                PlayTestRecorder.ClearRecords();
+                                PlayTestRecorder.CreateTimingRecordFile();
+                            }
                         }
                         else
                         {
@@ -97,7 +102,6 @@ public class TransitionManager : MonoBehaviour
     {
         StartCoroutine(TransitionToConnectedZone(temporaryTransitionHook));
     }
-
 
     public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber)
     {
@@ -140,16 +144,14 @@ public class TransitionManager : MonoBehaviour
             GameManager.Instance.playerManager.maxhealthPoint = newPlayerData.maxHealthPoint;
             GameManager.Instance.playerManager.currentHealth = newPlayerData.health;
             GameManager.Instance.playerManager.ownSpeaker = newPlayerData.ownSpeaker;
+            GameManager.Instance.playerManager.heartContainerOwned = newPlayerData.heartContainerOwned;
         }
         else
         {
             GameManager.Instance.playerManager.currentHealth = GameManager.Instance.playerManager.maxhealthPoint * 2;
         }
 
-        if (!GameManager.Instance.playerManager.InitializeHealthBar())
-        {
-            GameManager.Instance.playerManager.UpdateHealthBar();
-        }
+        GameManager.Instance.playerManager.InitializeHealthBar();
 
         if (!firstInit)
         {
@@ -197,7 +199,6 @@ public class TransitionManager : MonoBehaviour
         StartCoroutine(GameManager.Instance.DisplayZoneName());
     }
 
-
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
         isTransitionning = true;
@@ -239,7 +240,50 @@ public class TransitionManager : MonoBehaviour
                 currentStartDirection = TransitionDirection.Right;
                 break;
         }
+        zoneHandler.zoneInitialized = false;
+        SceneManager.LoadScene(transitionHook.connectedSceneBuildIndex);
+    }
 
-            SceneManager.LoadScene(transitionHook.connectedSceneBuildIndex);
+    public IEnumerator Respawn(bool deconvertEnemies)
+    {
+        GameManager.Instance.playerManager.isInControl = false;
+        GameManager.Instance.playerManager.Heal(500);
+        newPlayerData = new PlayerData(GameManager.Instance.playerManager);
+
+        if(deconvertEnemies)
+        {
+            foreach (ZoneHandler.Zone zone in zoneHandler.zones)
+            {
+                for (int i = 0; i < zone.enemiesConverted.Length; i++)
+                {
+                    zone.enemiesConverted[i] = false;
+                }
+            }
+        }
+
+        blackScreen.SetActive(true);
+        blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
+        blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
+
+        float maskLerpProgression = 0;
+        while (maskLerpProgression < 0.92f)
+        {
+            maskLerpProgression += (1 - maskLerpProgression) * transitionLerpSpeed * Time.deltaTime;
+            blackScreenMask.transform.localScale = new Vector2((1 - maskLerpProgression) * maxMaskSize, (1 - maskLerpProgression) * maxMaskSize);
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(timeBeforeZoneQuitting);
+
+        if(WorldManager.currentStoryStep >= WorldManager.StoryStep.ArrivedToVillage)
+        {
+            currentStartDirection = TransitionDirection.Down;
+            SceneManager.LoadScene(6);
+        }
+        else
+        {
+            currentStartDirection = TransitionDirection.Left;
+            SceneManager.LoadScene(1);
+        }
     }
 }

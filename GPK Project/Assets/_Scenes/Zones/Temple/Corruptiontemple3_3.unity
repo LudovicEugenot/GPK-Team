@@ -3016,6 +3016,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 889117125676240263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &889117125676240268 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5760559976750427996, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 889117125676240263}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &889117125676240269 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5004474345233113995, guid: 75167e81401de544b87618bf9064b5e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 889117125676240263}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &889117125736116480
 Transform:
   m_ObjectHideFlags: 0
@@ -3161,8 +3173,12 @@ PrefabInstance:
         type: 3}
       propertyPath: firstHealthPointPos
       value: 
-      objectReference: {fileID: 3261158131732211806, guid: a35b79b28ddbcde4682721ebe659b2ef,
+      objectReference: {fileID: 889117125676240269}
+    - target: {fileID: 3822639274368582671, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
+      propertyPath: gameOverPanel
+      value: 
+      objectReference: {fileID: 889117125676240268}
     - target: {fileID: 7556608464088615825, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
       propertyPath: dialogueBoxO
@@ -3409,6 +3425,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6096407865150329221, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: musicSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 64a1ded79fbac764c9f69f036063997c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25034624d0a6cb942b829e19fc2c8444, type: 3}
 --- !u!4 &889117126439744765 stripped

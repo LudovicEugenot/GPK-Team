@@ -8,8 +8,7 @@ public class BlinkAttack : MonoBehaviour
     public int attackDamage;
     public Vector2 attackInitialRange;
     public float attackMissRange;
-    public float attackKnockbackSpeed;
-    public float attackKnockbackTime;
+    public float attackKnockbackDistance;
     public GameObject attackDirectionPreview;
     public GameObject chargeBeginParticle;
     public GameObject attackFx, missAttackFx;
@@ -73,7 +72,7 @@ public class BlinkAttack : MonoBehaviour
             {
                 if(BeatManager.Instance.CanAct())
                 {
-                    Attack(BeatManager.Instance.OnBeat(GameManager.Instance.playerManager.playerOffBeated, true));
+                    Attack(BeatManager.Instance.OnBeat(GameManager.Instance.playerManager.playerOffBeated, true, "AttackRelease"));
                 }
                 else
                 {
@@ -100,16 +99,13 @@ public class BlinkAttack : MonoBehaviour
         float currentAttackLength = boosted ? attackInitialRange.x : attackMissRange;
         Instantiate(boosted ? attackFx : missAttackFx, (Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle)));
         List<Collider2D> colliders = new List<Collider2D>();
-        Physics2D.OverlapBox((Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, attackInitialRange, attackDirectionAngle, enemyFilter, colliders);
+        Physics2D.OverlapBox((Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, new Vector2(currentAttackLength, attackInitialRange.y), attackDirectionAngle, enemyFilter, colliders);
         if(colliders.Count > 0)
         {
             foreach(Collider2D collider in colliders)
             {
                 EnemyBase enemy = collider.transform.parent.GetComponentInChildren<EnemyBase>();
-                Vector2 directedSpeed = enemy.transform.position - transform.parent.position;
-                directedSpeed.Normalize();
-                directedSpeed *= attackKnockbackSpeed;
-                enemy.TakeDamage(attackDamage, directedSpeed, attackKnockbackTime);
+                enemy.TakeDamage(attackDamage, attackDirection * attackKnockbackDistance);
             }
         }
 

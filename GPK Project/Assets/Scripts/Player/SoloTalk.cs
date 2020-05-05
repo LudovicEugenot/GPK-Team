@@ -8,10 +8,14 @@ public class SoloTalk : MonoBehaviour
     public Hook nearbyHook;
     public bool autoTrigger;
     public bool manualTrigger;
+    public bool isCommentary;
+    public float timeBewteenSentence;
     public SoloTalk previousTalk;
     public float camZoom;
+    public Vector2 alternateBoxPos;
     public WorldManager.StoryStep storyStepRequired;
     public WorldManager.EventName[] requiredEvents;
+    public GameObject interactionIndicator;
 
     private ParticleSystem shinyParticle;
     private WorldManager.WorldEvent[] requiredWorldEvents;
@@ -35,9 +39,22 @@ public class SoloTalk : MonoBehaviour
                 {
                     shinyParticle.Play();
                 }
+
+                if(interactionIndicator != null)
+                {
+                    interactionIndicator.SetActive(true);
+                }
+
                 if (((Input.GetButtonDown("Blink") && manualTrigger) && !GameManager.Instance.blink.IsSelecting()) || autoTrigger)
                 {
-                    GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                    if(isCommentary)
+                    {
+                        GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
+                    }
+                    else
+                    {
+                        GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                    }
                     talkStarted = true;
                     autoTrigger = false;
                 }
@@ -47,6 +64,11 @@ public class SoloTalk : MonoBehaviour
                 if(shinyParticle != null && !shinyParticle.isStopped)
                 {
                     shinyParticle.Stop();
+                }
+
+                if (interactionIndicator != null)
+                {
+                    interactionIndicator.SetActive(false);
                 }
             }
         }

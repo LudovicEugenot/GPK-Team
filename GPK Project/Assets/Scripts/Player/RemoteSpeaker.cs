@@ -82,7 +82,7 @@ public class RemoteSpeaker : MonoBehaviour
         speakerHook.isDisabled = false;
         speakerPlaced = true;
         remoteSpeakerO.transform.position = targetPos;
-        if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,false))
+        if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,false, ""))
         {
             StartCoroutine(SpeakerEffect());
         }

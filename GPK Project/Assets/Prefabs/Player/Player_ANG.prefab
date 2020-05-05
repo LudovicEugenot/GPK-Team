@@ -747,16 +747,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blinkRangeProgression:
-  - 4
-  - 4.5
-  - 5
-  - 5.5
-  - 6
-  - 6.3
-  - 6.6
-  - 6.9
-  - 7.1
-  - 7.3
+  - range: 4
+    pointDisplay: {fileID: 21300000, guid: 5f821efb2077e5243b8fe56835744a60, type: 3}
+  - range: 4.5
+    pointDisplay: {fileID: 21300000, guid: 5f821efb2077e5243b8fe56835744a60, type: 3}
+  - range: 5
+    pointDisplay: {fileID: 21300000, guid: 5f821efb2077e5243b8fe56835744a60, type: 3}
+  - range: 5.5
+    pointDisplay: {fileID: 21300000, guid: 5f821efb2077e5243b8fe56835744a60, type: 3}
+  - range: 5.8
+    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+  - range: 6.1
+    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+  - range: 6.4
+    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+  - range: 6.7
+    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+  - range: 7
+    pointDisplay: {fileID: 21300000, guid: b3a8cb1ea012ab745bad5672c1c890e5, type: 3}
+  - range: 7.2
+    pointDisplay: {fileID: 21300000, guid: b3a8cb1ea012ab745bad5672c1c890e5, type: 3}
   allowedConsecutiveOnbeatMiss: 1
   comboMalus: 2
   startHook: {fileID: 0}
@@ -769,6 +779,8 @@ MonoBehaviour:
   blinkInvalidTargetO: {fileID: 1834549838}
   rangeCenterLerpSpeed: 20
   timingEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
+    type: 3}
+  missEffectPrefab: {fileID: 6870265368790721555, guid: 44192eb19d51f8d44bf114f6d7e48b3a,
     type: 3}
   overActionEffectPrefab: {fileID: 7603294352137833439, guid: b5d725f43175e0c40a29206f103902b0,
     type: 3}
@@ -807,8 +819,7 @@ MonoBehaviour:
   attackDamage: 1
   attackInitialRange: {x: 5, y: 1.5}
   attackMissRange: 2
-  attackKnockbackSpeed: 5
-  attackKnockbackTime: 0.3
+  attackKnockbackDistance: 1
   attackDirectionPreview: {fileID: 8918600143203410014}
   chargeBeginParticle: {fileID: 1007985462191729336, guid: a4e2a1183ca6c6749af403dbf5e423fe,
     type: 3}
@@ -901,8 +912,7 @@ MonoBehaviour:
     type: 3}
   onTimeParticleEffectPrefab: {fileID: 2714531369118389456, guid: cc7e1c981ce6fd64eacf3a54ef456e29,
     type: 3}
-  cooldownDisplay: {fileID: 3261158130199064052, guid: a35b79b28ddbcde4682721ebe659b2ef,
-    type: 3}
+  cooldownDisplay: {fileID: 0}
 --- !u!114 &3822639274368582671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,8 +926,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxhealthPoint: 6
+  beatInvulnerableTime: 0
   playerOffBeated: 0
   beatAndOffBeatAllowed: 0
+  deathCinematicZoom: 2
+  gameOverPanel: {fileID: 0}
   firstHealthPointPos: {fileID: 0}
   distanceBetweenHp: 50
   hpIconPrefab: {fileID: 4903183659854579373, guid: da3f917cbd2418949af21a43d69c7138,
@@ -930,10 +943,13 @@ MonoBehaviour:
   - {fileID: 379275231}
   - {fileID: 1130006348}
   - {fileID: 555399284}
+  healParticle: {fileID: 5107403062388620240, guid: a3c47bfee9ed15e4ea3e804f91e97691,
+    type: 3}
   currentHealth: 0
   currentPower: 0
   ownSpeaker: 0
   isInControl: 0
+  heartContainerOwned: 0
 --- !u!120 &3822639274368582669
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1071,7 +1087,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.592
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
