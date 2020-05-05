@@ -5,7 +5,7 @@ public class Blink : MonoBehaviour
 {
     #region Initialization
     [Header("Blink settings")]
-    public float[] blinkRangeProgression;
+    public BlinkRange[] blinkRangeProgression;
     public int allowedConsecutiveOnbeatMiss;
     public int comboMalus;
     public Hook startHook;
@@ -22,6 +22,7 @@ public class Blink : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject timingEffectPrefab;
+    public GameObject missEffectPrefab;
     public GameObject overActionEffectPrefab;
     public GameObject blinkDisparition;
 
@@ -39,6 +40,13 @@ public class Blink : MonoBehaviour
     public GameObject rangePointPrefab;
     public Transform rangePointsParent;
 
+    [System.Serializable]
+    public class BlinkRange
+    {
+        public float range;
+        public Sprite pointDisplay;
+    }
+
     private Hook lastSecureHook;
     [HideInInspector] public Hook currentHook;
 
@@ -55,7 +63,7 @@ public class Blink : MonoBehaviour
 
     private Vector2 rangeCenter;
     private float currentRadius;
-    private GameObject[] rangePoints;
+    private SpriteRenderer[] rangePoints;
     public LineRenderer rangeLine;
 
     private float lastSelectionTime;
@@ -64,12 +72,12 @@ public class Blink : MonoBehaviour
     void Start()
     {
         currentTimedCombo = 0;
-        currentRange = blinkRangeProgression[0];
+        currentRange = blinkRangeProgression[0].range;
         transform.parent.position = startHook.transform.position;
         lastSecureHook = startHook;
         playerManager = GetComponent<PlayerManager>();
         rangeCenter = transform.parent.position;
-        rangePoints = new GameObject[rangePointNumber];
+        rangePoints = new SpriteRenderer[rangePointNumber];
         CreateHookRange();
     }
 
@@ -111,7 +119,7 @@ public class Blink : MonoBehaviour
     {
         for (int i = 0; i < rangePointNumber; i++)
         {
-            rangePoints[i] = Instantiate(rangePointPrefab, transform.position, Quaternion.identity, rangePointsParent);
+            rangePoints[i] = Instantiate(rangePointPrefab, transform.position, Quaternion.identity, rangePointsParent).GetComponent<SpriteRenderer>();
         }
         rangeLine.enabled = false;
     }
@@ -143,6 +151,7 @@ public class Blink : MonoBehaviour
             }
 
             rangePoints[i].transform.position = circlePointPos[i];
+            rangePoints[i].sprite = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1].pointDisplay;
             if(rotatePoints)
             {
                 rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointVector));
@@ -181,7 +190,7 @@ public class Blink : MonoBehaviour
             selectedHook = null;
         }
 
-        currentRange = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1];
+        currentRange = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1].range;
 
 
         if(hoveredHook != null)
@@ -281,7 +290,7 @@ public class Blink : MonoBehaviour
             }
 
 
-            if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,true) && blinkReachDestination)
+            if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,true, "Blink") && blinkReachDestination)
             {
                 StartCoroutine(selectedHook.BlinkReaction(true));
 
@@ -292,6 +301,7 @@ public class Blink : MonoBehaviour
             else
             {
                 StartCoroutine(selectedHook.BlinkReaction(false));
+                Instantiate(missEffectPrefab, transform.parent.position + (Vector3)(Vector2.up * 0.5f), Quaternion.Euler(90, 0, 0));
 
                 FailCombo();
             }
@@ -300,10 +310,6 @@ public class Blink : MonoBehaviour
             currentHook = selectedHook;
             selectedHook.selected = false;
             selectedHook = null;
-        }
-        else
-        {
-            //No move effect
         }
     }
 

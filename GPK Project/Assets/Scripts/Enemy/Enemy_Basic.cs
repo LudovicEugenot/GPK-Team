@@ -9,10 +9,11 @@ public class Enemy_Basic : EnemyBase
     public AnimationCurve movementCurve;
     public AnimationCurve jumpCurve;
     public int attackDamage;
+    public AnimationCurve aoeScaleCurve;
+    public AnimationCurve knockbackCurve;
 
     private GameObject attackParent;
     private CircleCollider2D attackCollider;
-
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
     protected override EnemyBehaviour[] TriggeredPattern => triggeredPattern;
@@ -28,13 +29,13 @@ public class Enemy_Basic : EnemyBase
 
     private EnemyBehaviour[] passivePattern = new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Moving, true)
+        new EnemyBehaviour(EnemyState.Moving, true),
     };
 
     private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Triggered, 0.4f),
-        new EnemyBehaviour(EnemyState.Action),
+        new EnemyBehaviour(EnemyState.Triggered, true),
+        new EnemyBehaviour(EnemyState.Action, true),
         new EnemyBehaviour(EnemyState.Vulnerable, true)
     };
 
@@ -68,7 +69,7 @@ public class Enemy_Basic : EnemyBase
     protected override void ActionBehaviour()
     {
         attackParent.SetActive(true);
-        float attackScale = Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
+        float attackScale = aoeScaleCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression) * maxRadiusAttack;
         attackParent.transform.localScale = new Vector3(attackScale, attackScale);
         if (GameManager.Instance.Beat.currentBeatProgression > 0.9f)
         {
@@ -125,6 +126,16 @@ public class Enemy_Basic : EnemyBase
         {
             playerPositionWhenTriggered = player.position;
             GetTriggered();
+        }
+    }
+
+    protected override void KnockbackBehaviour()
+    {
+        attackCollider.enabled = false;
+        attackParent.SetActive(false);
+        if((Time.fixedTime - startKnockBackTime) < GameManager.Instance.Beat.BeatTime)
+        {
+            parent.position = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
         }
     }
 

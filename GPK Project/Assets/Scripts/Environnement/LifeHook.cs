@@ -6,12 +6,15 @@ public class LifeHook : Hook
 {
     public int storedLife;
     public Color usedColor;
+    public float timeBewteenHeals;
 
     private bool used;
+    private float timeBeforeNextHeal;
 
     private void Start()
     {
         HandlerStart();
+        timeBeforeNextHeal = 0;
     }
 
     private void Update()
@@ -21,7 +24,7 @@ public class LifeHook : Hook
 
     public override IEnumerator BlinkSpecificReaction()
     {
-        if(!used)
+        if(!used && ZoneHandler.Instance.currentReliveProgression < 1)
         {
             GameManager.Instance.playerManager.Heal(storedLife);
             used = true;
@@ -31,6 +34,21 @@ public class LifeHook : Hook
 
     public override void StateUpdate()
     {
+        if (ZoneHandler.Instance.currentReliveProgression == 1 && GameManager.Instance.blink.currentHook == this)
+        {
+            if(timeBeforeNextHeal > 0)
+            {
+                timeBeforeNextHeal -= Time.deltaTime;
+            }
+            else
+            {
+                timeBeforeNextHeal = timeBewteenHeals;
+                GameManager.Instance.playerManager.Heal(1);
+            }
+        }
+
+
+
         blinkable = Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight();
 
 

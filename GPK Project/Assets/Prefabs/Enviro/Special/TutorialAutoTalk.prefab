@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7419620273563152129}
   - component: {fileID: 7419620273563152128}
   m_Layer: 0
-  m_Name: DialogueInterruption
+  m_Name: TutorialAutoTalk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,4 +55,5 @@ MonoBehaviour:
   camZoom: 3
   storyStepRequired: 0
   requiredEvents: 
+  interactionIndicator: {fileID: 0}
   talkStarted: 0

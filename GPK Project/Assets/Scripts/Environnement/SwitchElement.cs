@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwitchElement : MonoBehaviour
 {
     public bool enableState;
-    [Range(0, 30)] public int beatsBeforeDeactivation;
+    [Range(0.0f, 30.0f)] public float beatsBeforeDeactivation;
     public bool stayEnable;
     public List<Hookterruptor> connectedHookterruptors;
     public bool needAllPressed;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     [Space]
     public string zoneName;
     public GameObject zoneNameO;
+    public int recolorHealthHealed;
     public float zoneNameDisplaySpeed;
     public float zoneNameDisplayTime;
     [HideInInspector] public Camera mainCamera;
@@ -32,10 +34,21 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public CameraHandler cameraHandler;
     [Space]
     public GameObject pausePanel;
+    public GameObject optionsPanel;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider soundEffectsSlider;
+    public Toggle playtestToggle;
+    public AudioMixer mixer;
     [HideInInspector] public bool paused;
+    private bool optionsOpened;
 
     private RectTransform zoneNameTransform;
     private Vector2 initialZoneNamePos;
+    [HideInInspector] public bool usePlaytestRecord;
+    private float masterVolume;
+    private float musicVolume;
+    private float soundEffectsVolume;
 
     #endregion
 
@@ -55,6 +68,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         FirstStart();
+        LoadPlayerPrefs();
     }
 
     void FirstStart()
@@ -100,18 +114,74 @@ public class GameManager : MonoBehaviour
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
     }
 
+    void LoadPlayerPrefs()
+    {
+        if (PlayerPrefs.HasKey("UsePlaytestRecord"))
+        {
+            usePlaytestRecord = PlayerPrefs.GetInt("UsePlaytestRecord") == 1 ? true : false;
+            playtestToggle.isOn = usePlaytestRecord;
+        }
+        else
+        {
+            usePlaytestRecord = true;
+            playtestToggle.isOn = true;
+        }
+
+        if (PlayerPrefs.HasKey("MasterVolume"))
+        {
+            masterVolume = Mathf.Log(PlayerPrefs.GetFloat("MasterVolume"),1.1f);
+            masterSlider.value = PlayerPrefs.GetFloat("MasterVolume");
+        }
+        else
+        {
+            masterVolume = Mathf.Log(0.5f, 1.1f);
+            masterSlider.value = 0.5f;
+        }
+
+        if (PlayerPrefs.HasKey("MusicVolume"))
+        {
+            musicVolume = Mathf.Log(PlayerPrefs.GetFloat("MusicVolume"),1.1f);
+            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        }
+        else
+        {
+            musicVolume = Mathf.Log(0.5f, 1.1f);
+            musicSlider.value = 0.5f;
+        }
+
+
+        if (PlayerPrefs.HasKey("SoundEffectsVolume"))
+        {
+            soundEffectsVolume = Mathf.Log(PlayerPrefs.GetFloat("SoundEffectsVolume"),1.1f);
+            soundEffectsSlider.value = PlayerPrefs.GetFloat("SoundEffectsVolume");
+        }
+        else
+        {
+            soundEffectsVolume = Mathf.Log(0.5f, 1.1f);
+            soundEffectsSlider.value = 0.5f;
+        }
+        RefreshVolumes();
+    }
+
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.M))
         {
-            // test whatever
+            //do whatever
         }
 
         if(Input.GetButtonDown("Cancel"))
         {
             if(paused)
             {
-                UnPause();
+                if(optionsOpened)
+                {
+                    CloseOptions();
+                }
+                else
+                {
+                    UnPause();
+                }
             }
             else
             {
@@ -138,7 +208,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveAndBackToMainMenu()
     {
-        //SaveGame();
+        SaveGame();
         StartCoroutine(AndBackToMainMenu());
     }
 
@@ -165,6 +235,20 @@ public class GameManager : MonoBehaviour
         SaveSystem.SavePreview(zoneHandler, screenTexture);
     }
 
+    public void OpenOptions()
+    {
+        optionsOpened = true;
+        pausePanel.SetActive(false);
+        optionsPanel.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        optionsOpened = false;
+        pausePanel.SetActive(true);
+        optionsPanel.SetActive(false);
+    }
+
     public void Pause()
     {
         pausePanel.SetActive(true);
@@ -176,6 +260,8 @@ public class GameManager : MonoBehaviour
 
     public void UnPause()
     {
+        RefreshVolumes();
+        PlayerPrefs.Save();
         pausePanel.SetActive(false);
         Beat.UnPauseMusic();
         Time.timeScale = 1;
@@ -183,7 +269,40 @@ public class GameManager : MonoBehaviour
         paused = false;
     }
 
+    private void RefreshVolumes()
+    {
+        mixer.SetFloat("Music", musicVolume);
+        mixer.SetFloat("Master", masterVolume);
+        mixer.SetFloat("SoundEffects", soundEffectsVolume);
+    }
+
+    public void NewMasterVolumeValue(float value)
+    {
+        masterVolume = Mathf.Log(value, 1.1f);
+        PlayerPrefs.SetFloat("MasterVolume", value);
+        PlayerPrefs.Save();
+    }
+    public void NewMusicVolumeValue(float value)
+    {
+        musicVolume = Mathf.Log(value, 1.1f);
+        PlayerPrefs.SetFloat("MusicVolume", value);
+        PlayerPrefs.Save();
+    }
+    public void NewSoundEffectsVolumeValue(float value)
+    {
+        soundEffectsVolume = Mathf.Log(value, 1.1f);
+        PlayerPrefs.SetFloat("SoundEffectsVolume", value);
+        PlayerPrefs.Save();
+    }
+
+    public void NewPlaytestValue(bool value)
+    {
+        PlayerPrefs.SetInt("UsePlaytestRecord", value ? 1 : 0);
+        usePlaytestRecord = value;
+        PlayerPrefs.Save();
+    }
     #endregion
+
 
     public void PauseEnemyBehaviour()
     {
