@@ -85,7 +85,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     # region Stats
     [Header("Stats")]
-    [SerializeField] [Range(1, 5)] protected int enemyMaxHP = 1;
+    [SerializeField] [Range(1, 20)] protected int enemyMaxHP = 1;
     [SerializeField] [Range(0, 20)] protected float aggroRange = 5;
     protected int enemyCurrentHP;
     protected Vector2 knockback;
@@ -369,7 +369,7 @@ public abstract class EnemyBase : MonoBehaviour
     #region Méthodes utiles à la création de behaviours
     protected bool PlayerIsInAggroRange()
     {
-        if (Vector2.Distance(player.position, transform.position) < aggroRange)
+        if (Vector2.Distance(player.position, parent.position) < aggroRange)
         {
             return true;
         }

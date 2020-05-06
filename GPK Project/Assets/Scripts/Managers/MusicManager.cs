@@ -192,7 +192,7 @@ public class MusicManager : MonoBehaviour
 
         if (MusicIsInArray(currentMusic, musicSO.drops))
         {
-            if (beatManager.currentSongProgression > 9 - beatManager.beatToSwitchTo)
+            if (beatManager.currentSongProgression > 6 - beatManager.beatToSwitchTo)
                 return true;
             else
                 return false;

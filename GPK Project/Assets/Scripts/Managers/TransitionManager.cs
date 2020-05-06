@@ -80,8 +80,8 @@ public class TransitionManager : MonoBehaviour
                             StartCoroutine(TransitionToConnectedZone(transitionHook));
                             if(GameManager.Instance.usePlaytestRecord)
                             {
-                                PlayTestRecorder.ClearRecords();
                                 PlayTestRecorder.CreateTimingRecordFile();
+                                PlayTestRecorder.ClearRecords();
                             }
                         }
                         else

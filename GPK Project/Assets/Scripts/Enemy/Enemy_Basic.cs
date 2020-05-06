@@ -34,6 +34,7 @@ public class Enemy_Basic : EnemyBase
 
     private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[]
     {
+        new EnemyBehaviour(EnemyState.Vulnerable, true),
         new EnemyBehaviour(EnemyState.Triggered, true),
         new EnemyBehaviour(EnemyState.Action, true),
         new EnemyBehaviour(EnemyState.Vulnerable, true)
@@ -135,7 +136,11 @@ public class Enemy_Basic : EnemyBase
         attackParent.SetActive(false);
         if((Time.fixedTime - startKnockBackTime) < GameManager.Instance.Beat.BeatTime)
         {
-            parent.position = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
+            Vector2 nextKnockbackPos = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
+            if (!Physics2D.OverlapPoint(nextKnockbackPos + knockback.normalized * 0.5f, LayerMask.GetMask("Obstacle")))
+            {
+                parent.position = nextKnockbackPos;
+            }
         }
     }
 

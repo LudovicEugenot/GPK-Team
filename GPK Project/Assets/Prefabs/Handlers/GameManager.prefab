@@ -679,19 +679,19 @@ MonoBehaviour:
   player: {fileID: 0}
   zoneName: Grand instrument des cordes
   zoneNameO: {fileID: 0}
-  recolorHealthHealed: 6
+  recolorHealthHealed: 2
   zoneNameDisplaySpeed: 8
   zoneNameDisplayTime: 2
   mainCamera: {fileID: 0}
   transitionHooks:
   - hook: {fileID: 0}
     isTemporary: 0
-    direction: 3
-    connectedSceneBuildIndex: 16
+    direction: 0
+    connectedSceneBuildIndex: 20
   - hook: {fileID: 0}
     isTemporary: 0
-    direction: 2
-    connectedSceneBuildIndex: 6
+    direction: 1
+    connectedSceneBuildIndex: 18
   hooksHolder: {fileID: 0}
   zoneHooks:
   - relived: 0
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoneNameUnknownUntilRecolor: 0
-  storyStepSkip: 0
+  storyStepSkip: 2
 --- !u!114 &6096407865150329221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,7 +753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461fcac0a0201114e9de04f2b39c147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSO: {fileID: 11400000, guid: 64a1ded79fbac764c9f69f036063997c, type: 2}
+  musicSO: {fileID: 11400000, guid: 7b1b060d2827f624482159bc884d659c, type: 2}
 --- !u!1 &1122493874185290590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2121,10 +2121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

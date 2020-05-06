@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2017042af61bea43a9c8cdf696b80b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMaxHP: 3
+  enemyMaxHP: 10
   aggroRange: 0
   movementDistance: 0.3
   movementCurve:
@@ -328,23 +328,22 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   jumpHeight: 1
-  beatNumberBetweenAttack: 3
   attackDamage: 1
   aoeScaleCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.88789177
-      inSlope: 2.3445086
-      outSlope: 2.3445086
+      value: 0.714468
+      inSlope: 3.3318992
+      outSlope: 3.3318992
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.32479718
+      outWeight: 0.11647958
     - serializedVersion: 3
-      time: 0.12636878
-      value: 0.9936641
+      time: 0.22413692
+      value: 0.9991672
       inSlope: -0.012972566
       outSlope: -0.012972566
       tangentMode: 0
@@ -352,22 +351,13 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.29933956
     - serializedVersion: 3
-      time: 0.723941
-      value: 0.7887347
-      inSlope: -1.1763928
-      outSlope: -1.1763928
+      time: 1.0023406
+      value: 0.005594744
+      inSlope: -1.9961526
+      outSlope: -1.9961526
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.22410515
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9996563
-      value: -0.00050735474
-      inSlope: -3.4254382
-      outSlope: -3.4254382
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12376761
+      inWeight: 0.0955489
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

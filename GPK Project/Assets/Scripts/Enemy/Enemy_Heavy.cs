@@ -157,7 +157,11 @@ public class Enemy_Heavy : EnemyBase
         attackParent.SetActive(false);
         if ((Time.fixedTime - startKnockBackTime) < GameManager.Instance.Beat.BeatTime)
         {
-            parent.position = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback * 0.5f, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
+            Vector2 nextKnockbackPos = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback * 0.5f, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
+            if (!Physics2D.OverlapPoint(nextKnockbackPos + knockback.normalized * 0.5f, LayerMask.GetMask("Obstacle")))
+            {
+                parent.position = nextKnockbackPos;
+            }
         }
     }
 

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db7bd21498cdd14fadcf3ba6b72c8e0, type: 3}
+  m_Name: BSTest
+  m_EditorClassIdentifier: 
+  calmLoop: {fileID: 8300000, guid: d0f814dc86f966044b869fd99c1778bc, type: 3}
+  calmMusicStartTimeOffset: 10
+  numberOfBeatsUntilLoop: 638
+  beatsToInsertCalmMusic: 1e000000
+  combatLoop: []
+  combatMusicStartTimeOffset: []
+  drops: []
+  dropMusicStartTimeOffset: []
+  breaks: []
+  breakMusicStartTimeOffset: []
+  bpm: 134
+  generalStartTimeOffset: 0.3
+  canSwitchOnBeat2: 0
+  timingThreshold: 0.2
+  timingThresholdOffset: 0
+  minTimeForOnBeatValidation: 0.2
+  cameraBeatEffectLerpSpeed: 0.5
+  cameraBeatEffectAmplitude: 0.1

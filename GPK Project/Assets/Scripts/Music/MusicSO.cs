@@ -8,7 +8,7 @@ public class MusicSO : ScriptableObject
 
     [Tooltip("La musique calme est jouée lorsqu'il n'y a pas d'ennemis.")]
     public AudioClip calmLoop;
-    [Range(0f, 3f)] public float calmMusicStartTimeOffset;
+    [Range(0f, 15f)] public float calmMusicStartTimeOffset;
     [Tooltip("Quand on quitte un break, on commence la musique calme à un de ces beats. La musique calme ne démarre au début que lorsqu'on transitionne à partir d'une autre musique ou qu'on arrive au bout de la boucle.")]
     [Range(0, 800)] public int numberOfBeatsUntilLoop;
     [Range(0, 800)] public int[] beatsToInsertCalmMusic;

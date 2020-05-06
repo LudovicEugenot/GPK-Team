@@ -313,15 +313,6 @@ public class BeatManager : MonoBehaviour
         return !used;
     }
 
-    /*private void StartMusic()
-    {
-        musicStarted = true;
-
-        switchingSource.Play();
-
-        songStartTime = audioTime;
-    }*/
-
     public void StartNewMusic()
     {
         musicStarted = true;
@@ -371,7 +362,7 @@ public class BeatManager : MonoBehaviour
     public void LoadMusic(AudioClip clip, float timerEntryMusic)
     {
         switchingSource.clip = clip;
-        //switchingSource.time = timerEntryMusic;
+        switchingSource.time = timerEntryMusic;
         /*beatStartTimeOffset = timerEntryMusic;
         nextBeatStartTime += timerEntryMusic;
         nextOffBeatStartTime += timerEntryMusic;*/

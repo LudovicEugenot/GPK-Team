@@ -5,7 +5,8 @@ using UnityEngine;
 public class BlinkAttack : MonoBehaviour
 {
     public float minHoldTimeToStartCharge;
-    public int attackDamage;
+    public int[] attackDamage;
+    public Color[] attackColor;
     public Vector2 attackInitialRange;
     public float attackMissRange;
     public float attackKnockbackDistance;
@@ -97,7 +98,8 @@ public class BlinkAttack : MonoBehaviour
     {
         isCharging = false;
         float currentAttackLength = boosted ? attackInitialRange.x : attackMissRange;
-        Instantiate(boosted ? attackFx : missAttackFx, (Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle)));
+        SpriteRenderer fxSprite = Instantiate(boosted ? attackFx : missAttackFx, (Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle))).GetComponent<SpriteRenderer>();
+        fxSprite.color = attackColor[GameManager.Instance.playerManager.currentPower];
         List<Collider2D> colliders = new List<Collider2D>();
         Physics2D.OverlapBox((Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, new Vector2(currentAttackLength, attackInitialRange.y), attackDirectionAngle, enemyFilter, colliders);
         if(colliders.Count > 0)
@@ -105,7 +107,7 @@ public class BlinkAttack : MonoBehaviour
             foreach(Collider2D collider in colliders)
             {
                 EnemyBase enemy = collider.transform.parent.GetComponentInChildren<EnemyBase>();
-                enemy.TakeDamage(attackDamage, attackDirection * attackKnockbackDistance);
+                enemy.TakeDamage(attackDamage[GameManager.Instance.playerManager.currentPower], attackDirection * attackKnockbackDistance);
             }
         }
 

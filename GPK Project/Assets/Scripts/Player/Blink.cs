@@ -15,6 +15,7 @@ public class Blink : MonoBehaviour
     [Space]
     public LineRenderer blinkTrajectoryPreviewLine;
     public GameObject blinkTrajectoryStartPreviewO;
+    public GameObject blinkTrajectoryEndPreviewO;
     public GameObject blinkTargetO;
     public GameObject blinkInvalidTargetO;
     [Space]
@@ -29,6 +30,7 @@ public class Blink : MonoBehaviour
     [Space]
     public GameObject blinkTrailStartPrefab;
     public GameObject blinkTrailEndPrefab;
+    public GameObject blinkCrossHurtFx;
     public float trailStartOffset;
     public float trailEndOffset;
 
@@ -95,6 +97,7 @@ public class Blink : MonoBehaviour
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
             blinkTrajectoryStartPreviewO.SetActive(false);
+            blinkTrajectoryEndPreviewO.SetActive(false);
         }
 
 
@@ -203,6 +206,7 @@ public class Blink : MonoBehaviour
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
             blinkTrajectoryStartPreviewO.SetActive(false);
+            blinkTrajectoryEndPreviewO.SetActive(false);
             blinkDestination = transform.position;
             selectedHook = null;
         }
@@ -240,7 +244,9 @@ public class Blink : MonoBehaviour
             blinkTargetO.transform.position = selectedHook.transform.position;
             blinkTargetO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
             blinkTrajectoryStartPreviewO.SetActive(true);
-            blinkTrajectoryStartPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
+            blinkTrajectoryStartPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, - blinkDirection));
+            blinkTrajectoryEndPreviewO.SetActive(true);
+            blinkTrajectoryEndPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
 
             blinkInvalidTargetO.SetActive(false);
         }
@@ -278,10 +284,20 @@ public class Blink : MonoBehaviour
     {
         if(blinkDestination != (Vector2)transform.position)
         {
-            Vector2 direction = blinkDestination - (Vector2)transform.parent.position;
-            direction.Normalize();
-            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            Vector2 blinkDirection = blinkDestination - (Vector2)transform.parent.position;
+
+            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             Instantiate(blinkDisparition, transform.position, Quaternion.identity);
+
+
+            RaycastHit2D blinkCrossHurtHit = Physics2D.Raycast(transform.parent.position, blinkDirection, blinkDirection.magnitude, LayerMask.GetMask("CrossHurt"));
+            if(blinkCrossHurtHit)
+            {
+                Range_Enemy rangeEnemy = blinkCrossHurtHit.collider.transform.parent.GetComponentInChildren<Range_Enemy>();
+                playerManager.TakeDamage(rangeEnemy.barrierDamage);
+                Instantiate(blinkCrossHurtFx, blinkCrossHurtHit.point, Quaternion.identity);
+            }
+
             transform.parent.position = blinkDestination;
 
             if (selectedHook.isSecureHook)
@@ -290,7 +306,7 @@ public class Blink : MonoBehaviour
             }
 
 
-            if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,true, "Blink") && blinkReachDestination)
+            if (GameManager.Instance.Beat.OnBeat(playerManager.playerOffBeated ,true, "Blink") && blinkReachDestination)
             {
                 StartCoroutine(selectedHook.BlinkReaction(true));
 
@@ -305,7 +321,7 @@ public class Blink : MonoBehaviour
 
                 FailCombo();
             }
-            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - direction * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - blinkDirection.normalized * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             animator.SetTrigger("Blink");
             currentHook = selectedHook;
             selectedHook.selected = false;
