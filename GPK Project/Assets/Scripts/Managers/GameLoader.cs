@@ -65,12 +65,13 @@ public class GameLoader : MonoBehaviour
         worldData = SaveSystem.LoadWorld();
         ZoneHandler.Instance.zones = worldData.worldZones;
         WorldManager.allWorldEvents = worldData.worldEvents;
+        WorldManager.currentStoryStep = worldData.storyStep;
     }
 
     private void LoadPlayerData()
     {
         playerData = SaveSystem.LoadPlayer();
-        TransitionManager.Instance.newPlayerData = playerData;
+        TransitionManager.Instance.previousPlayerData = playerData;
     }
 
     private void StartMusicManager()

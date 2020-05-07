@@ -127,6 +127,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected Transform parent;
     protected Vector2 positionStartOfBeat;
     protected Animator animator;
+    protected AudioSource source;
 
     protected List<Vector2> lastSeenPlayerPosition = new List<Vector2>();
     protected bool alreadyGotToLastPosition;
@@ -197,6 +198,7 @@ public abstract class EnemyBase : MonoBehaviour
     private void Awake()
     {
         parent = transform.parent;
+        source = GetComponent<AudioSource>();
         animator = parent.GetComponentInChildren<Animator>();
         rb2D = parent.GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
         if (rb2D == null)

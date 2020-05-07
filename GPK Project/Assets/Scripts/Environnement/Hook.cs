@@ -20,6 +20,7 @@ public abstract class Hook : MonoBehaviour
     protected Animator animator;
     protected AnimSynchronizer animSynchronizer;
     [HideInInspector] public HookState hookState;
+    protected AudioSource source;
 
     #endregion
 
@@ -29,7 +30,7 @@ public abstract class Hook : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         animSynchronizer = GetComponentInChildren<AnimSynchronizer>();
-
+        source = GetComponent<AudioSource>();
         selected = false;
         blinkable = true;
     }

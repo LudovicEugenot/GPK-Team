@@ -199,8 +199,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
-      key1: {r: 0.2924528, g: 0.16691881, b: 0.16691881, a: 1}
+      key0: {r: 0.48235297, g: 0.03137255, b: 0.023529414, a: 1}
+      key1: {r: 0.26415092, g: 0.19811319, b: 0.19811319, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -339,13 +339,14 @@ MonoBehaviour:
   aggroRange: 4
   alternateSpotTransform: {fileID: 2185609004921822150}
   beamDamage: 1
+  beatProgressionForbeam: 1
   barrierDamage: 2
-  barrierLength: 20
+  barrierLength: 25
   barrierCollider: {fileID: 7060321063094969781}
   beamLine: {fileID: 1087277165}
   beamLineWidths:
   - 0.2
-  - 1.5
+  - 1
   - 0.1
   knockbackCurve:
     serializedVersion: 2

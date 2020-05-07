@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public static class WorldManager
 {
-    public enum StoryStep {Tutorial, GoingToVillage, ArrivedToVillage, VillageConverted, FirstInstrumentRelived, SecondInstrumentRelived, AllInstrumentRelived}
+    public enum StoryStep {Tutorial, GoingToVillage, ArrivedToVillage, VillageConverted, FirstInstrumentRelived, SpeakerObtained, SecondInstrumentRelived, AllInstrumentRelived}
 
     /// <summary>
     /// To add an event you need to open the WorldManager script and add a name to the enum list

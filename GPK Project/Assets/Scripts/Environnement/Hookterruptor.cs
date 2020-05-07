@@ -9,6 +9,10 @@ public class Hookterruptor : Hook
     public float pressBeatTime;
     public float addedPressTime;
     public bool switchInterruptor;
+    [Header("Sounds")]
+    public AudioClip pressSound;
+    public AudioClip unpressSound;
+
 
     public WorldManager.EventName eventToOccur;
     private WorldManager.WorldEvent worldEventToOccur;
@@ -45,10 +49,13 @@ public class Hookterruptor : Hook
         {
             pressed = true;
             pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime + addedPressTime;
+            source.pitch = 1f;
+            source.PlayOneShot(pressSound);
         }
         else
         {
             pressed = !pressed;
+            source.PlayOneShot(pressed ? pressSound : unpressSound);
         }
 
         yield return null;
@@ -71,9 +78,11 @@ public class Hookterruptor : Hook
                     {
                         pressTimeRemaining -= Time.deltaTime;
                     }
-                    else
+                    else if (pressed)
                     {
                         pressed = false;
+                        source.pitch = 0.7f;
+                        source.PlayOneShot(unpressSound);
                     }
                 }
             }
@@ -83,9 +92,11 @@ public class Hookterruptor : Hook
                 {
                     pressTimeRemaining -= Time.deltaTime;
                 }
-                else
+                else if (pressed)
                 {
                     pressed = false;
+                    source.pitch = 0.7f;
+                    source.PlayOneShot(unpressSound);
                 }
             }
         }

@@ -126,6 +126,12 @@ public class ZoneHandler : MonoBehaviour
         {
             currentZone.hooksRelived[i] = currentZone.zoneHooks[i].relived;
         }
+
+
+        for (int i = 0; i < currentZone.heartContainersObtained.Length; i++)
+        {
+            currentZone.heartContainersObtained[i] = GameManager.Instance.heartContainers[i].isObtained;
+        }
     }
 
     public void InitializeZone(Zone newZone)
@@ -148,6 +154,14 @@ public class ZoneHandler : MonoBehaviour
             if(i < GameManager.Instance.zoneElements.Count)
             {
                 GameManager.Instance.zoneElements[i].isEnabled = currentZone.elementsEnabled[i];
+            }
+        }
+
+        for (int i = 0; i < currentZone.heartContainersObtained.Length; i++)
+        {
+            if (i < GameManager.Instance.heartContainers.Count)
+            {
+                GameManager.Instance.heartContainers[i].isObtained = currentZone.heartContainersObtained[i];
             }
         }
 
@@ -189,8 +203,9 @@ public class ZoneHandler : MonoBehaviour
         public bool[] hooksRelived;
         public bool[] enemiesConverted;
         public bool[] elementsEnabled;
+        public bool[] heartContainersObtained;
 
-        public Zone(int _buildIndex, string zoneName, List<HookState> _zoneHooks, int enemyNumber, int elementNumber)
+        public Zone(int _buildIndex, string zoneName, List<HookState> _zoneHooks, int enemyNumber, int elementNumber, int heartContainerNumber)
         {
             buildIndex = _buildIndex;
             isRelived = false;
@@ -199,6 +214,7 @@ public class ZoneHandler : MonoBehaviour
             hooksRelived = new bool[zoneHooks.Count];
             enemiesConverted = new bool[enemyNumber];
             elementsEnabled = new bool[elementNumber];
+            heartContainersObtained = new bool[heartContainerNumber];
         }
     }
 }
