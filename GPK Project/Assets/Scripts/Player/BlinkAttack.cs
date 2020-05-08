@@ -11,8 +11,10 @@ public class BlinkAttack : MonoBehaviour
     public float attackMissRange;
     public float attackKnockbackDistance;
     public GameObject attackDirectionPreview;
-    public GameObject chargeBeginParticle;
     public GameObject attackFx, missAttackFx;
+    [Header("Sounds")]
+    public AudioClip attackOnBeatSound;
+    public AudioClip attackMissBeatSound;
 
     private bool isCharging;
     private Vector2 attackDirection;
@@ -20,9 +22,11 @@ public class BlinkAttack : MonoBehaviour
     private Vector2 worldMousePos;
     private ContactFilter2D enemyFilter;
     private float remainingHoldingTime;
+    private RemoteSpeaker remoteSpeaker;
 
     void Start()
     {
+        remoteSpeaker = GetComponent<RemoteSpeaker>();
         enemyFilter = new ContactFilter2D();
         enemyFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
         enemyFilter.useTriggers = true;
@@ -47,7 +51,6 @@ public class BlinkAttack : MonoBehaviour
             else if (remainingHoldingTime != -10)
             {
                 isCharging = true;
-                //Instantiate(chargeBeginParticle, transform.position, Quaternion.identity);
                 remainingHoldingTime = -10;
             }
         }
@@ -94,12 +97,24 @@ public class BlinkAttack : MonoBehaviour
         remainingHoldingTime = minHoldTimeToStartCharge;
     }
 
-    private void Attack(bool boosted)
+    private void Attack(bool onBeat)
     {
+        GameManager.playerSource.PlayOneShot(onBeat ? attackOnBeatSound : attackMissBeatSound);
         isCharging = false;
-        float currentAttackLength = boosted ? attackInitialRange.x : attackMissRange;
-        SpriteRenderer fxSprite = Instantiate(boosted ? attackFx : missAttackFx, (Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle))).GetComponent<SpriteRenderer>();
+        float currentAttackLength = onBeat ? attackInitialRange.x : attackMissRange;
+        SpriteRenderer fxSprite = Instantiate(onBeat ? attackFx : missAttackFx, (Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle))).GetComponent<SpriteRenderer>();
         fxSprite.color = attackColor[GameManager.Instance.playerManager.currentPower];
+
+        if (remoteSpeaker.speakerPlaced)
+        {
+            remoteSpeaker.Attack(onBeat,
+                new Vector2(currentAttackLength, attackInitialRange.y),
+                attackDamage[GameManager.Instance.playerManager.currentPower],
+                onBeat ? attackFx : missAttackFx,
+                attackColor[GameManager.Instance.playerManager.currentPower],
+                enemyFilter);
+        }
+
         List<Collider2D> colliders = new List<Collider2D>();
         Physics2D.OverlapBox((Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, new Vector2(currentAttackLength, attackInitialRange.y), attackDirectionAngle, enemyFilter, colliders);
         if(colliders.Count > 0)

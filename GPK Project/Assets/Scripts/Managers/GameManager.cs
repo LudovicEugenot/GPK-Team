@@ -24,11 +24,14 @@ public class GameManager : MonoBehaviour
     public GameObject enemiesHolder;
     [HideInInspector] public List<EnemyBase> zoneEnemies;
     public GameObject elementsHolder;
+    public List<HeartContainerPart> heartContainers;
     [HideInInspector] public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public BlinkAttack attack;
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public DialogueManager dialogueManager;
+    [HideInInspector] public static AudioSource playerSource;
+    [HideInInspector] public static RemoteSpeaker remoteSpeaker;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
     [HideInInspector] public CameraHandler cameraHandler;
@@ -42,6 +45,9 @@ public class GameManager : MonoBehaviour
     public AudioMixer mixer;
     [HideInInspector] public bool paused;
     private bool optionsOpened;
+    [Header("Sounds")]
+    public AudioClip validationSound;
+    public AudioClip backSound;
 
     private RectTransform zoneNameTransform;
     private Vector2 initialZoneNamePos;
@@ -105,13 +111,16 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
         Beat = BeatManager.Instance;
         mainCamera = Camera.main;
+        playerSource = player.GetComponentInChildren<AudioSource>();
         cameraHandler = mainCamera.GetComponent<CameraHandler>();
         spriteRendererO = player.transform.GetChild(1).gameObject;
         blink = player.GetComponentInChildren<Blink>();
         attack = player.GetComponentInChildren<BlinkAttack>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
         dialogueManager = player.GetComponentInChildren<DialogueManager>();
-        StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, GameManager.Instance.spriteRendererO, zoneEnemies.Count, zoneElements.Count));
+        remoteSpeaker = player.GetComponentInChildren<RemoteSpeaker>();
+
+        StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, spriteRendererO, zoneEnemies.Count, zoneElements.Count, heartContainers.Count));
     }
 
     void LoadPlayerPrefs()
@@ -198,6 +207,7 @@ public class GameManager : MonoBehaviour
         SaveSystem.SavePlayer(playerManager);
         SaveSystem.SaveWorld(zoneHandler);
         StartCoroutine(SavePreview());
+        playerSource.PlayOneShot(validationSound);
     }
 
     public void SaveAndQuit()
@@ -240,6 +250,7 @@ public class GameManager : MonoBehaviour
         optionsOpened = true;
         pausePanel.SetActive(false);
         optionsPanel.SetActive(true);
+        playerSource.PlayOneShot(validationSound);
     }
 
     public void CloseOptions()
@@ -247,6 +258,8 @@ public class GameManager : MonoBehaviour
         optionsOpened = false;
         pausePanel.SetActive(true);
         optionsPanel.SetActive(false);
+        playerSource.time = 0.3f;
+        playerSource.PlayOneShot(backSound);
     }
 
     public void Pause()
@@ -256,6 +269,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Time.fixedDeltaTime = 0;
         paused = true;
+        playerSource.PlayOneShot(validationSound);
     }
 
     public void UnPause()
@@ -267,6 +281,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.02f;
         paused = false;
+        playerSource.time = 0.3f;
+        playerSource.PlayOneShot(backSound);
     }
 
     private void RefreshVolumes()
@@ -300,6 +316,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("UsePlaytestRecord", value ? 1 : 0);
         usePlaytestRecord = value;
         PlayerPrefs.Save();
+        playerSource.PlayOneShot(validationSound);
     }
     #endregion
 

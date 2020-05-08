@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
     public Animator animator;
     public GameObject[] musicianVisualO;
     public GameObject healParticle;
+    [Header("Sounds")]
+    public AudioClip[] damageSounds;
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentPower;
@@ -61,6 +63,8 @@ public class PlayerManager : MonoBehaviour
             {
                 StartCoroutine(Die());
             }
+
+            GameManager.playerSource.PlayOneShot(damageSounds[Random.Range(0, damageSounds.Length)]);
         }
     }
 
@@ -157,7 +161,7 @@ public class PlayerManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        StartCoroutine(TransitionManager.Instance.Respawn(true));
+        StartCoroutine(TransitionManager.Instance.Respawn());
     }
 
     public void AddMusician()

@@ -6,6 +6,7 @@ public class Range_Enemy : EnemyBase
 {
     public Transform alternateSpotTransform;
     public int beamDamage;
+    [Range(0.1f, 1.0f)] public float beatProgressionForbeam;
     public int barrierDamage;
     public float barrierLength;
     public BoxCollider2D barrierCollider;
@@ -91,7 +92,7 @@ public class Range_Enemy : EnemyBase
         beamLine.enabled = true;
         Vector3[] beamLinePos = new Vector3[2];
         beamLinePos[0] = parent.position;
-        beamLinePos[1] = (Vector2)parent.position + playerDirection * 30;
+        beamLinePos[1] = (Vector2)parent.position + playerDirection * barrierLength;
         beamLine.SetPositions(beamLinePos);
         beamLine.startWidth = beamLineWidths[0];
         beamLine.endWidth = beamLineWidths[0];
@@ -110,7 +111,7 @@ public class Range_Enemy : EnemyBase
         Vector2 playerDirection = beamTarget - (Vector2)parent.position;
         playerDirection.Normalize();
         beamLine.enabled = true;
-        if(BeatManager.Instance.currentBeatProgression < 0.2f)
+        if(BeatManager.Instance.currentBeatProgression < beatProgressionForbeam)
         {
             beamLine.startWidth = beamLineWidths[1];
             beamLine.endWidth = beamLineWidths[1];
@@ -134,7 +135,13 @@ public class Range_Enemy : EnemyBase
 
     protected override void VulnerableBehaviour()
     {
+        Vector2 playerDirection = beamTarget - (Vector2)parent.position;
+        playerDirection.Normalize();
         barrierCollider.gameObject.SetActive(true);
+        barrierCollider.transform.localScale = new Vector2(barrierLength, 0.3f);
+        barrierCollider.transform.position = (Vector2)parent.position + playerDirection * barrierLength * 0.5f;
+        barrierCollider.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, playerDirection));
+
         canBeDamaged = true;
         beamLine.enabled = true;
         beamLine.startWidth = beamLineWidths[2];
