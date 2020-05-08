@@ -41,6 +41,13 @@ public class Blink : MonoBehaviour
     public float rangeBeatAmplitude;
     public GameObject rangePointPrefab;
     public Transform rangePointsParent;
+    [Space]
+    public LineRenderer rangeLine;
+    public Animator animator;
+    [Header("Sounds")]
+    public AudioClip transitionBlinkSound;
+    public AudioClip onBeatSound;
+    public AudioClip missBeatSound;
 
     [System.Serializable]
     public class BlinkRange
@@ -66,10 +73,9 @@ public class Blink : MonoBehaviour
     private Vector2 rangeCenter;
     private float currentRadius;
     private SpriteRenderer[] rangePoints;
-    public LineRenderer rangeLine;
+    private Vector3[] circlePointPos;
 
     private float lastSelectionTime;
-    public Animator animator;
     #endregion
     void Start()
     {
@@ -124,6 +130,7 @@ public class Blink : MonoBehaviour
         {
             rangePoints[i] = Instantiate(rangePointPrefab, transform.position, Quaternion.identity, rangePointsParent).GetComponent<SpriteRenderer>();
         }
+        circlePointPos = new Vector3[rangePointNumber];
         rangeLine.enabled = false;
     }
 
@@ -136,16 +143,15 @@ public class Blink : MonoBehaviour
             currentRadius += rangeBeatAmplitude;
         }
 
-        Vector3[] circlePointPos = new Vector3[rangePointNumber];
         for (int i = 0; i < rangePointNumber; i++)
         {
-            circlePointPos[i] = new Vector2(Mathf.Cos(((2 * Mathf.PI) / (rangePointNumber)) * i), Mathf.Sin(((2 * Mathf.PI) / (rangePointNumber)) * i));
-            circlePointPos[i] *= currentRadius;
-            circlePointPos[i] += (Vector3)rangeCenter;
-            Vector2 pointVector = (Vector2)circlePointPos[i] - rangeCenter;
+            Vector2 pointDirection = new Vector2(Mathf.Cos(((2 * Mathf.PI) / (rangePointNumber)) * i), Mathf.Sin(((2 * Mathf.PI) / (rangePointNumber)) * i));
+
+            circlePointPos[i] = (pointDirection * currentRadius) + rangeCenter;
+
             if(!ignoreObstacles)
             {
-                RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointVector.normalized, pointVector.magnitude, LayerMask.GetMask("Obstacle"));
+                RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointDirection, currentRadius, LayerMask.GetMask("Obstacle"));
 
                 if (hit)
                 {
@@ -157,7 +163,7 @@ public class Blink : MonoBehaviour
             rangePoints[i].sprite = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1].pointDisplay;
             if(rotatePoints)
             {
-                rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointVector));
+                rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointDirection));
             }
 
             rangeLine.positionCount = rangePointNumber;
@@ -169,7 +175,7 @@ public class Blink : MonoBehaviour
     {
         worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Hook hoveredHook = null;
-        Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook"));
+        Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook","Speaker"));
         float minDistanceToHook = 10000f;
         for (int i = 0; i < hookHover.Length; i++)
         {
@@ -252,9 +258,7 @@ public class Blink : MonoBehaviour
         }
         else
         {
-            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
-
-            //blinkTrajectoryPreviewLine.enabled = true;
+            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin;
 
             Vector3[] previewPositions = new Vector3[2];
             previewPositions[0] = transform.parent.position;
@@ -313,6 +317,8 @@ public class Blink : MonoBehaviour
                 currentTimedCombo++;
                 consecutiveMiss = 0;
                 Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
+
+                GameManager.playerSource.PlayOneShot(onBeatSound);
             }
             else
             {
@@ -320,6 +326,8 @@ public class Blink : MonoBehaviour
                 Instantiate(missEffectPrefab, transform.parent.position + (Vector3)(Vector2.up * 0.5f), Quaternion.Euler(90, 0, 0));
 
                 FailCombo();
+
+                GameManager.playerSource.PlayOneShot(missBeatSound);
             }
             Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - blinkDirection.normalized * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             animator.SetTrigger("Blink");

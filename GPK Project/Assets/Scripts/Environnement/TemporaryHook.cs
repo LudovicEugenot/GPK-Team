@@ -8,6 +8,7 @@ public class TemporaryHook : Hook
     public int beatTimeBeforeBroke;
     public float addedTBBTime;
     public Color brokenColor;
+    public AudioClip breakSound;
 
     private bool isBroken;
     private bool unstable;
@@ -44,12 +45,13 @@ public class TemporaryHook : Hook
         else
         {
             unstable = true;
-            yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.BeatTime + GameManager.Instance.Beat.timingThreshold / 2);
+            yield return new WaitForSeconds(beatTimeBeforeBroke * GameManager.Instance.Beat.BeatTime + GameManager.Instance.Beat.timingThreshold / 6);
             if(GameManager.Instance.blink.currentHook == this)
             {
                 FallEffect();
             }
             yield return new WaitForSeconds(addedTBBTime);
+            source.PlayOneShot(breakSound);
             unstable = false;
             isBroken = true;
         }

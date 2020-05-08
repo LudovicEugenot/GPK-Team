@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6006642318066632173}
-  - component: {fileID: 6006642318066632174}
   - component: {fileID: 6006642318066632175}
+  - component: {fileID: 6006642318066632174}
+  - component: {fileID: 4382818174927487479}
   m_Layer: 0
   m_Name: HeartContainerPart
   m_TagString: Untagged
@@ -32,6 +33,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6006642318066632175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6006642318066632168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c41d55e28222143a7da5255b5e5267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nearbyHook: {fileID: 0}
+  cinematicZoom: 3
+  heartDestinationVerticalOffset: 1.5
+  heartLerpSpeed: 5
+  timeBeforeAnimStart: 0.5
+  timeBeforeHeartVanish: 1
+  timeBeforeHeal: 0.5
+  isObtained: 0
 --- !u!212 &6006642318066632174
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -71,34 +92,34 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3100235638090243034, guid: 367ef9c03691bba40839580d903c90b0,
+  m_Sprite: {fileID: 7085096509206627134, guid: 21aaaf6f5acc2d14fbd9ddc665ccd90c,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.0625, y: 2.0625}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6006642318066632175
-MonoBehaviour:
+--- !u!95 &4382818174927487479
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6006642318066632168}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7c41d55e28222143a7da5255b5e5267, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nearbyHook: {fileID: 0}
-  cinematicZoom: 3
-  heartDestinationVerticalOffset: 1.5
-  heartLerpSpeed: 5
-  timeBeforeAnimStart: 0.5
-  timeBeforeHeartVanish: 1
-  timeBeforeHeal: 0.5
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8b1382b94205a104bac926ff843b4029, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

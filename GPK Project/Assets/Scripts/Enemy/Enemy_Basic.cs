@@ -11,6 +11,10 @@ public class Enemy_Basic : EnemyBase
     public int attackDamage;
     public AnimationCurve aoeScaleCurve;
     public AnimationCurve knockbackCurve;
+    [Header("Sounds")]
+    public AudioClip jumpSound;
+    public AudioClip attackSound;
+    public AudioClip conversionSound;
 
     private GameObject attackParent;
     private CircleCollider2D attackCollider;
@@ -69,6 +73,10 @@ public class Enemy_Basic : EnemyBase
 
     protected override void ActionBehaviour()
     {
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            source.PlayOneShot(attackSound);
+        }
         attackParent.SetActive(true);
         float attackScale = aoeScaleCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression) * maxRadiusAttack;
         attackParent.transform.localScale = new Vector3(attackScale, attackScale);
@@ -104,6 +112,7 @@ public class Enemy_Basic : EnemyBase
     {
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
+            source.PlayOneShot(jumpSound);
             Vector2 finalDirection = playerPositionStartOfBeat;
             while (!NoObstacleBetweenMeAndThere(finalDirection))
             {
@@ -146,6 +155,7 @@ public class Enemy_Basic : EnemyBase
 
     protected override void OnConverted()
     {
+        source.PlayOneShot(conversionSound);
         animator.SetBool("Converted", true);
         attackParent.SetActive(false);
         GameManager.Instance.playerManager.AddMusician();
