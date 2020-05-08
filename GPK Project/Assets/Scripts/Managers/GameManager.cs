@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public DialogueManager dialogueManager;
     [HideInInspector] public static AudioSource playerSource;
     [HideInInspector] public static RemoteSpeaker remoteSpeaker;
+    [HideInInspector] public static Animator playerAnimator;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
     [HideInInspector] public CameraHandler cameraHandler;
@@ -119,6 +120,7 @@ public class GameManager : MonoBehaviour
         playerManager = player.GetComponentInChildren<PlayerManager>();
         dialogueManager = player.GetComponentInChildren<DialogueManager>();
         remoteSpeaker = player.GetComponentInChildren<RemoteSpeaker>();
+        playerAnimator = player.transform.GetChild(1).GetComponent<Animator>();
 
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, spriteRendererO, zoneEnemies.Count, zoneElements.Count, heartContainers.Count));
     }

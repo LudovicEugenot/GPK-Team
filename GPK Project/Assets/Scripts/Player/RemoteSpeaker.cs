@@ -24,12 +24,12 @@ public class RemoteSpeaker : MonoBehaviour
     private SpeakerHook speakerHook;
     private int beatCooldownRemaining;
     [HideInInspector] public bool speakerPlaced;
-    private Animator animator;
+    //private Animator animator;
     private Animator speakerAnimator;
 
     private void Start()
     {
-        animator = transform.parent.GetComponentInChildren<Animator>();
+        //animator = transform.parent.GetComponentInChildren<Animator>();
         beatCooldownRemaining = initialBeatCooldown;
         speakerPlaced = false;
     }
@@ -72,7 +72,7 @@ public class RemoteSpeaker : MonoBehaviour
 
     private IEnumerator ThrowSpeaker()
     {
-        animator.SetTrigger("Throw");
+        GameManager.playerAnimator.SetTrigger("Throw");
         beatCooldownRemaining = initialBeatCooldown;
         Vector2 targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 launchPos = transform.parent.position;
