@@ -44,7 +44,7 @@ public class BossAOEPattern : MonoBehaviour
     [System.Serializable]
     public class Aoe
     {
-        [SerializeField] private Transform spawnPosition;
+        [SerializeField] private Transform spawnPosition = null;
         [HideInInspector] public Vector2 position;
         [Range(0f, 10f)] public float beatTimeBeforeNextAOE;
         [Range(1f, 20f)] public int damage;
