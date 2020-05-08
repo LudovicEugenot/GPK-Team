@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossAOEPattern : MonoBehaviour
 {
+    public bool isTesting;
     [Header("Aoe settings")]
     public List<Aoe> patternAoes;
     [Header("Prefabs")]
@@ -12,7 +13,16 @@ public class BossAOEPattern : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(LaunchAoepattern());
+        if (!isTesting)
+            StartCoroutine(LaunchAoepattern());
+    }
+
+    private void Update()
+    {
+        if(isTesting && Input.GetKeyDown(KeyCode.A))
+        {
+            StartCoroutine(LaunchAoepattern());
+        }
     }
 
     private IEnumerator LaunchAoepattern()
@@ -20,25 +30,53 @@ public class BossAOEPattern : MonoBehaviour
         for(int i = 0; i < patternAoes.Count; i++)
         {
             StartCoroutine(SpawnAOE(patternAoes[i].Info()));
-            yield return new WaitForSeconds(patternAoes[i].beatTimeBeforeNextAOE);
+
+            while (patternAoes[i].beatTimeBeforeNextAOE == 0)
+            {
+                i++;
+                StartCoroutine(SpawnAOE(patternAoes[i].Info()));
+            }
+
+            yield return new WaitForSeconds(patternAoes[i].beatTimeBeforeNextAOE * BeatManager.Instance.BeatTime);
+
+        }
+
+        if(!isTesting)
+        {
+            Destroy(gameObject);
         }
     }
 
     private IEnumerator SpawnAOE(Aoe aoe)
     {
         GameObject warningZone = Instantiate(warningZonePrefab, aoe.position, Quaternion.identity);
-        warningZone.transform.localScale = Vector2.one * aoe.radius;
+        warningZone.transform.localScale = Vector2.one * aoe.radius * 2;
 
         yield return new WaitForSeconds(aoe.warningBeatTime * BeatManager.Instance.BeatTime);
         Destroy(warningZone);
 
         GameObject fx = Instantiate(aoeFx, aoe.position, Quaternion.identity);
-        fx.transform.localScale = Vector2.one * aoe.radius;
+        fx.transform.localScale = Vector2.one * aoe.radius * 2;
 
         if (Physics2D.OverlapCircle(aoe.position, aoe.radius, LayerMask.GetMask("Player")))
         {
             GameManager.Instance.playerManager.TakeDamage(aoe.damage);
         }
+    }
+
+    /// <summary>
+    /// Retourne le temps de ce pattern en secondes.
+    /// </summary>
+    /// <returns></returns>
+    public float PatternTime()
+    {
+        float patternTime = 0;
+
+        foreach (Aoe aoe in patternAoes)
+        {
+            patternTime += aoe.beatTimeBeforeNextAOE * BeatManager.Instance.BeatTime;
+        }
+        return patternTime;
     }
 
     [System.Serializable]
@@ -59,7 +97,7 @@ public class BossAOEPattern : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         foreach(Aoe aoe in patternAoes)

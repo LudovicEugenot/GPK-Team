@@ -428,11 +428,6 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    public void DealDamage()
-    {
-        // Player.life --;
-    }
-
     public void TakeDamage()
     {
         if (!converted && canBeDamaged)
