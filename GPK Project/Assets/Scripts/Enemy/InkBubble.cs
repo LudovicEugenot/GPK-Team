@@ -10,6 +10,7 @@ public class InkBubble : MonoBehaviour
     public AnimationClip apparitionAnim;
     public GameObject blackExplosionPrefab;
     public GameObject colorExplosionPrefab;
+    [HideInInspector] public Boss boss;
 
     private Rigidbody2D rb;
     private Vector2 direction;
@@ -51,6 +52,11 @@ public class InkBubble : MonoBehaviour
     public void Explode()
     {
         //Instantiate(isConverted ? colorExplosionPrefab : blackExplosionPrefab, transform.position, Quaternion.identity);
+        if (isConverted)
+            boss.AddRecoloration();
+        else
+            boss.LoseRecoloration();
+
         Destroy(gameObject);
     }
 
