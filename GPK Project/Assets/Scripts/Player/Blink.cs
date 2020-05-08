@@ -5,7 +5,7 @@ public class Blink : MonoBehaviour
 {
     #region Initialization
     [Header("Blink settings")]
-    public float[] blinkRangeProgression;
+    public BlinkRange[] blinkRangeProgression;
     public int allowedConsecutiveOnbeatMiss;
     public int comboMalus;
     public Hook startHook;
@@ -15,6 +15,7 @@ public class Blink : MonoBehaviour
     [Space]
     public LineRenderer blinkTrajectoryPreviewLine;
     public GameObject blinkTrajectoryStartPreviewO;
+    public GameObject blinkTrajectoryEndPreviewO;
     public GameObject blinkTargetO;
     public GameObject blinkInvalidTargetO;
     [Space]
@@ -22,12 +23,14 @@ public class Blink : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject timingEffectPrefab;
+    public GameObject missEffectPrefab;
     public GameObject overActionEffectPrefab;
     public GameObject blinkDisparition;
 
     [Space]
     public GameObject blinkTrailStartPrefab;
     public GameObject blinkTrailEndPrefab;
+    public GameObject blinkCrossHurtFx;
     public float trailStartOffset;
     public float trailEndOffset;
 
@@ -38,6 +41,20 @@ public class Blink : MonoBehaviour
     public float rangeBeatAmplitude;
     public GameObject rangePointPrefab;
     public Transform rangePointsParent;
+    [Space]
+    public LineRenderer rangeLine;
+    public Animator animator;
+    [Header("Sounds")]
+    public AudioClip transitionBlinkSound;
+    public AudioClip onBeatSound;
+    public AudioClip missBeatSound;
+
+    [System.Serializable]
+    public class BlinkRange
+    {
+        public float range;
+        public Sprite pointDisplay;
+    }
 
     private Hook lastSecureHook;
     [HideInInspector] public Hook currentHook;
@@ -55,21 +72,20 @@ public class Blink : MonoBehaviour
 
     private Vector2 rangeCenter;
     private float currentRadius;
-    private GameObject[] rangePoints;
-    public LineRenderer rangeLine;
+    private SpriteRenderer[] rangePoints;
+    private Vector3[] circlePointPos;
 
     private float lastSelectionTime;
-    public Animator animator;
     #endregion
     void Start()
     {
         currentTimedCombo = 0;
-        currentRange = blinkRangeProgression[0];
+        currentRange = blinkRangeProgression[0].range;
         transform.parent.position = startHook.transform.position;
         lastSecureHook = startHook;
         playerManager = GetComponent<PlayerManager>();
         rangeCenter = transform.parent.position;
-        rangePoints = new GameObject[rangePointNumber];
+        rangePoints = new SpriteRenderer[rangePointNumber];
         CreateHookRange();
     }
 
@@ -87,6 +103,7 @@ public class Blink : MonoBehaviour
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
             blinkTrajectoryStartPreviewO.SetActive(false);
+            blinkTrajectoryEndPreviewO.SetActive(false);
         }
 
 
@@ -111,8 +128,9 @@ public class Blink : MonoBehaviour
     {
         for (int i = 0; i < rangePointNumber; i++)
         {
-            rangePoints[i] = Instantiate(rangePointPrefab, transform.position, Quaternion.identity, rangePointsParent);
+            rangePoints[i] = Instantiate(rangePointPrefab, transform.position, Quaternion.identity, rangePointsParent).GetComponent<SpriteRenderer>();
         }
+        circlePointPos = new Vector3[rangePointNumber];
         rangeLine.enabled = false;
     }
 
@@ -125,16 +143,15 @@ public class Blink : MonoBehaviour
             currentRadius += rangeBeatAmplitude;
         }
 
-        Vector3[] circlePointPos = new Vector3[rangePointNumber];
         for (int i = 0; i < rangePointNumber; i++)
         {
-            circlePointPos[i] = new Vector2(Mathf.Cos(((2 * Mathf.PI) / (rangePointNumber)) * i), Mathf.Sin(((2 * Mathf.PI) / (rangePointNumber)) * i));
-            circlePointPos[i] *= currentRadius;
-            circlePointPos[i] += (Vector3)rangeCenter;
-            Vector2 pointVector = (Vector2)circlePointPos[i] - rangeCenter;
+            Vector2 pointDirection = new Vector2(Mathf.Cos(((2 * Mathf.PI) / (rangePointNumber)) * i), Mathf.Sin(((2 * Mathf.PI) / (rangePointNumber)) * i));
+
+            circlePointPos[i] = (pointDirection * currentRadius) + rangeCenter;
+
             if(!ignoreObstacles)
             {
-                RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointVector.normalized, pointVector.magnitude, LayerMask.GetMask("Obstacle"));
+                RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointDirection, currentRadius, LayerMask.GetMask("Obstacle"));
 
                 if (hit)
                 {
@@ -143,9 +160,10 @@ public class Blink : MonoBehaviour
             }
 
             rangePoints[i].transform.position = circlePointPos[i];
+            rangePoints[i].sprite = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1].pointDisplay;
             if(rotatePoints)
             {
-                rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointVector));
+                rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointDirection));
             }
 
             rangeLine.positionCount = rangePointNumber;
@@ -157,7 +175,7 @@ public class Blink : MonoBehaviour
     {
         worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Hook hoveredHook = null;
-        Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook"));
+        Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook","Speaker"));
         float minDistanceToHook = 10000f;
         for (int i = 0; i < hookHover.Length; i++)
         {
@@ -181,7 +199,7 @@ public class Blink : MonoBehaviour
             selectedHook = null;
         }
 
-        currentRange = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1];
+        currentRange = blinkRangeProgression[currentTimedCombo < blinkRangeProgression.Length ? currentTimedCombo : blinkRangeProgression.Length - 1].range;
 
 
         if(hoveredHook != null)
@@ -194,6 +212,7 @@ public class Blink : MonoBehaviour
             blinkTargetO.SetActive(false);
             blinkInvalidTargetO.SetActive(false);
             blinkTrajectoryStartPreviewO.SetActive(false);
+            blinkTrajectoryEndPreviewO.SetActive(false);
             blinkDestination = transform.position;
             selectedHook = null;
         }
@@ -231,15 +250,15 @@ public class Blink : MonoBehaviour
             blinkTargetO.transform.position = selectedHook.transform.position;
             blinkTargetO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
             blinkTrajectoryStartPreviewO.SetActive(true);
-            blinkTrajectoryStartPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
+            blinkTrajectoryStartPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, - blinkDirection));
+            blinkTrajectoryEndPreviewO.SetActive(true);
+            blinkTrajectoryEndPreviewO.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, blinkDirection));
 
             blinkInvalidTargetO.SetActive(false);
         }
         else
         {
-            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
-
-            //blinkTrajectoryPreviewLine.enabled = true;
+            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin;
 
             Vector3[] previewPositions = new Vector3[2];
             previewPositions[0] = transform.parent.position;
@@ -269,10 +288,20 @@ public class Blink : MonoBehaviour
     {
         if(blinkDestination != (Vector2)transform.position)
         {
-            Vector2 direction = blinkDestination - (Vector2)transform.parent.position;
-            direction.Normalize();
-            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + direction * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            Vector2 blinkDirection = blinkDestination - (Vector2)transform.parent.position;
+
+            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             Instantiate(blinkDisparition, transform.position, Quaternion.identity);
+
+
+            RaycastHit2D blinkCrossHurtHit = Physics2D.Raycast(transform.parent.position, blinkDirection, blinkDirection.magnitude, LayerMask.GetMask("CrossHurt"));
+            if(blinkCrossHurtHit)
+            {
+                Range_Enemy rangeEnemy = blinkCrossHurtHit.collider.transform.parent.GetComponentInChildren<Range_Enemy>();
+                playerManager.TakeDamage(rangeEnemy.barrierDamage);
+                Instantiate(blinkCrossHurtFx, blinkCrossHurtHit.point, Quaternion.identity);
+            }
+
             transform.parent.position = blinkDestination;
 
             if (selectedHook.isSecureHook)
@@ -281,29 +310,30 @@ public class Blink : MonoBehaviour
             }
 
 
-            if (GameManager.Instance.Beat.OnBeat(GameManager.Instance.playerManager.playerOffBeated ,true) && blinkReachDestination)
+            if (GameManager.Instance.Beat.OnBeat(playerManager.playerOffBeated ,true, "Blink") && blinkReachDestination)
             {
                 StartCoroutine(selectedHook.BlinkReaction(true));
 
                 currentTimedCombo++;
                 consecutiveMiss = 0;
                 Instantiate(timingEffectPrefab, transform.parent.position, Quaternion.identity);
+
+                GameManager.playerSource.PlayOneShot(onBeatSound);
             }
             else
             {
                 StartCoroutine(selectedHook.BlinkReaction(false));
+                Instantiate(missEffectPrefab, transform.parent.position + (Vector3)(Vector2.up * 0.5f), Quaternion.Euler(90, 0, 0));
 
                 FailCombo();
+
+                GameManager.playerSource.PlayOneShot(missBeatSound);
             }
-            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - direction * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction)));
+            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - blinkDirection.normalized * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             animator.SetTrigger("Blink");
             currentHook = selectedHook;
             selectedHook.selected = false;
             selectedHook = null;
-        }
-        else
-        {
-            //No move effect
         }
     }
 

@@ -9,12 +9,18 @@ public class Hookterruptor : Hook
     public float pressBeatTime;
     public float addedPressTime;
     public bool switchInterruptor;
+    public float speakerTriggerDistance;
+    [Header("Sounds")]
+    public AudioClip pressSound;
+    public AudioClip unpressSound;
+
 
     public WorldManager.EventName eventToOccur;
     private WorldManager.WorldEvent worldEventToOccur;
 
     [HideInInspector] public bool pressed;
     private float pressTimeRemaining;
+    private bool speakerTriggerFlag;
 
     void Start()
     {
@@ -22,12 +28,13 @@ public class Hookterruptor : Hook
         pressed = false;
         pressTimeRemaining = 0;
         worldEventToOccur = WorldManager.GetWorldEvent(eventToOccur);
+        speakerTriggerFlag = true;
     }
 
     void Update()
     {
         HandlerUpdate();
-
+        UpdateSpeakerProximity();
         animator.SetBool("Pressed", pressed);
 
         if (eventToOccur != WorldManager.EventName.NullEvent)
@@ -39,16 +46,63 @@ public class Hookterruptor : Hook
         }
     }
 
+    private void UpdateSpeakerProximity()
+    {
+        if (Physics2D.OverlapCircle(transform.position, speakerTriggerDistance, LayerMask.GetMask("Speaker")) && GameManager.remoteSpeaker.speakerPlaced)
+        {
+            if(!switchInterruptor)
+            {
+                if (stayPressedUntilNextBlink)
+                {
+                    pressed = true;
+                    pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime + addedPressTime;
+                    if (speakerTriggerFlag)
+                    {
+                        speakerTriggerFlag = false;
+                        source.pitch = 1f;
+                        source.PlayOneShot(pressSound);
+                    }
+                }
+                else
+                {
+                    if (speakerTriggerFlag)
+                    {
+                        speakerTriggerFlag = false;
+                        pressed = true;
+                        pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime + addedPressTime;
+                        source.pitch = 1f;
+                        source.PlayOneShot(pressSound);
+                    }
+                }
+            }
+            else
+            {
+                if(speakerTriggerFlag)
+                {
+                    pressed = !pressed;
+                    source.PlayOneShot(pressed ? pressSound : unpressSound);
+                }
+            }
+        }
+        else
+        {
+            speakerTriggerFlag = true;
+        }
+    }
+
     public override IEnumerator BlinkSpecificReaction()
     {
         if(!switchInterruptor)
         {
             pressed = true;
             pressTimeRemaining = pressBeatTime * BeatManager.Instance.BeatTime + addedPressTime;
+            source.pitch = 1f;
+            source.PlayOneShot(pressSound);
         }
         else
         {
             pressed = !pressed;
+            source.PlayOneShot(pressed ? pressSound : unpressSound);
         }
 
         yield return null;
@@ -71,9 +125,11 @@ public class Hookterruptor : Hook
                     {
                         pressTimeRemaining -= Time.deltaTime;
                     }
-                    else
+                    else if (pressed)
                     {
                         pressed = false;
+                        source.pitch = 0.7f;
+                        source.PlayOneShot(unpressSound);
                     }
                 }
             }
@@ -83,9 +139,11 @@ public class Hookterruptor : Hook
                 {
                     pressTimeRemaining -= Time.deltaTime;
                 }
-                else
+                else if (pressed)
                 {
                     pressed = false;
+                    source.pitch = 0.7f;
+                    source.PlayOneShot(unpressSound);
                 }
             }
         }

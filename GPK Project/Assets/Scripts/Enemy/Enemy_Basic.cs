@@ -9,10 +9,15 @@ public class Enemy_Basic : EnemyBase
     public AnimationCurve movementCurve;
     public AnimationCurve jumpCurve;
     public int attackDamage;
+    public AnimationCurve aoeScaleCurve;
+    public AnimationCurve knockbackCurve;
+    [Header("Sounds")]
+    public AudioClip jumpSound;
+    public AudioClip attackSound;
+    public AudioClip conversionSound;
 
     private GameObject attackParent;
     private CircleCollider2D attackCollider;
-
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
     protected override EnemyBehaviour[] TriggeredPattern => triggeredPattern;
@@ -28,13 +33,14 @@ public class Enemy_Basic : EnemyBase
 
     private EnemyBehaviour[] passivePattern = new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Moving, true)
+        new EnemyBehaviour(EnemyState.Moving, true),
     };
 
     private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Triggered, 0.4f),
-        new EnemyBehaviour(EnemyState.Action),
+        new EnemyBehaviour(EnemyState.Vulnerable, true),
+        new EnemyBehaviour(EnemyState.Triggered, true),
+        new EnemyBehaviour(EnemyState.Action, true),
         new EnemyBehaviour(EnemyState.Vulnerable, true)
     };
 
@@ -67,8 +73,12 @@ public class Enemy_Basic : EnemyBase
 
     protected override void ActionBehaviour()
     {
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            source.PlayOneShot(attackSound);
+        }
         attackParent.SetActive(true);
-        float attackScale = Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
+        float attackScale = aoeScaleCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression) * maxRadiusAttack;
         attackParent.transform.localScale = new Vector3(attackScale, attackScale);
         if (GameManager.Instance.Beat.currentBeatProgression > 0.9f)
         {
@@ -102,6 +112,7 @@ public class Enemy_Basic : EnemyBase
     {
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
+            source.PlayOneShot(jumpSound);
             Vector2 finalDirection = playerPositionStartOfBeat;
             while (!NoObstacleBetweenMeAndThere(finalDirection))
             {
@@ -128,8 +139,23 @@ public class Enemy_Basic : EnemyBase
         }
     }
 
+    protected override void KnockbackBehaviour()
+    {
+        attackCollider.enabled = false;
+        attackParent.SetActive(false);
+        if((Time.fixedTime - startKnockBackTime) < GameManager.Instance.Beat.BeatTime)
+        {
+            Vector2 nextKnockbackPos = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
+            if (!Physics2D.OverlapPoint(nextKnockbackPos + knockback.normalized * 0.5f, LayerMask.GetMask("Obstacle")))
+            {
+                parent.position = nextKnockbackPos;
+            }
+        }
+    }
+
     protected override void OnConverted()
     {
+        source.PlayOneShot(conversionSound);
         animator.SetBool("Converted", true);
         attackParent.SetActive(false);
         GameManager.Instance.playerManager.AddMusician();

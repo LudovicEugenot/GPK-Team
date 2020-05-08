@@ -44,7 +44,7 @@ public class MusicManager : MonoBehaviour
                 LoadNextMusic();
             }
 
-            if (EnemyStatusHasChanged())
+            if (EnemyStatusHasChanged() && musicSO.combatLoop.Length != 0)
             {
                 if (!MusicIsInArray(beatManager.currentSongName, musicSO.breaks))
                 {
@@ -75,7 +75,11 @@ public class MusicManager : MonoBehaviour
                 beatManager.changingMusicZone = true;
                 beatManager.currentMusicSOName = musicSO.name;
                 beatManager.currentSongName = musicSO.calmLoop.name;
+                beatManager.currentSongProgression = 0;
+                LoadNextMusic();
+                beatManager.PlayMusicLoadedNextBeat();
                 ScriptableObjectSetUp();
+                beatManager.StartNewMusic();
                 beatManager.currentEnemyStatus = ZoneHandler.Instance.AllEnemiesConverted();
             }
         }
@@ -85,7 +89,7 @@ public class MusicManager : MonoBehaviour
     {
         string currentMusic = beatManager.currentSongName;
 
-        if (ZoneHandler.Instance.AllEnemiesConverted())
+        if (ZoneHandler.Instance.AllEnemiesConverted() || musicSO.combatLoop.Length == 0)
         {
             if (MusicIsInArray(currentMusic, musicSO.combatLoop) || MusicIsInArray(currentMusic, musicSO.drops))
             {
@@ -140,6 +144,7 @@ public class MusicManager : MonoBehaviour
     void ScriptableObjectSetUp()
     {
         beatManager.bpm = musicSO.bpm;
+        beatManager.beatStartTimeOffset = musicSO.generalStartTimeOffset;
         beatManager.timingThreshold = musicSO.timingThreshold;
         beatManager.timingThresholdOffset = musicSO.timingThresholdOffset;
         beatManager.minTimeForOnBeatValidation = musicSO.minTimeForOnBeatValidation;
@@ -187,7 +192,7 @@ public class MusicManager : MonoBehaviour
 
         if (MusicIsInArray(currentMusic, musicSO.drops))
         {
-            if (beatManager.currentSongProgression > 9 - beatManager.beatToSwitchTo)
+            if (beatManager.currentSongProgression > 6 - beatManager.beatToSwitchTo)
                 return true;
             else
                 return false;
@@ -224,8 +229,13 @@ public class MusicManager : MonoBehaviour
     void LoadCalmMusicLoop()
     {
         if (beatManager.changingMusicZone)
+        {
             beatManager.LoadMusic(musicSO.calmLoop, musicSO.calmMusicStartTimeOffset);
+        }
         else
-            beatManager.LoadMusic(musicSO.calmLoop, musicSO.calmMusicStartTimeOffset + beatManager.BeatTime * musicSO.beatsToInsertCalmMusic[Random.Range(0, musicSO.beatsToInsertCalmMusic.Length)]);
+        {
+            int rand = Random.Range(0, musicSO.beatsToInsertCalmMusic.Length);
+            beatManager.LoadMusic(musicSO.calmLoop, musicSO.calmMusicStartTimeOffset + beatManager.BeatTime * musicSO.beatsToInsertCalmMusic[rand]);
+        }
     }
 }

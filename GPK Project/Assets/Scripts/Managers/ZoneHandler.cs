@@ -11,6 +11,7 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
     [HideInInspector] public bool zoneInitialized;
+    private bool isAnimatingRecolor;
 
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
@@ -75,6 +76,7 @@ public class ZoneHandler : MonoBehaviour
             if(zoneRelived)
             {
                 currentZone.isRelived = true;
+                StartCoroutine(RecolorEffect());
             }
         }
         else
@@ -82,17 +84,34 @@ public class ZoneHandler : MonoBehaviour
             hooksRelived = currentZone.zoneHooks.Count;
         }
 
-        if(!isInstrumentPresent)
+        if(!isInstrumentPresent && !isAnimatingRecolor)
         {
             currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
         }
     }
 
+    public IEnumerator RecolorEffect()
+    {
+        //Jouer son recolor
+        isAnimatingRecolor = true;
+        StartCoroutine(GameManager.Instance.cameraHandler.CinematicLook(Vector2.zero, 2.0f, 5.625f, true));
+        currentReliveProgression = 0;
+        yield return new WaitForSeconds(1.0f);
+        currentReliveProgression = 1;
+        // animation de recolor
+        for (int i = 0; i < GameManager.Instance.recolorHealthHealed; i++)
+        {
+            GameManager.Instance.playerManager.Heal(1);
+            yield return new WaitForSeconds(0.2f);
+        }
+        isAnimatingRecolor = false;
+    }
+
     public void SaveZoneState()
     {
-        for(int i = 0; i < currentZone.EnemiesConverted.Length; i++)
+        for (int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
-            currentZone.EnemiesConverted[i] = GameManager.Instance.zoneEnemies[i].IsConverted();
+            currentZone.enemiesConverted[i] = GameManager.Instance.zoneEnemies[i].IsConverted();
         }
 
         for (int i = 0; i < currentZone.elementsEnabled.Length; i++)
@@ -107,6 +126,12 @@ public class ZoneHandler : MonoBehaviour
         {
             currentZone.hooksRelived[i] = currentZone.zoneHooks[i].relived;
         }
+
+
+        for (int i = 0; i < currentZone.heartContainersObtained.Length; i++)
+        {
+            currentZone.heartContainersObtained[i] = GameManager.Instance.heartContainers[i].isObtained;
+        }
     }
 
     public void InitializeZone(Zone newZone)
@@ -114,10 +139,10 @@ public class ZoneHandler : MonoBehaviour
         currentZone = newZone;
         isInstrumentPresent = false;
 
-        for(int i = 0; i < currentZone.EnemiesConverted.Length; i++)
+        for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
-            GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.EnemiesConverted[i]);
-            if(currentZone.EnemiesConverted[i])
+            GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
+            if(currentZone.enemiesConverted[i])
             {
                 GameManager.Instance.zoneEnemies[i].GetConverted(true);
             }
@@ -129,6 +154,14 @@ public class ZoneHandler : MonoBehaviour
             if(i < GameManager.Instance.zoneElements.Count)
             {
                 GameManager.Instance.zoneElements[i].isEnabled = currentZone.elementsEnabled[i];
+            }
+        }
+
+        for (int i = 0; i < currentZone.heartContainersObtained.Length; i++)
+        {
+            if (i < GameManager.Instance.heartContainers.Count)
+            {
+                GameManager.Instance.heartContainers[i].isObtained = currentZone.heartContainersObtained[i];
             }
         }
 
@@ -150,7 +183,7 @@ public class ZoneHandler : MonoBehaviour
     public bool AllEnemiesConverted()
     {
         SaveZoneState();
-        foreach (bool enemyConverted in currentZone.EnemiesConverted)
+        foreach (bool enemyConverted in currentZone.enemiesConverted)
         {
             if (!enemyConverted)
             {
@@ -168,29 +201,20 @@ public class ZoneHandler : MonoBehaviour
         public string name;
         public List<HookState> zoneHooks;
         public bool[] hooksRelived;
-        private bool[] enemiesConverted;
-        public bool[] EnemiesConverted 
-        { 
-            get
-            {
-                return enemiesConverted;
-            }
-            set
-            {
-                enemiesConverted = value;
-            }
-        }
+        public bool[] enemiesConverted;
         public bool[] elementsEnabled;
+        public bool[] heartContainersObtained;
 
-        public Zone(int _buildIndex, string zoneName, List<HookState> _zoneHooks, int enemyNumber, int elementNumber)
+        public Zone(int _buildIndex, string zoneName, List<HookState> _zoneHooks, int enemyNumber, int elementNumber, int heartContainerNumber)
         {
             buildIndex = _buildIndex;
             isRelived = false;
             name = zoneName;
             zoneHooks = _zoneHooks;
             hooksRelived = new bool[zoneHooks.Count];
-            EnemiesConverted = new bool[enemyNumber];
+            enemiesConverted = new bool[enemyNumber];
             elementsEnabled = new bool[elementNumber];
+            heartContainersObtained = new bool[heartContainerNumber];
         }
     }
 }

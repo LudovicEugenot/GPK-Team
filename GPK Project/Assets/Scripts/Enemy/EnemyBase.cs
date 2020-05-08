@@ -11,6 +11,7 @@ public enum EnemyState
     Vulnerable,
     Moving,
     Idle,
+    Knockback,
     Triggered,
     Converted
 }
@@ -84,9 +85,12 @@ public abstract class EnemyBase : MonoBehaviour
 
     # region Stats
     [Header("Stats")]
-    [SerializeField] [Range(1, 5)] protected int enemyMaxHP = 1;
+    [SerializeField] [Range(1, 20)] protected int enemyMaxHP = 1;
     [SerializeField] [Range(0, 20)] protected float aggroRange = 5;
     protected int enemyCurrentHP;
+    protected Vector2 knockback;
+    protected float startKnockBackTime;
+    protected Vector2 knockbackStartPos;
     #endregion
 
     # region Behaviour
@@ -123,6 +127,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected Transform parent;
     protected Vector2 positionStartOfBeat;
     protected Animator animator;
+    protected AudioSource source;
 
     protected List<Vector2> lastSeenPlayerPosition = new List<Vector2>();
     protected bool alreadyGotToLastPosition;
@@ -139,6 +144,7 @@ public abstract class EnemyBase : MonoBehaviour
     }
     protected EnemyBehaviour nullBehaviour = new EnemyBehaviour(EnemyState.NULL);
     protected EnemyBehaviour convertedBehaviour = new EnemyBehaviour(EnemyState.Converted);
+    protected EnemyBehaviour knockbackBehaviour = new EnemyBehaviour(EnemyState.Knockback, false);
 
     protected Rigidbody2D rb2D;
     #endregion
@@ -174,6 +180,10 @@ public abstract class EnemyBase : MonoBehaviour
     {
         Debug.LogWarning("Ce Behaviour n'a pas été override et l'ennemi essaie de l'utiliser.");
     }
+    protected virtual void KnockbackBehaviour()
+    {
+        Debug.LogWarning("Ce Behaviour n'a pas été override et l'ennemi essaie de l'utiliser.");
+    }
     protected virtual void TriggeredBehaviour()
     {
         Debug.LogWarning("Ce Behaviour n'a pas été override et l'ennemi essaie de l'utiliser.");
@@ -188,6 +198,7 @@ public abstract class EnemyBase : MonoBehaviour
     private void Awake()
     {
         parent = transform.parent;
+        source = GetComponent<AudioSource>();
         animator = parent.GetComponentInChildren<Animator>();
         rb2D = parent.GetComponent<Rigidbody2D>() != null ? GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
         if (rb2D == null)
@@ -308,7 +319,7 @@ public abstract class EnemyBase : MonoBehaviour
         AssignBehaviourToEnemyBehaviourClass(TriggeredPattern);
 
         convertedBehaviour.SetBehaviour(ConvertedBehaviour);
-
+        knockbackBehaviour.SetBehaviour(KnockbackBehaviour);
         nullBehaviour.SetBehaviour(NullBehaviour);
     }
 
@@ -339,6 +350,9 @@ public abstract class EnemyBase : MonoBehaviour
                 case EnemyState.Converted:
                     enemyBehaviour.SetBehaviour(ConvertedBehaviour);
                     break;
+                case EnemyState.Knockback:
+                    Debug.LogWarning("Le behaviour knockback ne peut pas être mit dans les patterns");
+                    break;
                 default:
                     break;
             }
@@ -357,7 +371,7 @@ public abstract class EnemyBase : MonoBehaviour
     #region Méthodes utiles à la création de behaviours
     protected bool PlayerIsInAggroRange()
     {
-        if (Vector2.Distance(player.position, transform.position) < aggroRange)
+        if (Vector2.Distance(player.position, parent.position) < aggroRange)
         {
             return true;
         }
@@ -427,7 +441,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damageTaken, Vector2 knockbackDirectedSpeed, float knockbackTime)
+    public void TakeDamage(int damageTaken, Vector2 _knockback)
     {
         if (!converted && canBeDamaged)
         {
@@ -436,19 +450,14 @@ public abstract class EnemyBase : MonoBehaviour
             {
                 GetConverted(false);
             }
-            animator.SetTrigger("Hurt");
-            KnockBack(knockbackDirectedSpeed, knockbackTime);
-        }
-    }
 
-    public IEnumerator KnockBack(Vector2 directedForce, float knockbackTime)
-    {
-        float timer = knockbackTime;
-        while(timer > 0)
-        {
-            parent.position += (Vector3)directedForce * Time.fixedDeltaTime;
-            timer -= Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
+            if(animator != null)
+            {
+                animator.SetTrigger("Hurt");
+            }
+
+            knockback = _knockback;
+            Knockback();
         }
     }
 
@@ -509,6 +518,16 @@ public abstract class EnemyBase : MonoBehaviour
             OnConverted();
             // Convertir l'ennemi
         }
+    }
+
+    public void Knockback()
+    {
+        knockbackStartPos = parent.position;
+        startKnockBackTime = Time.fixedTime;
+        currentBehaviour = knockbackBehaviour;
+        nextBehaviour = knockbackBehaviour;
+        triggered = false;
+        currentBehaviourIndex = 0;
     }
 
     //D'autres méthodes utiles pour autre chose que les behaviours :

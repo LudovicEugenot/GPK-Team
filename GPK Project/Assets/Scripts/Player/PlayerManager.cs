@@ -6,9 +6,13 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     public int maxhealthPoint; //A Health point is 2 health
+    public float beatInvulnerableTime;
     public bool playerOffBeated;
     public bool beatAndOffBeatAllowed;
     [Space]
+    public float deathCinematicZoom;
+    [Space]
+    public GameObject gameOverPanel;
     public RectTransform firstHealthPointPos;
     public float distanceBetweenHp;
     public GameObject hpIconPrefab;
@@ -17,6 +21,9 @@ public class PlayerManager : MonoBehaviour
     public Sprite emptyHp;
     public Animator animator;
     public GameObject[] musicianVisualO;
+    public GameObject healParticle;
+    [Header("Sounds")]
+    public AudioClip[] damageSounds;
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentPower;
@@ -25,25 +32,39 @@ public class PlayerManager : MonoBehaviour
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
-    private bool healthBarInitialized;
-    private int heartContainerOwned;
+    [HideInInspector] public int heartContainerOwned;
+    private bool keyPressed;
+    private float invulTimeRemaining;
 
     void Start()
     {
-        //currentHealth = maxhealthPoint * 2;
-        //InitializeHealthBar();
         UseMusicians();
         isInControl = true;
     }
 
+    private void Update()
+    {
+        keyPressed = Input.anyKeyDown;
+        if(invulTimeRemaining > 0)
+        {
+            invulTimeRemaining -= Time.deltaTime;
+        }
+    }
+
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        UpdateHealthBar();
-        animator.SetTrigger("Damage");
-        if(currentHealth <= 0)
+        if(invulTimeRemaining <=  0)
         {
-            Die();
+            currentHealth -= damage;
+            UpdateHealthBar();
+            animator.SetTrigger("Damage");
+            invulTimeRemaining = beatInvulnerableTime * GameManager.Instance.Beat.BeatTime;
+            if (currentHealth <= 0)
+            {
+                StartCoroutine(Die());
+            }
+
+            GameManager.playerSource.PlayOneShot(damageSounds[Random.Range(0, damageSounds.Length)]);
         }
     }
 
@@ -57,23 +78,13 @@ public class PlayerManager : MonoBehaviour
         {
             currentHealth = maxhealthPoint * 2;
         }
+        Instantiate(healParticle, transform.position, Quaternion.identity);
 
         UpdateHealthBar();
     }
 
-    public bool InitializeHealthBar()
+    public void InitializeHealthBar()
     {
-        /*if(!healthBarInitialized)
-        {
-            healthBarInitialized = true;
-            return true;
-        }
-        else
-        {
-            //Debug.Log("The health bar has already been initialized");
-            return false;
-        }*/
-
         foreach(GameObject hpIcon in hpIcons)
         {
             Destroy(hpIcon);
@@ -87,8 +98,6 @@ public class PlayerManager : MonoBehaviour
             newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
         }
         UpdateHealthBar();
-
-        return healthBarInitialized;
     }
 
     public void UpdateHealthBar()
@@ -141,9 +150,18 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void Die()
+    public IEnumerator Die()
     {
-        Debug.Log("This is not victory");
+        GameManager.Instance.PauseEnemyBehaviour();
+        StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(transform.parent.position, deathCinematicZoom, true));
+
+        gameOverPanel.SetActive(true);
+        yield return new WaitForSeconds(2);
+        while(!keyPressed)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        StartCoroutine(TransitionManager.Instance.Respawn());
     }
 
     public void AddMusician()

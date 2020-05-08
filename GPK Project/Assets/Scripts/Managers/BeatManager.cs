@@ -4,13 +4,13 @@ using UnityEngine;
 public class BeatManager : MonoBehaviour
 {
     #region Initialization
-    [Range(1, 400)] public float bpm;
+    [HideInInspector] [Range(1, 400)] public float bpm;
     [Range(0f, 3f)] public float fadeOutTime = 0.3f;
     [Tooltip("L'intervalle de temps dont le joueur dispose pour effectuer son action et être en rythme.")]
-    [Range(0f, 1f)] public float timingThreshold = 0.2f;
-    [Range(-1f, 1f)] public float timingThresholdOffset;
-    [Range(0f, 1f)] public float beatStartTimeOffset;
-    [Range(0f, 1f)] public float minTimeForOnBeatValidation;
+    [HideInInspector] [Range(0f, 1f)] public float timingThreshold = 0.2f;
+    [HideInInspector] [Range(-1f, 1f)] public float timingThresholdOffset;
+    [HideInInspector] [Range(0f, 1f)] public float beatStartTimeOffset;
+    [HideInInspector] [Range(0f, 1f)] public float minTimeForOnBeatValidation;
 
     public float cameraBeatEffectLerpSpeed;
     public float cameraBeatEffectAmplitude;
@@ -85,7 +85,7 @@ public class BeatManager : MonoBehaviour
     void Start()
     {
         musicStarted = false;
-        MusicInit();
+        //MusicInit();
         initialCameraSize = Camera.main.orthographicSize;
         audioDspTimeDelay = 0;
         useCameraBeatShake = true;
@@ -93,13 +93,13 @@ public class BeatManager : MonoBehaviour
 
     private void Update()
     {
-        if (!musicStarted)
+        /*if (!musicStarted)
         {
             StartMusic();
 
             nextBeatStartTime = beatStartTimeOffset;
             nextOffBeatStartTime = nextBeatStartTime;
-        }
+        }*/
 
         audioPlayTime = (float)AudioSettings.dspTime - songStartTime - audioDspTimeDelay;
         if (musicStarted && !GameManager.Instance.paused)
@@ -133,7 +133,7 @@ public class BeatManager : MonoBehaviour
             onBeatNextFrame = false;
         }
 
-        if (OnBeat(GameManager.Instance.playerManager.playerOffBeated ,false))
+        if (OnBeat(GameManager.Instance.playerManager.playerOffBeated ,false, ""))
         {
             if (firstFrameFlag)
             {
@@ -203,11 +203,11 @@ public class BeatManager : MonoBehaviour
         Camera.main.orthographicSize = initialCameraSize;
     }
 
-    public bool OnBeat(bool offBeat, bool isAction)
+    public bool OnBeat(bool offBeat, bool isAction, string actionName)
     {
         bool onBeat = false;
-        double beatTimeProgression;
-        if(!offBeat || GameManager.Instance.playerManager.beatAndOffBeatAllowed)
+        double beatTimeProgression = _beatTime - timeBeforeNextBeat;
+        if (!offBeat || GameManager.Instance.playerManager.beatAndOffBeatAllowed)
         {
             beatTimeProgression = _beatTime - timeBeforeNextBeat;
             if (actOnBeatPossible || !isAction)
@@ -265,7 +265,33 @@ public class BeatManager : MonoBehaviour
                 }
             }
         }
+
+        if(isAction)
+        {
+            PlayTestRecorder.records.allRecords.Add(GetNewTimingRecord(onBeat, beatTimeProgression, actionName));
+        }
+
         return onBeat;
+    }
+
+    public PlayTestRecorder.TimingRecord GetNewTimingRecord(bool onBeat, double beatTimeProgression, string actionName)
+    {
+        PlayTestRecorder.TimingRecord record = new PlayTestRecorder.TimingRecord();
+        double offset = 0;
+        if(currentBeatProgression > 0.5f)
+        {
+            offset = -timeBeforeNextBeat;
+        }
+        else
+        {
+            offset = beatTimeProgression;
+        }
+        record.playerOffsetWithTiming = offset;
+        record.actionName = actionName;
+        record.inCombat = !ZoneHandler.Instance.AllEnemiesConverted();
+        record.musicBpm = bpm;
+        record.onBeat = onBeat;
+        return record;
     }
 
     public bool CanAct()
@@ -287,26 +313,36 @@ public class BeatManager : MonoBehaviour
         return !used;
     }
 
-    private void StartMusic()
+    public void StartNewMusic()
     {
         musicStarted = true;
-
-        switchingSource.Play();
-
+        _beatTime = 60 / bpm;
+        audioDspTimeDelay = 0;
         songStartTime = audioTime;
+        nextBeatStartTime = beatStartTimeOffset;
+        nextOffBeatStartTime = nextBeatStartTime;
+        onBeatSingleFrame = false;
+        beatActionUsed = false;
+        switchingSource.Play();
     }
 
     public void PauseMusic()
     {
-        if (switchingSource != null)
+        if (otherSource != null)
+        {
             switchingSource.Pause();
+            otherSource.Pause();
+        }
         pauseStartTime = audioPlayTime;
     }
 
     public void UnPauseMusic()
     {
-        if (switchingSource != null)
+        if (otherSource != null)
+        {
+            otherSource.UnPause();
             switchingSource.UnPause();
+        }
 
         audioDspTimeDelay += audioPlayTime - pauseStartTime;
     }
@@ -316,8 +352,6 @@ public class BeatManager : MonoBehaviour
         _beatTime = 60 / bpm;
         onBeatSingleFrame = false;
         beatActionUsed = false;
-        newMusicPlaying = true;
-        RefreshSongInfos(0.1f);
     }
 
     public void LoadMusic(AudioClip clip)
@@ -329,6 +363,9 @@ public class BeatManager : MonoBehaviour
     {
         switchingSource.clip = clip;
         switchingSource.time = timerEntryMusic;
+        /*beatStartTimeOffset = timerEntryMusic;
+        nextBeatStartTime += timerEntryMusic;
+        nextOffBeatStartTime += timerEntryMusic;*/
     }
 
     public void PlayMusicLoadedNextBeat()
@@ -382,6 +419,6 @@ public class BeatManager : MonoBehaviour
     {
         yield return new WaitForSeconds(timeUntilRefresh);
         newMusicPlaying = true;
-        currentSongName = switchingSource.clip.name;
+        currentSongName = otherSource.clip.name;
     }
 }

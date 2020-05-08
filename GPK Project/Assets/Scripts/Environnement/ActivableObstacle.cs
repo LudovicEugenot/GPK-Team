@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ActivableObstacle : SwitchElement
 {
-    public Color activeColor;
-    public Color deactiveColor;
+    public AudioClip upSound;
+    public AudioClip downSound;
 
     private Collider2D obstacleCollider;
-    private SpriteRenderer sprite;
+    private AudioSource source;
 
     void Start()
     {
         HandlerStart();
 
+        source = GetComponent<AudioSource>();
         obstacleCollider = GetComponent<Collider2D>();
-        sprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -31,15 +31,16 @@ public class ActivableObstacle : SwitchElement
             animator.SetBool("Activated", active);
         }
 
-        if (active)
+        if (active && obstacleCollider.enabled == false)
         {
             obstacleCollider.enabled = true;
-            sprite.color = activeColor;
+            source.PlayOneShot(upSound);
         }
-        else
+
+        if(!active && obstacleCollider.enabled == true)
         {
-            sprite.color = deactiveColor;
             obstacleCollider.enabled = false;
+            source.PlayOneShot(downSound);
         }
     }
 }
