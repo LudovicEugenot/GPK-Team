@@ -47,17 +47,20 @@ MonoBehaviour:
   commentary:
     pnjName: Clarinetto
     sentences:
-    - "Il y a une m\xE9lodie \xE9crite sur ce mur."
-    - "C'est \xE9trange qu'un seigneur qui d\xE9teste la musique orne son temple
-      comme ca"
-    - "Peut \xEAtre ce temple \xE9tait d\xE9di\xE9e \xE0 la musique dans le pass\xE9."
+    - 
+    - 
+    - 
   nearbyHook: {fileID: 0}
   autoTrigger: 0
   manualTrigger: 1
+  isCommentary: 0
+  timeBewteenSentence: 0
   previousTalk: {fileID: 0}
-  camZoom: 1.5
+  camZoom: 3
+  alternateBoxPos: {x: 0, y: 0}
   storyStepRequired: 0
   requiredEvents: 
+  interactionIndicator: {fileID: 0}
   talkStarted: 0
 --- !u!1001 &5728210990512682667
 PrefabInstance:
