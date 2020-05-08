@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerManager playerManager;
     [HideInInspector] public DialogueManager dialogueManager;
     [HideInInspector] public static AudioSource playerSource;
+    [HideInInspector] public static RemoteSpeaker remoteSpeaker;
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
     [HideInInspector] public CameraHandler cameraHandler;
@@ -117,6 +118,7 @@ public class GameManager : MonoBehaviour
         attack = player.GetComponentInChildren<BlinkAttack>();
         playerManager = player.GetComponentInChildren<PlayerManager>();
         dialogueManager = player.GetComponentInChildren<DialogueManager>();
+        remoteSpeaker = player.GetComponentInChildren<RemoteSpeaker>();
 
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, spriteRendererO, zoneEnemies.Count, zoneElements.Count, heartContainers.Count));
     }

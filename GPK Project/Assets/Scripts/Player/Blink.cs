@@ -175,7 +175,7 @@ public class Blink : MonoBehaviour
     {
         worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Hook hoveredHook = null;
-        Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook"));
+        Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook","Speaker"));
         float minDistanceToHook = 10000f;
         for (int i = 0; i < hookHover.Length; i++)
         {
@@ -258,9 +258,7 @@ public class Blink : MonoBehaviour
         }
         else
         {
-            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin; // 0.4f = half of the player's Width, à changer une fois qu'on prend en compte le sprite renderer
-
-            //blinkTrajectoryPreviewLine.enabled = true;
+            Vector2 obstacleHitPos = Vector2.ClampMagnitude(blinkHitObject.point - blinkOrigin, blinkHitObject.distance - .4f) + blinkOrigin;
 
             Vector3[] previewPositions = new Vector3[2];
             previewPositions[0] = transform.parent.position;
