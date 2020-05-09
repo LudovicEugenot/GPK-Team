@@ -67,8 +67,6 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckGreatInstrumentReliving()
     {
-        Debug.Log(" string instruemn,t : " + WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured);
-        Debug.Log(" rythm instrument " + WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured);
         if (WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
           && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured) ////// ajouté l'instrument de la voix quand il sera terminé
         {
