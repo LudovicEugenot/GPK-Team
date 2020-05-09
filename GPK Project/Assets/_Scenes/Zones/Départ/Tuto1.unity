@@ -1029,7 +1029,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -18
+  m_SortingLayer: -20
   m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: c822fb32161e87846b9362f1c87e21b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1879,6 +1879,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ClassicHook (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6405902346724256939, guid: 4ccc10c0519f4b64e8a69c22063739db,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: af913f2056ba35546962e6fb7af44acd,
+        type: 3}
+    - target: {fileID: 8041818756792354879, guid: 4ccc10c0519f4b64e8a69c22063739db,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ccc10c0519f4b64e8a69c22063739db, type: 3}

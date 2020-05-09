@@ -688,10 +688,12 @@ MonoBehaviour:
     isTemporary: 0
     direction: 0
     connectedSceneBuildIndex: 20
+    storyStepRequired: 0
   - hook: {fileID: 0}
     isTemporary: 0
     direction: 1
     connectedSceneBuildIndex: 18
+    storyStepRequired: 0
   hooksHolder: {fileID: 0}
   zoneHooks:
   - relived: 0
@@ -710,6 +712,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   elementsHolder: {fileID: 0}
+  heartContainers: []
   zoneElements: []
   blink: {fileID: 0}
   attack: {fileID: 0}
@@ -743,6 +746,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoneNameUnknownUntilRecolor: 0
   storyStepSkip: 2
+  warningTempleOpen:
+    pnjName: Clarinetto
+    sentences:
+    - "Tous les Grands son r\xE9activ\xE9s !"
+    - "Retournons voir le Bris\xE9 devant le temple"
 --- !u!114 &6096407865150329221
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class WorldEventUpdater : MonoBehaviour
     public bool zoneNameUnknownUntilRecolor;
     public WorldManager.StoryStep storyStepSkip;
     public Talk warningTempleOpen;
+    public bool talkTriggered;
 
     private void Start()
     {
@@ -66,11 +67,17 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckGreatInstrumentReliving()
     {
-        if(WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
+        Debug.Log(" string instruemn,t : " + WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured);
+        Debug.Log(" rythm instrument " + WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured);
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
           && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured) ////// ajouté l'instrument de la voix quand il sera terminé
         {
             Debug.Log("Tous les instrument sont reactivés");
-            GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform, 3);
+            if(!talkTriggered)
+            {
+                talkTriggered = true;
+                //GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform, 3);
+            }
             WorldManager.currentStoryStep = WorldManager.StoryStep.AllInstrumentRelived;
         }
     }
