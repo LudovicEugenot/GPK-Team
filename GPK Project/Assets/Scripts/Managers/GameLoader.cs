@@ -14,14 +14,18 @@ public class GameLoader : MonoBehaviour
     public string previewDataSaveFileName;
     public string saveFileExtension;
     public string defaultSaveDirectoryName;
-    [HideInInspector] public string customSaveDirectory = "";
+    public string defaultGameDirectoryName;
+    [HideInInspector] public string customSaveDirectory;
 
 
     [HideInInspector] public WorldData worldData;
     [HideInInspector] public PlayerData playerData;
+    private MainMenuManager mainMenuManager;
 
     private void Start()
     {
+        customSaveDirectory = "";
+        mainMenuManager = GetComponent<MainMenuManager>();
         SetupSaveSystem();
     }
 
@@ -29,6 +33,12 @@ public class GameLoader : MonoBehaviour
     {
         //StartMusicManager();
         SceneManager.LoadScene(startSceneBuildIndex);
+    }
+
+    public void LoadSelectedGame()
+    {
+        customSaveDirectory = mainMenuManager.directoryNameSelected;
+        LoadGame();
     }
 
     public void LoadGame()
@@ -54,6 +64,7 @@ public class GameLoader : MonoBehaviour
     private void SetupSaveSystem()
     {
         SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
+        SaveSystem.defaultGameDirectoryName = defaultGameDirectoryName;
         SaveSystem.SetSavePath(specifiedSaveFilePath);
         SaveSystem.playerDataSaveFileName = playerDataSaveFileName;
         SaveSystem.worldDataSaveFileName = worldDataSaveFileName;

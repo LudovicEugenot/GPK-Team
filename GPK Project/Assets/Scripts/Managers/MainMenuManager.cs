@@ -22,7 +22,7 @@ public class MainMenuManager : MonoBehaviour
     public Text customSaveZoneText;
     public Image customSavePreviewImage;
     public Text customDateTimeText;
-    private string directoryNameSelected;
+    [HideInInspector] public string directoryNameSelected;
 
 
 
@@ -91,8 +91,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void PreviewCustomLoad(string directoryName)
     {
-        directoryNameSelected = directoryName; 
-        previewData = SaveSystem.LoadPreview("Assets/Resources/" + directoryName);
+        directoryNameSelected = Application.dataPath + "/Resources/Custom Saves/" + directoryName;
+        previewData = SaveSystem.LoadPreview(Application.dataPath + "/Resources/Custom Saves/" + directoryName);
         if (previewData != null)
         {
             customSaveZoneText.text = saveTitleBaseText + previewData.actualZoneName;
@@ -103,12 +103,6 @@ public class MainMenuManager : MonoBehaviour
         {
             Debug.Log("No save preview found");
             customSaveZoneText.text = noSaveText;
-
         }
-    }
-
-    public void LoadSelectedSave()
-    {
-        //////////////////////////////////////////////////////////////////////////////////////////
     }
 }

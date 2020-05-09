@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
 public static class SaveSystem
 {
@@ -9,6 +10,7 @@ public static class SaveSystem
     public static string previewDataSaveFileName;
     public static string saveFileExtension;
     public static string defaultSaveDirectoryName;
+    public static string defaultGameDirectoryName;
 
     private static string savePath;
 
@@ -25,8 +27,21 @@ public static class SaveSystem
         }
         else
         {
-            savePath = Application.persistentDataPath + defaultSaveDirectoryName;
-            Directory.CreateDirectory(savePath);
+            savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/My Games";
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            savePath += defaultGameDirectoryName;
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            savePath += defaultSaveDirectoryName;
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
         }
     }
 
@@ -219,7 +234,6 @@ public static class SaveSystem
     public static PreviewData LoadPreview(string directory)
     {
         string path = directory + previewDataSaveFileName + saveFileExtension;
-
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
