@@ -1,0 +1,182 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4582987142592745054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4582987142592745051}
+  - component: {fileID: 4582987142592745048}
+  - component: {fileID: 4582987142592745049}
+  - component: {fileID: 4582987142592745050}
+  - component: {fileID: 4582987142592745061}
+  m_Layer: 16
+  m_Name: Boss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4582987142592745051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582987142592745054}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.17, y: 4.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4582987142592745048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582987142592745054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34454fed1933b8b4ca8806a5db914757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossPhases:
+  - sameActionTwicePossible: 0
+    allDifferentAOE:
+    - {fileID: 7929741222714598354, guid: db5e7b8b1bc18c54b9f0e85774194345, type: 3}
+    - {fileID: 1400987175043808975, guid: 0ae73edb03308f04ea570a57532fe14e, type: 3}
+    numberOfAttacksBeforeBubble: 2
+    allDifferentBubbleThrows:
+    - {fileID: 8270153013372000631, guid: 225edef79e05ef64a97a74a2fe92f958, type: 3}
+    - {fileID: 2847356912273914044, guid: 6f0c7f98ed1c907499e49c7ab3d755b4, type: 3}
+    beatsBetweenBubbles: 2
+    numberOfBubblesBeforeAttack: 5
+    numberOfBubblesNeededToRecolorEverything: 3
+    endPhaseTalk:
+      pnjName: "Fr\xE8re Sourd"
+      sentences:
+      - "Youpi je passe \xE0 la phase 2 !"
+    endingPhaseAnimation: {fileID: 7400000, guid: 5b394e6f53c077943bd92dfe5a77bca6,
+      type: 2}
+  - sameActionTwicePossible: 1
+    allDifferentAOE:
+    - {fileID: 7929741222714598354, guid: db5e7b8b1bc18c54b9f0e85774194345, type: 3}
+    - {fileID: 1400987175043808975, guid: 0ae73edb03308f04ea570a57532fe14e, type: 3}
+    numberOfAttacksBeforeBubble: 10
+    allDifferentBubbleThrows:
+    - {fileID: 8270153013372000631, guid: 225edef79e05ef64a97a74a2fe92f958, type: 3}
+    - {fileID: 2847356912273914044, guid: 6f0c7f98ed1c907499e49c7ab3d755b4, type: 3}
+    beatsBetweenBubbles: 1
+    numberOfBubblesBeforeAttack: 11
+    numberOfBubblesNeededToRecolorEverything: 6
+    endPhaseTalk:
+      pnjName: "Fr\xE8re Sourd"
+      sentences:
+      - "AHHHHHHH ! NOOON je peux entendre \xE0 nouveau ! Comment est ce possible
+        ?!"
+      - "Je ne pensais pas pouvoir \xE9couter \xE0 ouveau des bruits un jour !"
+      - "Merci petit cam\xE9l\xE9on"
+    endingPhaseAnimation: {fileID: 7400000, guid: 5b394e6f53c077943bd92dfe5a77bca6,
+      type: 2}
+--- !u!212 &4582987142592745049
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582987142592745054}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -821537027
+  m_SortingLayer: -3
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -4709728878417757779, guid: 57725977ba7ade744a3df7a04c346c19,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2.8125, y: 2.875}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!61 &4582987142592745050
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582987142592745054}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.090726, y: 0.23588777}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 2.8125, y: 2.875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8225808, y: 0.9374194}
+  m_EdgeRadius: 0
+--- !u!95 &4582987142592745061
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582987142592745054}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3f917b8cb9582514bb315a60b1bd017b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
