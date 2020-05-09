@@ -14,6 +14,7 @@ public class GameLoader : MonoBehaviour
     public string previewDataSaveFileName;
     public string saveFileExtension;
     public string defaultSaveDirectoryName;
+    [HideInInspector] public string customSaveDirectory = "";
 
 
     [HideInInspector] public WorldData worldData;
@@ -62,7 +63,7 @@ public class GameLoader : MonoBehaviour
 
     private void LoadWorldData()
     {
-        worldData = SaveSystem.LoadWorld();
+        worldData = customSaveDirectory == "" ? SaveSystem.LoadWorld() : SaveSystem.LoadWorld(customSaveDirectory);
         ZoneHandler.Instance.zones = worldData.worldZones;
         WorldManager.allWorldEvents = worldData.worldEvents;
         WorldManager.currentStoryStep = worldData.storyStep;
@@ -70,7 +71,7 @@ public class GameLoader : MonoBehaviour
 
     private void LoadPlayerData()
     {
-        playerData = SaveSystem.LoadPlayer();
+        playerData = customSaveDirectory == "" ? SaveSystem.LoadPlayer() : SaveSystem.LoadPlayer(customSaveDirectory);
         TransitionManager.Instance.previousPlayerData = playerData;
     }
 

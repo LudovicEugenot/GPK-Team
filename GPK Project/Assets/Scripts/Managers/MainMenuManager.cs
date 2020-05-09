@@ -7,13 +7,24 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject mainPanel;
     public GameObject savePanel;
-    [Space]
+    public GameObject customLoadPanel;
+
+    [Header("Main Save Preview")]
     public GameObject gameSavePreviewO;
     public Text saveZoneText;
     public string saveTitleBaseText;
     public string noSaveText;
     public Image savePreviewImage;
     public Text dateTimeText;
+    
+    [Header("Custom Save Preview")]
+    public GameObject customGameSavePreviewO;
+    public Text customSaveZoneText;
+    public Image customSavePreviewImage;
+    public Text customDateTimeText;
+    private string directoryNameSelected;
+
+
 
     private PreviewData previewData;
     private bool mainPanelOpen;
@@ -76,5 +87,28 @@ public class MainMenuManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void PreviewCustomLoad(string directoryName)
+    {
+        directoryNameSelected = directoryName; 
+        previewData = SaveSystem.LoadPreview("Assets/Resources/" + directoryName);
+        if (previewData != null)
+        {
+            customSaveZoneText.text = saveTitleBaseText + previewData.actualZoneName;
+            customDateTimeText.text = previewData.saveDateTime;
+            customSavePreviewImage.sprite = previewData.SavePicture;
+        }
+        else
+        {
+            Debug.Log("No save preview found");
+            customSaveZoneText.text = noSaveText;
+
+        }
+    }
+
+    public void LoadSelectedSave()
+    {
+        //////////////////////////////////////////////////////////////////////////////////////////
     }
 }

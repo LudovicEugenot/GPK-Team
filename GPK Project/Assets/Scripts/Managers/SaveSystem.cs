@@ -76,6 +76,30 @@ public static class SaveSystem
         }
     }
 
+    public static PlayerData LoadPlayer(string directory)
+    {
+        string path = directory + playerDataSaveFileName + saveFileExtension;
+
+        if(File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PlayerData playerData = formatter.Deserialize(stream) as PlayerData;
+            stream.Close();
+
+            //Debug.Log("PLayer loaded from " + path);
+
+            return playerData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
     public static void SaveWorld(ZoneHandler zoneHandler)
     {
         if (savePath != "" && savePath != null)
@@ -122,6 +146,30 @@ public static class SaveSystem
         }
     }
 
+    public static WorldData LoadWorld(string directory)
+    {
+        string path = directory + worldDataSaveFileName + saveFileExtension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            WorldData worldData = formatter.Deserialize(stream) as WorldData;
+            stream.Close();
+
+            //Debug.Log("World loaded from " + path);
+
+            return worldData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
     public static void SavePreview(ZoneHandler zoneHandler, Texture2D screenTexture)
     {
         if (savePath != "" && savePath != null)
@@ -147,6 +195,30 @@ public static class SaveSystem
     public static PreviewData LoadPreview()
     {
         string path = savePath + previewDataSaveFileName + saveFileExtension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PreviewData previewData = formatter.Deserialize(stream) as PreviewData;
+            stream.Close();
+
+            //Debug.Log("Preview loaded from " + path);
+
+            return previewData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    public static PreviewData LoadPreview(string directory)
+    {
+        string path = directory + previewDataSaveFileName + saveFileExtension;
 
         if (File.Exists(path))
         {
