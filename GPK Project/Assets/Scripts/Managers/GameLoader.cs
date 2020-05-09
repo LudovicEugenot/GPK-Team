@@ -14,13 +14,18 @@ public class GameLoader : MonoBehaviour
     public string previewDataSaveFileName;
     public string saveFileExtension;
     public string defaultSaveDirectoryName;
+    public string defaultGameDirectoryName;
+    [HideInInspector] public string customSaveDirectory;
 
 
     [HideInInspector] public WorldData worldData;
     [HideInInspector] public PlayerData playerData;
+    private MainMenuManager mainMenuManager;
 
     private void Start()
     {
+        customSaveDirectory = "";
+        mainMenuManager = GetComponent<MainMenuManager>();
         SetupSaveSystem();
     }
 
@@ -28,6 +33,12 @@ public class GameLoader : MonoBehaviour
     {
         //StartMusicManager();
         SceneManager.LoadScene(startSceneBuildIndex);
+    }
+
+    public void LoadSelectedGame()
+    {
+        customSaveDirectory = mainMenuManager.directoryNameSelected;
+        LoadGame();
     }
 
     public void LoadGame()
@@ -53,6 +64,7 @@ public class GameLoader : MonoBehaviour
     private void SetupSaveSystem()
     {
         SaveSystem.defaultSaveDirectoryName = defaultSaveDirectoryName;
+        SaveSystem.defaultGameDirectoryName = defaultGameDirectoryName;
         SaveSystem.SetSavePath(specifiedSaveFilePath);
         SaveSystem.playerDataSaveFileName = playerDataSaveFileName;
         SaveSystem.worldDataSaveFileName = worldDataSaveFileName;
@@ -62,7 +74,7 @@ public class GameLoader : MonoBehaviour
 
     private void LoadWorldData()
     {
-        worldData = SaveSystem.LoadWorld();
+        worldData = customSaveDirectory == "" ? SaveSystem.LoadWorld() : SaveSystem.LoadWorld(customSaveDirectory);
         ZoneHandler.Instance.zones = worldData.worldZones;
         WorldManager.allWorldEvents = worldData.worldEvents;
         WorldManager.currentStoryStep = worldData.storyStep;
@@ -70,7 +82,7 @@ public class GameLoader : MonoBehaviour
 
     private void LoadPlayerData()
     {
-        playerData = SaveSystem.LoadPlayer();
+        playerData = customSaveDirectory == "" ? SaveSystem.LoadPlayer() : SaveSystem.LoadPlayer(customSaveDirectory);
         TransitionManager.Instance.previousPlayerData = playerData;
     }
 

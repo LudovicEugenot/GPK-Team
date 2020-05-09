@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ZoneHandler : MonoBehaviour
 {
-    [HideInInspector] public bool isInstrumentPresent;
+    [HideInInspector] public bool reliveRemotlyChanged;
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public float currentReliveProgression;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
@@ -84,7 +84,7 @@ public class ZoneHandler : MonoBehaviour
             hooksRelived = currentZone.zoneHooks.Count;
         }
 
-        if(!isInstrumentPresent && !isAnimatingRecolor)
+        if(!reliveRemotlyChanged && !isAnimatingRecolor)
         {
             currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
         }
@@ -137,7 +137,7 @@ public class ZoneHandler : MonoBehaviour
     public void InitializeZone(Zone newZone)
     {
         currentZone = newZone;
-        isInstrumentPresent = false;
+        reliveRemotlyChanged = false;
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {

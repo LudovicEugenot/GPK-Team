@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
 public static class SaveSystem
 {
@@ -9,6 +10,7 @@ public static class SaveSystem
     public static string previewDataSaveFileName;
     public static string saveFileExtension;
     public static string defaultSaveDirectoryName;
+    public static string defaultGameDirectoryName;
 
     private static string savePath;
 
@@ -25,8 +27,21 @@ public static class SaveSystem
         }
         else
         {
-            savePath = Application.persistentDataPath + defaultSaveDirectoryName;
-            Directory.CreateDirectory(savePath);
+            savePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/My Games";
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            savePath += defaultGameDirectoryName;
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            savePath += defaultSaveDirectoryName;
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
         }
     }
 
@@ -55,6 +70,30 @@ public static class SaveSystem
     public static PlayerData LoadPlayer()
     {
         string path = savePath + playerDataSaveFileName + saveFileExtension;
+
+        if(File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PlayerData playerData = formatter.Deserialize(stream) as PlayerData;
+            stream.Close();
+
+            //Debug.Log("PLayer loaded from " + path);
+
+            return playerData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    public static PlayerData LoadPlayer(string directory)
+    {
+        string path = directory + playerDataSaveFileName + saveFileExtension;
 
         if(File.Exists(path))
         {
@@ -122,6 +161,30 @@ public static class SaveSystem
         }
     }
 
+    public static WorldData LoadWorld(string directory)
+    {
+        string path = directory + worldDataSaveFileName + saveFileExtension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            WorldData worldData = formatter.Deserialize(stream) as WorldData;
+            stream.Close();
+
+            //Debug.Log("World loaded from " + path);
+
+            return worldData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
     public static void SavePreview(ZoneHandler zoneHandler, Texture2D screenTexture)
     {
         if (savePath != "" && savePath != null)
@@ -148,6 +211,29 @@ public static class SaveSystem
     {
         string path = savePath + previewDataSaveFileName + saveFileExtension;
 
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PreviewData previewData = formatter.Deserialize(stream) as PreviewData;
+            stream.Close();
+
+            //Debug.Log("Preview loaded from " + path);
+
+            return previewData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    public static PreviewData LoadPreview(string directory)
+    {
+        string path = directory + previewDataSaveFileName + saveFileExtension;
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
