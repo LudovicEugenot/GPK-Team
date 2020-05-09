@@ -32,13 +32,15 @@ public class GreatInstrument : MonoBehaviour
         else
         {
             ZoneHandler.Instance.currentReliveProgression = 0;
+            ZoneHandler.Instance.reliveRemotlyChanged = true;
         }
 
-        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position)
+        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position && !isRelived)
         {
             isRelived = true;
             triggeredWorldEvent.occured = true;
             animator.SetBool("Relive", true);
+            GameManager.playerAnimator.SetTrigger("Throw");
         }
     }
 }

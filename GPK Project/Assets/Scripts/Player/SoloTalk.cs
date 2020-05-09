@@ -81,7 +81,7 @@ public class SoloTalk : MonoBehaviour
             }
         }
 
-        if(shinyParticle != null && !shinyParticle.isStopped && talkStarted)
+        if(shinyParticle != null && !shinyParticle.isStopped && GameManager.Instance.dialogueManager.isTalking)
         {
             shinyParticle.Stop();
         }

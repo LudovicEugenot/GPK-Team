@@ -77,7 +77,7 @@ public class Boss : MonoBehaviour
             }
         }
 
-        Debug.Log(Recoloration);
+        ZoneHandler.Instance.currentReliveProgression = Recoloration;
     }
 
     private void Action()

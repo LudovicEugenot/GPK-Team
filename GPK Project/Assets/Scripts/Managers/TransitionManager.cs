@@ -63,6 +63,7 @@ public class TransitionManager : MonoBehaviour
         public bool isTemporary;
         public TransitionDirection direction;
         public int connectedSceneBuildIndex;
+        public WorldManager.StoryStep storyStepRequired;
     }
 
     private void CheckTransitionStart()
@@ -71,7 +72,7 @@ public class TransitionManager : MonoBehaviour
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
-                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0)
+                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0 && (int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
                 {
                     if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                     {
