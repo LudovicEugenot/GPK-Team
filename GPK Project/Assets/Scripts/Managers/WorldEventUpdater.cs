@@ -6,6 +6,7 @@ public class WorldEventUpdater : MonoBehaviour
 {
     public bool zoneNameUnknownUntilRecolor;
     public WorldManager.StoryStep storyStepSkip;
+    public Talk warningTempleOpen;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class WorldEventUpdater : MonoBehaviour
         CheckTutorialEnd();
         CheckVillageArrival();
         UpdateZoneDiscovery();
+        CheckGreatInstrumentReliving();
     }
 
     private void ChechVillageReliving()
@@ -59,6 +61,17 @@ public class WorldEventUpdater : MonoBehaviour
         {
             Debug.Log("Nous sommes au village");
             WorldManager.currentStoryStep = WorldManager.StoryStep.ArrivedToVillage;
+        }
+    }
+
+    private void CheckGreatInstrumentReliving()
+    {
+        if(WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
+          && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured) ////// ajouté l'instrument de la voix quand il sera terminé
+        {
+            Debug.Log("Tous les instrument sont reactivés");
+            GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform, 3);
+            WorldManager.currentStoryStep = WorldManager.StoryStep.AllInstrumentRelived;
         }
     }
 

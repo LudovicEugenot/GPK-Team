@@ -88,7 +88,7 @@ public class NPCDialogue : MonoBehaviour
 
         public bool IsValid()
         {
-            if(progressionNeeded >= WorldManager.currentStoryStep)
+            if(WorldManager.currentStoryStep >= progressionNeeded)
             {
                 foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
                 {
