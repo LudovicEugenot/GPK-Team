@@ -29,10 +29,10 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void ChechVillageReliving()
     {
-        if ((ZoneHandler.Instance.currentZone.name == "Entrée du village"
-            || ZoneHandler.Instance.currentZone.name == "Village Nord-Ouest"
-            || ZoneHandler.Instance.currentZone.name == "Village Nord-Est"
-            || ZoneHandler.Instance.currentZone.name == "Village Sud-Ouest")
+        if ((ZoneHandler.Instance.currentZone.buildIndex == 6
+            || ZoneHandler.Instance.currentZone.buildIndex == 7
+            || ZoneHandler.Instance.currentZone.buildIndex == 8
+            || ZoneHandler.Instance.currentZone.buildIndex == 9)
             && WorldManager.GetWorldEvent(WorldManager.EventName.TambourRelived).occured
             && WorldManager.GetWorldEvent(WorldManager.EventName.ViolonRelived).occured
             && WorldManager.GetWorldEvent(WorldManager.EventName.FluteRelived).occured
