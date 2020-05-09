@@ -7,7 +7,7 @@ public class Boss : MonoBehaviour
     #region Initialization
     private float Recoloration { get { return _recoloration; } set { _recoloration = Mathf.Clamp(value, 0, 1); } }
 
-    private int bossPhaseIndex = 0;
+    private int bossPhaseIndex = -1;
     public BossPhaseInfo[] bossPhases;
     private bool canBeDamaged = false;
     private bool amThrowingAttacks = true;
@@ -59,10 +59,21 @@ public class Boss : MonoBehaviour
 
                 if(Recoloration >= 1)
                 {
+                    isPassive = true;
                     canBeDamaged = true;
+                    for (int i = 0; i < currentActions.Count; i++)
+                    {
+                        if(currentActions[i] != null)
+                        {
+                            Destroy(currentActions[i]);
+                        }
+                    }
+                    currentActions.Clear();
                 }
             }
         }
+
+        Debug.Log(Recoloration);
     }
 
     private void Action()

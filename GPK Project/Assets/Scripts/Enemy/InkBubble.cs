@@ -64,7 +64,6 @@ public class InkBubble : MonoBehaviour
     {
         if (convertable)
         {
-            Debug.Log("Projectile converted");
             isConverted = true;
             animator.SetBool("Converted", true);
         }
