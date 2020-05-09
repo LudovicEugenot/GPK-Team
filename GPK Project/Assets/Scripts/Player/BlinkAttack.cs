@@ -10,6 +10,7 @@ public class BlinkAttack : MonoBehaviour
     public Vector2 attackInitialRange;
     public float attackMissRange;
     public float attackKnockbackDistance;
+    public bool bossCombat;
     public GameObject attackDirectionPreview;
     public GameObject attackFx, missAttackFx;
     [Header("Sounds")]
@@ -21,6 +22,7 @@ public class BlinkAttack : MonoBehaviour
     private float attackDirectionAngle;
     private Vector2 worldMousePos;
     private ContactFilter2D enemyFilter;
+    private ContactFilter2D inkBubbleFilter;
     private float remainingHoldingTime;
     private RemoteSpeaker remoteSpeaker;
 
@@ -30,6 +32,12 @@ public class BlinkAttack : MonoBehaviour
         enemyFilter = new ContactFilter2D();
         enemyFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
         enemyFilter.useTriggers = true;
+        if(bossCombat)
+        {
+            inkBubbleFilter = new ContactFilter2D();
+            inkBubbleFilter.SetLayerMask(LayerMask.GetMask("InkBubble"));
+            inkBubbleFilter.useTriggers = true;
+        }
         remainingHoldingTime = -10;
     }
 
@@ -126,6 +134,25 @@ public class BlinkAttack : MonoBehaviour
             }
         }
 
+        if(bossCombat)
+        {
+            Physics2D.OverlapBox((Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, new Vector2(currentAttackLength, attackInitialRange.y), attackDirectionAngle, inkBubbleFilter, colliders);
+            if (colliders.Count > 0)
+            {
+                foreach (Collider2D collider in colliders)
+                {
+                    InkBubble inkBubble = collider.GetComponent<InkBubble>();
+                    inkBubble.Convert();
+                }
+            }
+
+            Collider2D bossCollider = Physics2D.OverlapBox((Vector2)transform.position + attackDirection * currentAttackLength * 0.5f, new Vector2(currentAttackLength, attackInitialRange.y), attackDirectionAngle, LayerMask.GetMask("Boss"));
+            if (bossCollider != null)
+            {
+                Boss boss = bossCollider.GetComponent<Boss>();
+                boss.TakeDamage();
+            }
+        }
         GameManager.Instance.playerManager.isInControl = true;
     }
 

@@ -65,9 +65,16 @@ public class Enemy_Basic : EnemyBase
 
     protected override void TriggeredBehaviour()
     {
+        animator.SetBool("InTheAir", false);
         canBeDamaged = FalseDuringBeatProgression(0.6f, 0.95f);
         float progression = CurrentBeatProgressionAdjusted(2, 0.5f);
-        Jump(playerPositionWhenTriggered, progression, jumpCurve.Evaluate(progression), 2f);
+
+        if (progression > 0)
+        {
+            animator.SetBool("Attack", true);
+        }
+
+            Jump(playerPositionWhenTriggered, progression, jumpCurve.Evaluate(progression), 2f);
         //bouge et arrive sur le prochain beat vers le joueur
     }
 
@@ -76,6 +83,8 @@ public class Enemy_Basic : EnemyBase
         if(BeatManager.Instance.onBeatSingleFrame)
         {
             source.PlayOneShot(attackSound);
+            animator.SetBool("Triggered", false);
+            animator.SetBool("Attack", false);
         }
         attackParent.SetActive(true);
         float attackScale = aoeScaleCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression) * maxRadiusAttack;
@@ -130,6 +139,7 @@ public class Enemy_Basic : EnemyBase
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
         float progression = CurrentBeatProgressionAdjusted(2, 0);
+        animator.SetBool("InTheAir", !FalseDuringBeatProgression(0.0f, 0.5f));
         Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
 
         if (PlayerIsInAggroRange())
@@ -164,6 +174,10 @@ public class Enemy_Basic : EnemyBase
     protected override void VulnerableBehaviour()
     {
         // bouge pas et attends un coup
+        if(currentBehaviourIndex == 0)
+        {
+            animator.SetBool("Triggered", true);
+        }
     }
 
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
