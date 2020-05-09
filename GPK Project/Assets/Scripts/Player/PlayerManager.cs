@@ -154,7 +154,7 @@ public class PlayerManager : MonoBehaviour
     {
         GameManager.Instance.PauseEnemyBehaviour();
         StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(transform.parent.position, deathCinematicZoom, true));
-
+        GameManager.playerAnimator.SetTrigger("Die");
         gameOverPanel.SetActive(true);
         yield return new WaitForSeconds(2);
         while(!keyPressed)

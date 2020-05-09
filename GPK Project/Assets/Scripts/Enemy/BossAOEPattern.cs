@@ -10,9 +10,15 @@ public class BossAOEPattern : MonoBehaviour
     [Header("Prefabs")]
     public GameObject warningZonePrefab;
     public GameObject aoeFx;
+    public AudioClip aoeSound;
+    public AudioClip warningSound;
+    public float warningSoundOffset;
+
+    private AudioSource source;
 
     void Start()
     {
+        source = GetComponent<AudioSource>();
         if (!isTesting)
             StartCoroutine(LaunchAoepattern());
     }
@@ -51,17 +57,24 @@ public class BossAOEPattern : MonoBehaviour
     {
         GameObject warningZone = Instantiate(warningZonePrefab, aoe.position, Quaternion.identity);
         warningZone.transform.localScale = Vector2.one * aoe.radius * 2;
+        //Invoke("PlayWarningSound", aoe.warningBeatTime * BeatManager.Instance.BeatTime - warningSoundOffset);
 
         yield return new WaitForSeconds(aoe.warningBeatTime * BeatManager.Instance.BeatTime);
+
         Destroy(warningZone);
 
         GameObject fx = Instantiate(aoeFx, aoe.position, Quaternion.identity);
         fx.transform.localScale = Vector2.one * aoe.radius * 2;
-
+        source.PlayOneShot(aoeSound);
         if (Physics2D.OverlapCircle(aoe.position, aoe.radius, LayerMask.GetMask("Player")))
         {
             GameManager.Instance.playerManager.TakeDamage(aoe.damage);
         }
+    }
+
+    private void PlayWarningSound()
+    {
+        source.PlayOneShot(warningSound);
     }
 
     /// <summary>

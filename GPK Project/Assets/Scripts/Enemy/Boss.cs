@@ -8,7 +8,10 @@ public class Boss : MonoBehaviour
     private float Recoloration { get { return _recoloration; } set { _recoloration = Mathf.Clamp(value, 0, 1); } }
 
     private int bossPhaseIndex = -1;
+    public Talk firstTalk;
+    public Talk bubbleExplanation;
     public BossPhase[] bossPhases;
+    public Hook hookToMoveTo;
     private bool canBeDamaged = false;
     private bool amThrowingAttacks = true;
     private int attacksBeforeBubble = 0;
@@ -25,19 +28,33 @@ public class Boss : MonoBehaviour
     private int lastBubbleIndex;
 
     private Animator animator;
+    private bool init;
 
     #endregion
 
     private void Start()
     {
+        isPassive = true;
         animator = GetComponent<Animator>();
-        //Initialisation du boss, (cinématique) et début de phase 1
-        BossPhaseInit();
-        ZoneHandler.Instance.reliveRemotlyChanged = true;
+        Invoke("LateStart", 0.5f);
     }
 
+
+    private void LateStart()
+    {
+        ZoneHandler.Instance.reliveRemotlyChanged = true;
+        GameManager.Instance.blink.BlinkMove(hookToMoveTo.transform.position);
+        GameManager.Instance.dialogueManager.StartTalk(firstTalk, transform, 4);
+        init = true;
+    }
     void Update()
     {
+        if(init && GameManager.Instance.playerManager.isInControl)
+        {
+            init = false;
+            BossPhaseInit();
+        }
+
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             if (!isPassive)
@@ -123,6 +140,7 @@ public class Boss : MonoBehaviour
                 amThrowingAttacks = true;
                 bubblesBeforeAttack = bossPhases[bossPhaseIndex].numberOfBubblesBeforeAttack;
                 tryingToSwitchAction = true;
+                GameManager.Instance.dialogueManager.StartCommentary(bubbleExplanation, 2.0f, Vector2.zero);
             }
 
             GameObject currentBubble = Instantiate(bossPhases[bossPhaseIndex].allDifferentBubbleThrows[bubbleChosen].gameObject);
@@ -139,7 +157,6 @@ public class Boss : MonoBehaviour
             BossPhase currentPhaseInfo = bossPhases[bossPhaseIndex];
             attacksBeforeBubble = currentPhaseInfo.numberOfAttacksBeforeBubble;
             bubblesBeforeAttack = currentPhaseInfo.numberOfBubblesBeforeAttack;
-            animator.SetInteger("BossPhaseIndex", bossPhaseIndex);
             isPassive = false;
             amThrowingAttacks = true;
             beatsUntilAction = 0;
@@ -194,7 +211,7 @@ public class Boss : MonoBehaviour
 
     private IEnumerator Transition()
     {
-        //animator setBool de la transition
+        animator.SetInteger("BossPhaseIndex", bossPhaseIndex + 1);
         yield return new WaitForSeconds(bossPhases[bossPhaseIndex].endingPhaseAnimation.length);
         GameManager.Instance.dialogueManager.StartTalk(bossPhases[bossPhaseIndex].endPhaseTalk, transform, 4);
         while(!GameManager.Instance.playerManager.isInControl)
