@@ -1264,7 +1264,12 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].requiredEvents.Array.size
-      value: 1
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].talk.sentences.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1289,7 +1294,43 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[2]
-      value: git gud
+      value: Je ne peux pas t'aider, mais je peux te rappeller que la couleur bat
+        tout!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].progressionNeeded
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[3]
+      value: Bonne chance!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[3]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[4]
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709870, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
