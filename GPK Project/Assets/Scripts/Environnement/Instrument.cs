@@ -7,7 +7,7 @@ public class Instrument : SwitchElement
     void Start()
     {
         HandlerStart();
-        ZoneHandler.Instance.isInstrumentPresent = true;
+        ZoneHandler.Instance.reliveRemotlyChanged = true;
     }
 
     void Update()
@@ -18,7 +18,7 @@ public class Instrument : SwitchElement
 
     private void UpdateState()
     {
-        ZoneHandler.Instance.isInstrumentPresent = true;
+        ZoneHandler.Instance.reliveRemotlyChanged = true;
         animator.SetBool("Relived", active);
         if(active)
         {

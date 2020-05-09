@@ -12,7 +12,7 @@ public class GreatInstrument : MonoBehaviour
     private Animator animator;
     void Start()
     {
-        ZoneHandler.Instance.isInstrumentPresent = true;
+        ZoneHandler.Instance.reliveRemotlyChanged = true;
         animator = GetComponent<Animator>();
         triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
         if(triggeredWorldEvent.occured)

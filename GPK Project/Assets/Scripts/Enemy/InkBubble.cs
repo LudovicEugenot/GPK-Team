@@ -51,7 +51,7 @@ public class InkBubble : MonoBehaviour
 
     public void Explode()
     {
-        //Instantiate(isConverted ? colorExplosionPrefab : blackExplosionPrefab, transform.position, Quaternion.identity);
+        Instantiate(isConverted ? colorExplosionPrefab : blackExplosionPrefab, transform.position, Quaternion.identity);
         if (isConverted)
             boss.AddRecoloration();
         else

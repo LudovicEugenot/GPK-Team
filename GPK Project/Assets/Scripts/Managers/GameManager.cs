@@ -230,7 +230,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    private IEnumerator AndBackToMainMenu()
+    public IEnumerator AndBackToMainMenu()
     {
         Destroy(Beat.gameObject);
         Destroy(zoneHandler.gameObject);
