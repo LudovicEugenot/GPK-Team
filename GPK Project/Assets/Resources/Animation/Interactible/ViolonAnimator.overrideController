@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ViolonAnimator
+  m_Controller: {fileID: 9100000, guid: fbaaf30abb9b6df44bf7c0a3a26ddc3f, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 86a1c2ac7013a254cb06e05e5daa6004, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b02b2787c21f8204bb6b3e228768cccc, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ef0d1464d37704f459888e0ec52033aa, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3ad7093f86d2f0349a179f0bd7ccb585, type: 2}

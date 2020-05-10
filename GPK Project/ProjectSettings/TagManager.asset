@@ -13,15 +13,15 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Hook
+  - Obstacle
+  - Player
+  - Enemy
+  - Background_Greyscale
+  - CrossHurt
+  - Speaker
+  - InkBubble
+  - Boss
   - 
   - 
   - 
@@ -38,6 +38,72 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1667927913
+    locked: 0
+  - name: Water
+    uniqueID: 2532697921
+    locked: 0
+  - name: Props
+    uniqueID: 2044193909
+    locked: 0
+  - name: Props2
+    uniqueID: 3059023897
+    locked: 0
+  - name: Props3
+    uniqueID: 416957345
+    locked: 0
+  - name: Props4
+    uniqueID: 3305787819
+    locked: 0
+  - name: Props5
+    uniqueID: 1061410221
+    locked: 0
+  - name: Particles
+    uniqueID: 2324087399
+    locked: 0
+  - name: Background_Greyscale
+    uniqueID: 1182132515
+    locked: 0
+  - name: Water_Greyscale
+    uniqueID: 1791857029
+    locked: 0
+  - name: Props_Greyscale
+    uniqueID: 2376830589
+    locked: 0
+  - name: Props_Greyscale2
+    uniqueID: 3962650157
+    locked: 0
+  - name: Props_Greyscale3
+    uniqueID: 2505782015
+    locked: 0
+  - name: Props_Greyscale4
+    uniqueID: 4038285233
+    locked: 0
+  - name: Props_Greyscale5
+    uniqueID: 1421872845
+    locked: 0
+  - name: Hooks
+    uniqueID: 882915597
+    locked: 0
+  - name: Ennemies
+    uniqueID: 2320404731
+    locked: 0
+  - name: Particles_Blink
+    uniqueID: 2116168891
+    locked: 0
+  - name: Player
+    uniqueID: 3473430269
+    locked: 0
+  - name: Particles_attack
+    uniqueID: 1876288707
+    locked: 0
+  - name: Particles_attack2
+    uniqueID: 3052609361
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Mask
+    uniqueID: 552534819
     locked: 0
