@@ -79,6 +79,7 @@ public class Hookterruptor : Hook
             {
                 if(speakerTriggerFlag)
                 {
+                    speakerTriggerFlag = false;
                     pressed = !pressed;
                     source.PlayOneShot(pressed ? pressSound : unpressSound);
                 }

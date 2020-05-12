@@ -75,8 +75,8 @@ public class GameLoader : MonoBehaviour
     private void LoadWorldData()
     {
         worldData = customSaveDirectory == "" ? SaveSystem.LoadWorld() : SaveSystem.LoadWorld(customSaveDirectory);
-        ZoneHandler.Instance.zones = worldData.worldZones;
-        WorldManager.allWorldEvents = worldData.worldEvents;
+        ZoneHandler.Instance.zones = new List<ZoneHandler.Zone>(worldData.worldZones);
+        WorldManager.allWorldEvents = new List<WorldManager.WorldEvent>(worldData.worldEvents);
         WorldManager.currentStoryStep = worldData.storyStep;
     }
 

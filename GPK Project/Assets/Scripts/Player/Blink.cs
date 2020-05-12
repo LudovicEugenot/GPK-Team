@@ -111,7 +111,7 @@ public class Blink : MonoBehaviour
         {
             if (GameManager.Instance.Beat.CanAct())
             {
-                BlinkMove();
+                BlinkMove(blinkDestination);
                 GameManager.Instance.attack.HasBlinked();
             }
             else
@@ -284,11 +284,11 @@ public class Blink : MonoBehaviour
         }
     }
 
-    private void BlinkMove()
+    public void BlinkMove(Vector2 destination)
     {
-        if(blinkDestination != (Vector2)transform.position)
+        if(destination != (Vector2)transform.position)
         {
-            Vector2 blinkDirection = blinkDestination - (Vector2)transform.parent.position;
+            Vector2 blinkDirection = destination - (Vector2)transform.parent.position;
 
             Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             Instantiate(blinkDisparition, transform.position, Quaternion.identity);
@@ -302,11 +302,18 @@ public class Blink : MonoBehaviour
                 Instantiate(blinkCrossHurtFx, blinkCrossHurtHit.point, Quaternion.identity);
             }
 
-            transform.parent.position = blinkDestination;
+            transform.parent.position = destination;
 
-            if (selectedHook.isSecureHook)
+            if (selectedHook != null)
             {
-                lastSecureHook = selectedHook;
+                if(selectedHook.isSecureHook)
+                {
+                    lastSecureHook = selectedHook;
+                }
+            }
+            else
+            {
+                selectedHook = startHook;
             }
 
 

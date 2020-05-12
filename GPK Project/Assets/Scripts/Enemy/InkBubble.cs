@@ -10,6 +10,7 @@ public class InkBubble : MonoBehaviour
     public AnimationClip apparitionAnim;
     public GameObject blackExplosionPrefab;
     public GameObject colorExplosionPrefab;
+    public AudioClip explosionSound;
     [HideInInspector] public Boss boss;
 
     private Rigidbody2D rb;
@@ -17,9 +18,11 @@ public class InkBubble : MonoBehaviour
     private bool convertable;
     private bool isConverted;
     private Animator animator;
+    private AudioSource source;
 
     void Start()
     {
+        source = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(Launch());
@@ -56,7 +59,7 @@ public class InkBubble : MonoBehaviour
             boss.AddRecoloration();
         else
             boss.LoseRecoloration();
-
+        source.PlayOneShot(explosionSound);
         Destroy(gameObject);
     }
 
