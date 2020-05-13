@@ -27,6 +27,7 @@ public class TransitionManager : MonoBehaviour
     [HideInInspector] public bool firstInit;
     private bool isTransitionning;
     private ZoneHandler zoneHandler;
+    private float timeSpentInZone;
 
     public enum TransitionDirection { Up, Down, Right, Left , WIP};
 
@@ -54,6 +55,11 @@ public class TransitionManager : MonoBehaviour
     private void Update()
     {
         CheckTransitionStart();
+
+        if(GameManager.Instance != null)
+        {
+            timeSpentInZone += GameManager.Instance.paused ? 0 : Time.deltaTime;
+        }
     }
 
     [System.Serializable]
@@ -80,15 +86,10 @@ public class TransitionManager : MonoBehaviour
                         if (zoneHandler.AllEnemiesConverted())
                         {
                             StartCoroutine(TransitionToConnectedZone(transitionHook));
-                            if(GameManager.Instance.usePlaytestRecord)
-                            {
-                                PlayTestRecorder.CreateTimingRecordFile();
-                                PlayTestRecorder.ClearRecords();
-                            }
                         }
                         else
                         {
-                            //feedback de non chagement de zone
+                            //feedback de non chagement de zone bloqué par ennemi !
                         }
                     }
                     else
@@ -133,7 +134,7 @@ public class TransitionManager : MonoBehaviour
 
         zoneHandler.InitializeZone(potentialZone);
 
-
+        timeSpentInZone = 0;
 
         if (startHook == null)
         {
@@ -182,6 +183,8 @@ public class TransitionManager : MonoBehaviour
         }
         GameManager.Instance.blink.currentHook = startHook;
 
+        PlayTestRecorder.RefreshCurrentZone(zoneHandler.currentZone.name);
+
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         float maskLerpProgression = 0;
         while(maskLerpProgression < 0.95f)
@@ -211,6 +214,8 @@ public class TransitionManager : MonoBehaviour
         previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
         zoneHandler.SaveZoneState();
         previousWorldData = new WorldData(zoneHandler);
+        PlayTestRecorder.currentZoneRecord.timeSpent += timeSpentInZone;
+        PlayTestRecorder.SaveCurrentZone();
 
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)
@@ -261,6 +266,8 @@ public class TransitionManager : MonoBehaviour
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
 
+        PlayTestRecorder.currentZoneRecord.timeSpent += timeSpentInZone;
+
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)
         {
@@ -270,7 +277,6 @@ public class TransitionManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(timeBeforeZoneQuitting);
-
 
         switch (currentStartDirection)
         {

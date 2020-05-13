@@ -14,6 +14,7 @@ public class WorldEventUpdater : MonoBehaviour
         if(WorldManager.currentStoryStep == WorldManager.StoryStep.Tutorial)
         {
             WorldManager.currentStoryStep = storyStepSkip;
+            Debug.LogWarning("The story step has been skipped to : " + WorldManager.currentStoryStep);
         }
 
         InvokeRepeating("UpdateStoryStep", 1.0f, 1.0f);

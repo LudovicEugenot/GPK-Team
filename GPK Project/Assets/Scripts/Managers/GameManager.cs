@@ -206,6 +206,13 @@ public class GameManager : MonoBehaviour
     #region Menu
     public void SaveGame()
     {
+        if (usePlaytestRecord)
+        {
+            PlayTestRecorder.SaveCurrentZone();
+            PlayTestRecorder.CreateTimingRecordFiles();
+            PlayTestRecorder.CreateZoneRecordFile();
+            PlayTestRecorder.ClearRecords();
+        }
         UnPause();
         ZoneHandler.Instance.SaveZoneState();
         SaveSystem.SavePlayer(playerManager);
