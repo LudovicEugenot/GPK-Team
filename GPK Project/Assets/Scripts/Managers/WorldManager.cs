@@ -11,7 +11,7 @@ public static class WorldManager
     /// <summary>
     /// To add an event you need to open the WorldManager script and add a name to the enum list
     /// </summary>
-    public enum EventName {NullEvent, TambourRelived, ViolonRelived, FluteRelived, SaxophoneRelived, StringInstrumentRelived, RythmInstrumentRelived, VoiceInstrumentRelived, FirstDialogueOros, FirstDialogueBroken, FirstDialogueSina, FirstOrosEncounter} // Add an event in there
+    public enum EventName {NullEvent, TambourRelived, ViolonRelived, FluteRelived, SaxophoneRelived, StringInstrumentRelived, RythmInstrumentRelived, VoiceInstrumentRelived, FirstDialogueOros, FirstDialogueBroken, FirstDialogueSina, FirstOrosEncounter, SecondOrosDialogue} // Add an event in there
 
     public static StoryStep currentStoryStep;
 
