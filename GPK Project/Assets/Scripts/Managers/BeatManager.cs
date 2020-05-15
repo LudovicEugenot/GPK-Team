@@ -289,6 +289,7 @@ public class BeatManager : MonoBehaviour
         record.playerOffsetWithTiming = offset;
         record.actionName = actionName;
         record.inCombat = !ZoneHandler.Instance.AllEnemiesConverted();
+        record.zone = ZoneHandler.Instance.currentZone.name;
         record.musicBpm = bpm;
         record.onBeat = onBeat;
         return record;

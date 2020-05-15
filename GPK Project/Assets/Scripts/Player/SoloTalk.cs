@@ -45,9 +45,14 @@ public class SoloTalk : MonoBehaviour
                     interactionIndicator.SetActive(true);
                 }
 
-                if (((Input.GetButtonDown("Blink") && manualTrigger) && !GameManager.Instance.blink.IsSelecting()) || autoTrigger)
+                if (((Input.GetButtonDown("Blink") && manualTrigger) && !GameManager.Instance.blink.IsSelecting()) && !GameManager.Instance.dialogueManager.isTalking || autoTrigger)
                 {
-                    if(isCommentary)
+                    if (GameManager.Instance.usePlaytestRecord && interactionIndicator == null)
+                    {
+                        PlayTestRecorder.currentZoneRecord.loreHolderInteracted.Add(gameObject.name);
+                    }
+
+                    if (isCommentary)
                     {
                         GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
                     }
@@ -57,6 +62,7 @@ public class SoloTalk : MonoBehaviour
                     }
                     talkStarted = true;
                     autoTrigger = false;
+
                 }
             }
             else
