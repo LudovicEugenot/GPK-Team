@@ -2964,7 +2964,7 @@ PrefabInstance:
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
       propertyPath: commentary.sentences.Array.data[0]
-      value: Fait attention! Ce passage est fragile, alors ne reste pas trop longtemps
+      value: Fais attention! Ce passage est fragile, alors ne reste pas trop longtemps
         dessus!
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
@@ -3762,8 +3762,9 @@ MonoBehaviour:
   commentary:
     pnjName: Clarinetto
     sentences:
-    - "Appuie sur <clic gauche> ou <barre espace> pour Blink, tu va passer d'un hook
-      \xE0 l'autre!"
+    - "Appuie sur <clic gauche> ou <barre espace> pour passer d'une pierre bleue
+      \xE0 l'autre en la pointant avec ta souris."
+    - "Ce d\xE9placement s'appelle le \"Blink\", et les pierres sont des \"Hooks\"!"
   nearbyHook: {fileID: 192021671}
   autoTrigger: 1
   manualTrigger: 1
