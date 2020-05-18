@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2121,7 +2121,7 @@ PrefabInstance:
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
       propertyPath: commentary.sentences.Array.data[1]
-      value: "Recolore la clairi\xE8re et tu sera soign\xE9 si tu es bless\xE9."
+      value: "Recolore la clairi\xE8re et tu seras soign\xE9 si tu es bless\xE9."
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
@@ -2581,12 +2581,12 @@ PrefabInstance:
         type: 3}
       propertyPath: commentary.sentences.Array.data[1]
       value: "Garde la touche enfonc\xE9e apr\xE8s un blink et rel\xE2che pour lancer
-        une attaque vers ou tu pointes."
+        une attaque vers o\xF9 tu pointes."
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
       propertyPath: commentary.sentences.Array.data[2]
-      value: "Si tu rel\xE2che en rythme, l'attaque sera encore plus puissante!"
+      value: "Si tu rel\xE2ches en rythme, l'attaque sera encore plus puissante!"
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
@@ -3215,7 +3215,7 @@ PrefabInstance:
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
       propertyPath: commentary.sentences.Array.data[0]
-      value: Regarde ! Ce pauvre piano, il est inutilisable...
+      value: Regarde! Ce pauvre piano, il est inutilisable...
       objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
@@ -3226,8 +3226,8 @@ PrefabInstance:
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
       propertyPath: commentary.sentences.Array.data[2]
-      value: "Quand tu vois un objet qui brille comme \xE7a, n'\xE9histe pas \xE0
-        demander. J'ai grandi ici."
+      value: "Quand tu vois un objet qui brille comme \xE7a, n'h\xE9sites pas \xE0
+        me demander. J'ai grandi ici."
       objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
@@ -4022,7 +4022,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &3276776283042590793
 GameObject:
   m_ObjectHideFlags: 0
