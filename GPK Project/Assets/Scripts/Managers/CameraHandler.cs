@@ -83,6 +83,8 @@ public class CameraHandler : MonoBehaviour
         cameraCentered = false;
         cameraFinalPos = lookPosition;
         currentOrthographicSize = orthographicSize;
+        cinematicBar1.gameObject.SetActive(true);
+        cinematicBar2.gameObject.SetActive(true);
         GameManager.Instance.Beat.useCameraBeatShake = false;
         if(useBars)
         {
@@ -108,6 +110,8 @@ public class CameraHandler : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+        cinematicBar1.gameObject.SetActive(false);
+        cinematicBar2.gameObject.SetActive(false);
     }
 
     public IEnumerator StartCinematicLook(Vector2 lookPosition, float orthographicSize, bool useBars)
@@ -115,6 +119,8 @@ public class CameraHandler : MonoBehaviour
         cameraCentered = false;
         cameraFinalPos = lookPosition;
         currentOrthographicSize = orthographicSize;
+        cinematicBar1.gameObject.SetActive(true);
+        cinematicBar2.gameObject.SetActive(true);
         GameManager.Instance.Beat.useCameraBeatShake = false;
         if (useBars)
         {
@@ -128,6 +134,11 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
+    public void StartStopCinematicLook()
+    {
+        StartCoroutine(StopCinematicLook());
+    }
+
     public IEnumerator StopCinematicLook()
     {
         cameraCentered = true;
@@ -138,8 +149,9 @@ public class CameraHandler : MonoBehaviour
         {
             cinematicBar1.anchoredPosition = Vector2.Lerp(cinematicBar1.anchoredPosition, cinematicBar1InitialPos, barLerpSpeed);
             cinematicBar2.anchoredPosition = Vector2.Lerp(cinematicBar2.anchoredPosition, cinematicBar2InitialPos, barLerpSpeed);
-
             yield return new WaitForEndOfFrame();
         }
+        cinematicBar1.gameObject.SetActive(false);
+        cinematicBar2.gameObject.SetActive(false);
     }
 }

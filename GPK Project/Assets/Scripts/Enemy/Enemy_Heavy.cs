@@ -10,12 +10,18 @@ public class Enemy_Heavy : EnemyBase
     public AnimationCurve jumpCurve;
     [SerializeField] private float jumpHeight = 2f;
     public int attackDamage;
+    public AnimationCurve aoeScaleCurve;
+    public AnimationCurve knockbackCurve;
+    [Header("Sounds")]
+    public AudioClip jumpSound;
+    public AudioClip attackSound;
+    public AudioClip friendlyAttackSound;
+    public AudioClip conversionSound;
 
     private GameObject attackParent;
     private CircleCollider2D attackCollider;
     private GameObject convertedAttackParent;
     private CircleCollider2D convertedAttackCollider;
-    private Animator animator;
 
 
     protected override EnemyBehaviour[] PassivePattern => passivePattern;
@@ -34,7 +40,6 @@ public class Enemy_Heavy : EnemyBase
 
     private EnemyBehaviour[] passivePattern = new EnemyBehaviour[]
     {
-        new EnemyBehaviour(EnemyState.Moving),
         new EnemyBehaviour(EnemyState.Moving),
         new EnemyBehaviour(EnemyState.Moving),
         new EnemyBehaviour(EnemyState.Moving),
@@ -62,24 +67,26 @@ public class Enemy_Heavy : EnemyBase
         convertedAttackParent.SetActive(false);
 
         hasAttacked = false;
-        animator = parent.GetComponentInChildren<Animator>();
 
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         enemyFilter.useTriggers = true;
-        enemyFilter.SetLayerMask(LayerMask.GetMask("Enemi"));
+        enemyFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
     }
 
     protected override void ConvertedBehaviour()
     {
-        // Tous les 6 beats, il frappe le sol comme son attaque
         if (consecutiveConvertedBehaviourIndex > 6)
         {
             consecutiveConvertedBehaviourIndex = 0;
         }
-        else if(consecutiveConvertedBehaviourIndex>5)
+        else if(consecutiveConvertedBehaviourIndex > 5)
         {
-            HitAllies(); //pas testé
+            HitAllies();
+        }
+        else
+        {
+            convertedAttackParent.SetActive(false);
         }
 
         if (GameManager.Instance.Beat.onBeatSingleFrame)
@@ -96,19 +103,20 @@ public class Enemy_Heavy : EnemyBase
         //saute et touche le sol sur le prochain beat
     }
 
-    protected override void ActionBehaviour() //not done
+    protected override void ActionBehaviour()
     {
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            source.PlayOneShot(attackSound);
+        }
         attackParent.SetActive(true);
-        float attackScale = Mathf.Lerp(maxRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
+        float attackScale = aoeScaleCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression) * maxRadiusAttack;
         attackParent.transform.localScale = new Vector3(attackScale, attackScale);
         if (GameManager.Instance.Beat.currentBeatProgression > 0.9f)
         {
             attackParent.SetActive(false);
         }
 
-        //zone dangeureuse autour de l'ennemi
-        playerFilter.useTriggers = true;
-        playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         List<Collider2D> colliders = new List<Collider2D>();
         if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
         {
@@ -126,10 +134,11 @@ public class Enemy_Heavy : EnemyBase
         }
     }
 
-    protected override void MovingBehaviour() //not done
+    protected override void MovingBehaviour()
     {
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
+            source.PlayOneShot(jumpSound);
             Vector2 finalDirection = playerPositionStartOfBeat;
             while (!NoObstacleBetweenMeAndThere(finalDirection))
             {
@@ -141,18 +150,36 @@ public class Enemy_Heavy : EnemyBase
                 {
                     break;
                 }
-                finalDirection = new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+                finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
             }
             endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
         }
-        canBeDamaged = FalseDuringBeatProgression(0.1f, 0.3f);
-        float progression = CurrentBeatProgressionAdjusted(3, 0);
+        canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
+        float progression = CurrentBeatProgressionAdjusted(2, 0);
         Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+    }
+
+    protected override void KnockbackBehaviour()
+    {
+        attackCollider.enabled = false;
+        attackParent.SetActive(false);
+        if ((Time.fixedTime - startKnockBackTime) < GameManager.Instance.Beat.BeatTime)
+        {
+            Vector2 nextKnockbackPos = (Vector3)Vector2.Lerp(knockbackStartPos, knockbackStartPos + knockback * 0.5f, knockbackCurve.Evaluate((Time.fixedTime - startKnockBackTime) / GameManager.Instance.Beat.BeatTime));
+            if (!Physics2D.OverlapPoint(nextKnockbackPos + knockback.normalized * 0.5f, LayerMask.GetMask("Obstacle")))
+            {
+                parent.position = nextKnockbackPos;
+            }
+        }
     }
 
     protected override void OnConverted() //not done
     {
-        animator.SetBool("Converted", true);
+        source.PlayOneShot(conversionSound);
+        if(animator != null)
+        {
+            animator.SetBool("Converted", true);
+        }
     }
 
     protected override void VulnerableBehaviour() //done
@@ -169,9 +196,14 @@ public class Enemy_Heavy : EnemyBase
 
     private void HitAllies()
     {
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            source.PlayOneShot(friendlyAttackSound);
+        }
+
         convertedAttackParent.SetActive(!FalseDuringBeatProgression(0, 0.9f));
 
-        float attackScale = Mathf.Lerp(maxConvertedRadiusAttack, 0, GameManager.Instance.Beat.currentBeatProgression);
+        float attackScale = aoeScaleCurve.Evaluate(GameManager.Instance.Beat.currentBeatProgression) * maxConvertedRadiusAttack;
         convertedAttackParent.transform.localScale = new Vector3(attackScale, attackScale);
 
         List<Collider2D> colliders = new List<Collider2D>();
@@ -189,7 +221,9 @@ public class Enemy_Heavy : EnemyBase
             hasAttacked = true;
             foreach (Collider2D collider in colliders)
             {
-                collider.GetComponentInParent<Transform>().GetComponentInChildren<EnemyBase>().TakeDamage(); /////////////////////////// pas testé
+                Vector2 direction = collider.transform.position - parent.position;
+                direction.Normalize();
+                collider.transform.parent.GetComponentInChildren<EnemyBase>().TakeDamage(1, direction);
             }
         }
     }

@@ -21,8 +21,11 @@ public class TransitionManager : MonoBehaviour
     private GameObject currentPlayerRendererO;
 
     private Hook startHook;
-    [HideInInspector] public Vector2 savePos;
-    [HideInInspector] public int newPlayerHp;
+    private Vector2 apparitionPos;
+    [HideInInspector] public PlayerData previousPlayerData;
+    private WorldData previousWorldData;
+    [HideInInspector] public bool firstInit;
+    private bool isTransitionning;
     private ZoneHandler zoneHandler;
 
     public enum TransitionDirection { Up, Down, Right, Left , WIP};
@@ -37,6 +40,8 @@ public class TransitionManager : MonoBehaviour
         {
             Instance = this;
             zoneHandler = GetComponent<ZoneHandler>();
+            firstInit = true;
+            previousPlayerData = null;
         }
         else
         {
@@ -48,18 +53,38 @@ public class TransitionManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Interact"))
+        CheckTransitionStart();
+    }
+
+    [System.Serializable]
+    public class TransitionHook
+    {
+        public Hook hook;
+        public bool isTemporary;
+        public TransitionDirection direction;
+        public int connectedSceneBuildIndex;
+        public WorldManager.StoryStep storyStepRequired;
+    }
+
+    private void CheckTransitionStart()
+    {
+        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.paused && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
-                if (GameManager.Instance.blink.currentHook == transitionHook.hook)
+                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0 && (int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
                 {
-                    if(transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
+                    if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                     {
                         zoneHandler.SaveZoneState();
                         if (zoneHandler.AllEnemiesConverted())
                         {
                             StartCoroutine(TransitionToConnectedZone(transitionHook));
+                            if(GameManager.Instance.usePlaytestRecord)
+                            {
+                                PlayTestRecorder.CreateTimingRecordFile();
+                                PlayTestRecorder.ClearRecords();
+                            }
                         }
                         else
                         {
@@ -75,22 +100,13 @@ public class TransitionManager : MonoBehaviour
         }
     }
 
-    [System.Serializable]
-    public class TransitionHook
+    public void StartSecretTransition(TransitionHook temporaryTransitionHook)
     {
-        public Hook hook;
-        public TransitionDirection direction;
-        public int connectedSceneBuildIndex;
+        StartCoroutine(TransitionToConnectedZone(temporaryTransitionHook));
     }
 
-
-    public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber)
+    public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber, int heartContainerNumber)
     {
-        if (startHook == null)
-        {
-            startHook = GameManager.Instance.blink.startHook;
-        }
-
         ZoneHandler.Zone potentialZone = null;
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         foreach (ZoneHandler.Zone zone in zoneHandler.zones)
@@ -103,7 +119,7 @@ public class TransitionManager : MonoBehaviour
 
         if(potentialZone == null)
         {
-            potentialZone = new ZoneHandler.Zone(currentBuildIndex, SceneManager.GetActiveScene().name, zoneHooks, enemyNumber, elementNumber);
+            potentialZone = new ZoneHandler.Zone(currentBuildIndex, GameManager.Instance.zoneName, zoneHooks, enemyNumber, elementNumber, heartContainerNumber);
             zoneHandler.zones.Add(potentialZone);
         }
 
@@ -117,17 +133,29 @@ public class TransitionManager : MonoBehaviour
 
         zoneHandler.InitializeZone(potentialZone);
 
-        if (newPlayerHp != 0)
+
+
+        if (startHook == null)
         {
-            GameManager.Instance.playerManager.currentHealth = newPlayerHp;
-            if(!GameManager.Instance.playerManager.InitializeHealthBar())
-            {
-                GameManager.Instance.playerManager.UpdateHealthBar();
-            }
+            startHook = GameManager.Instance.blink.startHook;
         }
 
 
-        if(savePos == Vector2.zero)
+        if (previousPlayerData != null)
+        {
+            GameManager.Instance.playerManager.maxhealthPoint = previousPlayerData.maxHealthPoint;
+            GameManager.Instance.playerManager.currentHealth = previousPlayerData.health;
+            GameManager.Instance.playerManager.ownSpeaker = previousPlayerData.ownSpeaker;
+            GameManager.Instance.playerManager.heartContainerOwned = previousPlayerData.heartContainerOwned;
+        }
+        else
+        {
+            GameManager.Instance.playerManager.currentHealth = GameManager.Instance.playerManager.maxhealthPoint * 2;
+        }
+
+        GameManager.Instance.playerManager.InitializeHealthBar();
+
+        if (!firstInit)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
@@ -137,13 +165,22 @@ public class TransitionManager : MonoBehaviour
                 }
             }
             GameManager.Instance.playerManager.transform.parent.position = startHook.transform.position;
+            apparitionPos = startHook.transform.position;
         }
         else
         {
-            GameManager.Instance.playerManager.transform.parent.position = savePos;
-            savePos = Vector2.zero;
+            if(previousPlayerData != null)
+            {
+                GameManager.Instance.playerManager.transform.parent.position = new Vector2(previousPlayerData.position[0], previousPlayerData.position[1]);
+                apparitionPos = new Vector2(previousPlayerData.position[0], previousPlayerData.position[1]);
+            }
+            else
+            {
+                GameManager.Instance.playerManager.transform.parent.position = startHook.transform.position;
+                apparitionPos = startHook.transform.position;
+            }
         }
-
+        GameManager.Instance.blink.currentHook = startHook;
 
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         float maskLerpProgression = 0;
@@ -153,20 +190,27 @@ public class TransitionManager : MonoBehaviour
             blackScreenMask.transform.localScale = new Vector2(maskLerpProgression * maxMaskSize, maskLerpProgression * maxMaskSize);
             yield return new WaitForEndOfFrame();
         }
-        Instantiate(apparitionPrefab, savePos == Vector2.zero ? startHook.transform.position : (Vector3)savePos, Quaternion.identity);
+        Instantiate(apparitionPrefab, !firstInit ? startHook.transform.position : (Vector3)apparitionPos, Quaternion.identity);
+        firstInit = false;
         yield return new WaitForSeconds(timeBeforePlayerAppearence);
+        isTransitionning = false;
+        StartCoroutine(startHook.BlinkReaction(true));
         currentPlayerRendererO.SetActive(true);
         blackScreen.SetActive(false);
-    }
 
+        StartCoroutine(GameManager.Instance.DisplayZoneName());
+    }
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
+        isTransitionning = true;
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
-        newPlayerHp = GameManager.Instance.playerManager.currentHealth;
+
+        previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
         zoneHandler.SaveZoneState();
+        previousWorldData = new WorldData(zoneHandler);
 
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)
@@ -177,6 +221,10 @@ public class TransitionManager : MonoBehaviour
         }
         currentPlayerRendererO.SetActive(false);
         Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position, Quaternion.identity);
+
+        GameManager.playerSource.PlayOneShot(GameManager.Instance.blink.transitionBlinkSound);
+
+        GameManager.Instance.StopAllCoroutines();
 
         yield return new WaitForSeconds(timeBeforeZoneQuitting);
 
@@ -198,7 +246,63 @@ public class TransitionManager : MonoBehaviour
                 currentStartDirection = TransitionDirection.Right;
                 break;
         }
-
+        zoneHandler.zoneInitialized = false;
         SceneManager.LoadScene(transitionHook.connectedSceneBuildIndex);
+    }
+
+    public IEnumerator Respawn()
+    {
+        GameManager.Instance.playerManager.isInControl = false;
+        GameManager.Instance.playerManager.Heal(500);
+
+        previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
+
+        blackScreen.SetActive(true);
+        blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
+        blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
+
+        float maskLerpProgression = 0;
+        while (maskLerpProgression < 0.92f)
+        {
+            maskLerpProgression += (1 - maskLerpProgression) * transitionLerpSpeed * Time.deltaTime;
+            blackScreenMask.transform.localScale = new Vector2((1 - maskLerpProgression) * maxMaskSize, (1 - maskLerpProgression) * maxMaskSize);
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(timeBeforeZoneQuitting);
+
+
+        switch (currentStartDirection)
+        {
+            case TransitionDirection.Down:
+                currentStartDirection = TransitionDirection.Up;
+                break;
+
+            case TransitionDirection.Up:
+                currentStartDirection = TransitionDirection.Down;
+                break;
+
+            case TransitionDirection.Right:
+                currentStartDirection = TransitionDirection.Left;
+                break;
+
+            case TransitionDirection.Left:
+                currentStartDirection = TransitionDirection.Right;
+                break;
+        }
+
+        if(previousWorldData != null)
+        {
+            zoneHandler.zones = previousWorldData.worldZones;
+            WorldManager.allWorldEvents = previousWorldData.worldEvents;
+            WorldManager.currentStoryStep = previousWorldData.storyStep;
+            yield return new WaitForEndOfFrame();
+            SceneManager.LoadScene(previousWorldData.savedZoneBuildIndex);
+        }
+        else
+        {
+            yield return new WaitForEndOfFrame();
+            SceneManager.LoadScene(zoneHandler.currentZone.buildIndex);
+        }
     }
 }

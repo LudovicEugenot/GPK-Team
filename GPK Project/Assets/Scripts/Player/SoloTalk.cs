@@ -6,27 +6,88 @@ public class SoloTalk : MonoBehaviour
 {
     public Talk commentary;
     public Hook nearbyHook;
+    public bool autoTrigger;
+    public bool manualTrigger;
+    public bool isCommentary;
+    public float timeBewteenSentence;
+    public SoloTalk previousTalk;
     public float camZoom;
+    public Vector2 alternateBoxPos;
     public WorldManager.StoryStep storyStepRequired;
     public WorldManager.EventName[] requiredEvents;
+    public GameObject interactionIndicator;
 
-
+    private ParticleSystem shinyParticle;
     private WorldManager.WorldEvent[] requiredWorldEvents;
+    private bool waitingForPreviousTalk;
+    [HideInInspector] public bool talkStarted;
 
     void Start()
     {
-        SetupWE();
+        SetupWorldEvents();
+        waitingForPreviousTalk = true;
+        shinyParticle = GetComponentInChildren<ParticleSystem>();
     }
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && GameManager.Instance.blink.currentHook == nearbyHook && storyStepRequired <= WorldManager.currentStoryStep && IsValid())
+        if (previousTalk == null)
         {
-            GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+            if (GameManager.Instance.blink.currentHook == nearbyHook && storyStepRequired <= WorldManager.currentStoryStep && IsValid())
+            {
+                if(shinyParticle!= null && !shinyParticle.isPlaying)
+                {
+                    shinyParticle.Play();
+                }
+
+                if(interactionIndicator != null)
+                {
+                    interactionIndicator.SetActive(true);
+                }
+
+                if (((Input.GetButtonDown("Blink") && manualTrigger) && !GameManager.Instance.blink.IsSelecting()) || autoTrigger)
+                {
+                    if(isCommentary)
+                    {
+                        GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
+                    }
+                    else
+                    {
+                        GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                    }
+                    talkStarted = true;
+                    autoTrigger = false;
+                }
+            }
+            else
+            {
+                if(shinyParticle != null && !shinyParticle.isStopped)
+                {
+                    shinyParticle.Stop();
+                }
+
+                if (interactionIndicator != null)
+                {
+                    interactionIndicator.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            if (previousTalk.talkStarted && waitingForPreviousTalk && !GameManager.Instance.dialogueManager.isTalking)
+            {
+                GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                waitingForPreviousTalk = false;
+            }
+        }
+
+        if(shinyParticle != null && !shinyParticle.isStopped && GameManager.Instance.dialogueManager.isTalking)
+        {
+            shinyParticle.Stop();
         }
     }
 
-    private void SetupWE()
+    private void SetupWorldEvents()
     {
         requiredWorldEvents = new WorldManager.WorldEvent[requiredEvents.Length];
         for(int i = 0; i < requiredEvents.Length; i++)

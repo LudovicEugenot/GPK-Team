@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FluteAnimator
+  m_Controller: {fileID: 9100000, guid: fbaaf30abb9b6df44bf7c0a3a26ddc3f, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ef0d1464d37704f459888e0ec52033aa, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: fccf5cd997defd54eb556eb78efebd15, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 86a1c2ac7013a254cb06e05e5daa6004, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3d53c1d243fbb6a469988c96c9b0b86b, type: 2}

@@ -8,6 +8,8 @@ public class PlayerData
     public int maxHealthPoint;
     public int health; //half an health point
     public float[] position;
+    public bool ownSpeaker;
+    public int heartContainerOwned;
 
     public PlayerData(PlayerManager player)
     {
@@ -16,5 +18,7 @@ public class PlayerData
         position = new float[2];
         position[0] = player.transform.position.x;
         position[1] = player.transform.position.y;
+        ownSpeaker = player.ownSpeaker;
+        heartContainerOwned = player.heartContainerOwned;
     }
 }

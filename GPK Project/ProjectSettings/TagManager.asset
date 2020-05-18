@@ -16,12 +16,12 @@ TagManager:
   - Hook
   - Obstacle
   - Player
-  - Enemi
+  - Enemy
   - Background_Greyscale
-  - 
-  - 
-  - 
-  - 
+  - CrossHurt
+  - Speaker
+  - InkBubble
+  - Boss
   - 
   - 
   - 
@@ -53,6 +53,12 @@ TagManager:
   - name: Props3
     uniqueID: 416957345
     locked: 0
+  - name: Props4
+    uniqueID: 3305787819
+    locked: 0
+  - name: Props5
+    uniqueID: 1061410221
+    locked: 0
   - name: Particles
     uniqueID: 2324087399
     locked: 0
@@ -71,6 +77,12 @@ TagManager:
   - name: Props_Greyscale3
     uniqueID: 2505782015
     locked: 0
+  - name: Props_Greyscale4
+    uniqueID: 4038285233
+    locked: 0
+  - name: Props_Greyscale5
+    uniqueID: 1421872845
+    locked: 0
   - name: Hooks
     uniqueID: 882915597
     locked: 0
@@ -82,6 +94,12 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3473430269
+    locked: 0
+  - name: Particles_attack
+    uniqueID: 1876288707
+    locked: 0
+  - name: Particles_attack2
+    uniqueID: 3052609361
     locked: 0
   - name: Default
     uniqueID: 0

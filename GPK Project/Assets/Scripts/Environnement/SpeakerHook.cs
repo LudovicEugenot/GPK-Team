@@ -33,26 +33,7 @@ public class SpeakerHook : Hook
 
     public override IEnumerator BlinkSpecificReaction()
     {
-        //Animation récupération de la capacité versatile
         StartCoroutine(remoteSpeaker.PickupSpeaker());
         yield return null;
-    }
-
-    public IEnumerator CreateMusicArea()
-    {
-        rangeVisualO.SetActive(true);
-        List<Collider2D> colliders = new List<Collider2D>();
-        Physics2D.OverlapCircle(transform.position, agressionRanges[GameManager.Instance.playerManager.currentPower], enemiFilter, colliders);
-        if (colliders.Count > 0)
-        {
-            foreach (Collider2D collider in colliders)
-            {
-                EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
-                enemy.TakeDamage();
-            }
-        }
-
-        yield return new WaitForSeconds(agressionTime);
-        rangeVisualO.SetActive(false);
     }
 }

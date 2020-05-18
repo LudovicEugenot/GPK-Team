@@ -13,19 +13,14 @@ public abstract class Hook : MonoBehaviour
     public Color unselectableColor;
     public Animator decorationAnimator;
 
-    public bool agressiveHook;
-    public float[] agressionRanges;
-    public GameObject rangeVisualO; // à remplacer par le mask de recoloration
-    public float agressionTime;
-
     [HideInInspector] public bool selected;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
 
-    protected ContactFilter2D enemiFilter = new ContactFilter2D();
     protected Animator animator;
     protected AnimSynchronizer animSynchronizer;
     [HideInInspector] public HookState hookState;
+    protected AudioSource source;
 
     #endregion
 
@@ -35,12 +30,9 @@ public abstract class Hook : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         animSynchronizer = GetComponentInChildren<AnimSynchronizer>();
-
+        source = GetComponent<AudioSource>();
         selected = false;
         blinkable = true;
-
-        enemiFilter.useTriggers = true;
-        enemiFilter.SetLayerMask(LayerMask.GetMask("Enemi"));
     }
 
 
@@ -68,25 +60,8 @@ public abstract class Hook : MonoBehaviour
         if(isPlayerOnBeat)
         {
             hookState.Relive();
-            if (agressiveHook)
-            {
-                rangeVisualO.transform.localScale = new Vector2(agressionRanges[GameManager.Instance.playerManager.currentPower], agressionRanges[GameManager.Instance.playerManager.currentPower]);
-                rangeVisualO.SetActive(true);
-                List<Collider2D> colliders = new List<Collider2D>();
-                Physics2D.OverlapCircle(transform.position, agressionRanges[GameManager.Instance.playerManager.currentPower], enemiFilter, colliders);
-                if (colliders.Count > 0)
-                {
-                    foreach (Collider2D collider in colliders)
-                    {
-                        EnemyBase enemy = collider.transform.parent.GetChild(0).GetComponent<EnemyBase>();
-                        enemy.TakeDamage();
-                    }
-                }
-
-                yield return new WaitForSeconds(agressionTime);
-                rangeVisualO.SetActive(false);
-            }
         }
+        yield return null;
     }
 
     public abstract IEnumerator BlinkSpecificReaction();
@@ -96,6 +71,20 @@ public abstract class Hook : MonoBehaviour
         if (animSynchronizer != null)
         {
             animSynchronizer.Synchronize();
+        }
+    }
+
+    protected bool PlayerInSight()
+    {
+        Vector2 playerDirection = transform.position - GameManager.Instance.player.transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(GameManager.Instance.player.transform.position, playerDirection, playerDirection.magnitude, LayerMask.GetMask("Obstacle"));
+        if (!hit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

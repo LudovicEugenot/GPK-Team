@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwitchElement : MonoBehaviour
 {
     public bool enableState;
-    [Range(0, 30)] public int beatsBeforeDeactivation;
+    [Range(0.0f, 30.0f)] public float beatsBeforeDeactivation;
     public bool stayEnable;
     public List<Hookterruptor> connectedHookterruptors;
     public bool needAllPressed;
@@ -14,6 +14,8 @@ public class SwitchElement : MonoBehaviour
     public bool isInteractableByEvent;
     public WorldManager.EventName relatedEvent;
     private WorldManager.WorldEvent relatedWorldEvent;
+    public WorldManager.EventName triggeredEvent;
+    private WorldManager.WorldEvent triggeredWorldEvent;
 
     [HideInInspector] public bool isEnabled;
     protected bool active;
@@ -25,6 +27,7 @@ public class SwitchElement : MonoBehaviour
         active = !enableState;
         currentRemainingActiveTime = enableState ? beatsBeforeDeactivation * BeatManager.Instance.BeatTime + 0.1f : 0;
         relatedWorldEvent = WorldManager.GetWorldEvent(relatedEvent);
+        triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
         animator = GetComponent<Animator>();
     }
 
@@ -82,6 +85,7 @@ public class SwitchElement : MonoBehaviour
         if(elementEnabled && connectedHookterruptors.Count > 0)
         {
             isEnabled = true;
+            triggeredWorldEvent.occured = true;
             if(!stayEnable)
             {
                 currentRemainingActiveTime = beatsBeforeDeactivation * BeatManager.Instance.BeatTime + 0.1f;

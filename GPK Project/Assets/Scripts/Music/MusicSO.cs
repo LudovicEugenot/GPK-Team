@@ -1,19 +1,36 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Music Loop SO New file", menuName = "Music Scriptable Objects/Music Loop")]
+[CreateAssetMenu(fileName = "Music Loop SO New file", menuName = "Music Scriptable Object")]
 public class MusicSO : ScriptableObject
 {
     [Header("Music Related")]
-    public AudioClip explorationLoop;
-    public AudioClip combatLoop;
+
+    [Tooltip("La musique calme est jouée lorsqu'il n'y a pas d'ennemis.")]
+    public AudioClip calmLoop;
+    [Range(0f, 15f)] public float calmMusicStartTimeOffset;
+    [Tooltip("Quand on quitte un break, on commence la musique calme à un de ces beats. La musique calme ne démarre au début que lorsqu'on transitionne à partir d'une autre musique ou qu'on arrive au bout de la boucle.")]
+    [Range(0, 800)] public int numberOfBeatsUntilLoop;
+    [Range(0, 800)] public int[] beatsToInsertCalmMusic;
     [Space]
+    [Tooltip("Les Loops qui font toutes 4 beats et qui changent aléatoirement vers une autre loop.")]
+    public AudioClip[] combatLoop;
+    [Range(0f, 3f)] public float[] combatMusicStartTimeOffset;
+    [Space]
+    [Tooltip("Les drops font le passage entre musique calme et musique de combat.")]
+    public AudioClip[] drops;
+    [Range(0f, 3f)] public float[] dropMusicStartTimeOffset;
+    [Space]
+    [Tooltip("Les breaks sont déclenchés à chaque fin de combat et font la transition entre le combat et le calme (mais aussi combat vers combat).")]
+    public AudioClip[] breaks;
+    [Range(0f, 3f)] public float[] breakMusicStartTimeOffset;
+
+    [Space(35)] [Header("Music Data")]
     [Range(1, 250)] public int bpm = 140;
-    [Range(0f, 1f)] public double explorationBeatStartTimeOffset;
-    [Range(0f, 1f)] public double combatBeatStartTimeOffset;
+    [Range(0, 1)] public float generalStartTimeOffset = 0;
 
     [Space]
-    [Tooltip("Les deux musiques peuvent s'interchanger sur les beats 2 et 4 au lieu de juste 4.")]
+    [Tooltip("Les loops peuvent s'interchanger sur les beats 2 et 4 au lieu de juste 4.")]
     public bool canSwitchOnBeat2 = false;
 
     [Header("Data Related")]

@@ -11,6 +11,8 @@ public class HookFX : MonoBehaviour
     private SpriteRenderer targetRenderer;
 
 
+    protected bool playerInSight;
+
     void Start()
     {
         targetRenderer = GetComponent<SpriteRenderer>();
@@ -28,6 +30,20 @@ public class HookFX : MonoBehaviour
         if (mask.sprite != targetRenderer.sprite)
         {
             mask.sprite = targetRenderer.sprite;
+        }
+    }
+
+    public bool PlayerInSight()
+    {
+        Vector2 playerDirection = transform.position - GameManager.Instance.player.transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(GameManager.Instance.player.transform.position, playerDirection, playerDirection.magnitude, LayerMask.GetMask("Obstacle"));
+        if(!hit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

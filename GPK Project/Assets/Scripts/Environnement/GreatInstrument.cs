@@ -12,6 +12,7 @@ public class GreatInstrument : MonoBehaviour
     private Animator animator;
     void Start()
     {
+        ZoneHandler.Instance.reliveRemotlyChanged = true;
         animator = GetComponent<Animator>();
         triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
         if(triggeredWorldEvent.occured)
@@ -24,11 +25,22 @@ public class GreatInstrument : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Interact") && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position)
+        if(isRelived)
+        {
+            ZoneHandler.Instance.currentReliveProgression = 1;
+        }
+        else
+        {
+            ZoneHandler.Instance.currentReliveProgression = 0;
+            ZoneHandler.Instance.reliveRemotlyChanged = true;
+        }
+
+        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position && !isRelived)
         {
             isRelived = true;
             triggeredWorldEvent.occured = true;
             animator.SetBool("Relive", true);
+            GameManager.playerAnimator.SetTrigger("Throw");
         }
     }
 }

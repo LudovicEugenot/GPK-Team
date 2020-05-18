@@ -5,7 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
-    public int maxhealthPoint;
+    public int maxhealthPoint; //A Health point is 2 health
+    public float beatInvulnerableTime;
+    public bool playerOffBeated;
+    public bool beatAndOffBeatAllowed;
+    [Space]
+    public float deathCinematicZoom;
+    [Space]
+    public GameObject gameOverPanel;
     public RectTransform firstHealthPointPos;
     public float distanceBetweenHp;
     public GameObject hpIconPrefab;
@@ -14,6 +21,9 @@ public class PlayerManager : MonoBehaviour
     public Sprite emptyHp;
     public Animator animator;
     public GameObject[] musicianVisualO;
+    public GameObject healParticle;
+    [Header("Sounds")]
+    public AudioClip[] damageSounds;
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentPower;
@@ -22,24 +32,39 @@ public class PlayerManager : MonoBehaviour
     private List<GameObject> hpIcons = new List<GameObject>();
     private HpState[] hpIconsState;
     private enum HpState { Full, Half, Empty };
-    private bool healthBarInitialized;
+    [HideInInspector] public int heartContainerOwned;
+    private bool keyPressed;
+    private float invulTimeRemaining;
 
     void Start()
     {
-        currentHealth = maxhealthPoint * 2;
-        InitializeHealthBar();
         UseMusicians();
         isInControl = true;
     }
 
+    private void Update()
+    {
+        keyPressed = Input.anyKeyDown;
+        if(invulTimeRemaining > 0)
+        {
+            invulTimeRemaining -= Time.deltaTime;
+        }
+    }
+
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        UpdateHealthBar();
-        animator.SetTrigger("Damage");
-        if(currentHealth <= 0)
+        if(invulTimeRemaining <=  0)
         {
-            Die();
+            currentHealth -= damage;
+            UpdateHealthBar();
+            animator.SetTrigger("Damage");
+            invulTimeRemaining = beatInvulnerableTime * GameManager.Instance.Beat.BeatTime;
+            if (currentHealth <= 0)
+            {
+                StartCoroutine(Die());
+            }
+
+            GameManager.playerSource.PlayOneShot(damageSounds[Random.Range(0, damageSounds.Length)]);
         }
     }
 
@@ -53,30 +78,26 @@ public class PlayerManager : MonoBehaviour
         {
             currentHealth = maxhealthPoint * 2;
         }
+        Instantiate(healParticle, transform.position, Quaternion.identity);
 
         UpdateHealthBar();
     }
 
-    public bool InitializeHealthBar()
+    public void InitializeHealthBar()
     {
-        if(!healthBarInitialized)
+        foreach(GameObject hpIcon in hpIcons)
         {
-            healthBarInitialized = true;
-            hpIconsState = new HpState[maxhealthPoint];
-            for (int i = 0; i < maxhealthPoint; i++)
-            {
-                GameObject newIcon;
-                hpIcons.Add(newIcon = Instantiate(hpIconPrefab, firstHealthPointPos));
-                newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
-            }
-            UpdateHealthBar();
-            return true;
+            Destroy(hpIcon);
         }
-        else
+        hpIcons.Clear();
+        hpIconsState = new HpState[maxhealthPoint];
+        for (int i = 0; i < maxhealthPoint; i++)
         {
-            //Debug.Log("The health bar has already been initialized");
-            return false;
+            GameObject newIcon;
+            hpIcons.Add(newIcon = Instantiate(hpIconPrefab, firstHealthPointPos));
+            newIcon.GetComponent<RectTransform>().anchoredPosition = new Vector2(distanceBetweenHp * i, 0.0f);
         }
+        UpdateHealthBar();
     }
 
     public void UpdateHealthBar()
@@ -107,25 +128,40 @@ public class PlayerManager : MonoBehaviour
             {
                 case HpState.Full:
                     icon.sprite = fullHp;
-                    icon.color = Color.white;
                     break;
 
                 case HpState.Half:
                     icon.sprite = halfHp;
-                    icon.color = Color.white;
                     break;
 
                 case HpState.Empty:
                     icon.sprite = emptyHp;
-                    icon.color = Color.white;
                     break;
             }
         }
     }
 
-    public void Die()
+    public void ObtainHeartContainer()
     {
-        Debug.Log("This is not victory");
+        heartContainerOwned++;
+        if(heartContainerOwned >= 2)
+        {
+            maxhealthPoint++;
+        }
+    }
+
+    public IEnumerator Die()
+    {
+        GameManager.Instance.PauseEnemyBehaviour();
+        StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(transform.parent.position, deathCinematicZoom, true));
+        GameManager.playerAnimator.SetTrigger("Die");
+        gameOverPanel.SetActive(true);
+        yield return new WaitForSeconds(2);
+        while(!keyPressed)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        StartCoroutine(TransitionManager.Instance.Respawn());
     }
 
     public void AddMusician()
