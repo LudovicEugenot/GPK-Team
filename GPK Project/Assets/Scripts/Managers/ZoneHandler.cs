@@ -141,7 +141,7 @@ public class ZoneHandler : MonoBehaviour
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
-            GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
+            //GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
             if(currentZone.enemiesConverted[i])
             {
                 GameManager.Instance.zoneEnemies[i].GetConverted(true);

@@ -23,6 +23,7 @@ public class Enemy_Basic : EnemyBase
     protected override EnemyBehaviour[] TriggeredPattern => triggeredPattern;
 
     private float maxRadiusAttack;
+    private bool isConvertedMoving;
 
     private bool hasAttacked;
     private ContactFilter2D playerFilter = new ContactFilter2D();
@@ -59,8 +60,31 @@ public class Enemy_Basic : EnemyBase
 
     protected override void ConvertedBehaviour()
     {
-        // juste un état passif où on s'assure que l'animator est au bon endroit toussa
-        // (le fait de convertir se fait pas ici)
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            isConvertedMoving = !isConvertedMoving;
+            if(isConvertedMoving)
+            {
+                Vector2 finalDirection = playerPositionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance)).normalized;
+                while (!NoObstacleBetweenMeAndThere(finalDirection))
+                {
+                    if (
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
+                    {
+                        break;
+                    }
+                    finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+                }
+                endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
+            }
+        }
+
+        float progression = CurrentBeatProgressionAdjusted(2, 0);
+        animator.SetBool("InTheAir", !FalseDuringBeatProgression(0.0f, 0.5f));
+        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
     }
 
     protected override void TriggeredBehaviour()
@@ -167,8 +191,9 @@ public class Enemy_Basic : EnemyBase
     {
         source.PlayOneShot(conversionSound);
         animator.SetBool("Converted", true);
+        animator.SetTrigger("Conversion");
         attackParent.SetActive(false);
-        GameManager.Instance.playerManager.AddMusician();
+        //GameManager.Instance.playerManager.AddMusician();
     }
 
     protected override void VulnerableBehaviour()

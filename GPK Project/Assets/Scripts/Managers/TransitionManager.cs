@@ -70,22 +70,30 @@ public class TransitionManager : MonoBehaviour
         public TransitionDirection direction;
         public int connectedSceneBuildIndex;
         public WorldManager.StoryStep storyStepRequired;
+        public Talk blockedTalk;
     }
 
     private void CheckTransitionStart()
     {
-        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.paused && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
+        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.paused && PlayerManager.CanInteract() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
-                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0 && (int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
+                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0)
                 {
                     if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                     {
                         zoneHandler.SaveZoneState();
                         if (zoneHandler.AllEnemiesConverted())
                         {
-                            StartCoroutine(TransitionToConnectedZone(transitionHook));
+                            if ((int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
+                            {
+                                StartCoroutine(TransitionToConnectedZone(transitionHook));
+                            }
+                            else
+                            {
+                                GameManager.Instance.dialogueManager.StartTalk(transitionHook.blockedTalk, GameManager.Instance.transform, 5.625f);
+                            }
                         }
                         else
                         {

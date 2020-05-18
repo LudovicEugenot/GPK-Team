@@ -39,7 +39,7 @@ public class HeartContainerPart : MonoBehaviour
 
     private void UpdatePlayerTrigger()
     {
-        if(Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == nearbyHook && !GameManager.Instance.blink.IsSelecting() && !isObtained)
+        if(Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == nearbyHook && PlayerManager.CanInteract() && !isObtained)
         {
             StartCoroutine(PickUpHeart());
         }

@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     public bool beatAndOffBeatAllowed;
     [Space]
     public float deathCinematicZoom;
+    public float interactMaxDistance;
     [Space]
     public GameObject gameOverPanel;
     public RectTransform firstHealthPointPos;
@@ -180,6 +181,30 @@ public class PlayerManager : MonoBehaviour
         foreach(GameObject musician in musicianVisualO)
         {
             musician.SetActive(false);
+        }
+    }
+
+    public static bool CanInteract()
+    {
+        if(!GameManager.Instance.blink.IsSelecting() && IsMouseNearPlayer())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static bool IsMouseNearPlayer()
+    {
+        if(Vector2.Distance(GameManager.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition), GameManager.Instance.player.transform.position) < GameManager.Instance.playerManager.interactMaxDistance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

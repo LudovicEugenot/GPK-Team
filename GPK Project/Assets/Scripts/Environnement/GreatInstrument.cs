@@ -35,7 +35,7 @@ public class GreatInstrument : MonoBehaviour
             ZoneHandler.Instance.reliveRemotlyChanged = true;
         }
 
-        if(Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position && !isRelived)
+        if(Input.GetButtonDown("Blink") && PlayerManager.CanInteract() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position && !isRelived)
         {
             isRelived = true;
             triggeredWorldEvent.occured = true;

@@ -119,7 +119,7 @@ public class MusicManager : MonoBehaviour
                     return;
                 }
             }
-            else if (currentMusic == musicSO.calmLoop.name)
+            else if (currentMusic == musicSO.calmLoop.name && musicSO.drops.Length > 0)
             {
                 int musicChosen = Random.Range(0, musicSO.drops.Length);
                 beatManager.LoadMusic(musicSO.drops[musicChosen], musicSO.dropMusicStartTimeOffset[musicChosen]);
