@@ -512,11 +512,11 @@ public abstract class EnemyBase : MonoBehaviour
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
+        animator.SetTrigger("Conversion");
 
         if(!initialize)
         {
             OnConverted();
-            // Convertir l'ennemi
         }
     }
 

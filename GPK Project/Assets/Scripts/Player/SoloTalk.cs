@@ -45,7 +45,7 @@ public class SoloTalk : MonoBehaviour
                     interactionIndicator.SetActive(true);
                 }
 
-                if (((Input.GetButtonDown("Blink") && manualTrigger) && !GameManager.Instance.blink.IsSelecting()) && !GameManager.Instance.dialogueManager.isTalking || autoTrigger)
+                if (((Input.GetButtonDown("Blink") && manualTrigger) && PlayerManager.CanInteract()) && !GameManager.Instance.dialogueManager.isTalking || autoTrigger)
                 {
                     if (GameManager.Instance.usePlaytestRecord && interactionIndicator == null)
                     {

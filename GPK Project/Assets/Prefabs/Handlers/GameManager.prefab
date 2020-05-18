@@ -689,11 +689,17 @@ MonoBehaviour:
     direction: 0
     connectedSceneBuildIndex: 20
     storyStepRequired: 0
+    blockedTalk:
+      pnjName: 
+      sentences: []
   - hook: {fileID: 0}
     isTemporary: 0
     direction: 1
     connectedSceneBuildIndex: 18
     storyStepRequired: 0
+    blockedTalk:
+      pnjName: 
+      sentences: []
   hooksHolder: {fileID: 0}
   zoneHooks:
   - relived: 0
@@ -745,12 +751,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoneNameUnknownUntilRecolor: 0
-  storyStepSkip: 2
+  storyStepSkip: 0
   warningTempleOpen:
     pnjName: Clarinetto
     sentences:
     - "Tous les Grands son r\xE9activ\xE9s !"
     - "Retournons voir le Bris\xE9 devant le temple"
+  talkTriggered: 0
 --- !u!114 &6096407865150329221
 MonoBehaviour:
   m_ObjectHideFlags: 0

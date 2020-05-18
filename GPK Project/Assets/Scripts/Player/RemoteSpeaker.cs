@@ -61,7 +61,7 @@ public class RemoteSpeaker : MonoBehaviour
             {
                 beatCooldownRemaining++;
             }
-            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("SecondAbility") && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
                 StartCoroutine(ThrowSpeaker());
             }
