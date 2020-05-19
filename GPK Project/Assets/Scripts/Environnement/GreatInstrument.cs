@@ -5,6 +5,8 @@ using UnityEngine;
 public class GreatInstrument : MonoBehaviour
 {
     public Hook hookToInteract;
+    public Talk triggeredTalk;
+    public float timeBeforeTalk;
     public WorldManager.EventName triggeredEvent;
 
     [HideInInspector] public bool isRelived;
@@ -35,12 +37,26 @@ public class GreatInstrument : MonoBehaviour
             ZoneHandler.Instance.reliveRemotlyChanged = true;
         }
 
-        if(Input.GetButtonDown("Blink") && PlayerManager.CanInteract() && (Vector2)GameManager.Instance.player.transform.position == (Vector2)hookToInteract.transform.position && !isRelived)
+        if(GameManager.Instance.blink.currentHook == hookToInteract && !isRelived && PlayerManager.CanInteract())
         {
-            isRelived = true;
-            triggeredWorldEvent.occured = true;
-            animator.SetBool("Relive", true);
-            GameManager.playerAnimator.SetTrigger("Throw");
+            PlayerManager.DisplayIndicator();
+
+            if (Input.GetButtonDown("Blink") && PlayerManager.IsMouseNearPlayer())
+            {
+                isRelived = true;
+                triggeredWorldEvent.occured = true;
+                animator.SetBool("Relive", true);
+                GameManager.playerAnimator.SetTrigger("Throw");
+                Invoke("StartTalk", timeBeforeTalk);
+            }
+        }
+    }
+
+    private void StartTalk()
+    {
+        if(triggeredTalk != null)
+        {
+            GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, transform, 4);
         }
     }
 }

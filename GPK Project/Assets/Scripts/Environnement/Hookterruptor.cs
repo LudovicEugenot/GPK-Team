@@ -151,13 +151,15 @@ public class Hookterruptor : Hook
 
         if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
         {
-            blinkable = true;
+            selectable = true;
+            blinkable = PlayerInSight();
         }
         else
         {
+            selectable = false;
             blinkable = false;
         }
 
-        sprite.color = !pressed ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : pressedColor;
+        sprite.color = !pressed ? (blinkable ? (selected ? selectedColor : blinkableColor) : unBlinkableColor) : pressedColor;
     }
 }

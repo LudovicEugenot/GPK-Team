@@ -27,13 +27,18 @@ public class NPCDialogue : MonoBehaviour
 
     void TestDialogueStart()
     {
-        if (Input.GetButtonDown("Blink") && PlayerManager.CanInteract() && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking)
+        if(GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking && PlayerManager.CanInteract())
         {
-            currentDialogue = GetValidDialogue();
-            if(currentDialogue != null)
+            PlayerManager.DisplayIndicator();
+
+            if (Input.GetButtonDown("Blink") && PlayerManager.IsMouseNearPlayer())
             {
-                GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
-                WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
+                currentDialogue = GetValidDialogue();
+                if (currentDialogue != null)
+                {
+                    GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
+                    WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
+                }
             }
         }
     }

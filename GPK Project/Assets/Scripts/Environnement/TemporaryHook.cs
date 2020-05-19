@@ -74,14 +74,16 @@ public class TemporaryHook : Hook
 
         if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight())
         {
-            blinkable = true;
+            selectable = true;
+            blinkable = PlayerInSight();
         }
         else
         {
+            selectable = false;
             blinkable = false;
         }
 
-        sprite.color = !isBroken ? (blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor) : brokenColor;
+        sprite.color = !isBroken ? (blinkable ? (selected ? selectedColor : blinkableColor) : unBlinkableColor) : brokenColor;
     }
 
     private void FallEffect()

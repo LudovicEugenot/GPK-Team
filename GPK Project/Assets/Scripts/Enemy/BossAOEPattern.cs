@@ -56,7 +56,7 @@ public class BossAOEPattern : MonoBehaviour
     private IEnumerator SpawnAOE(Aoe aoe)
     {
         GameObject warningZone = Instantiate(warningZonePrefab, aoe.position, Quaternion.identity);
-        warningZone.transform.localScale = Vector2.one * aoe.radius * 2;
+        warningZone.transform.localScale = Vector2.one * aoe.radius;
         //Invoke("PlayWarningSound", aoe.warningBeatTime * BeatManager.Instance.BeatTime - warningSoundOffset);
 
         yield return new WaitForSeconds(aoe.warningBeatTime * BeatManager.Instance.BeatTime);
@@ -64,8 +64,12 @@ public class BossAOEPattern : MonoBehaviour
         Destroy(warningZone);
 
         GameObject fx = Instantiate(aoeFx, aoe.position, Quaternion.identity);
-        fx.transform.localScale = Vector2.one * aoe.radius * 2;
+        fx.transform.localScale = Vector2.one * aoe.radius;
         source.PlayOneShot(aoeSound);
+        while(BeatManager.Instance.OnBeat(false,false, "--__--"))
+        {
+            yield return new WaitForFixedUpdate();
+        }
         if (Physics2D.OverlapCircle(aoe.position, aoe.radius, LayerMask.GetMask("Player")))
         {
             GameManager.Instance.playerManager.TakeDamage(aoe.damage);

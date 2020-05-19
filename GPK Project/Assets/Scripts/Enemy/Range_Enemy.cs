@@ -117,7 +117,7 @@ public class Range_Enemy : EnemyBase
             beamLine.endWidth = beamLineWidths[1];
 
             RaycastHit2D hit = Physics2D.Raycast(parent.position, playerDirection, 30, LayerMask.GetMask("Player"));
-            if(hit)
+            if(hit && !BeatManager.Instance.OnBeat(false, false, "__--__"))
             {
                 GameManager.Instance.playerManager.TakeDamage(2);
             }

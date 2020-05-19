@@ -181,7 +181,7 @@ public class Blink : MonoBehaviour
         {
             float distanceToHook;
             distanceToHook = Vector2.Distance(hookHover[i].transform.position, worldMousePos);
-            if (distanceToHook < minDistanceToHook && hookHover[i].GetComponent<Hook>().blinkable && (Vector2)transform.position != (Vector2)hookHover[i].transform.position)
+            if (distanceToHook < minDistanceToHook && hookHover[i].GetComponent<Hook>().selectable && (Vector2)transform.position != (Vector2)hookHover[i].transform.position)
             {
                 minDistanceToHook = distanceToHook;
                 if (hoveredHook != null)
@@ -192,7 +192,7 @@ public class Blink : MonoBehaviour
             }
         }
 
-        if (hoveredHook != null && (hookHover.Length == 0 || !hoveredHook.blinkable))
+        if (hoveredHook != null && (hookHover.Length == 0 || !hoveredHook.selectable))
         {
             hoveredHook.selected = false;
             hoveredHook = null;
@@ -292,7 +292,7 @@ public class Blink : MonoBehaviour
 
             Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             Instantiate(blinkDisparition, transform.position, Quaternion.identity);
-
+            GameManager.Instance.playerManager.ResetIdleTime();
 
             RaycastHit2D blinkCrossHurtHit = Physics2D.Raycast(transform.parent.position, blinkDirection, blinkDirection.magnitude, LayerMask.GetMask("CrossHurt"));
             if(blinkCrossHurtHit)
