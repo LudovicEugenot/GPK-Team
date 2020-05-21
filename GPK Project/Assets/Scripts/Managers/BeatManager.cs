@@ -31,7 +31,7 @@ public class BeatManager : MonoBehaviour
         }
     }
     public double audioTime { get { return AudioSettings.dspTime; } }
-    private double timeBeforeNextBeat;
+    [HideInInspector] public double timeBeforeNextBeat;
     private double timeBeforeNextOffBeat;
     [HideInInspector] public float currentBeatProgression;
     [HideInInspector] public bool useCameraBeatShake;
@@ -107,7 +107,7 @@ public class BeatManager : MonoBehaviour
             TimeCycle();
         }
 
-        if (onBeatNextFrame && !beatActionUsed)
+        if (onBeatNextFrame && !beatActionUsed && !GameManager.Instance.dialogueManager.isTalking)
         {
             GameManager.Instance.blink.FailCombo();
         }

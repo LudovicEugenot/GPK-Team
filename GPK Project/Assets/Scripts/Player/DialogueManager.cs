@@ -61,6 +61,7 @@ public class DialogueManager : MonoBehaviour
             isCommentary = false;
             autoSkipFlag = true;
             boxPos.anchoredPosition = initialBoxPos;
+            voiceSource.pitch = dialogue.pitch;
         }
     }
 
@@ -78,7 +79,8 @@ public class DialogueManager : MonoBehaviour
             isCommentary = true;
             autoSkipTime = timeBeforeNextSentence;
             autoSkipFlag = true;
-            if(altBoxPos == Vector2.zero)
+            voiceSource.pitch = talk.pitch;
+            if (altBoxPos == Vector2.zero)
             {
                 boxPos.anchoredPosition = initialBoxPos;
             }
@@ -158,6 +160,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueBoxO.SetActive(false);
         isTalking = false;
+        voiceSource.pitch = 1;
         StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
         GameManager.Instance.playerManager.isInControl = true;
         GameManager.Instance.UnpauseEnemyBehaviour();

@@ -39,14 +39,19 @@ public class HeartContainerPart : MonoBehaviour
 
     private void UpdatePlayerTrigger()
     {
-        if(Input.GetButtonDown("Blink") && GameManager.Instance.blink.currentHook == nearbyHook && PlayerManager.CanInteract() && !isObtained)
+        if(GameManager.Instance.blink.currentHook == nearbyHook && !isObtained && !isPickedUp && PlayerManager.CanInteract())
         {
-            StartCoroutine(PickUpHeart());
+            PlayerManager.DisplayIndicator();
+            if (Input.GetButtonDown("Blink") && PlayerManager.IsMouseNearPlayer())
+            {
+                StartCoroutine(PickUpHeart());
+            }
         }
     }
 
     private IEnumerator PickUpHeart()
     {
+        isPickedUp = true;
         StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(GameManager.Instance.player.transform.position, cinematicZoom, true));
         GameManager.Instance.playerManager.isInControl = false;
         targetPos = (Vector2)GameManager.Instance.player.transform.position + new Vector2(0, heartDestinationVerticalOffset);

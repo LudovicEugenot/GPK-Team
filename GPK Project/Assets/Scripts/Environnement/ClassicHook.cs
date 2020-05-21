@@ -27,16 +27,18 @@ public class ClassicHook : Hook
 
     public override void StateUpdate()
     {
-        if((Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight() || converted))
+        if((Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange || converted))
         {
-            blinkable = true;
+            selectable = true;
+            blinkable = PlayerInSight();
         }
         else
         {
+            selectable = false;
             blinkable = false;
         }
 
-        sprite.color = blinkable ? (selected ? selectedColor : (converted ? convertedColor : blinkableColor)) : unselectableColor;
+        sprite.color = blinkable ? (selected ? selectedColor : (converted ? convertedColor : blinkableColor)) : unBlinkableColor;
     }
 
     public override IEnumerator BlinkSpecificReaction()

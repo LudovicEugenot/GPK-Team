@@ -680,6 +680,7 @@ MonoBehaviour:
   zoneName: Grand instrument des cordes
   zoneNameO: {fileID: 0}
   recolorHealthHealed: 2
+  beatBeforeCombatStart: 2
   zoneNameDisplaySpeed: 8
   zoneNameDisplayTime: 2
   mainCamera: {fileID: 0}
@@ -691,6 +692,7 @@ MonoBehaviour:
     storyStepRequired: 0
     blockedTalk:
       pnjName: 
+      pitch: 1
       sentences: []
   - hook: {fileID: 0}
     isTemporary: 0
@@ -699,6 +701,7 @@ MonoBehaviour:
     storyStepRequired: 0
     blockedTalk:
       pnjName: 
+      pitch: 1
       sentences: []
   hooksHolder: {fileID: 0}
   zoneHooks:
@@ -754,6 +757,7 @@ MonoBehaviour:
   storyStepSkip: 0
   warningTempleOpen:
     pnjName: Clarinetto
+    pitch: 1
     sentences:
     - "Tous les Grands son r\xE9activ\xE9s !"
     - "Retournons voir le Bris\xE9 devant le temple"
@@ -770,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461fcac0a0201114e9de04f2b39c147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSO: {fileID: 11400000, guid: 7b1b060d2827f624482159bc884d659c, type: 2}
+  musicSO: {fileID: 11400000, guid: 37a872e2309df4043a4083409cf54680, type: 2}
 --- !u!1 &1122493874185290590
 GameObject:
   m_ObjectHideFlags: 0

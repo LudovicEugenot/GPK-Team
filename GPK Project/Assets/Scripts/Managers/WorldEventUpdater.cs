@@ -48,7 +48,7 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckTutorialEnd()
     {
-        if(ZoneHandler.Instance.currentZone.name == "Pied du grand Sole"
+        if(ZoneHandler.Instance.currentZone.buildIndex == 4 
             && WorldManager.currentStoryStep == WorldManager.StoryStep.Tutorial)
         {
             Debug.Log("Le tutoriel est fini");
@@ -58,7 +58,7 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckVillageArrival()
     {
-        if (ZoneHandler.Instance.currentZone.name == "Entrée du village"
+        if (ZoneHandler.Instance.currentZone.buildIndex == 6 
             && WorldManager.currentStoryStep == WorldManager.StoryStep.GoingToVillage)
         {
             Debug.Log("Nous sommes au village");

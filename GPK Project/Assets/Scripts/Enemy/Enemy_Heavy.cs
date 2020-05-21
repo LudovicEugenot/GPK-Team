@@ -10,6 +10,7 @@ public class Enemy_Heavy : EnemyBase
     public AnimationCurve jumpCurve;
     [SerializeField] private float jumpHeight = 2f;
     public int attackDamage;
+    public int friendlyAttackDamage;
     public AnimationCurve aoeScaleCurve;
     public AnimationCurve knockbackCurve;
     [Header("Sounds")]
@@ -18,6 +19,7 @@ public class Enemy_Heavy : EnemyBase
     public AudioClip friendlyAttackSound;
     public AudioClip conversionSound;
 
+    private bool hasAttacked;
     private GameObject attackParent;
     private CircleCollider2D attackCollider;
     private GameObject convertedAttackParent;
@@ -31,7 +33,6 @@ public class Enemy_Heavy : EnemyBase
     private float maxConvertedRadiusAttack;
     private int consecutiveConvertedBehaviourIndex = 0;
 
-    private bool hasAttacked;
     private ContactFilter2D playerFilter = new ContactFilter2D();
     private ContactFilter2D enemyFilter = new ContactFilter2D();
     Vector2 endOfDash = Vector2.zero;
@@ -76,12 +77,20 @@ public class Enemy_Heavy : EnemyBase
 
     protected override void ConvertedBehaviour()
     {
+        attackParent.SetActive(false);
+        if (GameManager.Instance.Beat.onBeatSingleFrame)
+        {
+            consecutiveConvertedBehaviourIndex++;
+        }
+
         if (consecutiveConvertedBehaviourIndex > 6)
         {
             consecutiveConvertedBehaviourIndex = 0;
+            animator.SetBool("InTheAir", false);
         }
         else if(consecutiveConvertedBehaviourIndex > 5)
         {
+            animator.SetBool("InTheAir", true);
             HitAllies();
         }
         else
@@ -89,10 +98,6 @@ public class Enemy_Heavy : EnemyBase
             convertedAttackParent.SetActive(false);
         }
 
-        if (GameManager.Instance.Beat.onBeatSingleFrame)
-        {
-            consecutiveConvertedBehaviourIndex++;
-        }
     }
 
     protected override void TriggeredBehaviour()
@@ -100,12 +105,14 @@ public class Enemy_Heavy : EnemyBase
         canBeDamaged = FalseDuringBeatProgression(0f, 0.95f);
         float progression = CurrentBeatProgressionAdjusted(1f, 0f);
         parent.position = Vector2.Lerp(positionStartOfBeat, positionStartOfBeat + new Vector2(0, jumpHeight), jumpCurve.Evaluate(progression));
+        animator.SetBool("Attacking", true);
         //saute et touche le sol sur le prochain beat
     }
 
     protected override void ActionBehaviour()
     {
-        if(BeatManager.Instance.onBeatSingleFrame)
+        animator.SetBool("Attacking", false);
+        if (BeatManager.Instance.onBeatSingleFrame)
         {
             source.PlayOneShot(attackSound);
         }
@@ -118,18 +125,13 @@ public class Enemy_Heavy : EnemyBase
         }
 
         List<Collider2D> colliders = new List<Collider2D>();
-        if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
+        if (!BeatManager.Instance.OnBeat(false, false, "-_-_-"))
         {
             Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
         }
-        else
-        {
-            hasAttacked = false;
-        }
 
-        if (colliders.Count > 0 && !hasAttacked)
+        if (colliders.Count > 0)
         {
-            hasAttacked = true;
             GameManager.Instance.playerManager.TakeDamage(attackDamage);
         }
     }
@@ -155,6 +157,8 @@ public class Enemy_Heavy : EnemyBase
             endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
+
+        animator.SetBool("InTheAir", !FalseDuringBeatProgression(0f, 0.5f));
         float progression = CurrentBeatProgressionAdjusted(2, 0);
         Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
     }
@@ -196,7 +200,7 @@ public class Enemy_Heavy : EnemyBase
 
     private void HitAllies()
     {
-        if(BeatManager.Instance.onBeatSingleFrame)
+        if (BeatManager.Instance.onBeatSingleFrame)
         {
             source.PlayOneShot(friendlyAttackSound);
         }
@@ -223,7 +227,7 @@ public class Enemy_Heavy : EnemyBase
             {
                 Vector2 direction = collider.transform.position - parent.position;
                 direction.Normalize();
-                collider.transform.parent.GetComponentInChildren<EnemyBase>().TakeDamage(1, direction);
+                collider.transform.parent.GetComponentInChildren<EnemyBase>().TakeDamage(friendlyAttackDamage, direction);
             }
         }
     }

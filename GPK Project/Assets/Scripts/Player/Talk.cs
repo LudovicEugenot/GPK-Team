@@ -6,6 +6,7 @@ using UnityEngine;
 public class Talk
 {
     public string pnjName;
+    public float pitch = 1;
     [TextArea(3, 10)]
     public string[] sentences;
 }

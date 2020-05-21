@@ -21,14 +21,14 @@ public class SpeakerHook : Hook
     {
         if (!isDisabled)
         {
-            blinkable = true;
+            selectable = true;
         }
         else
         {
-            blinkable = false;
+            selectable = false;
         }
 
-        sprite.color = blinkable ? (selected ? selectedColor : blinkableColor) : unselectableColor;
+        sprite.color = selectable ? (selected ? selectedColor : blinkableColor) : unBlinkableColor;
     }
 
     public override IEnumerator BlinkSpecificReaction()

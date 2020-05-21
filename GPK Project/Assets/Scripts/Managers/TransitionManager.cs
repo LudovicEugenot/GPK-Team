@@ -75,34 +75,38 @@ public class TransitionManager : MonoBehaviour
 
     private void CheckTransitionStart()
     {
-        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.paused && PlayerManager.CanInteract() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
+        if(!firstInit && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning && PlayerManager.CanInteract())
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
                 if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0)
                 {
-                    if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
+                    PlayerManager.DisplayIndicator();
+                    if (Input.GetButtonDown("Blink") && PlayerManager.IsMouseNearPlayer())
                     {
-                        zoneHandler.SaveZoneState();
-                        if (zoneHandler.AllEnemiesConverted())
+                        if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                         {
-                            if ((int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
+                            zoneHandler.SaveZoneState();
+                            if (zoneHandler.AllEnemiesConverted())
                             {
-                                StartCoroutine(TransitionToConnectedZone(transitionHook));
+                                if ((int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
+                                {
+                                    StartCoroutine(TransitionToConnectedZone(transitionHook));
+                                }
+                                else
+                                {
+                                    GameManager.Instance.dialogueManager.StartTalk(transitionHook.blockedTalk, GameManager.Instance.transform, 5.625f);
+                                }
                             }
                             else
                             {
-                                GameManager.Instance.dialogueManager.StartTalk(transitionHook.blockedTalk, GameManager.Instance.transform, 5.625f);
+                                //feedback de non chagement de zone bloqué par ennemi !
                             }
                         }
                         else
                         {
-                            //feedback de non chagement de zone bloqué par ennemi !
+                            Debug.LogWarning("The transition hook : " + transitionHook.hook.gameObject.name + " leads to an unfinished or inexistant zone");
                         }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("The transition hook : " + transitionHook.hook.gameObject.name + " leads to an unfinished or inexistant zone");
                     }
                 }
             }
@@ -207,6 +211,7 @@ public class TransitionManager : MonoBehaviour
         isTransitionning = false;
         StartCoroutine(startHook.BlinkReaction(true));
         currentPlayerRendererO.SetActive(true);
+        GameManager.Instance.playerManager.animSynchronizer.Synchronize();
         blackScreen.SetActive(false);
 
         StartCoroutine(GameManager.Instance.DisplayZoneName());

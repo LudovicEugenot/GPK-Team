@@ -45,24 +45,28 @@ public class SoloTalk : MonoBehaviour
                     interactionIndicator.SetActive(true);
                 }
 
-                if (((Input.GetButtonDown("Blink") && manualTrigger) && PlayerManager.CanInteract()) && !GameManager.Instance.dialogueManager.isTalking || autoTrigger)
+                if(PlayerManager.CanInteract())
                 {
-                    if (GameManager.Instance.usePlaytestRecord && interactionIndicator == null)
-                    {
-                        PlayTestRecorder.currentZoneRecord.loreHolderInteracted.Add(gameObject.name);
-                    }
+                    PlayerManager.DisplayIndicator();
 
-                    if (isCommentary)
+                    if (((Input.GetButtonDown("Blink") && manualTrigger) && PlayerManager.IsMouseNearPlayer()) && !GameManager.Instance.dialogueManager.isTalking || autoTrigger)
                     {
-                        GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
-                    }
-                    else
-                    {
-                        GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
-                    }
-                    talkStarted = true;
-                    autoTrigger = false;
+                        if (GameManager.Instance.usePlaytestRecord && interactionIndicator == null)
+                        {
+                            PlayTestRecorder.currentZoneRecord.loreHolderInteracted.Add(gameObject.name);
+                        }
 
+                        if (isCommentary)
+                        {
+                            GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
+                        }
+                        else
+                        {
+                            GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                        }
+                        talkStarted = true;
+                        autoTrigger = false;
+                    }
                 }
             }
             else

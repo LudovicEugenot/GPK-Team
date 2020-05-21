@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public string zoneName;
     public GameObject zoneNameO;
     public int recolorHealthHealed;
+    public int beatBeforeCombatStart;
     public float zoneNameDisplaySpeed;
     public float zoneNameDisplayTime;
     [HideInInspector] public Camera mainCamera;
@@ -56,6 +57,9 @@ public class GameManager : MonoBehaviour
     private float masterVolume;
     private float musicVolume;
     private float soundEffectsVolume;
+
+    private int beatRemainingBeforeCombatStart;
+    private bool enemyPaused;
 
     #endregion
 
@@ -107,6 +111,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        beatRemainingBeforeCombatStart = beatBeforeCombatStart;
         zoneNameTransform = zoneNameO.GetComponent<RectTransform>();
         initialZoneNamePos = zoneNameTransform.anchoredPosition;
         zoneNameO.SetActive(false);
@@ -178,6 +183,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateCombatStart();
+
         if(Input.GetKeyDown(KeyCode.M))
         {
             //do whatever
@@ -200,6 +207,23 @@ public class GameManager : MonoBehaviour
             {
                 Pause();
             }
+        }
+    }
+
+    private void UpdateCombatStart()
+    {
+        if (beatRemainingBeforeCombatStart > 0)
+        {
+            if(!enemyPaused)
+                PauseEnemyBehaviour();
+            if (Beat.onBeatSingleFrame)
+            {
+                beatRemainingBeforeCombatStart--;
+            }
+        }
+        else if(enemyPaused)
+        {
+            UnpauseEnemyBehaviour();
         }
     }
 
@@ -331,9 +355,9 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-
     public void PauseEnemyBehaviour()
     {
+        enemyPaused = true;
         foreach(EnemyBase enemy in zoneEnemies)
         {
             enemy.enabled = false;
@@ -342,6 +366,7 @@ public class GameManager : MonoBehaviour
 
     public void UnpauseEnemyBehaviour()
     {
+        enemyPaused = false;
         foreach (EnemyBase enemy in zoneEnemies)
         {
             enemy.enabled = true;

@@ -213,8 +213,6 @@ public abstract class EnemyBase : MonoBehaviour
     private void Start()
     {
         activated = true; ///////////////////
-        triggered = false;
-        converted = false;
         player = GameManager.Instance.player.transform;
 
         currentBehaviour = nullBehaviour;
@@ -512,7 +510,10 @@ public abstract class EnemyBase : MonoBehaviour
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
-        animator.SetTrigger("Conversion");
+        if(animator != null)
+        {
+            animator.SetTrigger("Conversion");
+        }
 
         if(!initialize)
         {
