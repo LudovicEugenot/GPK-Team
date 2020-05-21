@@ -213,8 +213,6 @@ public abstract class EnemyBase : MonoBehaviour
     private void Start()
     {
         activated = true; ///////////////////
-        triggered = false;
-        converted = false;
         player = GameManager.Instance.player.transform;
 
         currentBehaviour = nullBehaviour;
