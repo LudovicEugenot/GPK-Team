@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -443,6 +443,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookToInteract: {fileID: 1903480308}
+  triggeredTalk:
+    pnjName: Clarinetto
+    pitch: 2
+    sentences:
+    - Nous venons d'activer le premier Grand Instrument!
+    - "Il y en a deux autres cach\xE9s dans le monde. Retrouvons-les, et le monde
+      reprendra sa couleur!"
+  timeBeforeTalk: 2
   triggeredEvent: 5
   isRelived: 0
 --- !u!212 &415111838
@@ -1114,7 +1122,6 @@ Transform:
   - {fileID: 153799171}
   - {fileID: 558269679}
   - {fileID: 1955677135}
-  - {fileID: 1976290125}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1143,7 +1150,7 @@ PrefabInstance:
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
       propertyPath: commentary.sentences.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
@@ -1190,6 +1197,11 @@ PrefabInstance:
         type: 3}
       propertyPath: manualTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
+        type: 3}
+      propertyPath: commentary.pitch
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670629, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
@@ -1699,7 +1711,7 @@ PrefabInstance:
         type: 3}
       propertyPath: musicSO
       value: 
-      objectReference: {fileID: 11400000, guid: 7b1b060d2827f624482159bc884d659c,
+      objectReference: {fileID: 11400000, guid: 2c51e6ab037bd9f489ac94ee29bb1217,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25034624d0a6cb942b829e19fc2c8444, type: 3}
@@ -2313,96 +2325,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4788072604953352801, guid: 496ffa6e7d4717f4ba0aecc5b688735a,
     type: 3}
   m_PrefabInstance: {fileID: 1965531941}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1976290124
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1009339122}
-    m_Modifications:
-    - target: {fileID: 6331541457753289560, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.49902773
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.4804999
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289563, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: hookToInteract
-      value: 
-      objectReference: {fileID: 1903480308}
-    - target: {fileID: 6331541457753289563, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: triggeredEvent
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6331541457753289567, guid: 509b1a3679ab3a24895e403ed4b95810,
-        type: 3}
-      propertyPath: m_Name
-      value: GreatInstrument
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 509b1a3679ab3a24895e403ed4b95810, type: 3}
---- !u!4 &1976290125 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6331541457753289561, guid: 509b1a3679ab3a24895e403ed4b95810,
-    type: 3}
-  m_PrefabInstance: {fileID: 1976290124}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2017232835
 GameObject:

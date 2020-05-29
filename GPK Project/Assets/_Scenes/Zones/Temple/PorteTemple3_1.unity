@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1455,12 +1455,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.78
+      value: -0.83
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.25
+      value: -2.97
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -1611,12 +1611,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.92
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.31
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -2290,6 +2290,122 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1512432607
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7455097385950635199}
+    m_Modifications:
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: commentary.sentences.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: commentary.sentences.Array.data[0]
+      value: Cette porte est massive...
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: nearbyHook
+      value: 
+      objectReference: {fileID: 2076097582}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: camZoom
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: autoTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: interactionIndicator
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: commentary.sentences.Array.data[1]
+      value: "Nous n'arriverons jamais \xE0 la bouger nous-m\xEAme. Il doit y avoir
+        un autre m\xE9canisme..."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: commentary.sentences.Array.data[2]
+      value: Revenons plus tard!
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152135, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: m_Name
+      value: DialogueInterruption
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42a8ce6d2ed85d44db8bc307c140af16, type: 3}
+--- !u!4 &1512432608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+    type: 3}
+  m_PrefabInstance: {fileID: 1512432607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1718574389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2547,352 +2663,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &1791075203
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 7455097385583385970}
-    m_Modifications:
-    - target: {fileID: 1604544358366920508, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 1604544358366920508, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.56
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.0000012964009
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -180.00002
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709868, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].sentences.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.sentences.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.sentences.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].requiredEvents.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].compromisingEvents.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].requiredEvents.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.sentences.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.sentences.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].sentences.Array.data[0]
-      value: Je suis le gardien du temple et j'attend d'avoir le retse de mes dialogues
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogueBoxO
-      value: 
-      objectReference: {fileID: 7455097385664484903}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: hookToTalk
-      value: 
-      objectReference: {fileID: 1490436056}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[0]
-      value: Cette porte est massive...
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[1]
-      value: "Nous n'arriverons jamais \xE0 la bouger."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[2]
-      value: "Il faudra revenir une fois le m\xE9chanisme activ\xE9!"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[3]
-      value: "Tu n'as rien \xE0 faire ici tant que le vent ne portera pas la musique
-        de Ceux qui sont cach\xE9s. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].triggeredEvent
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].progressionNeeded
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[0]
-      value: Encore toi?
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[1]
-      value: "Tu n'as rien \xE0 faire ici tant que le vent ne portera pas la musique
-        de Ceux qui sont cach\xE9s. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[2]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[3]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].triggeredEvent
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].progressionNeeded
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].requiredEvents.Array.data[0]
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].compromisingEvents.Array.data[0]
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.pnjName
-      value: Clarinetto
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.pnjName
-      value: "Le Bris\xE9"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[1]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[2]
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].requiredEvents.Array.data[3]
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[4]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[4]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.pnjName
-      value: "Le Bris\xE9"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[0]
-      value: "Oh, toujours en couleur hein? Alors nous avons de la chance. \xC9coutes-nous."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[1]
-      value: "Tu vois cette porte? Elle ne s'ouvrira que lorsque l'h\xE9ritage du
-        Musicien r\xE9sonnera."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[2]
-      value: "Tu n'as rien \xE0 faire ici tant que le vent ne portera pas la musique
-        de Ceux qui sont cach\xE9s. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[3]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[4]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[2].progressionNeeded
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.pnjName
-      value: "Le Bris\xE9"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[0]
-      value: "Oh, toujours en couleur hein? Alors nous avons de la chance. \xC9coutes-nous."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[1]
-      value: "Tu vois cette porte? Elle ne s'ouvrira que lorsque l'h\xE9ritage du
-        Musicien r\xE9sonnera."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[2]
-      value: "Tu n'as rien \xE0 faire ici tant que le vent ne portera pas la musique
-        de Ceux qui sont cach\xE9s. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[3]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[4]
-      value: "Maintenant laisse le Bris\xE9 tranquille. Il surveille."
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[3].progressionNeeded
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].compromisingEvents.Array.data[1]
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: dialogues.Array.data[0].compromisingEvents.Array.data[2]
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584789732411709870, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-        type: 3}
-      propertyPath: m_Name
-      value: Clarinetto
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3f93ed76e58f4f448b8dd84c8ce94204, type: 3}
---- !u!4 &1791075204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4584789732411709867, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
-    type: 3}
-  m_PrefabInstance: {fileID: 1791075203}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1804024229 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4747918219657966855, guid: 4ccc10c0519f4b64e8a69c22063739db,
@@ -3167,12 +2937,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.42
+      value: 1.34
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.03
+      value: -1.15
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -3232,6 +3002,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2057639093}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2076097582 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4747918219657966855, guid: 4ccc10c0519f4b64e8a69c22063739db,
+    type: 3}
+  m_PrefabInstance: {fileID: 995475575}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2122605479
 GameObject:
   m_ObjectHideFlags: 0
@@ -4393,7 +4175,6 @@ Transform:
   - {fileID: 7455097384725974377}
   - {fileID: 7455097384810457481}
   - {fileID: 510901194}
-  - {fileID: 1791075204}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4594,6 +4375,7 @@ Transform:
   - {fileID: 7455097385973766202}
   - {fileID: 7455097386134955086}
   - {fileID: 7455097385470405282}
+  - {fileID: 1512432608}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
