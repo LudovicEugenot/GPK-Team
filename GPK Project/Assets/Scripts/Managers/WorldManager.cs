@@ -6,12 +6,12 @@ using UnityEngine;
 [System.Serializable]
 public static class WorldManager
 {
-    public enum StoryStep {Tutorial, GoingToVillage, ArrivedToVillage, VillageConverted, FirstInstrumentRelived, SpeakerObtained, SecondInstrumentRelived, AllInstrumentRelived, EnteredTemple, KeyObtained}
+    public enum StoryStep {Tutorial, GoingToVillage, ArrivedToVillage, VillageConverted, FirstInstrumentRelived, SpeakerObtained, SecondInstrumentRelived, AllInstrumentRelived, EnteredTemple, KeyObtained, EndGame}
 
     /// <summary>
     /// To add an event you need to open the WorldManager script and add a name to the enum list
     /// </summary>
-    public enum EventName {NullEvent, TambourRelived, ViolonRelived, FluteRelived, SaxophoneRelived, StringInstrumentRelived, RythmInstrumentRelived, VoiceInstrumentRelived, FirstDialogueOros, FirstDialogueBroken, FirstDialogueSinea, FirstOrosEncounter, SecondOrosDialogue, ThirdOrosDialogue, DialogueCocoa, DungeonKeyLoot} // Add an event in there
+    public enum EventName {NullEvent, TambourRelived, ViolonRelived, FluteRelived, SaxophoneRelived, StringInstrumentRelived, RythmInstrumentRelived, VoiceInstrumentRelived, FirstDialogueOros, FirstDialogueBroken, FirstDialogueSinea, FirstOrosEncounter, SecondOrosDialogue, ThirdOrosDialogue, DialogueCocoa, DungeonKeyLoot, BossBeaten, DoorOpened, LastDialogueBroken} // Add an event in there
 
     public static StoryStep currentStoryStep;
 

@@ -28,6 +28,7 @@ public class WorldEventUpdater : MonoBehaviour
         UpdateZoneDiscovery();
         CheckGreatInstrumentReliving();
         CheckKeyPossession();
+        CheckBossState();
     }
 
     private void ChechVillageReliving()
@@ -96,20 +97,22 @@ public class WorldEventUpdater : MonoBehaviour
 
     }
 
-
-    private void CheckKBossDefeated()
+    
+    // Check pour voir si le joueur a fini le jeu.
+    private void CheckBossState()
     {
-        if (WorldManager.GetWorldEvent(WorldManager.EventName.DungeonKeyLoot).occured)
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured)
         {
-            Debug.Log("La clé est récupérée");
+            Debug.Log("Le boss est vaincu!");
             if (!talkTriggered)
             {
                 talkTriggered = true;
             }
-            WorldManager.currentStoryStep = WorldManager.StoryStep.KeyObtained;
+            WorldManager.currentStoryStep = WorldManager.StoryStep.EndGame;
         }
-
     }
+    
+    
 
     private void UpdateZoneDiscovery()
     {
