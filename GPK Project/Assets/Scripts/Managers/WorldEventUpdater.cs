@@ -96,6 +96,21 @@ public class WorldEventUpdater : MonoBehaviour
 
     }
 
+
+    private void CheckKBossDefeated()
+    {
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.DungeonKeyLoot).occured)
+        {
+            Debug.Log("La clé est récupérée");
+            if (!talkTriggered)
+            {
+                talkTriggered = true;
+            }
+            WorldManager.currentStoryStep = WorldManager.StoryStep.KeyObtained;
+        }
+
+    }
+
     private void UpdateZoneDiscovery()
     {
         if (zoneNameUnknownUntilRecolor && !ZoneHandler.Instance.currentZone.isRelived)
