@@ -12,6 +12,10 @@ public class Range_Enemy : EnemyBase
     public BoxCollider2D barrierCollider;
     public LineRenderer beamLine;
     public float[] beamLineWidths;
+    public float spaceBetweenBeamFx;
+    public float beamStartDistance;
+    public Vector2 beamStartOffset;
+    public GameObject beamPartFx;
 
     public AnimationCurve knockbackCurve;
     public GameObject apparitionFx;
@@ -28,6 +32,7 @@ public class Range_Enemy : EnemyBase
     private bool moveFlag;
     private bool triggeredFlag;
     private SpriteRenderer spriteRenderer;
+    private List<GameObject> beamFxO = new List<GameObject>();
 
 
     private EnemyBehaviour[] passivePattern = new EnemyBehaviour[]
@@ -64,6 +69,15 @@ public class Range_Enemy : EnemyBase
 
     protected override void IdleBehaviour()
     {
+        for (int i = beamFxO.Count - 1; i >= 0; i--)
+        {
+            Destroy(beamFxO[i]);
+            beamFxO.RemoveAt(i);
+        }
+        beamFxO.Clear();
+
+
+        animator.SetInteger("BeamState", 0);
         barrierCollider.gameObject.SetActive(false);
         canBeDamaged = true;
         beamLine.enabled = false;
@@ -83,16 +97,17 @@ public class Range_Enemy : EnemyBase
 
     protected override void DefenseBehaviour()
     {
+        animator.SetInteger("BeamState", 1);
         barrierCollider.gameObject.SetActive(false);
         canBeDamaged = true;
-        Vector2 playerDirection = beamTarget - (Vector2)parent.position;
+        Vector2 playerDirection = beamTarget - ((Vector2)parent.position + beamStartOffset);
         playerDirection.Normalize();
-        parent.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, playerDirection));
+        //parent.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, playerDirection));
 
         beamLine.enabled = true;
         Vector3[] beamLinePos = new Vector3[2];
-        beamLinePos[0] = parent.position;
-        beamLinePos[1] = (Vector2)parent.position + playerDirection * barrierLength;
+        beamLinePos[0] = parent.position + (Vector3)beamStartOffset;
+        beamLinePos[1] = (Vector2)parent.position + beamStartOffset + playerDirection * barrierLength;
         beamLine.SetPositions(beamLinePos);
         beamLine.startWidth = beamLineWidths[0];
         beamLine.endWidth = beamLineWidths[0];
@@ -107,16 +122,36 @@ public class Range_Enemy : EnemyBase
 
     protected override void ActionBehaviour()
     {
+        animator.SetInteger("BeamState", 2);
         canBeDamaged = true;
-        Vector2 playerDirection = beamTarget - (Vector2)parent.position;
+        Vector2 playerDirection = beamTarget - ((Vector2)parent.position + beamStartOffset);
         playerDirection.Normalize();
-        beamLine.enabled = true;
+        beamLine.enabled = false;
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            beamFxO.Clear();
+            int laserFxNumber = Mathf.CeilToInt(barrierLength / spaceBetweenBeamFx);
+            GameObject laserFx = null;
+            for (int i = 0; i < laserFxNumber; i++)
+            {
+                if (i == 0)
+                {
+                    laserFx = beamPartFx;
+                }
+                else
+                {
+                    laserFx = beamPartFx;
+                }
+                beamFxO.Add(Instantiate(laserFx, (Vector2)transform.position + beamStartOffset + playerDirection * beamStartDistance + playerDirection * (i * spaceBetweenBeamFx), Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, playerDirection))));
+            }
+        }
+
         if(BeatManager.Instance.currentBeatProgression < beatProgressionForbeam)
         {
             beamLine.startWidth = beamLineWidths[1];
             beamLine.endWidth = beamLineWidths[1];
 
-            RaycastHit2D hit = Physics2D.Raycast(parent.position, playerDirection, 30, LayerMask.GetMask("Player"));
+            RaycastHit2D hit = Physics2D.Raycast(parent.position + (Vector3)beamStartOffset, playerDirection, barrierLength, LayerMask.GetMask("Player"));
             if(hit && !BeatManager.Instance.OnBeat(false, false, "__--__"))
             {
                 GameManager.Instance.playerManager.TakeDamage(2);
@@ -128,29 +163,40 @@ public class Range_Enemy : EnemyBase
             beamLine.endWidth = beamLineWidths[2];
             barrierCollider.gameObject.SetActive(true);
             barrierCollider.transform.localScale = new Vector2(barrierLength, 0.3f);
-            barrierCollider.transform.position = (Vector2)parent.position + playerDirection * barrierLength * 0.5f;
+            barrierCollider.transform.position = (Vector2)parent.position + beamStartOffset + playerDirection * barrierLength * 0.5f;
             barrierCollider.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, playerDirection));
         }
     }
 
     protected override void VulnerableBehaviour()
     {
-        Vector2 playerDirection = beamTarget - (Vector2)parent.position;
+        animator.SetInteger("BeamState", 2);
+        Vector2 playerDirection = beamTarget - ((Vector2)parent.position + beamStartOffset);
         playerDirection.Normalize();
         barrierCollider.gameObject.SetActive(true);
         barrierCollider.transform.localScale = new Vector2(barrierLength, 0.3f);
-        barrierCollider.transform.position = (Vector2)parent.position + playerDirection * barrierLength * 0.5f;
+        barrierCollider.transform.position = (Vector2)parent.position + beamStartOffset + playerDirection * barrierLength * 0.5f;
         barrierCollider.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, playerDirection));
 
         canBeDamaged = true;
-        beamLine.enabled = true;
+        beamLine.enabled = false;
         beamLine.startWidth = beamLineWidths[2];
         beamLine.endWidth = beamLineWidths[2];
+
+        if (BeatManager.Instance.onBeatSingleFrame)
+        {
+            int laserFxNumber = Mathf.CeilToInt(barrierLength / spaceBetweenBeamFx);
+            for (int i = 0; i < laserFxNumber; i++)
+            {
+                beamFxO[i].GetComponent<Animator>().SetTrigger("Barrier");
+            }
+        }
     }
 
     protected override void TriggeredBehaviour()
     {
-        if(triggeredFlag)
+        animator.SetInteger("BeamState", 0);
+        if (triggeredFlag)
         {
             triggeredFlag = false;
             Instantiate(disparitionFx, parent.position, Quaternion.identity);
@@ -199,6 +245,12 @@ public class Range_Enemy : EnemyBase
 
     protected override void OnConverted()
     {
+        for (int i = beamFxO.Count - 1; i >= 0; i--)
+        {
+            Destroy(beamFxO[i]);
+            beamFxO.RemoveAt(i);
+        }
+        beamFxO.Clear();
         beamLine.enabled = false;
         spriteRenderer.enabled = true;
         barrierCollider.gameObject.SetActive(false);

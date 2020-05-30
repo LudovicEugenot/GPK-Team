@@ -4,6 +4,7 @@ using UnityEngine;
 public class BeatManager : MonoBehaviour
 {
     #region Initialization
+    public int timingLinePointNumber;
     [HideInInspector] [Range(1, 400)] public float bpm;
     [Range(0f, 3f)] public float fadeOutTime = 0.3f;
     [Tooltip("L'intervalle de temps dont le joueur dispose pour effectuer son action et être en rythme.")]
@@ -59,6 +60,9 @@ public class BeatManager : MonoBehaviour
     [HideInInspector] public string currentMusicSOName;
 
     private float initialCameraSize;
+
+    private LineRenderer timingLine;
+    private Vector3[] timingLinePointPos;
     #endregion
 
     #region Singleton

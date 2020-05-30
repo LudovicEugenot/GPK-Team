@@ -11,6 +11,7 @@ public class NPCDialogue : MonoBehaviour
     public Dialogue[] dialogues;
 
     private Dialogue currentDialogue;
+    private bool inDialogue;
 
     void Start()
     {
@@ -37,9 +38,15 @@ public class NPCDialogue : MonoBehaviour
                 if (currentDialogue != null)
                 {
                     GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
-                    WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
+                    inDialogue = true;
                 }
             }
+        }
+
+        if(inDialogue && !GameManager.Instance.dialogueManager.isTalking)
+        {
+            inDialogue = false;
+            WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
         }
     }
 

@@ -47,13 +47,14 @@ public class GreatInstrument : MonoBehaviour
                 triggeredWorldEvent.occured = true;
                 animator.SetBool("Relive", true);
                 GameManager.playerAnimator.SetTrigger("Throw");
-                Invoke("StartTalk", timeBeforeTalk);
+                StartCoroutine(StartTalk());
             }
         }
     }
 
-    private void StartTalk()
+    private IEnumerator StartTalk()
     {
+        yield return new WaitForSeconds(timeBeforeTalk);
         if(triggeredTalk != null)
         {
             GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, transform, 4);

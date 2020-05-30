@@ -41,8 +41,10 @@ public class Blink : MonoBehaviour
     public float rangeBeatAmplitude;
     public GameObject rangePointPrefab;
     public Transform rangePointsParent;
+    public float originTimingRadiusMultiplier;
     [Space]
     public LineRenderer rangeLine;
+    public LineRenderer timingLine;
     public Animator animator;
     [Header("Sounds")]
     public AudioClip transitionBlinkSound;
@@ -74,6 +76,8 @@ public class Blink : MonoBehaviour
     private float currentRadius;
     private SpriteRenderer[] rangePoints;
     private Vector3[] circlePointPos;
+    private float currentTimingRadius;
+    private Vector3[] timingLinePointPos;
 
     private float lastSelectionTime;
     #endregion
@@ -132,12 +136,16 @@ public class Blink : MonoBehaviour
         }
         circlePointPos = new Vector3[rangePointNumber];
         rangeLine.enabled = false;
+
+        timingLinePointPos = new Vector3[rangePointNumber + 1];
+        timingLine.enabled = true;
     }
 
     private void DrawHookRange(float radius, Vector2 center)
     {
         rangeCenter = Vector2.Lerp(rangeCenter, center, rangeCenterLerpSpeed * Time.deltaTime);
         currentRadius += (radius - currentRadius) * rangeCenterLerpSpeed * Time.deltaTime;
+        currentTimingRadius = Mathf.Lerp(currentRadius * originTimingRadiusMultiplier, currentRadius, BeatManager.Instance.currentBeatProgression);
         if(BeatManager.Instance.onBeatSingleFrame)
         {
             currentRadius += rangeBeatAmplitude;
@@ -148,8 +156,9 @@ public class Blink : MonoBehaviour
             Vector2 pointDirection = new Vector2(Mathf.Cos(((2 * Mathf.PI) / (rangePointNumber)) * i), Mathf.Sin(((2 * Mathf.PI) / (rangePointNumber)) * i));
 
             circlePointPos[i] = (pointDirection * currentRadius) + rangeCenter;
+            timingLinePointPos[i] = (pointDirection * currentTimingRadius) + rangeCenter;
 
-            if(!ignoreObstacles)
+            if (!ignoreObstacles)
             {
                 RaycastHit2D hit = Physics2D.Raycast(rangeCenter, pointDirection, currentRadius, LayerMask.GetMask("Obstacle"));
 
@@ -165,15 +174,22 @@ public class Blink : MonoBehaviour
             {
                 rangePoints[i].transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, pointDirection));
             }
-
-            rangeLine.positionCount = rangePointNumber;
-            rangeLine.SetPositions(circlePointPos);
         }
+        rangeLine.positionCount = rangePointNumber;
+        rangeLine.SetPositions(circlePointPos);
+
+        timingLine.positionCount = rangePointNumber + 1;
+        timingLinePointPos[rangePointNumber] = timingLinePointPos[0];
+        timingLine.SetPositions(timingLinePointPos);
     }
 
     private void HookSelection()
     {
         worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        float mouseDirectionAngle = Vector2.SignedAngle(Vector2.right, worldMousePos - (Vector2)transform.position);
+        animator.SetFloat("BlinkDirection",  mouseDirectionAngle >= 0 ? mouseDirectionAngle : 360 + mouseDirectionAngle);
+
         Hook hoveredHook = null;
         Collider2D[] hookHover = Physics2D.OverlapPointAll(worldMousePos, LayerMask.GetMask("Hook","Speaker"));
         float minDistanceToHook = 10000f;
