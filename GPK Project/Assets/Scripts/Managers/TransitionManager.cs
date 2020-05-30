@@ -95,7 +95,7 @@ public class TransitionManager : MonoBehaviour
                                 }
                                 else
                                 {
-                                    GameManager.Instance.dialogueManager.StartTalk(transitionHook.blockedTalk, GameManager.Instance.transform, 5.625f);
+                                    GameManager.Instance.dialogueManager.StartTalk(transitionHook.blockedTalk, GameManager.Instance.transform.position, 5.625f);
                                 }
                             }
                             else

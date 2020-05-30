@@ -24,6 +24,7 @@ public abstract class Hook : MonoBehaviour
     [HideInInspector] public HookState hookState;
     protected AudioSource source;
     private LineRenderer trajectoryLine;
+    private ParticleSystem relivedEffect;
 
     #endregion
 
@@ -37,6 +38,11 @@ public abstract class Hook : MonoBehaviour
         source = GetComponent<AudioSource>();
         selected = false;
         selectable = true;
+        relivedEffect = GetComponentInChildren<ParticleSystem>();
+        if(relivedEffect != null)
+        {
+            relivedEffect.Stop();
+        }
         if(trajectoryLine != null)
         {
             trajectoryLine.enabled = false;
@@ -56,6 +62,8 @@ public abstract class Hook : MonoBehaviour
         if(hookState.relived)
         {
             Synch();
+            if(relivedEffect != null && !relivedEffect.isPlaying)
+                relivedEffect.Play();
         }
 
         if(drawTrajectoryLine)

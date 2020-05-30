@@ -221,8 +221,9 @@ public class GameManager : MonoBehaviour
                 beatRemainingBeforeCombatStart--;
             }
         }
-        else if(enemyPaused)
+        else if(beatRemainingBeforeCombatStart == 0 && enemyPaused)
         {
+            beatRemainingBeforeCombatStart = -1;
             UnpauseEnemyBehaviour();
         }
     }
@@ -361,6 +362,7 @@ public class GameManager : MonoBehaviour
         foreach(EnemyBase enemy in zoneEnemies)
         {
             enemy.enabled = false;
+            
         }
     }
 

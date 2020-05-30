@@ -35,7 +35,7 @@ public class SpeakerObtention : MonoBehaviour
         StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(GameManager.Instance.player.transform.position, 2, true));
         yield return new WaitForSeconds(2.0f);
         StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
-        GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, GameManager.Instance.player.transform, 3);
+        GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, GameManager.Instance.player.transform.position, 3);
         WorldManager.currentStoryStep = WorldManager.StoryStep.SpeakerObtained;
         spriteRenderer.enabled = false;
     }

@@ -16,16 +16,19 @@ public class Pnj : MonoBehaviour
 
     void Update()
     {
-        if(!relived && ZoneHandler.Instance.currentZone.isRelived)
+        if(ZoneHandler.Instance.zoneInitialized)
         {
-            relived = true;
-            animator.SetBool("Relive",true);
-            synchronizer.Synchronize();
-        }
-        else if(relived && !ZoneHandler.Instance.currentZone.isRelived)
-        {
-            relived = false;
-            animator.SetBool("Relive", false);
+            if (!relived && ZoneHandler.Instance.currentZone.isRelived)
+            {
+                relived = true;
+                animator.SetBool("Relive", true);
+                synchronizer.Synchronize();
+            }
+            else if (relived && !ZoneHandler.Instance.currentZone.isRelived)
+            {
+                relived = false;
+                animator.SetBool("Relive", false);
+            }
         }
     }
 }

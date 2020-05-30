@@ -105,10 +105,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1974562565
-  m_SortingLayer: -3
+  m_SortingLayer: -5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 69dd7fd6036220040bc55db96c58deef, type: 3}
-  m_Color: {r: 0.4811321, g: 0.02972528, b: 0.024964403, a: 1}
+  m_Sprite: {fileID: -2726917372203137437, guid: 9a9ae3a6a99bceb4eb90d67fada17001,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -348,6 +349,11 @@ MonoBehaviour:
   - 0.2
   - 1
   - 0.1
+  spaceBetweenBeamFx: 0.5
+  beamStartDistance: 0.5
+  beamStartOffset: {x: 0, y: 0.4}
+  beamPartFx: {fileID: 4411533182294592296, guid: a6aee092494bc0a4cbf66934304f6546,
+    type: 3}
   knockbackCurve:
     serializedVersion: 2
     m_Curve:
@@ -471,7 +477,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5986888591302377922}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

@@ -44,7 +44,7 @@ public class DialogueManager : MonoBehaviour
         interactPressed = Input.GetButton("Blink");
     }
 
-    public void StartTalk(Talk dialogue, Transform camFocusPoint, float zoom)
+    public void StartTalk(Talk dialogue, Vector2 camFocusPoint, float zoom)
     {
         if(!isTalking)
         {
@@ -55,7 +55,7 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text = "";
             pnjNameText.text = dialogue.pnjName;
             currentDialogue = dialogue;
-            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint.position, zoom, false));
+            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(camFocusPoint, zoom, false));
             GameManager.Instance.playerManager.isInControl = false;
             GameManager.Instance.PauseEnemyBehaviour();
             isCommentary = false;

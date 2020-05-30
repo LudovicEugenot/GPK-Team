@@ -34,13 +34,15 @@ public class ActivableObstacle : SwitchElement
         if (active && obstacleCollider.enabled == false)
         {
             obstacleCollider.enabled = true;
-            source.PlayOneShot(upSound);
+            if (upSound != null)
+                source.PlayOneShot(upSound);
         }
 
         if(!active && obstacleCollider.enabled == true)
         {
             obstacleCollider.enabled = false;
-            source.PlayOneShot(downSound);
+            if(downSound != null)
+                source.PlayOneShot(downSound);
         }
     }
 }
