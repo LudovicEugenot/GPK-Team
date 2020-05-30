@@ -27,6 +27,7 @@ public class WorldEventUpdater : MonoBehaviour
         CheckVillageArrival();
         UpdateZoneDiscovery();
         CheckGreatInstrumentReliving();
+        CheckKeyPossession();
     }
 
     private void ChechVillageReliving()
@@ -79,6 +80,20 @@ public class WorldEventUpdater : MonoBehaviour
             }
             WorldManager.currentStoryStep = WorldManager.StoryStep.AllInstrumentRelived;
         }
+    }
+
+    private void CheckKeyPossession()
+    {
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.DungeonKeyLoot).occured)
+        {
+            Debug.Log("La clé est récupérée");
+            if (!talkTriggered)
+            {
+                talkTriggered = true;
+            }
+            WorldManager.currentStoryStep = WorldManager.StoryStep.KeyObtained;
+        }
+
     }
 
     private void UpdateZoneDiscovery()
