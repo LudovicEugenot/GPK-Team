@@ -12,8 +12,11 @@ public class GreatInstrument : MonoBehaviour
     [HideInInspector] public bool isRelived;
     private WorldManager.WorldEvent triggeredWorldEvent;
     private Animator animator;
+    private AnimSynchronizer synchronizer;
+
     void Start()
     {
+        synchronizer = GetComponent<AnimSynchronizer>();
         ZoneHandler.Instance.reliveRemotlyChanged = true;
         animator = GetComponent<Animator>();
         triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
@@ -57,7 +60,8 @@ public class GreatInstrument : MonoBehaviour
         yield return new WaitForSeconds(timeBeforeTalk);
         if(triggeredTalk != null)
         {
-            GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, transform, 4);
+            synchronizer.Synchronize();
+            GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, Vector2.zero, 5.5f);
         }
     }
 }

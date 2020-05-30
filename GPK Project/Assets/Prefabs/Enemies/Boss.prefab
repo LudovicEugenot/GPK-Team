@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4582987142592745049}
   - component: {fileID: 4582987142592745050}
   - component: {fileID: 4582987142592745061}
+  - component: {fileID: 2058695236484152087}
   m_Layer: 16
   m_Name: Boss
   m_TagString: Untagged
@@ -48,14 +49,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstTalk:
     pnjName: "Fr\xE8re Sourd"
+    pitch: 0.5
     sentences:
-    - Je ne te laisserai gacher le travaille de ma vie !!
-    - "Je vais t'\xE9craser"
+    - ...
+    - QUI VA LA?
+    - ...
+    - DONNE LA MOI... CETTE CHOSE... TA COULEUR...
+    - POUR UN MONDE QUE JE GOUVERNE...
+    - MON REGNE ETERNEL SOUS UN SILENCE IMPLACABLE!
   bubbleExplanation:
     pnjName: Clarinetto
+    pitch: 2
     sentences:
-    - "On dirait que ces bulles d\xE9colorent la salle !"
-    - Essaye de les convertir en les attaquant la prochaine fois !
+    - "On dirait que ces bulles d\xE9colorent la salle!"
+    - Essaye de les convertir en les attaquant la prochaine fois!
+    - Nous allons les utiliser contre lui!
   bossPhases:
   - sameActionTwicePossible: 0
     allDifferentAOE:
@@ -70,8 +78,14 @@ MonoBehaviour:
     numberOfBubblesNeededToRecolorEverything: 3
     endPhaseTalk:
       pnjName: "Fr\xE8re Sourd"
+      pitch: 1
       sentences:
       - "Youpi je passe \xE0 la phase 2 !"
+    hooksDestroyedEndOfPhase:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     endingPhaseAnimation: {fileID: 7400000, guid: 3c242ec02b2da7d4eb195607ca13f0fe,
       type: 2}
   - sameActionTwicePossible: 1
@@ -87,14 +101,20 @@ MonoBehaviour:
     numberOfBubblesNeededToRecolorEverything: 6
     endPhaseTalk:
       pnjName: "Fr\xE8re Sourd"
+      pitch: 1
       sentences:
       - "AHHHHHHH ! NOOON je peux entendre \xE0 nouveau ! Comment est ce possible
         ?!"
       - "Je ne pensais pas pouvoir \xE9couter \xE0 ouveau des bruits un jour !"
       - "Merci petit cam\xE9l\xE9on"
+    hooksDestroyedEndOfPhase: []
     endingPhaseAnimation: {fileID: 7400000, guid: 70c8871af5a543c49a92c297e4a755f3,
       type: 2}
   hookToMoveTo: {fileID: 0}
+  destroyHookEffect: {fileID: 4352192276830429262, guid: 8471d5b76c91b2a49a3aa5392da25ebf,
+    type: 3}
+  hookDestructionSound: {fileID: 8300000, guid: d5a12afe6aa90254598ca0f4393f1e7b,
+    type: 3}
 --- !u!212 &4582987142592745049
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -191,3 +211,99 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!82 &2058695236484152087
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4582987142592745054}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

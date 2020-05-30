@@ -37,7 +37,7 @@ public class NPCDialogue : MonoBehaviour
                 currentDialogue = GetValidDialogue();
                 if (currentDialogue != null)
                 {
-                    GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
+                    GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos.position, cinematicLookZoom);
                     inDialogue = true;
                 }
             }

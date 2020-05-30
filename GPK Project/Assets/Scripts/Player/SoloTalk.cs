@@ -45,11 +45,11 @@ public class SoloTalk : MonoBehaviour
                     interactionIndicator.SetActive(true);
                 }
 
-                if(PlayerManager.CanInteract())
+                if(PlayerManager.CanInteract() || autoTrigger)
                 {
                     PlayerManager.DisplayIndicator();
 
-                    if (((Input.GetButtonDown("Blink") && manualTrigger) && PlayerManager.IsMouseNearPlayer()) && !GameManager.Instance.dialogueManager.isTalking || autoTrigger)
+                    if (((Input.GetButtonDown("Blink") && manualTrigger && PlayerManager.IsMouseNearPlayer()) || autoTrigger) && !GameManager.Instance.dialogueManager.isTalking)
                     {
                         if (GameManager.Instance.usePlaytestRecord && interactionIndicator == null)
                         {
@@ -62,7 +62,7 @@ public class SoloTalk : MonoBehaviour
                         }
                         else
                         {
-                            GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                            GameManager.Instance.dialogueManager.StartTalk(commentary, transform.position, camZoom);
                         }
                         talkStarted = true;
                         autoTrigger = false;
@@ -86,7 +86,7 @@ public class SoloTalk : MonoBehaviour
         {
             if (previousTalk.talkStarted && waitingForPreviousTalk && !GameManager.Instance.dialogueManager.isTalking)
             {
-                GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                GameManager.Instance.dialogueManager.StartTalk(commentary, transform.position, camZoom);
                 waitingForPreviousTalk = false;
             }
         }

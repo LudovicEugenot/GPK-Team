@@ -185,7 +185,7 @@ public class Blink : MonoBehaviour
 
     private void HookSelection()
     {
-        worldMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        worldMousePos = GameManager.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
         float mouseDirectionAngle = Vector2.SignedAngle(Vector2.right, worldMousePos - (Vector2)transform.position);
         animator.SetFloat("BlinkDirection",  mouseDirectionAngle >= 0 ? mouseDirectionAngle : 360 + mouseDirectionAngle);
