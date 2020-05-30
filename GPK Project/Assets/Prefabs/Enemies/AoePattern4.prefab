@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7929741221164758368
+--- !u!1 &5256990498901355196
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7929741221164758369}
-  m_Layer: 0
-  m_Name: Aoe3Pos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7929741221164758369
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929741221164758368}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.99, y: -0.15, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7929741222714598355}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7929741221404873657
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7929741221404873654}
+  - component: {fileID: 5256990498901355187}
   m_Layer: 0
   m_Name: Aoe2Pos
   m_TagString: Untagged
@@ -46,21 +16,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7929741221404873654
+--- !u!4 &5256990498901355187
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929741221404873657}
+  m_GameObject: {fileID: 5256990498901355196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.98, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7929741222714598355}
+  m_Father: {fileID: 5256990500747909846}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7929741222714598357
+--- !u!1 &5256990499063876709
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,40 +38,100 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7929741222714598355}
-  - component: {fileID: 7929741222714598354}
-  - component: {fileID: -387307633166494735}
+  - component: {fileID: 5256990499063876708}
   m_Layer: 0
-  m_Name: AoePattern1
+  m_Name: Aoe3Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7929741222714598355
+--- !u!4 &5256990499063876708
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929741222714598357}
+  m_GameObject: {fileID: 5256990499063876709}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.99, y: -0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5256990500747909846}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5256990500466883778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5256990500466883777}
+  m_Layer: 0
+  m_Name: Aoe1Pos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5256990500466883777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256990500466883778}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.04, y: -1.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5256990500747909846}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5256990500747909840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5256990500747909846}
+  - component: {fileID: 5256990500747909847}
+  - component: {fileID: 6654223907497847540}
+  m_Layer: 0
+  m_Name: AoePattern4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5256990500747909846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256990500747909840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7929741223104611780}
-  - {fileID: 7929741221404873654}
-  - {fileID: 7929741221164758369}
+  - {fileID: 5256990500466883777}
+  - {fileID: 5256990498901355187}
+  - {fileID: 5256990499063876708}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7929741222714598354
+--- !u!114 &5256990500747909847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929741222714598357}
+  m_GameObject: {fileID: 5256990500747909840}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40514d70a28a4a74eafae27451cc1f28, type: 3}
@@ -109,22 +139,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTesting: 0
   patternAoes:
-  - spawnPosition: {fileID: 7929741223104611780}
+  - spawnPosition: {fileID: 5256990500466883777}
     position: {x: 0.04, y: -1.8}
     beatTimeBeforeNextAOE: 4
     damage: 1
     radius: 2.06
     warningBeatTime: 3
-  - spawnPosition: {fileID: 7929741221404873654}
+  - spawnPosition: {fileID: 5256990498901355187}
     position: {x: -4.98, y: -0.2}
     beatTimeBeforeNextAOE: 0
     damage: 1
     radius: 3.5
     warningBeatTime: 4
-  - spawnPosition: {fileID: 7929741221164758369}
+  - spawnPosition: {fileID: 5256990499063876708}
+    position: {x: 4.99, y: -0.15}
+    beatTimeBeforeNextAOE: 4
+    damage: 1
+    radius: 3.5
+    warningBeatTime: 4
+  - spawnPosition: {fileID: 5256990500466883777}
+    position: {x: 0.04, y: -1.8}
+    beatTimeBeforeNextAOE: 4
+    damage: 2
+    radius: 3.5
+    warningBeatTime: 4
+  - spawnPosition: {fileID: 5256990498901355187}
+    position: {x: -4.98, y: -0.2}
+    beatTimeBeforeNextAOE: 0
+    damage: 2
+    radius: 3.5
+    warningBeatTime: 4
+  - spawnPosition: {fileID: 5256990499063876708}
     position: {x: 4.99, y: -0.15}
     beatTimeBeforeNextAOE: 6
-    damage: 1
+    damage: 2
     radius: 3.5
     warningBeatTime: 4
   warningZonePrefab: {fileID: 3856039389742450725, guid: 32e3e65ff3aa71742a82a31aa5aa308a,
@@ -133,13 +181,13 @@ MonoBehaviour:
   aoeSound: {fileID: 8300000, guid: d5a12afe6aa90254598ca0f4393f1e7b, type: 3}
   warningSound: {fileID: 8300000, guid: 5b3e8d27e8ce3c14cb6ebb43955ad47b, type: 3}
   warningSoundOffset: 2
---- !u!82 &-387307633166494735
+--- !u!82 &6654223907497847540
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929741222714598357}
+  m_GameObject: {fileID: 5256990500747909840}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5252602945293585120, guid: 5b672f6cc4e102c4dad0dffd05495290,
@@ -230,33 +278,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &7929741223104611783
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7929741223104611780}
-  m_Layer: 0
-  m_Name: Aoe1Pos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7929741223104611780
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7929741223104611783}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: -1.8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7929741222714598355}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
