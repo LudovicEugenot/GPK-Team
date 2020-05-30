@@ -28,6 +28,7 @@ public class WorldEventUpdater : MonoBehaviour
         UpdateZoneDiscovery();
         CheckGreatInstrumentReliving();
         CheckKeyPossession();
+        CheckBossState();
     }
 
     private void ChechVillageReliving()
@@ -95,6 +96,23 @@ public class WorldEventUpdater : MonoBehaviour
         }
 
     }
+
+    
+    // Check pour voir si le joueur a fini le jeu.
+    private void CheckBossState()
+    {
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured)
+        {
+            Debug.Log("Le boss est vaincu!");
+            if (!talkTriggered)
+            {
+                talkTriggered = true;
+            }
+            WorldManager.currentStoryStep = WorldManager.StoryStep.EndGame;
+        }
+    }
+    
+    
 
     private void UpdateZoneDiscovery()
     {
