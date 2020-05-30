@@ -57,35 +57,34 @@ public class ZoneHandler : MonoBehaviour
 
     private void UpdateRelive()
     {
-        int hooksRelived = 0;
-        if(!currentZone.isRelived)
-        {
-            bool zoneRelived = true;
-            foreach(HookState zoneHook in currentZone.zoneHooks)
-            {
-                if(!zoneHook.relived)
-                {
-                    zoneRelived = false;
-                }
-                else
-                {
-                    hooksRelived++;
-                }
-            }
-
-            if(zoneRelived)
-            {
-                currentZone.isRelived = true;
-                StartCoroutine(RecolorEffect());
-            }
-        }
-        else
-        {
-            hooksRelived = currentZone.zoneHooks.Count;
-        }
-
         if(!reliveRemotlyChanged/* && !isAnimatingRecolor*/)
         {
+            int hooksRelived = 0;
+            if (!currentZone.isRelived)
+            {
+                bool zoneRelived = true;
+                foreach (HookState zoneHook in currentZone.zoneHooks)
+                {
+                    if (!zoneHook.relived)
+                    {
+                        zoneRelived = false;
+                    }
+                    else
+                    {
+                        hooksRelived++;
+                    }
+                }
+
+                if (zoneRelived)
+                {
+                    currentZone.isRelived = true;
+                    StartCoroutine(RecolorEffect());
+                }
+            }
+            else
+            {
+                hooksRelived = currentZone.zoneHooks.Count;
+            }
             currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
         }
     }

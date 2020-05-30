@@ -33,10 +33,12 @@ public class GreatInstrument : MonoBehaviour
         if(isRelived)
         {
             ZoneHandler.Instance.currentReliveProgression = 1;
+            ZoneHandler.Instance.currentZone.isRelived = true;
         }
         else
         {
             ZoneHandler.Instance.currentReliveProgression = 0;
+            ZoneHandler.Instance.currentZone.isRelived = false;
             ZoneHandler.Instance.reliveRemotlyChanged = true;
         }
 
