@@ -11,6 +11,7 @@ public class Boss : MonoBehaviour
     public Talk firstTalk;
     public Talk bubbleExplanation;
     public BossPhase[] bossPhases;
+    public WorldManager.EventName triggeredEventWhenDefeated;
     public Hook hookToMoveTo;
     public GameObject destroyHookEffect;
     public AudioClip hookDestructionSound;
@@ -30,6 +31,7 @@ public class Boss : MonoBehaviour
     private int lastAttackIndex;
     private int lastBubbleIndex;
 
+    private WorldManager.WorldEvent triggeredWolrdEventWhenDefeated;
     private Animator animator;
     private bool init;
     private AudioSource source;
@@ -38,6 +40,7 @@ public class Boss : MonoBehaviour
 
     private void Start()
     {
+        triggeredWolrdEventWhenDefeated = WorldManager.GetWorldEvent(triggeredEventWhenDefeated);
         source = GetComponent<AudioSource>();
         isPassive = true;
         animator = GetComponent<Animator>();
@@ -208,10 +211,10 @@ public class Boss : MonoBehaviour
 
     private IEnumerator EndBoss()
     {
+        triggeredWolrdEventWhenDefeated.occured = true;
         Debug.Log("Bravo, tu as ramené la couleur dans le monde !");
         yield return new WaitForSeconds(2.0f);
         ZoneHandler.Instance.reliveRemotlyChanged = false;
-        StartCoroutine(GameManager.Instance.AndBackToMainMenu());
     }
 
     private IEnumerator Transition()

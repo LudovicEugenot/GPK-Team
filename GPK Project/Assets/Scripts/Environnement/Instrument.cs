@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Instrument : SwitchElement
 {
+    private AnimSynchronizer synchronizer;
+
     void Start()
     {
         HandlerStart();
         ZoneHandler.Instance.reliveRemotlyChanged = true;
+        synchronizer = GetComponent<AnimSynchronizer>();
     }
 
     void Update()
@@ -22,6 +25,7 @@ public class Instrument : SwitchElement
         animator.SetBool("Relived", active);
         if(active)
         {
+            synchronizer.Synchronize();
             ZoneHandler.Instance.currentReliveProgression = 1;
             ZoneHandler.Instance.currentZone.isRelived = true;
             foreach(HookState hook in GameManager.Instance.zoneHooks)
@@ -32,6 +36,7 @@ public class Instrument : SwitchElement
         else
         {
             ZoneHandler.Instance.currentReliveProgression = 0;
+            ZoneHandler.Instance.currentZone.isRelived = false;
         }
     }
 }

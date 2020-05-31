@@ -41,7 +41,7 @@ public abstract class Hook : MonoBehaviour
         relivedEffect = GetComponentInChildren<ParticleSystem>();
         if(relivedEffect != null)
         {
-            relivedEffect.Stop();
+            relivedEffect.Play();
         }
         if(trajectoryLine != null)
         {
@@ -62,8 +62,8 @@ public abstract class Hook : MonoBehaviour
         if(hookState.relived)
         {
             Synch();
-            if(relivedEffect != null && !relivedEffect.isPlaying)
-                relivedEffect.Play();
+            if(relivedEffect != null && relivedEffect.isPlaying)
+                relivedEffect.Stop();
         }
 
         if(drawTrajectoryLine)

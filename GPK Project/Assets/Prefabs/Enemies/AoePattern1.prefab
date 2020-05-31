@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7929741221164758368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.81, y: -3.54, z: 0}
+  m_LocalPosition: {x: 4.99, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7929741222714598355}
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7929741221404873657}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.14, y: 0.64, z: 0}
+  m_LocalPosition: {x: -4.98, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7929741222714598355}
@@ -110,23 +110,23 @@ MonoBehaviour:
   isTesting: 0
   patternAoes:
   - spawnPosition: {fileID: 7929741223104611780}
-    position: {x: -4.48, y: 0.2}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
+    position: {x: 0.04, y: -1.8}
+    beatTimeBeforeNextAOE: 4
+    damage: 1
     radius: 2.06
-    warningBeatTime: 2
+    warningBeatTime: 3
   - spawnPosition: {fileID: 7929741221404873654}
-    position: {x: -2.14, y: 0.64}
-    beatTimeBeforeNextAOE: 2
-    damage: 2
-    radius: 3.14
-    warningBeatTime: 2
+    position: {x: -4.98, y: -0.2}
+    beatTimeBeforeNextAOE: 0
+    damage: 1
+    radius: 3.5
+    warningBeatTime: 4
   - spawnPosition: {fileID: 7929741221164758369}
-    position: {x: 0.81, y: -3.54}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 3.55
-    warningBeatTime: 1
+    position: {x: 4.99, y: -0.15}
+    beatTimeBeforeNextAOE: 6
+    damage: 1
+    radius: 3.5
+    warningBeatTime: 4
   warningZonePrefab: {fileID: 3856039389742450725, guid: 32e3e65ff3aa71742a82a31aa5aa308a,
     type: 3}
   aoeFx: {fileID: 3979257338722313630, guid: 4606c8d8d066b834e876f0a8b8576efe, type: 3}
@@ -254,7 +254,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7929741223104611783}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.48, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0.04, y: -1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7929741222714598355}

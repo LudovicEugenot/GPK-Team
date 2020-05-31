@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Music1
   m_EditorClassIdentifier: Assembly-CSharp::MusicSO
   calmLoop: {fileID: 8300000, guid: ebd7c83b43800fa459628dbc951df40b, type: 3}
-  calmMusicStartTimeOffset: 0
+  calmMusicStartTimeOffset: 0.5
   numberOfBeatsUntilLoop: 80
   beatsToInsertCalmMusic: 00000000
   combatLoop:
@@ -23,25 +23,25 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cd89d18827872274185fe839aa58e452, type: 3}
   - {fileID: 8300000, guid: 8da897b8228ab6e488863ba22a879b93, type: 3}
   combatMusicStartTimeOffset:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
   drops:
   - {fileID: 8300000, guid: fc27195af28e152439037153a6ea1224, type: 3}
   - {fileID: 8300000, guid: 86880714c78963c4cafa1f62ffb2e359, type: 3}
   dropMusicStartTimeOffset:
-  - 0
-  - 0
+  - 0.5
+  - 0.5
   breaks:
   - {fileID: 8300000, guid: 0cc5823732df00e4bba8da47ff7a7604, type: 3}
   - {fileID: 8300000, guid: f1db933f35a6afc4f8e245f91d2a64c7, type: 3}
   breakMusicStartTimeOffset:
-  - 0
-  - 0
+  - 0.5
+  - 0.5
   bpm: 70
-  generalStartTimeOffset: 0.5
+  generalStartTimeOffset: 0
   canSwitchOnBeat2: 0
   timingThreshold: 0.2
   timingThresholdOffset: 0

@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4558557340926479714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.562998, y: -11.284981, z: 0}
+  m_LocalPosition: {x: -3.38, y: 1.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4558557340846844787}
@@ -191,37 +191,37 @@ MonoBehaviour:
     beatTimeBeforeNextAOE: 0
     damage: 2
     radius: 2.5
-    warningBeatTime: 1
+    warningBeatTime: 2
   - spawnPosition: {fileID: 5858943556608007502}
     position: {x: -2.672998, y: -14.839981}
     beatTimeBeforeNextAOE: 2
     damage: 2
     radius: 2.5
-    warningBeatTime: 1
+    warningBeatTime: 2
   - spawnPosition: {fileID: 4558557340601474006}
     position: {x: -6.422998, y: -10.606981}
     beatTimeBeforeNextAOE: 0
     damage: 2
     radius: 2.5
-    warningBeatTime: 1
+    warningBeatTime: 2
   - spawnPosition: {fileID: 5858943556154663439}
     position: {x: -6.422998, y: -14.824981}
     beatTimeBeforeNextAOE: 2
     damage: 2
     radius: 2.5
-    warningBeatTime: 1
+    warningBeatTime: 2
   - spawnPosition: {fileID: 437062769937483920}
     position: {x: 1.677002, y: -10.574981}
-    beatTimeBeforeNextAOE: 2
+    beatTimeBeforeNextAOE: 0
     damage: 2
     radius: 2.5
-    warningBeatTime: 1
+    warningBeatTime: 2
   - spawnPosition: {fileID: 224604526242403547}
     position: {x: 1.7470016, y: -14.839981}
     beatTimeBeforeNextAOE: 2
     damage: 2
     radius: 2.5
-    warningBeatTime: 1
+    warningBeatTime: 2
   warningZonePrefab: {fileID: 3856039389742450725, guid: 32e3e65ff3aa71742a82a31aa5aa308a,
     type: 3}
   aoeFx: {fileID: 3979257338722313630, guid: 4606c8d8d066b834e876f0a8b8576efe, type: 3}
