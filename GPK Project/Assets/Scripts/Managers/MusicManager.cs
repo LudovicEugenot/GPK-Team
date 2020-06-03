@@ -146,10 +146,10 @@ public class MusicManager : MonoBehaviour
         beatManager.bpm = musicSO.bpm;
         beatManager.beatStartTimeOffset = musicSO.generalStartTimeOffset;
         beatManager.timingThreshold = musicSO.timingThreshold;
-        beatManager.timingThresholdOffset = musicSO.timingThresholdOffset;
-        beatManager.minTimeForOnBeatValidation = musicSO.minTimeForOnBeatValidation;
-        beatManager.cameraBeatEffectLerpSpeed = musicSO.cameraBeatEffectLerpSpeed;
-        beatManager.cameraBeatEffectAmplitude = musicSO.cameraBeatEffectAmplitude;
+        //beatManager.timingThresholdOffset = musicSO.timingThresholdOffset;
+        //beatManager.minTimeForOnBeatValidation = musicSO.minTimeForOnBeatValidation;
+        //beatManager.cameraBeatEffectLerpSpeed = musicSO.cameraBeatEffectLerpSpeed;
+        //beatManager.cameraBeatEffectAmplitude = musicSO.cameraBeatEffectAmplitude;
         beatManager.beatToSwitchTo = musicSO.canSwitchOnBeat2 ? 2 : 4;
         beatManager.changingMusicZone = true;
 

@@ -9,7 +9,7 @@ public class BeatManager : MonoBehaviour
     [Range(0f, 3f)] public float fadeOutTime = 0.3f;
     [Tooltip("L'intervalle de temps dont le joueur dispose pour effectuer son action et être en rythme.")]
     [HideInInspector] [Range(0f, 1f)] public float timingThreshold = 0.2f;
-    [HideInInspector] [Range(-1f, 1f)] public float timingThresholdOffset;
+    [HideInInspector] public float timingThresholdOffset;
     [HideInInspector] [Range(0f, 1f)] public float beatStartTimeOffset;
     [HideInInspector] [Range(0f, 1f)] public float minTimeForOnBeatValidation;
 
