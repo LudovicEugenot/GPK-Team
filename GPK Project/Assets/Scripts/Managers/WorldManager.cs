@@ -30,7 +30,7 @@ public static class WorldManager
         }
     }
 
-    public static WorldEvent GetWorldEvent(WorldManager.EventName eventName)
+    public static WorldEvent GetWorldEvent(EventName eventName)
     {
         WorldEvent worldEvent = null;
         int i = 0;
