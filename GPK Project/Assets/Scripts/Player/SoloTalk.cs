@@ -13,12 +13,14 @@ public class SoloTalk : MonoBehaviour
     public SoloTalk previousTalk;
     public float camZoom;
     public Vector2 alternateBoxPos;
+    public WorldManager.EventName triggeredEvent;
     public WorldManager.StoryStep storyStepRequired;
     public WorldManager.EventName[] requiredEvents;
     public GameObject interactionIndicator;
 
     private ParticleSystem shinyParticle;
     private WorldManager.WorldEvent[] requiredWorldEvents;
+    private WorldManager.WorldEvent triggeredWorldEvent;
     private bool waitingForPreviousTalk;
     [HideInInspector] public bool talkStarted;
 
@@ -95,10 +97,16 @@ public class SoloTalk : MonoBehaviour
         {
             shinyParticle.Stop();
         }
+
+        if(talkStarted && !GameManager.Instance.dialogueManager.isTalking)
+        {
+            triggeredWorldEvent.occured = true;
+        }
     }
 
     private void SetupWorldEvents()
     {
+        triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
         requiredWorldEvents = new WorldManager.WorldEvent[requiredEvents.Length];
         for(int i = 0; i < requiredEvents.Length; i++)
         {

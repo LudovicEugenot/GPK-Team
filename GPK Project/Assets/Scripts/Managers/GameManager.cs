@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
     public Slider masterSlider;
     public Slider musicSlider;
     public Slider soundEffectsSlider;
+    public Slider offsetSlider;
+    public Text offsetValueText;
     public Toggle playtestToggle;
     public AudioMixer mixer;
     [HideInInspector] public bool paused;
@@ -141,6 +143,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            PlayerPrefs.DeleteAll();
             usePlaytestRecord = true;
             playtestToggle.isOn = true;
         }
@@ -152,6 +155,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            PlayerPrefs.DeleteAll();
             masterVolume = Mathf.Log(0.5f, 1.1f);
             masterSlider.value = 0.5f;
         }
@@ -163,6 +167,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            PlayerPrefs.DeleteAll();
             musicVolume = Mathf.Log(0.5f, 1.1f);
             musicSlider.value = 0.5f;
         }
@@ -175,10 +180,26 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            PlayerPrefs.DeleteAll();
             soundEffectsVolume = Mathf.Log(0.5f, 1.1f);
             soundEffectsSlider.value = 0.5f;
         }
+
         RefreshVolumes();
+
+        if (PlayerPrefs.HasKey("TresholdOffset"))
+        {
+            Beat.timingThresholdOffset = PlayerPrefs.GetFloat("TresholfOffset");
+            offsetSlider.value = PlayerPrefs.GetFloat("TresholdOffset");
+            offsetValueText.text = (Mathf.Round(PlayerPrefs.GetFloat("TresholdOffset") * 100) / 100).ToString() + " sec";
+        }
+        else
+        {
+            PlayerPrefs.DeleteAll();
+            Beat.timingThresholdOffset = 0;
+            offsetSlider.value = 0;
+            offsetValueText.text = "0 sec";
+        }
     }
 
     private void Update()
@@ -333,17 +354,27 @@ public class GameManager : MonoBehaviour
         masterVolume = Mathf.Log(value, 1.1f);
         PlayerPrefs.SetFloat("MasterVolume", value);
         PlayerPrefs.Save();
+        RefreshVolumes();
     }
     public void NewMusicVolumeValue(float value)
     {
         musicVolume = Mathf.Log(value, 1.1f);
         PlayerPrefs.SetFloat("MusicVolume", value);
         PlayerPrefs.Save();
+        RefreshVolumes();
     }
     public void NewSoundEffectsVolumeValue(float value)
     {
         soundEffectsVolume = Mathf.Log(value, 1.1f);
         PlayerPrefs.SetFloat("SoundEffectsVolume", value);
+        PlayerPrefs.Save();
+        RefreshVolumes();
+    }
+    public void NewOffsetValue()
+    {
+        Beat.timingThresholdOffset = offsetSlider.value;
+        offsetValueText.text = (Mathf.Round(offsetSlider.value * 100) / 100).ToString() + " sec";
+        PlayerPrefs.SetFloat("TresholdOffset", offsetSlider.value);
         PlayerPrefs.Save();
     }
 
@@ -353,6 +384,27 @@ public class GameManager : MonoBehaviour
         usePlaytestRecord = value;
         PlayerPrefs.Save();
         playerSource.PlayOneShot(validationSound);
+    }
+
+    public void ResetToDefaultValue()
+    {
+        masterVolume = Mathf.Log(0.5f, 1.1f);
+        masterSlider.value = 0.5f;
+        PlayerPrefs.SetFloat("MasterVolume", 0.5f);
+        musicVolume = Mathf.Log(0.5f, 1.1f);
+        musicSlider.value = 0.5f;
+        PlayerPrefs.SetFloat("MusicVolume", 0.5f);
+        soundEffectsVolume = Mathf.Log(0.5f, 1.1f);
+        soundEffectsSlider.value = 0.5f;
+        PlayerPrefs.SetFloat("SoundEffectsVolume", 0.5f);
+        Beat.timingThresholdOffset = 0;
+        offsetSlider.value = 0;
+        offsetValueText.text = "0 sec";
+        PlayerPrefs.SetFloat("TresholdOffset", 0);
+        PlayerPrefs.SetInt("UsePlaytestRecord", 1);
+        usePlaytestRecord = true;
+        playtestToggle.isOn = true;
+        PlayerPrefs.Save();
     }
     #endregion
 
