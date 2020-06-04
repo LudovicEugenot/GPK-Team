@@ -16,10 +16,12 @@ public class SoloTalk : MonoBehaviour
     public WorldManager.EventName triggeredEvent;
     public WorldManager.StoryStep storyStepRequired;
     public WorldManager.EventName[] requiredEvents;
+    public WorldManager.EventName[] compromisingEvents;
     public GameObject interactionIndicator;
 
     private ParticleSystem shinyParticle;
     private WorldManager.WorldEvent[] requiredWorldEvents;
+    private WorldManager.WorldEvent[] compromisingWorldEvents;
     private WorldManager.WorldEvent triggeredWorldEvent;
     private bool waitingForPreviousTalk;
     [HideInInspector] public bool talkStarted;
@@ -112,17 +114,33 @@ public class SoloTalk : MonoBehaviour
         {
             requiredWorldEvents[i] = WorldManager.GetWorldEvent(requiredEvents[i]);
         }
+
+        compromisingWorldEvents = new WorldManager.WorldEvent[compromisingEvents.Length];
+        for (int i = 0; i < compromisingEvents.Length; i++)
+        {
+            compromisingWorldEvents[i] = WorldManager.GetWorldEvent(compromisingEvents[i]);
+        }
     }
 
     private bool IsValid()
     {
+        bool isValid = true;
         foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
         {
             if(!worldEvent.occured)
             {
-                return false;
+                isValid = false;
             }
         }
-        return true;
+
+        foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
+        {
+            if (worldEvent.occured)
+            {
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 }
