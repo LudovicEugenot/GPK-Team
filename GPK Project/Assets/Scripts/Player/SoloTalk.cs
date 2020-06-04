@@ -102,7 +102,10 @@ public class SoloTalk : MonoBehaviour
 
         if(talkStarted && !GameManager.Instance.dialogueManager.isTalking)
         {
-            triggeredWorldEvent.occured = true;
+            if(triggeredEvent != WorldManager.EventName.NullEvent)
+            {
+                triggeredWorldEvent.occured = true;
+            }
         }
     }
 
@@ -127,7 +130,7 @@ public class SoloTalk : MonoBehaviour
         bool isValid = true;
         foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
         {
-            if(!worldEvent.occured)
+            if(!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
             {
                 isValid = false;
             }
@@ -135,7 +138,7 @@ public class SoloTalk : MonoBehaviour
 
         foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
         {
-            if (worldEvent.occured)
+            if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
             {
                 isValid = false;
             }

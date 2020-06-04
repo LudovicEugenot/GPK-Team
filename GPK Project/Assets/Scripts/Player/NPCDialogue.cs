@@ -104,7 +104,7 @@ public class NPCDialogue : MonoBehaviour
             {
                 foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
                 {
-                    if(!worldEvent.occured)
+                    if(!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
                     {
                         return false;
                     }
@@ -112,7 +112,7 @@ public class NPCDialogue : MonoBehaviour
 
                 foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
                 {
-                    if (worldEvent.occured)
+                    if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
                     {
                         return false;
                     }
