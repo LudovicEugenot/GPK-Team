@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorldEventUpdater : MonoBehaviour
 {
     public bool zoneNameUnknownUntilRecolor;
+    public WorldManager.StoryStep cursedUntilStoryStep;
     public WorldManager.StoryStep storyStepSkip;
     public Talk warningTempleOpen;
     public bool talkTriggered;
@@ -26,6 +27,7 @@ public class WorldEventUpdater : MonoBehaviour
         CheckTutorialEnd();
         CheckVillageArrival();
         UpdateZoneDiscovery();
+        UpdateZoneCurse();
         CheckGreatInstrumentReliving();
         CheckTempleEntering();
         CheckKeyPossession();
@@ -114,8 +116,20 @@ public class WorldEventUpdater : MonoBehaviour
             WorldManager.currentStoryStep = WorldManager.StoryStep.EndGame;
         }
     }
-    
-    
+
+
+    private void UpdateZoneCurse()
+    {
+        if(WorldManager.currentStoryStep >= cursedUntilStoryStep)
+        {
+            ZoneHandler.Instance.reliveRemotlyChanged = false;
+        }
+        else
+        {
+            ZoneHandler.Instance.reliveRemotlyChanged = true;
+            ZoneHandler.Instance.currentReliveProgression = 0;
+        }
+    }
 
     private void UpdateZoneDiscovery()
     {
