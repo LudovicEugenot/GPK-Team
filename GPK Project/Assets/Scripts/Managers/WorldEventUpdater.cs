@@ -27,6 +27,7 @@ public class WorldEventUpdater : MonoBehaviour
         CheckVillageArrival();
         UpdateZoneDiscovery();
         CheckGreatInstrumentReliving();
+        CheckTempleEntering();
         CheckKeyPossession();
         CheckBossState();
     }
@@ -71,27 +72,32 @@ public class WorldEventUpdater : MonoBehaviour
     private void CheckGreatInstrumentReliving()
     {
         if (WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
-          && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured) ////// ajouté l'instrument de la voix quand il sera terminé
+          && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured
+          && WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured
+          && WorldManager.currentStoryStep < WorldManager.StoryStep.AllInstrumentRelived)
         {
             Debug.Log("Tous les instrument sont reactivés");
-            if(!talkTriggered)
-            {
-                talkTriggered = true;
-                //GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform, 3);
-            }
+            GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform.position, 3);
             WorldManager.currentStoryStep = WorldManager.StoryStep.AllInstrumentRelived;
+        }
+    }
+
+    private void CheckTempleEntering()
+    {
+        if (ZoneHandler.Instance.currentZone.buildIndex == 28
+            && WorldManager.currentStoryStep == WorldManager.StoryStep.AllInstrumentRelived)
+        {
+            Debug.Log("Nous sommes dans le temple !");
+            WorldManager.currentStoryStep = WorldManager.StoryStep.EnteredTemple;
         }
     }
 
     private void CheckKeyPossession()
     {
-        if (WorldManager.GetWorldEvent(WorldManager.EventName.DungeonKeyLoot).occured)
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.DungeonKeyLoot).occured &&
+            WorldManager.currentStoryStep < WorldManager.StoryStep.KeyObtained)
         {
             Debug.Log("La clé est récupérée");
-            if (!talkTriggered)
-            {
-                talkTriggered = true;
-            }
             WorldManager.currentStoryStep = WorldManager.StoryStep.KeyObtained;
         }
 
@@ -101,13 +107,10 @@ public class WorldEventUpdater : MonoBehaviour
     // Check pour voir si le joueur a fini le jeu.
     private void CheckBossState()
     {
-        if (WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured)
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured &&
+            WorldManager.currentStoryStep < WorldManager.StoryStep.EndGame)
         {
             Debug.Log("Le boss est vaincu!");
-            if (!talkTriggered)
-            {
-                talkTriggered = true;
-            }
             WorldManager.currentStoryStep = WorldManager.StoryStep.EndGame;
         }
     }

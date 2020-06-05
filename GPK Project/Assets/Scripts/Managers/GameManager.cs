@@ -206,12 +206,20 @@ public class GameManager : MonoBehaviour
     {
         UpdateCombatStart();
 
-        if(Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.S))
         {
-            //do whatever
+            WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured = true;
+        }
+        if (Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.R))
+        {
+            WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured = true;
+        }
+        if (Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.V))
+        {
+            WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured = true;
         }
 
-        if(Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel"))
         {
             if(paused)
             {

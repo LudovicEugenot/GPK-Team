@@ -70,6 +70,7 @@ public class TransitionManager : MonoBehaviour
         public TransitionDirection direction;
         public int connectedSceneBuildIndex;
         public WorldManager.StoryStep storyStepRequired;
+        public WorldManager.EventName eventRequired;
         public Talk blockedTalk;
     }
 
@@ -89,7 +90,7 @@ public class TransitionManager : MonoBehaviour
                             zoneHandler.SaveZoneState();
                             if (zoneHandler.AllEnemiesConverted())
                             {
-                                if ((int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
+                                if ((int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired && (WorldManager.GetWorldEvent(transitionHook.eventRequired).occured || transitionHook.eventRequired == WorldManager.EventName.NullEvent))
                                 {
                                     StartCoroutine(TransitionToConnectedZone(transitionHook));
                                 }
