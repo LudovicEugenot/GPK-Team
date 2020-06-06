@@ -86,11 +86,13 @@ public class Enemy_Heavy : EnemyBase
         if (consecutiveConvertedBehaviourIndex > 6)
         {
             consecutiveConvertedBehaviourIndex = 0;
-            animator.SetBool("InTheAir", false);
+        }
+        else if (consecutiveConvertedBehaviourIndex == 5)
+        {
+            ConvertedJumpAttack();
         }
         else if(consecutiveConvertedBehaviourIndex > 5)
         {
-            animator.SetBool("InTheAir", true);
             HitAllies();
         }
         else
@@ -106,7 +108,6 @@ public class Enemy_Heavy : EnemyBase
         float progression = CurrentBeatProgressionAdjusted(1f, 0f);
         parent.position = Vector2.Lerp(positionStartOfBeat, positionStartOfBeat + new Vector2(0, jumpHeight), jumpCurve.Evaluate(progression));
         animator.SetBool("Attacking", true);
-        //saute et touche le sol sur le prochain beat
     }
 
     protected override void ActionBehaviour()
@@ -198,8 +199,16 @@ public class Enemy_Heavy : EnemyBase
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 
+    private void ConvertedJumpAttack()
+    {
+        float progression = CurrentBeatProgressionAdjusted(1f, 0f);
+        parent.position = Vector2.Lerp(positionStartOfBeat, positionStartOfBeat + new Vector2(0, jumpHeight), jumpCurve.Evaluate(progression));
+        animator.SetBool("Attacking", true);
+    }
+
     private void HitAllies()
     {
+        animator.SetBool("Attacking", false);
         if (BeatManager.Instance.onBeatSingleFrame)
         {
             source.PlayOneShot(friendlyAttackSound);

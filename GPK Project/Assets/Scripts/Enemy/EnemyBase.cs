@@ -91,6 +91,9 @@ public abstract class EnemyBase : MonoBehaviour
     protected Vector2 knockback;
     protected float startKnockBackTime;
     protected Vector2 knockbackStartPos;
+
+    public WorldManager.StoryStep firstStoryStepToAppear;
+    public WorldManager.StoryStep lastStoryStepToAppear;
     #endregion
 
     # region Behaviour

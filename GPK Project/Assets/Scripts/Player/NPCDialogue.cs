@@ -78,6 +78,7 @@ public class NPCDialogue : MonoBehaviour
         public Talk talk;
         public WorldManager.EventName triggeredEvent;
         public WorldManager.StoryStep progressionNeeded;
+        public WorldManager.StoryStep lastValidStoryStep = WorldManager.StoryStep.EndGame;
         public List<WorldManager.EventName> requiredEvents;
         [HideInInspector] WorldManager.WorldEvent[] requiredWorldEvents;
         public List<WorldManager.EventName> compromisingEvents;
@@ -100,11 +101,11 @@ public class NPCDialogue : MonoBehaviour
 
         public bool IsValid()
         {
-            if(WorldManager.currentStoryStep >= progressionNeeded)
+            if(WorldManager.currentStoryStep >= progressionNeeded && (WorldManager.currentStoryStep <= lastValidStoryStep || lastValidStoryStep == WorldManager.StoryStep.Tutorial))
             {
                 foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
                 {
-                    if(!worldEvent.occured)
+                    if(!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
                     {
                         return false;
                     }
@@ -112,7 +113,7 @@ public class NPCDialogue : MonoBehaviour
 
                 foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
                 {
-                    if (worldEvent.occured)
+                    if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
                     {
                         return false;
                     }

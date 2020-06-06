@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<EnemyBase> zoneEnemies;
     public GameObject elementsHolder;
     public List<HeartContainerPart> heartContainers;
+    public bool respawnEnnemiesIfZoneNotConverted;
+
     [HideInInspector] public List<SwitchElement> zoneElements;
     [HideInInspector] public Blink blink;
     [HideInInspector] public BlinkAttack attack;
@@ -103,6 +105,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        ActiveValidEnemies();
 
         zoneElements = new List<SwitchElement>();
         if (elementsHolder != null)
@@ -202,16 +205,39 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void ActiveValidEnemies()
+    {
+        foreach(EnemyBase enemy in zoneEnemies)
+        {
+            if(enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial))
+            {
+                enemy.transform.parent.gameObject.SetActive(true);
+            }
+            else
+            {
+                enemy.transform.parent.gameObject.SetActive(false);
+            }
+        }
+    }
+
     private void Update()
     {
         UpdateCombatStart();
 
-        if(Input.GetKeyDown(KeyCode.M))
+        if(Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.S))
         {
-            //do whatever
+            WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured = true;
+        }
+        if (Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.R))
+        {
+            WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured = true;
+        }
+        if (Input.GetKey(KeyCode.C) && Input.GetKeyDown(KeyCode.V))
+        {
+            WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured = true;
         }
 
-        if(Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel"))
         {
             if(paused)
             {

@@ -141,7 +141,7 @@ public class ZoneHandler : MonoBehaviour
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
             //GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
-            if(currentZone.enemiesConverted[i])
+            if(currentZone.enemiesConverted[i] && (GameManager.Instance.respawnEnnemiesIfZoneNotConverted ? currentZone.isRelived : true))
             {
                 GameManager.Instance.zoneEnemies[i].GetConverted(true);
             }
@@ -182,13 +182,22 @@ public class ZoneHandler : MonoBehaviour
     public bool AllEnemiesConverted()
     {
         SaveZoneState();
-        foreach (bool enemyConverted in currentZone.enemiesConverted)
+        /*foreach (bool enemyConverted in currentZone.enemiesConverted)
         {
             if (!enemyConverted)
             {
                 return false;
             }
+        }*/
+
+        foreach (EnemyBase enemy in GameManager.Instance.zoneEnemies)
+        {
+            if (!enemy.IsConverted() && (enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial)))
+            {
+                return false;
+            }
         }
+
         return true;
     }
 
