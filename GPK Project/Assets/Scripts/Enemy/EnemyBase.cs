@@ -385,7 +385,7 @@ public abstract class EnemyBase : MonoBehaviour
     {
         for (int i = 0; i < lastSeenPlayerPosition.Count; i++)
         {
-            if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
+            if (NoObjectBetweenMeAndThere(lastSeenPlayerPosition[i]))
             {
                 if (Vector2.Distance(lastSeenPlayerPosition[i], parent.position) < 0.5f)
                 {
@@ -401,20 +401,271 @@ public abstract class EnemyBase : MonoBehaviour
         return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance));
     }
 
-    protected bool NoObstacleBetweenMeAndThere(Vector2 positionToGetTo)
+    /// <summary>
+    /// Sends a raycast to positionToGetTo according to objectLayers. If objectLayers is empty, checks "Obstacle" per default.
+    /// </summary>
+    /// <param name="positionToGetTo">Absolute position to get to.</param>
+    /// <param name="objectLayers">Name of layers to check. If empty, fills in "Obstacle" per default.</param>
+    /// <returns></returns>
+    protected bool NoObjectBetweenMeAndThere(Vector2 positionToGetTo, params string[] objectLayers)
     {
+        if (objectLayers.Length == 0)
+        {
+            objectLayers = new string[1];
+            objectLayers[0] = "Obstacle";
+        }
         RaycastHit2D travelPathHitObject = Physics2D.Raycast
             (
                 parent.transform.position,
                 positionToGetTo - (Vector2)parent.transform.position,
                 Vector2.Distance(positionToGetTo, parent.transform.position),
-                LayerMask.GetMask("Obstacle")
+                LayerMask.GetMask(objectLayers)
             );
 
         if (travelPathHitObject)
             return false;
         else
             return true;
+    }
+
+
+    protected Vector2 PositionDependingOnObjectsOnTheWay(Vector2 positionToGetTo, bool includingEnemies, float resultingMovementRandomness, float pathWidth, float movementDistance)
+    {
+        #region Init
+        //Stats
+        float raycastGap = 0.3f;
+        float maxDistance = Vector2.Distance(positionToGetTo, parent.transform.position);
+        float longDistance = maxDistance * 0.8f;
+        float middleDistance = maxDistance * 0.5f;
+        float shortDistance = maxDistance * 0.2f;
+
+        //Variables
+        int numberOfSideRays = 0;
+        int numberOfMiddleRays = 0;
+
+        float minimumDistanceHitLeft = 100f;
+        int numberOfRaycastLeftSideHit = 0;
+        float averageLeftDistance = 0f;
+
+        float minimumDistanceHitMiddle = 100f;
+        int numberOfRaycastMiddleHit = 0;
+        float averageMiddleDistance = 0f;
+
+        float minimumDistanceHitRight = 100f;
+        int numberOfRaycastRightSideHit = 0;
+        float averageRightDistance = 0f;
+
+        int totalNumberOfRays = 0;
+        int totalNumberOfRaysHit = 0;
+
+        Vector2 myPosition = parent.transform.position;
+        float[] allRays;
+        #endregion
+
+        #region Set up des raycasts à envoyer
+        //la voie est checkée par différents raycasts envoyés tous les 0.3 de distance + les bords de la voie
+        if (pathWidth < raycastGap)
+        {
+            allRays = new float[] { -pathWidth * 0.5f, 0f, pathWidth * 0.5f };
+        }
+        else
+        {
+            int numberOfRays = Mathf.FloorToInt(pathWidth / raycastGap) + 2;
+
+            allRays = new float[numberOfRays];
+
+            allRays[0] = -pathWidth * 0.5f;
+            allRays[numberOfRays - 1] = pathWidth * 0.5f;
+
+            float firstRay = 0 + Mathf.FloorToInt((numberOfRays - 2) * 0.5f) * raycastGap;
+
+            for (int i = 1; i < numberOfRays - 1; i++)
+            {
+                allRays[i] = firstRay;
+                firstRay += raycastGap;
+            }
+        }
+
+        if (allRays.Length % 2 == 0)
+        {
+            numberOfMiddleRays = 2;
+            numberOfSideRays = (int)(allRays.Length * 0.5f) - 1;
+        }
+        else
+        {
+            numberOfMiddleRays = 1;
+            numberOfSideRays = Mathf.FloorToInt(allRays.Length * 0.5f);
+        }
+        totalNumberOfRays = numberOfSideRays * 2 + numberOfMiddleRays;
+        #endregion
+
+        #region Calcul de l'angle pour l'offset des raycasts à venir
+        Vector2 baseRaycast = positionToGetTo - myPosition;
+
+        float calculationAdjustment = 0f;
+        if (baseRaycast.x < 0 || baseRaycast.y < 0)
+        {
+            if (baseRaycast.x > 0)
+                calculationAdjustment = Mathf.PI * 2;
+            else
+                calculationAdjustment = Mathf.PI;
+        }
+        float angle = Mathf.Atan(baseRaycast.x / baseRaycast.y) + calculationAdjustment + Mathf.PI * 0.5f;
+        #endregion
+
+        #region Envois de raycasts
+        float totalLeftDistance = 0f;
+        float totalRightDistance = 0f;
+        for (int i = 0; i < allRays.Length; i++)
+        {
+            RaycastHit2D raycast;
+            Vector2 offset = new Vector2(allRays[i] * Mathf.Cos(angle), allRays[i] * Mathf.Sin(angle));
+            if (includingEnemies)
+            {
+                raycast = Physics2D.Raycast
+                    (
+                        myPosition + offset,
+                        positionToGetTo + offset,
+                        baseRaycast.magnitude,
+                        LayerMask.GetMask("Obstacle", "Enemy")
+                    );
+            }
+            else
+            {
+                raycast = Physics2D.Raycast
+                    (
+                        myPosition + offset,
+                        positionToGetTo + offset,
+                        baseRaycast.magnitude,
+                        LayerMask.GetMask("Obstacle")
+                    );
+            }
+
+            if (raycast)
+            {
+                float distance = raycast.distance;
+                if (i <= numberOfSideRays - 1)
+                {
+                    numberOfRaycastLeftSideHit++;
+                    totalLeftDistance += distance;
+                    minimumDistanceHitLeft = minimumDistanceHitLeft < distance ? minimumDistanceHitLeft : distance;
+                }
+                else if (i > numberOfSideRays + numberOfMiddleRays - 1)
+                {
+                    numberOfRaycastRightSideHit++;
+                    totalRightDistance += distance;
+                    minimumDistanceHitRight = minimumDistanceHitRight < distance ? minimumDistanceHitRight : distance;
+                }
+                else
+                {
+                    numberOfRaycastMiddleHit++;
+                    averageMiddleDistance = numberOfRaycastMiddleHit == 1 ? distance : (distance + averageMiddleDistance) * 0.5f;
+                    minimumDistanceHitMiddle = minimumDistanceHitMiddle < distance ? minimumDistanceHitMiddle : distance;
+                }
+            }
+        }
+        totalNumberOfRaysHit = numberOfRaycastLeftSideHit + numberOfRaycastRightSideHit + numberOfRaycastMiddleHit;
+        averageLeftDistance = totalLeftDistance / numberOfSideRays;
+        averageRightDistance = totalRightDistance / numberOfSideRays;
+        #endregion
+
+        #region Position obtenue selon les raycasts envoyés
+        if (totalNumberOfRaysHit == 0)
+        {
+            return positionToGetTo;
+        }
+        else if (totalNumberOfRaysHit == totalNumberOfRays)
+        {
+            if (averageLeftDistance < shortDistance && averageRightDistance < shortDistance && averageMiddleDistance < shortDistance)
+            {
+                Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.behind, positionToGetTo, pathWidth) +
+                    RandomVector(movementDistance * resultingMovementRandomness);
+                direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth);
+
+                return direction;
+            }
+            else if (averageLeftDistance < shortDistance || averageRightDistance < shortDistance && averageMiddleDistance < shortDistance)
+            {
+                if (averageLeftDistance < shortDistance)
+                {
+                    float movementReduced = 0.4f;
+                    Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.shortRight, positionToGetTo, pathWidth) +
+                        RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
+                    direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                    direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
+
+                    return direction;
+                }
+                else
+                {
+                    float reduceMovement = 0.4f;
+                    Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.shortLeft, positionToGetTo, pathWidth) +
+                        RandomVector(movementDistance * reduceMovement * resultingMovementRandomness);
+                    direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                    direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
+
+                    return direction;
+                }
+            }
+            else if (averageLeftDistance < shortDistance || averageRightDistance < shortDistance)
+            {
+                if (averageLeftDistance < shortDistance)
+                {
+                    if (averageRightDistance > middleDistance)
+                    {
+                        float movementReduced = 0.7f;
+                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.longRight, positionToGetTo, pathWidth) +
+                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
+                        direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
+
+                        return direction;
+                    }
+                    else
+                    {
+                        float movementReduced = 0.5f;
+                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.middleRight, positionToGetTo, pathWidth) +
+                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
+                        direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
+
+                        return direction;
+                    }
+                }
+                else
+                {
+                    if (averageRightDistance > middleDistance)
+                    {
+                        float movementReduced = 0.7f;
+                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.longRight, positionToGetTo, pathWidth) +
+                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
+                        direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
+
+                        return direction;
+                    }
+                    else
+                    {
+                        float movementReduced = 0.5f;
+                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.middleRight, positionToGetTo, pathWidth) +
+                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
+                        direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
+
+                        return direction;
+                    }
+                }
+            }
+        }
+        #endregion
     }
 
     protected void GetTriggered()
@@ -451,7 +702,7 @@ public abstract class EnemyBase : MonoBehaviour
                 GetConverted(false);
             }
 
-            if(animator != null)
+            if (animator != null)
             {
                 animator.SetTrigger("Hurt");
             }
@@ -513,7 +764,7 @@ public abstract class EnemyBase : MonoBehaviour
         currentBehaviour = convertedBehaviour;
         converted = true;
 
-        if(!initialize)
+        if (!initialize)
         {
             OnConverted();
             // Convertir l'ennemi
@@ -533,7 +784,7 @@ public abstract class EnemyBase : MonoBehaviour
     //D'autres méthodes utiles pour autre chose que les behaviours :
     private void UpdateLastSeenPosition()
     {
-        if (NoObstacleBetweenMeAndThere(player.position))
+        if (NoObjectBetweenMeAndThere(player.position))
         {
             if (lastSeenPlayerPosition.Contains(player.position))
             {
@@ -543,6 +794,115 @@ public abstract class EnemyBase : MonoBehaviour
 
             alreadyGotToLastPosition = false;
         }
+    }
+
+    //Méthodes pour alléger PositionDependingOnObjectsOnTheWay (les additionalDirections sont censées terminer avec behind toujours)
+    private enum AdditionalDirections
+    {
+        behind, longLeft, longRight, middleLeft, middleRight, shortLeft, shortRight
+    }
+    private Vector2 WhileObjectBetweenMeAndThere(Vector2 myPosition, Vector2 direction, float movementRandomness, float movementDistance, float pathWidth, params AdditionalDirections[] additionalDirections)
+    {
+        Vector2 firstDirection = direction;
+        while (!NoObjectBetweenMeAndThere(direction))
+        {
+            if (
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.down) &&
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.left) &&
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.up) &&
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.right))
+            {
+                break;
+            }
+            if (additionalDirections.Length == 0)
+            {
+                direction = firstDirection + new Vector2(
+                        UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
+                        UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
+                direction = Vector2.ClampMagnitude(direction, movementDistance);
+            }
+            else
+            {
+                int directionChosen = UnityEngine.Random.Range(0, additionalDirections.Length * 2 + 1);
+                if (directionChosen >= additionalDirections.Length * 2 - 1)
+                {
+                    direction = firstDirection + new Vector2(
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
+                    direction = Vector2.ClampMagnitude(direction, movementDistance);
+                }
+                else
+                {
+                    direction = PositionAccordingToAdditionalDirection(additionalDirections[Mathf.FloorToInt(directionChosen * 0.5f)], direction, pathWidth);
+                    direction += new Vector2(
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
+                    direction = Vector2.ClampMagnitude(direction, movementDistance);
+                }
+            }
+        }
+        return direction;
+    }
+    private Vector2 PositionAccordingToAdditionalDirection(AdditionalDirections direction, Vector2 positionToGetTo, float pathWidth)
+    {
+        float maxDistance = Vector2.Distance(positionToGetTo, parent.transform.position);
+        float longDistance = maxDistance * 0.8f;
+        float middleDistance = maxDistance * 0.5f;
+        float shortDistance = maxDistance * 0.2f;
+        Vector2 myPosition = parent.transform.position;
+
+        #region Angle
+        Vector2 baseRaycast = positionToGetTo - myPosition;
+
+        float calculationAdjustment = 0f;
+        if (baseRaycast.x < 0 || baseRaycast.y < 0)
+        {
+            if (baseRaycast.x > 0)
+                calculationAdjustment = Mathf.PI * 2;
+            else
+                calculationAdjustment = Mathf.PI;
+        }
+        float angle = Mathf.Atan(baseRaycast.x / baseRaycast.y) + calculationAdjustment + Mathf.PI * 0.5f;
+        #endregion
+        Vector2 leftOffset = new Vector2(-pathWidth * 0.5f * Mathf.Cos(angle), -pathWidth * 0.5f * Mathf.Sin(angle));
+        Vector2 rightOffset = new Vector2(pathWidth * 0.5f * Mathf.Cos(angle), pathWidth * 0.5f * Mathf.Sin(angle));
+
+        switch (direction)
+        {
+            case AdditionalDirections.behind:
+                Vector2 behindMe = -(positionToGetTo - myPosition) * 0.5f + myPosition;
+                if (UnityEngine.Random.Range(0, 3) == 0)
+                {
+                    return behindMe;
+                }
+                else
+                {
+                    return UnityEngine.Random.Range(0, 2) == 0 ? behindMe + leftOffset : behindMe + rightOffset;
+                }
+
+            case AdditionalDirections.longLeft:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition + leftOffset;
+            case AdditionalDirections.longRight:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition + rightOffset;
+            case AdditionalDirections.middleLeft:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition + leftOffset;
+            case AdditionalDirections.middleRight:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition + rightOffset;
+            case AdditionalDirections.shortLeft:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition + leftOffset;
+            case AdditionalDirections.shortRight:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition + rightOffset;
+            default:
+                return Vector2.zero;
+        }
+    }
+    private Vector2 RandomVector(float random)
+    {
+        return new Vector2
+            (
+                UnityEngine.Random.Range(-random, random),
+                UnityEngine.Random.Range(-random, random)
+            );
     }
     #endregion
 

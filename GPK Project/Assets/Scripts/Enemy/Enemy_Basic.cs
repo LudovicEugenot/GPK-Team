@@ -123,13 +123,13 @@ public class Enemy_Basic : EnemyBase
         {
             source.PlayOneShot(jumpSound);
             Vector2 finalDirection = playerPositionStartOfBeat;
-            while (!NoObstacleBetweenMeAndThere(finalDirection))
+            while (!NoObjectBetweenMeAndThere(finalDirection))
             {
                 if (
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.right))
                 {
                     break;
                 }

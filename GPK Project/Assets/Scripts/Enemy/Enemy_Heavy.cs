@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,7 +48,7 @@ public class Enemy_Heavy : EnemyBase
         new EnemyBehaviour(EnemyState.Action)
     };
 
-    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[] // il a très potentiellement aucun triggeredPattern et tout dans le passive pattern
+    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[] // il a aucun triggeredPattern et tout dans le passive pattern
     {
 
     };
@@ -140,13 +140,13 @@ public class Enemy_Heavy : EnemyBase
         {
             source.PlayOneShot(jumpSound);
             Vector2 finalDirection = playerPositionStartOfBeat;
-            while (!NoObstacleBetweenMeAndThere(finalDirection))
+            while (!NoObjectBetweenMeAndThere(finalDirection))
             {
                 if (
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
+                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.right))
                 {
                     break;
                 }
@@ -190,7 +190,7 @@ public class Enemy_Heavy : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 3 * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.6f * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 
