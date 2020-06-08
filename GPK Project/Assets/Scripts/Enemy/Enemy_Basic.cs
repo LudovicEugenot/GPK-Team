@@ -123,9 +123,7 @@ public class Enemy_Basic : EnemyBase
         {
             source.PlayOneShot(jumpSound);
 
-            Vector2 direction = positionStartOfBeat + Vector2.ClampMagnitude(playerPositionStartOfBeat - positionStartOfBeat, movementDistance);
-
-            endOfDash = PositionDependingOnObjectsOnTheWay(playerPositionStartOfBeat, true, 0.5f, 1f, movementDistance);
+            endOfDash = PositionDependingOnObjectsOnTheWay(playerPositionStartOfBeat, true, 0.5f, 1.5f, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
         float progression = CurrentBeatProgressionAdjusted(2, 0);

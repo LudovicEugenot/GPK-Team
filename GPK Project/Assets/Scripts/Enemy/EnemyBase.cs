@@ -856,7 +856,7 @@ public abstract class EnemyBase : MonoBehaviour
         Vector2 direction = PositionAccordingToAdditionalDirection(mainDirection, positionToGetTo, pathWidth) + new Vector2(
             UnityEngine.Random.Range(-movementDistance * movementReduced * resultingMovementRandomness, movementDistance * movementReduced * resultingMovementRandomness),
             UnityEngine.Random.Range(-movementDistance * movementReduced * resultingMovementRandomness, movementDistance * movementReduced * resultingMovementRandomness));
-        direction = Vector2.ClampMagnitude(direction, movementDistance);
+        direction = myPosition + Vector2.ClampMagnitude(direction - myPosition, movementDistance);
 
         direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, additionalDirections);
 
