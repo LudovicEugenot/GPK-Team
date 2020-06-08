@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -472,7 +472,7 @@ public abstract class EnemyBase : MonoBehaviour
         //Stats
         float longDistance = maxDistance * 0.8f;
         float middleDistance = maxDistance * 0.5f;
-        float shortDistance = maxDistance * 0.2f;
+        float shortDistance = maxDistance * 0.3f;
 
         //Set les Variables
         numberOfRaycastLeftSideHit = 0;
@@ -502,7 +502,7 @@ public abstract class EnemyBase : MonoBehaviour
 
             allRays[0] = -pathWidth * 0.5f;
             allRays[numberOfRays - 1] = pathWidth * 0.5f;
-            
+
             float centerOffset = allRays.Length % 2 == 0 ? raycastGap * 0.5f : 0f;
             float firstRay = centerOffset - Mathf.FloorToInt((numberOfRays - 2) * 0.5f) * raycastGap;
 
@@ -525,7 +525,6 @@ public abstract class EnemyBase : MonoBehaviour
         }
         totalNumberOfRays = numberOfSideRays * 2 + numberOfMiddleRays;
         #endregion
-        Debug.Log("number of rays sent :"+totalNumberOfRays);
 
         #region Calcul de l'angle pour l'offset des raycasts à venir
         Vector2 baseRaycast = positionToGetTo - myPosition;
@@ -540,7 +539,6 @@ public abstract class EnemyBase : MonoBehaviour
         }
         float angle = Mathf.Atan(baseRaycast.y / baseRaycast.x) + calculationAdjustment - Mathf.PI * 0.5f;
         #endregion
-        Debug.Log("Angle = "+angle);
 
         #region Envois de raycasts
         for (int i = 0; i < allRays.Length; i++)
@@ -552,7 +550,7 @@ public abstract class EnemyBase : MonoBehaviour
                 raycast = Physics2D.Raycast
                     (
                         myPosition + offset,
-                        positionToGetTo + offset,
+                        baseRaycast,
                         baseRaycast.magnitude,
                         LayerMask.GetMask("Obstacle", "Enemy")
                     );
@@ -562,7 +560,7 @@ public abstract class EnemyBase : MonoBehaviour
                 raycast = Physics2D.Raycast
                     (
                         myPosition + offset,
-                        positionToGetTo + offset,
+                        baseRaycast,
                         baseRaycast.magnitude,
                         LayerMask.GetMask("Obstacle")
                     );
@@ -599,7 +597,6 @@ public abstract class EnemyBase : MonoBehaviour
             averageRightDistance = 100f;
         }
         #endregion
-        Debug.Log("averageLeftDistance = "+ averageLeftDistance + ", averageMiddleDistance = "+averageMiddleDistance+ ", averageRightDistance = "+ averageRightDistance);
 
         #region Position obtenue selon les raycasts envoyés
         if (totalNumberOfRaysHit == 0)
@@ -607,55 +604,210 @@ public abstract class EnemyBase : MonoBehaviour
             return positionToGetTo;
         }
 
-        if (averageMiddleDistance < middleDistance)
+        if (averageMiddleDistance < longDistance)
         {
-            if (averageMiddleDistance < shortDistance)
+            if (averageMiddleDistance < middleDistance)
             {
-                if (averageLeftDistance < shortDistance)
+                if (averageMiddleDistance < shortDistance)
                 {
-                    if (averageRightDistance < shortDistance)
+                    if (averageLeftDistance < shortDistance)
                     {
-                        mainDirection = AdditionalDirections.behind;
+                        if (averageRightDistance < shortDistance)
+                        {
+                            mainDirection = AdditionalDirections.behind;
+                        }
+                        else
+                        {
+                            movementReduced = 0.4f;
+                            mainDirection = AdditionalDirections.shortRight;
+                            additionalDirectionsList.Add(AdditionalDirections.behind);
+                        }
                     }
                     else
                     {
-                        movementReduced = 0.4f;
-                        mainDirection = AdditionalDirections.shortRight;
-                        additionalDirectionsList.Add(AdditionalDirections.behind);
+                        if (averageRightDistance < shortDistance)
+                        {
+                            movementReduced = 0.4f;
+                            mainDirection = AdditionalDirections.shortLeft;
+                            additionalDirectionsList.Add(AdditionalDirections.behind);
+                        }
+                        else
+                        {
+                            mainDirection = AdditionalDirections.shortMiddle;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.shortLeft,
+                                AdditionalDirections.shortRight,
+                                AdditionalDirections.behind });
+                        }
                     }
                 }
                 else
                 {
-                    if (averageRightDistance < shortDistance)
+                    if (averageLeftDistance > shortDistance)
                     {
-                        movementReduced = 0.4f;
-                        mainDirection = AdditionalDirections.shortLeft;
-                        additionalDirectionsList.Add(AdditionalDirections.behind);
+                        if (averageRightDistance > shortDistance)
+                        {
+                            movementReduced = 0.7f;
+                            mainDirection = AdditionalDirections.middleMiddle;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.middleRight,
+                                AdditionalDirections.middleLeft,
+                                AdditionalDirections.shortLeft,
+                                AdditionalDirections.shortRight,
+                                AdditionalDirections.shortMiddle,
+                                AdditionalDirections.behind });
+                        }
+                        else
+                        {
+                            movementReduced = 0.5f;
+                            mainDirection = AdditionalDirections.middleLeft;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.shortLeft,
+                                AdditionalDirections.shortMiddle,
+                                AdditionalDirections.behind });
+                        }
                     }
                     else
                     {
-                        mainDirection = AdditionalDirections.shortMiddle;
-                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                            AdditionalDirections.shortLeft,
-                            AdditionalDirections.shortRight,
-                            AdditionalDirections.behind });
+                        if (averageRightDistance > shortDistance)
+                        {
+                            movementReduced = 0.5f;
+                            mainDirection = AdditionalDirections.middleRight;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.shortRight,
+                                AdditionalDirections.shortMiddle,
+                                AdditionalDirections.behind });
+                        }
+                        else
+                        {
+                            mainDirection = AdditionalDirections.behind;
+                            additionalDirectionsList.Add(AdditionalDirections.shortMiddle);
+                        }
                     }
+                }
+            }
+            else if (averageLeftDistance < middleDistance)
+            {
+                if (averageRightDistance < middleDistance)
+                {
+                    movementReduced = 0.6f;
+                    mainDirection = AdditionalDirections.shortMiddle;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.shortRight,
+                        AdditionalDirections.shortLeft,
+                        AdditionalDirections.behind });
+                }
+                else if (averageRightDistance > longDistance)
+                {
+                    movementReduced = 0.7f;
+                    mainDirection = AdditionalDirections.longRight;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.shortMiddle,
+                        AdditionalDirections.behind });
+                }
+                else
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleRight;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.shortRight,
+                        AdditionalDirections.shortMiddle,
+                        AdditionalDirections.behind });
+                }
+            }
+            else
+            {
+                if (averageRightDistance < middleDistance)
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.shortMiddle,
+                        AdditionalDirections.behind });
+                }
+                else if (averageRightDistance > longDistance)
+                {
+                    movementReduced = 0.7f;
+                    mainDirection = AdditionalDirections.longRight;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.longLeft,
+                        AdditionalDirections.middleLeft,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.behind });
+                }
+                else
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.behind });
+                }
+            }
+        }
+        else
+        {
+            if (averageLeftDistance > longDistance)
+            {
+                if (averageRightDistance > longDistance)
+                {
+                    movementReduced = 0.8f;
+                    mainDirection = AdditionalDirections.longMiddle;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.longLeft,
+                        AdditionalDirections.longRight,
+                        AdditionalDirections.longMiddle,
+                        AdditionalDirections.longLeft,
+                        AdditionalDirections.longRight,
+                        AdditionalDirections.behind });
+                }
+                else if (averageRightDistance > shortDistance)
+                {
+                    movementReduced = 0.7f;
+                    mainDirection = AdditionalDirections.longLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.longMiddle,
+                        AdditionalDirections.middleLeft,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.behind });
+                }
+                else
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleLeft,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.behind });
                 }
             }
             else
             {
                 if (averageLeftDistance > shortDistance)
                 {
-                    if (averageRightDistance > shortDistance)
+                    if (averageRightDistance > longDistance)
                     {
                         movementReduced = 0.7f;
+                        mainDirection = AdditionalDirections.longRight;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.longMiddle,
+                            AdditionalDirections.middleLeft,
+                            AdditionalDirections.middleMiddle,
+                            AdditionalDirections.middleRight,
+                            AdditionalDirections.behind });
+                    }
+                    else if (averageRightDistance > shortDistance)
+                    {
+                        movementReduced = 0.5f;
                         mainDirection = AdditionalDirections.middleMiddle;
                         additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
                             AdditionalDirections.middleRight,
                             AdditionalDirections.middleLeft,
-                            AdditionalDirections.shortLeft,
-                            AdditionalDirections.shortRight,
-                            AdditionalDirections.shortMiddle,
                             AdditionalDirections.behind });
                     }
                     else
@@ -663,88 +815,35 @@ public abstract class EnemyBase : MonoBehaviour
                         movementReduced = 0.5f;
                         mainDirection = AdditionalDirections.middleLeft;
                         additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                            AdditionalDirections.shortLeft,
-                            AdditionalDirections.shortMiddle,
+                            AdditionalDirections.middleRight,
+                            AdditionalDirections.middleLeft,
                             AdditionalDirections.behind });
                     }
                 }
                 else
                 {
-                    if (averageRightDistance > shortDistance)
+                    if (averageRightDistance > middleDistance)
                     {
                         movementReduced = 0.5f;
                         mainDirection = AdditionalDirections.middleRight;
                         additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.middleMiddle,
                             AdditionalDirections.shortRight,
+                            AdditionalDirections.behind });
+                    }
+                    else if (averageRightDistance > shortDistance)
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.shortRight;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
                             AdditionalDirections.shortMiddle,
                             AdditionalDirections.behind });
                     }
                     else
                     {
                         mainDirection = AdditionalDirections.behind;
-                        additionalDirectionsList.Add(AdditionalDirections.shortMiddle);
                     }
                 }
-            }
-        }
-        else if (averageLeftDistance < middleDistance)
-        {
-            if (averageRightDistance < middleDistance)
-            {
-                movementReduced = 0.6f;
-                mainDirection = AdditionalDirections.shortMiddle;
-                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                    AdditionalDirections.shortRight,
-                    AdditionalDirections.shortLeft,
-                    AdditionalDirections.behind });
-            }
-            else if(averageRightDistance > longDistance)
-            {
-                movementReduced = 0.7f;
-                mainDirection = AdditionalDirections.longRight;
-                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                    AdditionalDirections.middleRight,
-                    AdditionalDirections.shortMiddle,
-                    AdditionalDirections.behind });
-            }
-            else
-            {
-                movementReduced = 0.5f;
-                mainDirection = AdditionalDirections.middleRight;
-                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                    AdditionalDirections.shortRight,
-                    AdditionalDirections.shortMiddle,
-                    AdditionalDirections.behind });
-            }
-        }
-        else
-        {
-            if(averageRightDistance < middleDistance)
-            {
-                movementReduced = 0.5f;
-                mainDirection = AdditionalDirections.middleLeft;
-                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                    AdditionalDirections.middleRight,
-                    AdditionalDirections.shortMiddle,
-                    AdditionalDirections.behind });
-            }
-            else if (averageRightDistance > longDistance)
-            {
-                movementReduced = 0.7f;
-                mainDirection = AdditionalDirections.longLeft;
-                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                    AdditionalDirections.middleLeft,
-                    AdditionalDirections.shortMiddle,
-                    AdditionalDirections.behind });
-            }
-            else
-            {
-                movementReduced = 0.5f;
-                mainDirection = AdditionalDirections.middleRight;
-                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
-                    AdditionalDirections.shortRight,
-                    AdditionalDirections.shortMiddle,
-                    AdditionalDirections.behind });
             }
         }
 
