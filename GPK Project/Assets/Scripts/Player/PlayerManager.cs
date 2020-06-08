@@ -11,8 +11,11 @@ public class PlayerManager : MonoBehaviour
     public bool beatAndOffBeatAllowed;
     [Space]
     public float deathCinematicZoom;
+    public float interactMaxDistance;
+    public float timeBeforeDancing;
     [Space]
     public GameObject gameOverPanel;
+    public GameObject interactionIndicatorO;
     public RectTransform firstHealthPointPos;
     public float distanceBetweenHp;
     public GameObject hpIconPrefab;
@@ -20,7 +23,6 @@ public class PlayerManager : MonoBehaviour
     public Sprite halfHp;
     public Sprite emptyHp;
     public Animator animator;
-    public GameObject[] musicianVisualO;
     public GameObject healParticle;
     [Header("Sounds")]
     public AudioClip[] damageSounds;
@@ -35,11 +37,14 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public int heartContainerOwned;
     private bool keyPressed;
     private float invulTimeRemaining;
+    private float remainingTimeBeforeDancing;
+    public AnimSynchronizer animSynchronizer;
+    private int interactionPossible;
 
     void Start()
     {
-        UseMusicians();
         isInControl = true;
+        remainingTimeBeforeDancing = timeBeforeDancing;
     }
 
     private void Update()
@@ -48,6 +53,17 @@ public class PlayerManager : MonoBehaviour
         if(invulTimeRemaining > 0)
         {
             invulTimeRemaining -= Time.deltaTime;
+        }
+
+        if(remainingTimeBeforeDancing > 0)
+        {
+            remainingTimeBeforeDancing -= Time.deltaTime;
+        }
+        else if(remainingTimeBeforeDancing != -1)
+        {
+            remainingTimeBeforeDancing = -1;
+            animSynchronizer.Synchronize();
+            animator.SetTrigger("Dance");
         }
     }
 
@@ -164,22 +180,55 @@ public class PlayerManager : MonoBehaviour
         StartCoroutine(TransitionManager.Instance.Respawn());
     }
 
-    public void AddMusician()
+    public void ResetIdleTime()
     {
-        if(currentPower < 3)
-        {
-            currentPower++;
-        }
-
-        musicianVisualO[currentPower - 1].SetActive(true);
+        remainingTimeBeforeDancing = timeBeforeDancing;
     }
 
-    public void UseMusicians()
+    /// <summary>
+    /// Ajouter IsMouseNear()
+    /// </summary>
+    /// <returns></returns>
+    public static bool CanInteract()
     {
-        currentPower = 0;
-        foreach(GameObject musician in musicianVisualO)
+        if (!GameManager.Instance.blink.IsSelecting() && ZoneHandler.Instance.AllEnemiesConverted())
         {
-            musician.SetActive(false);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
+
+    public static bool IsMouseNearPlayer()
+    {
+        if (Vector2.Distance(GameManager.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition), GameManager.Instance.player.transform.position) < GameManager.Instance.playerManager.interactMaxDistance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static void DisplayIndicator()
+    {
+        GameManager.Instance.playerManager.interactionPossible++;
+    }
+
+    private void LateUpdate()
+    {
+        if(interactionPossible > 0)
+        {
+            interactionIndicatorO.SetActive(true);
+        }
+        else
+        {
+            interactionIndicatorO.SetActive(false);
+        }
+        interactionPossible = 0;
+    }
+
 }

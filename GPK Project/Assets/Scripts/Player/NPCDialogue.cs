@@ -11,6 +11,7 @@ public class NPCDialogue : MonoBehaviour
     public Dialogue[] dialogues;
 
     private Dialogue currentDialogue;
+    private bool inDialogue;
 
     void Start()
     {
@@ -27,14 +28,25 @@ public class NPCDialogue : MonoBehaviour
 
     void TestDialogueStart()
     {
-        if (Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking)
+        if(GameManager.Instance.blink.currentHook == hookToTalk && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking && PlayerManager.CanInteract())
         {
-            currentDialogue = GetValidDialogue();
-            if(currentDialogue != null)
+            PlayerManager.DisplayIndicator();
+
+            if (Input.GetButtonDown("Blink") && PlayerManager.IsMouseNearPlayer())
             {
-                GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos, cinematicLookZoom);
-                WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
+                currentDialogue = GetValidDialogue();
+                if (currentDialogue != null)
+                {
+                    GameManager.Instance.dialogueManager.StartTalk(currentDialogue.talk, cinematicLookPos.position, cinematicLookZoom);
+                    inDialogue = true;
+                }
             }
+        }
+
+        if(inDialogue && !GameManager.Instance.dialogueManager.isTalking)
+        {
+            inDialogue = false;
+            WorldManager.GetWorldEvent(currentDialogue.triggeredEvent).occured = true;
         }
     }
 
@@ -66,6 +78,7 @@ public class NPCDialogue : MonoBehaviour
         public Talk talk;
         public WorldManager.EventName triggeredEvent;
         public WorldManager.StoryStep progressionNeeded;
+        public WorldManager.StoryStep lastValidStoryStep = WorldManager.StoryStep.EndGame;
         public List<WorldManager.EventName> requiredEvents;
         [HideInInspector] WorldManager.WorldEvent[] requiredWorldEvents;
         public List<WorldManager.EventName> compromisingEvents;
@@ -88,11 +101,11 @@ public class NPCDialogue : MonoBehaviour
 
         public bool IsValid()
         {
-            if(WorldManager.currentStoryStep >= progressionNeeded)
+            if(WorldManager.currentStoryStep >= progressionNeeded && (WorldManager.currentStoryStep <= lastValidStoryStep || lastValidStoryStep == WorldManager.StoryStep.Tutorial))
             {
                 foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
                 {
-                    if(!worldEvent.occured)
+                    if(!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
                     {
                         return false;
                     }
@@ -100,7 +113,7 @@ public class NPCDialogue : MonoBehaviour
 
                 foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
                 {
-                    if (worldEvent.occured)
+                    if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
                     {
                         return false;
                     }

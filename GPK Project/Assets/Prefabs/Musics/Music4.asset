@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0db7bd21498cdd14fadcf3ba6b72c8e0, type: 3}
   m_Name: Music4
   m_EditorClassIdentifier: 
-  calmLoop: {fileID: 8300000, guid: 4112a4455bc03e14c8b048815af41731, type: 3}
+  calmLoop: {fileID: 8300000, guid: 83d184b6c8024f443bcc3cd504ec8ff8, type: 3}
   calmMusicStartTimeOffset: 0
-  numberOfBeatsUntilLoop: 0
-  beatsToInsertCalmMusic: 08000000100000001800000020000000
+  numberOfBeatsUntilLoop: 417
+  beatsToInsertCalmMusic: 00000000
   combatLoop:
-  - {fileID: 8300000, guid: 2559a4c1c8c38b24ca8644779f8b65e5, type: 3}
-  - {fileID: 8300000, guid: 0ea7f4613a640124c8da44f831bc7e16, type: 3}
-  - {fileID: 8300000, guid: 9c2b72bc4b9a49b4c964cb239e85b252, type: 3}
-  - {fileID: 8300000, guid: ff320aeda11fc874a9e23051862edb6c, type: 3}
-  - {fileID: 8300000, guid: b76d8eaa0cc252b4db025c1efaf13997, type: 3}
-  - {fileID: 8300000, guid: 7230a315350642b4092659de12986340, type: 3}
+  - {fileID: 8300000, guid: 7c2cb15a2e8ccbb43830cbebfd027203, type: 3}
+  - {fileID: 8300000, guid: 99d27b5e55d063b43b5fa9c494d2c24a, type: 3}
+  - {fileID: 8300000, guid: 5b028e520488d56479daba3b8fe356a4, type: 3}
+  - {fileID: 8300000, guid: a418fdc68c0f5464e830a0e66cfee585, type: 3}
+  - {fileID: 8300000, guid: e502e9b7a1aa8284ea39cbf0866ac01a, type: 3}
+  - {fileID: 8300000, guid: 9a4bf3d085f22c94db5382e5311d363d, type: 3}
   combatMusicStartTimeOffset:
   - 0
   - 0
@@ -30,20 +30,19 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  drop:
-  - {fileID: 8300000, guid: 4f4d7a679b681a84e80cb6fbe207200f, type: 3}
-  dropMusicStartTimeOffset:
-  - 0
+  drops: []
+  dropMusicStartTimeOffset: []
   breaks:
-  - {fileID: 8300000, guid: 031c128ed6a95544da37963fbac6e69c, type: 3}
-  - {fileID: 8300000, guid: fd92b3088d81da349acd65fab06e98c4, type: 3}
+  - {fileID: 8300000, guid: d1b14a704a5f20b43b4f857c63804630, type: 3}
+  - {fileID: 8300000, guid: cd469764221dc954ea2032e0917fd91d, type: 3}
   breakMusicStartTimeOffset:
   - 0
   - 0
   bpm: 140
+  generalStartTimeOffset: 0
   canSwitchOnBeat2: 0
   timingThreshold: 0.2
   timingThresholdOffset: 0
   minTimeForOnBeatValidation: 0
   cameraBeatEffectLerpSpeed: 0.5
-  cameraBeatEffectAmplitude: 0.1
+  cameraBeatEffectAmplitude: 0

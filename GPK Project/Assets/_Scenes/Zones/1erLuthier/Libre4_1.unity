@@ -896,6 +896,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: af913f2056ba35546962e6fb7af44acd,
         type: 3}
+    - target: {fileID: 6405902346724256939, guid: 4ccc10c0519f4b64e8a69c22063739db,
+        type: 3}
+      propertyPath: m_FlipY
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8041818756792354879, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_Enabled
@@ -2472,6 +2477,11 @@ PrefabInstance:
       propertyPath: commentary.sentences.Array.data[2]
       value: "A mon avis nous nous rapprochons du but, allons de l'autre c\xF4t\xE9."
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
+        type: 3}
+      propertyPath: commentary.pitch
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670629, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3062,6 +3072,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6096407865150329221, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: musicSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b1b060d2827f624482159bc884d659c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25034624d0a6cb942b829e19fc2c8444, type: 3}
 --- !u!4 &1599668500 stripped

@@ -11,7 +11,11 @@ public class Boss : MonoBehaviour
     public Talk firstTalk;
     public Talk bubbleExplanation;
     public BossPhase[] bossPhases;
+    public WorldManager.EventName triggeredEventWhenDefeated;
     public Hook hookToMoveTo;
+    public GameObject destroyHookEffect;
+    public AudioClip hookDestructionSound;
+
     private bool canBeDamaged = false;
     private bool amThrowingAttacks = true;
     private int attacksBeforeBubble = 0;
@@ -27,13 +31,17 @@ public class Boss : MonoBehaviour
     private int lastAttackIndex;
     private int lastBubbleIndex;
 
+    private WorldManager.WorldEvent triggeredWolrdEventWhenDefeated;
     private Animator animator;
     private bool init;
+    private AudioSource source;
 
     #endregion
 
     private void Start()
     {
+        triggeredWolrdEventWhenDefeated = WorldManager.GetWorldEvent(triggeredEventWhenDefeated);
+        source = GetComponent<AudioSource>();
         isPassive = true;
         animator = GetComponent<Animator>();
         Invoke("LateStart", 0.5f);
@@ -44,7 +52,7 @@ public class Boss : MonoBehaviour
     {
         ZoneHandler.Instance.reliveRemotlyChanged = true;
         GameManager.Instance.blink.BlinkMove(hookToMoveTo.transform.position);
-        GameManager.Instance.dialogueManager.StartTalk(firstTalk, transform, 4);
+        GameManager.Instance.dialogueManager.StartTalk(firstTalk, transform.position, 4);
         init = true;
     }
     void Update()
@@ -203,21 +211,37 @@ public class Boss : MonoBehaviour
 
     private IEnumerator EndBoss()
     {
+        triggeredWolrdEventWhenDefeated.occured = true;
         Debug.Log("Bravo, tu as ramené la couleur dans le monde !");
         yield return new WaitForSeconds(2.0f);
         ZoneHandler.Instance.reliveRemotlyChanged = false;
-        StartCoroutine(GameManager.Instance.AndBackToMainMenu());
     }
 
     private IEnumerator Transition()
     {
         animator.SetInteger("BossPhaseIndex", bossPhaseIndex + 1);
         yield return new WaitForSeconds(bossPhases[bossPhaseIndex].endingPhaseAnimation.length);
-        GameManager.Instance.dialogueManager.StartTalk(bossPhases[bossPhaseIndex].endPhaseTalk, transform, 4);
+        GameManager.Instance.dialogueManager.StartTalk(bossPhases[bossPhaseIndex].endPhaseTalk, transform.position, 4);
         while(!GameManager.Instance.playerManager.isInControl)
         {
             yield return new WaitForEndOfFrame();
         }
+
+        if (bossPhases[bossPhaseIndex].hooksDestroyedEndOfPhase.Length > 0)
+        {
+            StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(Vector2.zero, 5.625f, true));
+            yield return new WaitForSeconds(2.0f);
+            foreach (Hook hook in bossPhases[bossPhaseIndex].hooksDestroyedEndOfPhase)
+            {
+                source.pitch = 1.3f;
+                source.PlayOneShot(hookDestructionSound);
+                Instantiate(destroyHookEffect, hook.transform.position, Quaternion.identity);
+                Destroy(hook.gameObject);
+            }
+            yield return new WaitForSeconds(1.0f);
+            StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
+        }
+
         BossPhaseInit();
     }
 
@@ -234,6 +258,7 @@ public class Boss : MonoBehaviour
         [Range(0,20)] public int numberOfBubblesBeforeAttack;
         [Range(0,20)] public int numberOfBubblesNeededToRecolorEverything;
         public Talk endPhaseTalk;
+        public Hook[] hooksDestroyedEndOfPhase;
 
         [Header("Other Infos")]
         public AnimationClip endingPhaseAnimation;

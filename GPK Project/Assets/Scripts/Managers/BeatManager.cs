@@ -4,11 +4,12 @@ using UnityEngine;
 public class BeatManager : MonoBehaviour
 {
     #region Initialization
+    public int timingLinePointNumber;
     [HideInInspector] [Range(1, 400)] public float bpm;
     [Range(0f, 3f)] public float fadeOutTime = 0.3f;
     [Tooltip("L'intervalle de temps dont le joueur dispose pour effectuer son action et être en rythme.")]
     [HideInInspector] [Range(0f, 1f)] public float timingThreshold = 0.2f;
-    [HideInInspector] [Range(-1f, 1f)] public float timingThresholdOffset;
+    [HideInInspector] public float timingThresholdOffset;
     [HideInInspector] [Range(0f, 1f)] public float beatStartTimeOffset;
     [HideInInspector] [Range(0f, 1f)] public float minTimeForOnBeatValidation;
 
@@ -31,7 +32,7 @@ public class BeatManager : MonoBehaviour
         }
     }
     public double audioTime { get { return AudioSettings.dspTime; } }
-    private double timeBeforeNextBeat;
+    [HideInInspector] public double timeBeforeNextBeat;
     private double timeBeforeNextOffBeat;
     [HideInInspector] public float currentBeatProgression;
     [HideInInspector] public bool useCameraBeatShake;
@@ -59,6 +60,9 @@ public class BeatManager : MonoBehaviour
     [HideInInspector] public string currentMusicSOName;
 
     private float initialCameraSize;
+
+    private LineRenderer timingLine;
+    private Vector3[] timingLinePointPos;
     #endregion
 
     #region Singleton
@@ -107,7 +111,7 @@ public class BeatManager : MonoBehaviour
             TimeCycle();
         }
 
-        if (onBeatNextFrame && !beatActionUsed)
+        if (onBeatNextFrame && !beatActionUsed && !GameManager.Instance.dialogueManager.isTalking)
         {
             GameManager.Instance.blink.FailCombo();
         }
@@ -289,6 +293,7 @@ public class BeatManager : MonoBehaviour
         record.playerOffsetWithTiming = offset;
         record.actionName = actionName;
         record.inCombat = !ZoneHandler.Instance.AllEnemiesConverted();
+        record.zone = ZoneHandler.Instance.currentZone.name;
         record.musicBpm = bpm;
         record.onBeat = onBeat;
         return record;

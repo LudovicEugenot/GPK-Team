@@ -107,6 +107,7 @@ public class BlinkAttack : MonoBehaviour
 
     private void Attack(bool onBeat)
     {
+        GameManager.Instance.playerManager.ResetIdleTime();
         GameManager.playerSource.PlayOneShot(onBeat ? attackOnBeatSound : attackMissBeatSound);
         isCharging = false;
         float currentAttackLength = onBeat ? attackInitialRange.x : attackMissRange;

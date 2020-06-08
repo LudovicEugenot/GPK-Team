@@ -13,12 +13,16 @@ public class SoloTalk : MonoBehaviour
     public SoloTalk previousTalk;
     public float camZoom;
     public Vector2 alternateBoxPos;
+    public WorldManager.EventName triggeredEvent;
     public WorldManager.StoryStep storyStepRequired;
     public WorldManager.EventName[] requiredEvents;
+    public WorldManager.EventName[] compromisingEvents;
     public GameObject interactionIndicator;
 
     private ParticleSystem shinyParticle;
     private WorldManager.WorldEvent[] requiredWorldEvents;
+    private WorldManager.WorldEvent[] compromisingWorldEvents;
+    private WorldManager.WorldEvent triggeredWorldEvent;
     private bool waitingForPreviousTalk;
     [HideInInspector] public bool talkStarted;
 
@@ -45,18 +49,28 @@ public class SoloTalk : MonoBehaviour
                     interactionIndicator.SetActive(true);
                 }
 
-                if (((Input.GetButtonDown("Blink") && manualTrigger) && !GameManager.Instance.blink.IsSelecting()) || autoTrigger)
+                if(PlayerManager.CanInteract() || autoTrigger)
                 {
-                    if(isCommentary)
+                    PlayerManager.DisplayIndicator();
+
+                    if (((Input.GetButtonDown("Blink") && manualTrigger && PlayerManager.IsMouseNearPlayer()) || autoTrigger) && !GameManager.Instance.dialogueManager.isTalking)
                     {
-                        GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
+                        if (GameManager.Instance.usePlaytestRecord && interactionIndicator == null)
+                        {
+                            PlayTestRecorder.currentZoneRecord.loreHolderInteracted.Add(gameObject.name);
+                        }
+
+                        if (isCommentary)
+                        {
+                            GameManager.Instance.dialogueManager.StartCommentary(commentary, timeBewteenSentence, alternateBoxPos);
+                        }
+                        else
+                        {
+                            GameManager.Instance.dialogueManager.StartTalk(commentary, transform.position, camZoom);
+                        }
+                        talkStarted = true;
+                        autoTrigger = false;
                     }
-                    else
-                    {
-                        GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
-                    }
-                    talkStarted = true;
-                    autoTrigger = false;
                 }
             }
             else
@@ -76,7 +90,7 @@ public class SoloTalk : MonoBehaviour
         {
             if (previousTalk.talkStarted && waitingForPreviousTalk && !GameManager.Instance.dialogueManager.isTalking)
             {
-                GameManager.Instance.dialogueManager.StartTalk(commentary, transform, camZoom);
+                GameManager.Instance.dialogueManager.StartTalk(commentary, transform.position, camZoom);
                 waitingForPreviousTalk = false;
             }
         }
@@ -85,26 +99,51 @@ public class SoloTalk : MonoBehaviour
         {
             shinyParticle.Stop();
         }
+
+        if(talkStarted && !GameManager.Instance.dialogueManager.isTalking)
+        {
+            if(triggeredEvent != WorldManager.EventName.NullEvent)
+            {
+                triggeredWorldEvent.occured = true;
+            }
+        }
     }
 
     private void SetupWorldEvents()
     {
+        triggeredWorldEvent = WorldManager.GetWorldEvent(triggeredEvent);
         requiredWorldEvents = new WorldManager.WorldEvent[requiredEvents.Length];
         for(int i = 0; i < requiredEvents.Length; i++)
         {
             requiredWorldEvents[i] = WorldManager.GetWorldEvent(requiredEvents[i]);
         }
+
+        compromisingWorldEvents = new WorldManager.WorldEvent[compromisingEvents.Length];
+        for (int i = 0; i < compromisingEvents.Length; i++)
+        {
+            compromisingWorldEvents[i] = WorldManager.GetWorldEvent(compromisingEvents[i]);
+        }
     }
 
     private bool IsValid()
     {
+        bool isValid = true;
         foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
         {
-            if(!worldEvent.occured)
+            if(!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
             {
-                return false;
+                isValid = false;
             }
         }
-        return true;
+
+        foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
+        {
+            if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
+            {
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 }

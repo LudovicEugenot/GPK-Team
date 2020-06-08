@@ -10,10 +10,12 @@ public abstract class Hook : MonoBehaviour
     public bool isSecureHook;
     public Color blinkableColor;
     public Color selectedColor;
-    public Color unselectableColor;
+    public Color unBlinkableColor;
     public Animator decorationAnimator;
+    public bool drawTrajectoryLine;
 
     [HideInInspector] public bool selected;
+    [HideInInspector] public bool selectable;
     [HideInInspector] public bool blinkable;
     [HideInInspector] public SpriteRenderer sprite;
 
@@ -21,18 +23,30 @@ public abstract class Hook : MonoBehaviour
     protected AnimSynchronizer animSynchronizer;
     [HideInInspector] public HookState hookState;
     protected AudioSource source;
+    private LineRenderer trajectoryLine;
+    private ParticleSystem relivedEffect;
 
     #endregion
 
 
     public void HandlerStart()
     {
+        trajectoryLine = GetComponent<LineRenderer>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         animSynchronizer = GetComponentInChildren<AnimSynchronizer>();
         source = GetComponent<AudioSource>();
         selected = false;
-        blinkable = true;
+        selectable = true;
+        relivedEffect = GetComponentInChildren<ParticleSystem>();
+        if(relivedEffect != null)
+        {
+            relivedEffect.Play();
+        }
+        if(trajectoryLine != null)
+        {
+            trajectoryLine.enabled = false;
+        }
     }
 
 
@@ -48,6 +62,13 @@ public abstract class Hook : MonoBehaviour
         if(hookState.relived)
         {
             Synch();
+            if(relivedEffect != null && relivedEffect.isPlaying)
+                relivedEffect.Stop();
+        }
+
+        if(drawTrajectoryLine)
+        {
+            DrawTrajectory();
         }
     }
 
@@ -85,6 +106,20 @@ public abstract class Hook : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    private void DrawTrajectory()
+    {
+        if(blinkable)
+        {
+            trajectoryLine.enabled = true;
+            Vector3[] linePos = new Vector3[2] {transform.position, GameManager.Instance.blink.currentHook.transform.position};
+            trajectoryLine.SetPositions(linePos);
+        }
+        else
+        {
+            trajectoryLine.enabled = false;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorldEventUpdater : MonoBehaviour
 {
     public bool zoneNameUnknownUntilRecolor;
+    public WorldManager.StoryStep cursedUntilStoryStep;
     public WorldManager.StoryStep storyStepSkip;
     public Talk warningTempleOpen;
     public bool talkTriggered;
@@ -14,6 +15,7 @@ public class WorldEventUpdater : MonoBehaviour
         if(WorldManager.currentStoryStep == WorldManager.StoryStep.Tutorial)
         {
             WorldManager.currentStoryStep = storyStepSkip;
+            Debug.LogWarning("The story step has been skipped to : " + WorldManager.currentStoryStep);
         }
 
         InvokeRepeating("UpdateStoryStep", 1.0f, 1.0f);
@@ -25,7 +27,11 @@ public class WorldEventUpdater : MonoBehaviour
         CheckTutorialEnd();
         CheckVillageArrival();
         UpdateZoneDiscovery();
+        UpdateZoneCurse();
         CheckGreatInstrumentReliving();
+        CheckTempleEntering();
+        CheckKeyPossession();
+        CheckBossState();
     }
 
     private void ChechVillageReliving()
@@ -47,7 +53,7 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckTutorialEnd()
     {
-        if(ZoneHandler.Instance.currentZone.name == "Pied du grand Sole"
+        if(ZoneHandler.Instance.currentZone.buildIndex == 4 
             && WorldManager.currentStoryStep == WorldManager.StoryStep.Tutorial)
         {
             Debug.Log("Le tutoriel est fini");
@@ -57,7 +63,7 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckVillageArrival()
     {
-        if (ZoneHandler.Instance.currentZone.name == "Entrée du village"
+        if (ZoneHandler.Instance.currentZone.buildIndex == 6 
             && WorldManager.currentStoryStep == WorldManager.StoryStep.GoingToVillage)
         {
             Debug.Log("Nous sommes au village");
@@ -68,15 +74,60 @@ public class WorldEventUpdater : MonoBehaviour
     private void CheckGreatInstrumentReliving()
     {
         if (WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
-          && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured) ////// ajouté l'instrument de la voix quand il sera terminé
+          && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured
+          && WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured
+          && WorldManager.currentStoryStep < WorldManager.StoryStep.AllInstrumentRelived)
         {
             Debug.Log("Tous les instrument sont reactivés");
-            if(!talkTriggered)
-            {
-                talkTriggered = true;
-                //GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform, 3);
-            }
+            GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform.position, 3);
             WorldManager.currentStoryStep = WorldManager.StoryStep.AllInstrumentRelived;
+        }
+    }
+
+    private void CheckTempleEntering()
+    {
+        if (ZoneHandler.Instance.currentZone.buildIndex == 28
+            && WorldManager.currentStoryStep == WorldManager.StoryStep.AllInstrumentRelived)
+        {
+            Debug.Log("Nous sommes dans le temple !");
+            WorldManager.currentStoryStep = WorldManager.StoryStep.EnteredTemple;
+        }
+    }
+
+    private void CheckKeyPossession()
+    {
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.DungeonKeyLoot).occured &&
+            WorldManager.currentStoryStep < WorldManager.StoryStep.KeyObtained)
+        {
+            Debug.Log("La clé est récupérée");
+            WorldManager.currentStoryStep = WorldManager.StoryStep.KeyObtained;
+        }
+
+    }
+
+    
+    // Check pour voir si le joueur a fini le jeu.
+    private void CheckBossState()
+    {
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured &&
+            WorldManager.currentStoryStep < WorldManager.StoryStep.EndGame)
+        {
+            Debug.Log("Le boss est vaincu!");
+            WorldManager.currentStoryStep = WorldManager.StoryStep.EndGame;
+        }
+    }
+
+
+    private void UpdateZoneCurse()
+    {
+        if(WorldManager.currentStoryStep >= cursedUntilStoryStep)
+        {
+            ZoneHandler.Instance.reliveRemotlyChanged = false;
+        }
+        else
+        {
+            ZoneHandler.Instance.reliveRemotlyChanged = true;
+            ZoneHandler.Instance.currentReliveProgression = 0;
         }
     }
 

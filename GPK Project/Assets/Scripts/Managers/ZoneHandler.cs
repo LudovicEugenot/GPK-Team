@@ -11,7 +11,7 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
     [HideInInspector] public bool zoneInitialized;
-    private bool isAnimatingRecolor;
+    //private bool isAnimatingRecolor;
 
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
@@ -57,35 +57,34 @@ public class ZoneHandler : MonoBehaviour
 
     private void UpdateRelive()
     {
-        int hooksRelived = 0;
-        if(!currentZone.isRelived)
+        if(!reliveRemotlyChanged/* && !isAnimatingRecolor*/)
         {
-            bool zoneRelived = true;
-            foreach(HookState zoneHook in currentZone.zoneHooks)
+            int hooksRelived = 0;
+            if (!currentZone.isRelived)
             {
-                if(!zoneHook.relived)
+                bool zoneRelived = true;
+                foreach (HookState zoneHook in currentZone.zoneHooks)
                 {
-                    zoneRelived = false;
+                    if (!zoneHook.relived)
+                    {
+                        zoneRelived = false;
+                    }
+                    else
+                    {
+                        hooksRelived++;
+                    }
                 }
-                else
+
+                if (zoneRelived)
                 {
-                    hooksRelived++;
+                    currentZone.isRelived = true;
+                    StartCoroutine(RecolorEffect());
                 }
             }
-
-            if(zoneRelived)
+            else
             {
-                currentZone.isRelived = true;
-                StartCoroutine(RecolorEffect());
+                hooksRelived = currentZone.zoneHooks.Count;
             }
-        }
-        else
-        {
-            hooksRelived = currentZone.zoneHooks.Count;
-        }
-
-        if(!reliveRemotlyChanged && !isAnimatingRecolor)
-        {
             currentReliveProgression = (float)hooksRelived / (float)currentZone.zoneHooks.Count;
         }
     }
@@ -93,18 +92,18 @@ public class ZoneHandler : MonoBehaviour
     public IEnumerator RecolorEffect()
     {
         //Jouer son recolor
-        isAnimatingRecolor = true;
+        /*isAnimatingRecolor = true;
         StartCoroutine(GameManager.Instance.cameraHandler.CinematicLook(Vector2.zero, 2.0f, 5.625f, true));
         currentReliveProgression = 0;
         yield return new WaitForSeconds(1.0f);
-        currentReliveProgression = 1;
+        currentReliveProgression = 1;*/
         // animation de recolor
         for (int i = 0; i < GameManager.Instance.recolorHealthHealed; i++)
         {
             GameManager.Instance.playerManager.Heal(1);
             yield return new WaitForSeconds(0.2f);
         }
-        isAnimatingRecolor = false;
+        //isAnimatingRecolor = false;
     }
 
     public void SaveZoneState()
@@ -141,8 +140,8 @@ public class ZoneHandler : MonoBehaviour
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
-            GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
-            if(currentZone.enemiesConverted[i])
+            //GameManager.Instance.zoneEnemies[i].transform.parent.gameObject.SetActive(!currentZone.enemiesConverted[i]);
+            if(currentZone.enemiesConverted[i] && (GameManager.Instance.respawnEnnemiesIfZoneNotConverted ? currentZone.isRelived : true))
             {
                 GameManager.Instance.zoneEnemies[i].GetConverted(true);
             }
@@ -183,13 +182,22 @@ public class ZoneHandler : MonoBehaviour
     public bool AllEnemiesConverted()
     {
         SaveZoneState();
-        foreach (bool enemyConverted in currentZone.enemiesConverted)
+        /*foreach (bool enemyConverted in currentZone.enemiesConverted)
         {
             if (!enemyConverted)
             {
                 return false;
             }
+        }*/
+
+        foreach (EnemyBase enemy in GameManager.Instance.zoneEnemies)
+        {
+            if (!enemy.IsConverted() && (enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial)))
+            {
+                return false;
+            }
         }
+
         return true;
     }
 

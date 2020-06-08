@@ -23,8 +23,8 @@ public class Enemy_Basic : EnemyBase
     protected override EnemyBehaviour[] TriggeredPattern => triggeredPattern;
 
     private float maxRadiusAttack;
+    private bool isConvertedMoving;
 
-    private bool hasAttacked;
     private ContactFilter2D playerFilter = new ContactFilter2D();
     Vector2 endOfDash = Vector2.zero;
     Vector2 playerPositionWhenTriggered = Vector2.zero;
@@ -54,13 +54,35 @@ public class Enemy_Basic : EnemyBase
         playerFilter.useTriggers = true;
         playerFilter.SetLayerMask(LayerMask.GetMask("Player"));
         maxRadiusAttack = attackParent.transform.localScale.x;
-        hasAttacked = false;
     }
 
     protected override void ConvertedBehaviour()
     {
-        // juste un état passif où on s'assure que l'animator est au bon endroit toussa
-        // (le fait de convertir se fait pas ici)
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            isConvertedMoving = !isConvertedMoving;
+            if(isConvertedMoving)
+            {
+                Vector2 finalDirection = playerPositionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance)).normalized;
+                while (!NoObstacleBetweenMeAndThere(finalDirection))
+                {
+                    if (
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
+                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
+                    {
+                        break;
+                    }
+                    finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
+                }
+                endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
+            }
+        }
+
+        float progression = CurrentBeatProgressionAdjusted(2, 0);
+        animator.SetBool("InTheAir", !FalseDuringBeatProgression(0.0f, 0.5f));
+        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
     }
 
     protected override void TriggeredBehaviour()
@@ -94,24 +116,18 @@ public class Enemy_Basic : EnemyBase
             attackParent.SetActive(false);
         }
 
-        //zone dangeureuse autour de l'ennemi
         if(attackCollider != null)
         {
             attackCollider.enabled = true;
             List<Collider2D> colliders = new List<Collider2D>();
-            if (GameManager.Instance.Beat.currentBeatProgression > 0.1f)
+            if (!BeatManager.Instance.OnBeat(false, false, "---"))
             {
                 Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
             }
-            else
-            {
-                hasAttacked = false;
-            }
             attackCollider.enabled = false;
 
-            if (colliders.Count > 0 && !hasAttacked)
+            if (colliders.Count > 0)
             {
-                hasAttacked = true;
                 GameManager.Instance.playerManager.TakeDamage(attackDamage);
             }
         }
@@ -155,8 +171,9 @@ public class Enemy_Basic : EnemyBase
     {
         source.PlayOneShot(conversionSound);
         animator.SetBool("Converted", true);
+        animator.SetTrigger("Conversion");
         attackParent.SetActive(false);
-        GameManager.Instance.playerManager.AddMusician();
+        //GameManager.Instance.playerManager.AddMusician();
     }
 
     protected override void VulnerableBehaviour()

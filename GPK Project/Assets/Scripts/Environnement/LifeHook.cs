@@ -51,9 +51,10 @@ public class LifeHook : Hook
 
 
 
-        blinkable = Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && PlayerInSight();
+        selectable = Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange;
+        blinkable = PlayerInSight() && selectable;
 
 
-        sprite.color = blinkable ? (selected ? selectedColor : (ZoneHandler.Instance.currentReliveProgression == 1 ? blinkableColor : (used ? usedColor : blinkableColor))) : unselectableColor;
+        sprite.color = blinkable ? (selected ? selectedColor : (ZoneHandler.Instance.currentReliveProgression == 1 ? blinkableColor : (used ? usedColor : blinkableColor))) : unBlinkableColor;
     }
 }

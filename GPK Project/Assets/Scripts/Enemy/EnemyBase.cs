@@ -91,6 +91,9 @@ public abstract class EnemyBase : MonoBehaviour
     protected Vector2 knockback;
     protected float startKnockBackTime;
     protected Vector2 knockbackStartPos;
+
+    public WorldManager.StoryStep firstStoryStepToAppear;
+    public WorldManager.StoryStep lastStoryStepToAppear;
     #endregion
 
     # region Behaviour
@@ -213,8 +216,6 @@ public abstract class EnemyBase : MonoBehaviour
     private void Start()
     {
         activated = true; ///////////////////
-        triggered = false;
-        converted = false;
         player = GameManager.Instance.player.transform;
 
         currentBehaviour = nullBehaviour;
@@ -959,11 +960,14 @@ public abstract class EnemyBase : MonoBehaviour
     {
         currentBehaviour = convertedBehaviour;
         converted = true;
+        if(animator != null)
+        {
+            animator.SetTrigger("Conversion");
+        }
 
         if (!initialize)
         {
             OnConverted();
-            // Convertir l'ennemi
         }
     }
 

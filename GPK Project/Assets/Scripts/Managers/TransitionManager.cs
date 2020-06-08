@@ -27,6 +27,8 @@ public class TransitionManager : MonoBehaviour
     [HideInInspector] public bool firstInit;
     private bool isTransitionning;
     private ZoneHandler zoneHandler;
+    private float timeSpentInZone;
+    [HideInInspector] public TransitionHook previousTransitionHook;
 
     public enum TransitionDirection { Up, Down, Right, Left , WIP};
 
@@ -54,6 +56,11 @@ public class TransitionManager : MonoBehaviour
     private void Update()
     {
         CheckTransitionStart();
+
+        if(GameManager.Instance != null)
+        {
+            timeSpentInZone += GameManager.Instance.paused ? 0 : Time.deltaTime;
+        }
     }
 
     [System.Serializable]
@@ -64,36 +71,45 @@ public class TransitionManager : MonoBehaviour
         public TransitionDirection direction;
         public int connectedSceneBuildIndex;
         public WorldManager.StoryStep storyStepRequired;
+        public WorldManager.EventName eventRequired;
+        public Talk blockedTalk;
+        public int customCinematicTransitionSceneIndex;
     }
 
     private void CheckTransitionStart()
     {
-        if (!firstInit && Input.GetButtonDown("Blink") && !GameManager.Instance.paused && !GameManager.Instance.blink.IsSelecting() && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning)
+        if(!firstInit && !GameManager.Instance.paused && !GameManager.Instance.dialogueManager.isTalking && !isTransitionning && PlayerManager.CanInteract())
         {
             foreach (TransitionHook transitionHook in currentTransitionHooks)
             {
-                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0 && (int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired)
+                if (GameManager.Instance.blink.currentHook == transitionHook.hook && !transitionHook.isTemporary && transitionHook.connectedSceneBuildIndex >= 0)
                 {
-                    if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
+                    PlayerManager.DisplayIndicator();
+                    if (Input.GetButtonDown("Blink") && PlayerManager.IsMouseNearPlayer())
                     {
-                        zoneHandler.SaveZoneState();
-                        if (zoneHandler.AllEnemiesConverted())
+                        if (transitionHook.connectedSceneBuildIndex < SceneManager.sceneCountInBuildSettings && transitionHook.direction != TransitionDirection.WIP)
                         {
-                            StartCoroutine(TransitionToConnectedZone(transitionHook));
-                            if(GameManager.Instance.usePlaytestRecord)
+                            zoneHandler.SaveZoneState();
+                            if (zoneHandler.AllEnemiesConverted())
                             {
-                                PlayTestRecorder.CreateTimingRecordFile();
-                                PlayTestRecorder.ClearRecords();
+                                if ((int)WorldManager.currentStoryStep >= (int)transitionHook.storyStepRequired && (WorldManager.GetWorldEvent(transitionHook.eventRequired).occured || transitionHook.eventRequired == WorldManager.EventName.NullEvent))
+                                {
+                                    StartCoroutine(TransitionToConnectedZone(transitionHook));
+                                }
+                                else
+                                {
+                                    GameManager.Instance.dialogueManager.StartTalk(transitionHook.blockedTalk, GameManager.Instance.transform.position, 5.625f);
+                                }
+                            }
+                            else
+                            {
+                                //feedback de non chagement de zone bloqué par ennemi !
                             }
                         }
                         else
                         {
-                            //feedback de non chagement de zone
+                            Debug.LogWarning("The transition hook : " + transitionHook.hook.gameObject.name + " leads to an unfinished or inexistant zone");
                         }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("The transition hook : " + transitionHook.hook.gameObject.name + " leads to an unfinished or inexistant zone");
                     }
                 }
             }
@@ -133,7 +149,7 @@ public class TransitionManager : MonoBehaviour
 
         zoneHandler.InitializeZone(potentialZone);
 
-
+        timeSpentInZone = 0;
 
         if (startHook == null)
         {
@@ -182,6 +198,8 @@ public class TransitionManager : MonoBehaviour
         }
         GameManager.Instance.blink.currentHook = startHook;
 
+        PlayTestRecorder.RefreshCurrentZone(zoneHandler.currentZone.name);
+
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
         float maskLerpProgression = 0;
         while(maskLerpProgression < 0.95f)
@@ -196,6 +214,7 @@ public class TransitionManager : MonoBehaviour
         isTransitionning = false;
         StartCoroutine(startHook.BlinkReaction(true));
         currentPlayerRendererO.SetActive(true);
+        GameManager.Instance.playerManager.animSynchronizer.Synchronize();
         blackScreen.SetActive(false);
 
         StartCoroutine(GameManager.Instance.DisplayZoneName());
@@ -203,14 +222,22 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
+        if(transitionHook.customCinematicTransitionSceneIndex != 0)
+        {
+            yield return new WaitForSeconds(2);
+        }
+
         isTransitionning = true;
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
+        GameManager.Instance.PauseEnemyBehaviour();
 
         previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
         zoneHandler.SaveZoneState();
         previousWorldData = new WorldData(zoneHandler);
+        PlayTestRecorder.currentZoneRecord.timeSpent += timeSpentInZone;
+        PlayTestRecorder.SaveCurrentZone();
 
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)
@@ -247,7 +274,8 @@ public class TransitionManager : MonoBehaviour
                 break;
         }
         zoneHandler.zoneInitialized = false;
-        SceneManager.LoadScene(transitionHook.connectedSceneBuildIndex);
+        previousTransitionHook = transitionHook;
+        SceneManager.LoadScene(transitionHook.customCinematicTransitionSceneIndex == 0 ? transitionHook.connectedSceneBuildIndex : transitionHook.customCinematicTransitionSceneIndex);
     }
 
     public IEnumerator Respawn()
@@ -261,6 +289,8 @@ public class TransitionManager : MonoBehaviour
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
 
+        PlayTestRecorder.currentZoneRecord.timeSpent += timeSpentInZone;
+
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)
         {
@@ -270,7 +300,6 @@ public class TransitionManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(timeBeforeZoneQuitting);
-
 
         switch (currentStartDirection)
         {
