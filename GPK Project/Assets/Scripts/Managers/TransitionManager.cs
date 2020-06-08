@@ -28,6 +28,7 @@ public class TransitionManager : MonoBehaviour
     private bool isTransitionning;
     private ZoneHandler zoneHandler;
     private float timeSpentInZone;
+    [HideInInspector] public TransitionHook previousTransitionHook;
 
     public enum TransitionDirection { Up, Down, Right, Left , WIP};
 
@@ -72,6 +73,7 @@ public class TransitionManager : MonoBehaviour
         public WorldManager.StoryStep storyStepRequired;
         public WorldManager.EventName eventRequired;
         public Talk blockedTalk;
+        public int customCinematicTransitionSceneIndex;
     }
 
     private void CheckTransitionStart()
@@ -220,10 +222,16 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
+        if(transitionHook.customCinematicTransitionSceneIndex != 0)
+        {
+            yield return new WaitForSeconds(2);
+        }
+
         isTransitionning = true;
         blackScreen.SetActive(true);
         blackScreenMask.transform.localScale = Vector2.one * maxMaskSize;
         blackScreenMask.transform.position = currentPlayerRendererO.transform.position;
+        GameManager.Instance.PauseEnemyBehaviour();
 
         previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
         zoneHandler.SaveZoneState();
@@ -266,7 +274,8 @@ public class TransitionManager : MonoBehaviour
                 break;
         }
         zoneHandler.zoneInitialized = false;
-        SceneManager.LoadScene(transitionHook.connectedSceneBuildIndex);
+        previousTransitionHook = transitionHook;
+        SceneManager.LoadScene(transitionHook.customCinematicTransitionSceneIndex == 0 ? transitionHook.connectedSceneBuildIndex : transitionHook.customCinematicTransitionSceneIndex);
     }
 
     public IEnumerator Respawn()

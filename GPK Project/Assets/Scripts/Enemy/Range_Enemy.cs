@@ -10,7 +10,6 @@ public class Range_Enemy : EnemyBase
     public int barrierDamage;
     public float barrierLength;
     public BoxCollider2D barrierCollider;
-    public LineRenderer beamLine;
     public float[] beamLineWidths;
     public float spaceBetweenBeamFx;
     public float beamStartDistance;
@@ -80,7 +79,6 @@ public class Range_Enemy : EnemyBase
         animator.SetInteger("BeamState", 0);
         barrierCollider.gameObject.SetActive(false);
         canBeDamaged = true;
-        beamLine.enabled = false;
 
         moveFlag = true;
         triggeredFlag = true;
@@ -102,32 +100,8 @@ public class Range_Enemy : EnemyBase
         canBeDamaged = true;
         Vector2 playerDirection = beamTarget - ((Vector2)parent.position + beamStartOffset);
         playerDirection.Normalize();
-        //parent.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, playerDirection));
 
-        beamLine.enabled = true;
-        Vector3[] beamLinePos = new Vector3[2];
-        beamLinePos[0] = parent.position + (Vector3)beamStartOffset;
-        beamLinePos[1] = (Vector2)parent.position + beamStartOffset + playerDirection * barrierLength;
-        beamLine.SetPositions(beamLinePos);
-        beamLine.startWidth = beamLineWidths[0];
-        beamLine.endWidth = beamLineWidths[0];
-
-        moveFlag = true;
-        triggeredFlag = true;
-        if (PlayerIsInAggroRange())
-        {
-            GetTriggered();
-        }
-    }
-
-    protected override void ActionBehaviour()
-    {
-        animator.SetInteger("BeamState", 2);
-        canBeDamaged = true;
-        Vector2 playerDirection = beamTarget - ((Vector2)parent.position + beamStartOffset);
-        playerDirection.Normalize();
-        beamLine.enabled = false;
-        if(BeatManager.Instance.onBeatSingleFrame)
+        if (BeatManager.Instance.onBeatSingleFrame && beamFxO.Count == 0)
         {
             beamFxO.Clear();
             int laserFxNumber = Mathf.CeilToInt(barrierLength / spaceBetweenBeamFx);
@@ -146,11 +120,31 @@ public class Range_Enemy : EnemyBase
             }
         }
 
+        moveFlag = true;
+        triggeredFlag = true;
+        if (PlayerIsInAggroRange())
+        {
+            GetTriggered();
+        }
+    }
+
+    protected override void ActionBehaviour()
+    {
+        animator.SetInteger("BeamState", 2);
+        canBeDamaged = true;
+        Vector2 playerDirection = beamTarget - ((Vector2)parent.position + beamStartOffset);
+        playerDirection.Normalize();
+        if(BeatManager.Instance.onBeatSingleFrame)
+        {
+            int laserFxNumber = Mathf.CeilToInt(barrierLength / spaceBetweenBeamFx);
+            for (int i = 0; i < laserFxNumber; i++)
+            {
+                beamFxO[i].GetComponent<Animator>().SetTrigger("Beam");
+            }
+        }
+
         if(BeatManager.Instance.currentBeatProgression < beatProgressionForbeam)
         {
-            beamLine.startWidth = beamLineWidths[1];
-            beamLine.endWidth = beamLineWidths[1];
-
             RaycastHit2D hit = Physics2D.Raycast(parent.position + (Vector3)beamStartOffset, playerDirection, barrierLength, LayerMask.GetMask("Player"));
             if(hit && !BeatManager.Instance.OnBeat(false, false, "__--__"))
             {
@@ -159,8 +153,6 @@ public class Range_Enemy : EnemyBase
         }
         else
         {
-            beamLine.startWidth = beamLineWidths[2];
-            beamLine.endWidth = beamLineWidths[2];
             barrierCollider.gameObject.SetActive(true);
             barrierCollider.transform.localScale = new Vector2(barrierLength, 0.3f);
             barrierCollider.transform.position = (Vector2)parent.position + beamStartOffset + playerDirection * barrierLength * 0.5f;
@@ -179,9 +171,6 @@ public class Range_Enemy : EnemyBase
         barrierCollider.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, playerDirection));
 
         canBeDamaged = true;
-        beamLine.enabled = false;
-        beamLine.startWidth = beamLineWidths[2];
-        beamLine.endWidth = beamLineWidths[2];
 
         if (BeatManager.Instance.onBeatSingleFrame)
         {
@@ -196,6 +185,14 @@ public class Range_Enemy : EnemyBase
     protected override void TriggeredBehaviour()
     {
         animator.SetInteger("BeamState", 0);
+
+        for (int i = beamFxO.Count - 1; i >= 0; i--)
+        {
+            Destroy(beamFxO[i]);
+            beamFxO.RemoveAt(i);
+        }
+        beamFxO.Clear();
+
         if (triggeredFlag)
         {
             triggeredFlag = false;
@@ -203,7 +200,6 @@ public class Range_Enemy : EnemyBase
         }
         barrierCollider.gameObject.SetActive(false);
         canBeDamaged = false;
-        beamLine.enabled = false;
         spriteRenderer.enabled = false;
     }
 
@@ -211,7 +207,6 @@ public class Range_Enemy : EnemyBase
     {
         spriteRenderer.enabled = true;
         canBeDamaged = false;
-        beamLine.enabled = false;
         if(moveFlag)
         {
             moveFlag = false;
@@ -231,12 +226,12 @@ public class Range_Enemy : EnemyBase
 
     protected override void KnockbackBehaviour()
     {
-        beamLine.enabled = false;
+
     }
 
     protected override void ConvertedBehaviour()
     {
-        beamLine.enabled = false;
+
         spriteRenderer.enabled = true;
         barrierCollider.gameObject.SetActive(false);
         // juste un état passif où on s'assure que l'animator est au bon endroit toussa
@@ -251,7 +246,7 @@ public class Range_Enemy : EnemyBase
             beamFxO.RemoveAt(i);
         }
         beamFxO.Clear();
-        beamLine.enabled = false;
+
         spriteRenderer.enabled = true;
         barrierCollider.gameObject.SetActive(false);
         animator.SetBool("Converted", true);
