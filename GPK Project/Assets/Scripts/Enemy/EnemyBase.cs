@@ -999,7 +999,7 @@ public abstract class EnemyBase : MonoBehaviour
     //Méthodes pour alléger PositionDependingOnObjectsOnTheWay (les additionalDirections sont toujours censées terminer avec behind)
     private Vector2 WhileObjectBetweenMeAndThere(Vector2 myPosition, Vector2 destination, float movementRandomness, float movementDistance, float pathWidth, params AdditionalDirections[] additionalDirections)
     {
-        Vector2 firstDirection = destination;
+        Vector2 firstDestination = destination;
         while (!NoObjectBetweenMeAndThere(destination))
         {
             if (
@@ -1012,7 +1012,7 @@ public abstract class EnemyBase : MonoBehaviour
             }
             if (additionalDirections.Length == 0)
             {
-                destination = firstDirection + new Vector2(
+                destination = firstDestination + new Vector2(
                         UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
                         UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
                 destination = Vector2.ClampMagnitude(destination, movementDistance);
@@ -1022,7 +1022,7 @@ public abstract class EnemyBase : MonoBehaviour
                 int directionChosen = UnityEngine.Random.Range(0, additionalDirections.Length * 2 + 1);
                 if (directionChosen >= additionalDirections.Length * 2 - 1)
                 {
-                    destination = firstDirection + new Vector2(
+                    destination = firstDestination + new Vector2(
                             UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
                             UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
                     destination = Vector2.ClampMagnitude(destination, movementDistance);

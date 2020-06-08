@@ -142,15 +142,14 @@ public class Enemy_Heavy : EnemyBase
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             source.PlayOneShot(jumpSound);
-            Vector2 direction = positionStartOfBeat + Vector2.ClampMagnitude(playerPositionStartOfBeat - positionStartOfBeat, movementDistance);
 
-            endOfDash = PositionDependingOnObjectsOnTheWay(direction, true, 0.3f, 1.5f, movementDistance);
+            endOfDash = PositionDependingOnObjectsOnTheWay(playerPositionStartOfBeat, true, 0.3f, 1.5f, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
 
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0f, 0.5f));
         float progression = CurrentBeatProgressionAdjusted(2, 0);
-        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
     }
 
     protected override void KnockbackBehaviour()
