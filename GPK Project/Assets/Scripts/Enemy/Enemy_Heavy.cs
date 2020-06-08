@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -139,20 +139,9 @@ public class Enemy_Heavy : EnemyBase
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             source.PlayOneShot(jumpSound);
-            Vector2 finalDirection = playerPositionStartOfBeat;
-            while (!NoObjectBetweenMeAndThere(finalDirection))
-            {
-                if (
-                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
-                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
-                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
-                    !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.right))
-                {
-                    break;
-                }
-                finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
-            }
-            endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
+            Vector2 direction = positionStartOfBeat + Vector2.ClampMagnitude(playerPositionStartOfBeat - positionStartOfBeat, movementDistance);
+
+            endOfDash = PositionDependingOnObjectsOnTheWay(direction, true, 0.3f, 1.5f, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
         float progression = CurrentBeatProgressionAdjusted(2, 0);

@@ -428,38 +428,64 @@ public abstract class EnemyBase : MonoBehaviour
             return true;
     }
 
+    #region Init de PositionDependingOnObjectsOnTheWay
+    float raycastGap = 0.3f;
+    float raycastsPercentage = 0.5f; //Pourcentage de raycasts nécessaires pour valider une path (en pourcentage)
 
+    int numberOfSideRays;
+    int numberOfMiddleRays;
+
+    int numberOfRaycastLeftSideHit;
+    float averageLeftDistance;
+
+    int numberOfRaycastMiddleHit;
+    float averageMiddleDistance;
+
+    int numberOfRaycastRightSideHit;
+    float averageRightDistance;
+
+    int totalNumberOfRays;
+    int totalNumberOfRaysHit;
+
+    float[] allRays;
+
+    AdditionalDirections mainDirection;
+    List<AdditionalDirections> additionalDirectionsList = new List<AdditionalDirections> { AdditionalDirections.behind };
+    AdditionalDirections[] additionalDirections;
+    float movementReduced;
+    #endregion
+
+    /// <summary>
+    /// Renvoie une position selon les objets détectés sur le chemin. Le chemin en question est divisé en 3 paths : gauche, milieu et droite.
+    /// </summary>
+    /// <param name="positionToGetTo">Position vers laquelle cet ennemi essaie d'aller.</param>
+    /// <param name="includingEnemies">Si false, détecte les murs. Si true, détecte aussi les ennemis.</param>
+    /// <param name="resultingMovementRandomness">0 = va précisément aux positions de PositionAccordingToAdditionalDirection. 1 = a de la liberté de mouvement autour de la position visée.</param>
+    /// <param name="pathWidth">Largeur du chemin à "scanner" (un ennemi basique fait 0.4 de large).</param>
+    /// <param name="movementDistance">Insérer ici la variable de vitesse de déplacement propre à l'ennemi.</param>
+    /// <returns></returns>
     protected Vector2 PositionDependingOnObjectsOnTheWay(Vector2 positionToGetTo, bool includingEnemies, float resultingMovementRandomness, float pathWidth, float movementDistance)
     {
         #region Init
+        Vector2 myPosition = parent.transform.position;
+        float maxDistance = Vector2.Distance(positionToGetTo, myPosition);
         //Stats
-        float raycastGap = 0.3f;
-        float maxDistance = Vector2.Distance(positionToGetTo, parent.transform.position);
         float longDistance = maxDistance * 0.8f;
         float middleDistance = maxDistance * 0.5f;
         float shortDistance = maxDistance * 0.2f;
 
-        //Variables
-        int numberOfSideRays = 0;
-        int numberOfMiddleRays = 0;
+        //Set les Variables
+        numberOfRaycastLeftSideHit = 0;
+        averageLeftDistance = 100f;
 
-        float minimumDistanceHitLeft = 100f;
-        int numberOfRaycastLeftSideHit = 0;
-        float averageLeftDistance = 0f;
+        numberOfRaycastMiddleHit = 0;
+        averageMiddleDistance = 100f;
 
-        float minimumDistanceHitMiddle = 100f;
-        int numberOfRaycastMiddleHit = 0;
-        float averageMiddleDistance = 0f;
+        numberOfRaycastRightSideHit = 0;
+        averageRightDistance = 100f;
 
-        float minimumDistanceHitRight = 100f;
-        int numberOfRaycastRightSideHit = 0;
-        float averageRightDistance = 0f;
-
-        int totalNumberOfRays = 0;
-        int totalNumberOfRaysHit = 0;
-
-        Vector2 myPosition = parent.transform.position;
-        float[] allRays;
+        additionalDirectionsList.Clear();
+        movementReduced = 1f;
         #endregion
 
         #region Set up des raycasts à envoyer
@@ -476,8 +502,9 @@ public abstract class EnemyBase : MonoBehaviour
 
             allRays[0] = -pathWidth * 0.5f;
             allRays[numberOfRays - 1] = pathWidth * 0.5f;
-
-            float firstRay = 0 + Mathf.FloorToInt((numberOfRays - 2) * 0.5f) * raycastGap;
+            
+            float centerOffset = allRays.Length % 2 == 0 ? raycastGap * 0.5f : 0f;
+            float firstRay = centerOffset - Mathf.FloorToInt((numberOfRays - 2) * 0.5f) * raycastGap;
 
             for (int i = 1; i < numberOfRays - 1; i++)
             {
@@ -498,6 +525,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
         totalNumberOfRays = numberOfSideRays * 2 + numberOfMiddleRays;
         #endregion
+        Debug.Log("number of rays sent :"+totalNumberOfRays);
 
         #region Calcul de l'angle pour l'offset des raycasts à venir
         Vector2 baseRaycast = positionToGetTo - myPosition;
@@ -510,12 +538,11 @@ public abstract class EnemyBase : MonoBehaviour
             else
                 calculationAdjustment = Mathf.PI;
         }
-        float angle = Mathf.Atan(baseRaycast.x / baseRaycast.y) + calculationAdjustment + Mathf.PI * 0.5f;
+        float angle = Mathf.Atan(baseRaycast.y / baseRaycast.x) + calculationAdjustment - Mathf.PI * 0.5f;
         #endregion
+        Debug.Log("Angle = "+angle);
 
         #region Envois de raycasts
-        float totalLeftDistance = 0f;
-        float totalRightDistance = 0f;
         for (int i = 0; i < allRays.Length; i++)
         {
             RaycastHit2D raycast;
@@ -547,124 +574,194 @@ public abstract class EnemyBase : MonoBehaviour
                 if (i <= numberOfSideRays - 1)
                 {
                     numberOfRaycastLeftSideHit++;
-                    totalLeftDistance += distance;
-                    minimumDistanceHitLeft = minimumDistanceHitLeft < distance ? minimumDistanceHitLeft : distance;
+                    averageLeftDistance = averageLeftDistance * (numberOfRaycastLeftSideHit - 1) + distance / numberOfRaycastLeftSideHit;
                 }
                 else if (i > numberOfSideRays + numberOfMiddleRays - 1)
                 {
                     numberOfRaycastRightSideHit++;
-                    totalRightDistance += distance;
-                    minimumDistanceHitRight = minimumDistanceHitRight < distance ? minimumDistanceHitRight : distance;
+                    averageRightDistance = averageRightDistance * (numberOfRaycastRightSideHit - 1) + distance / numberOfRaycastRightSideHit;
                 }
                 else
                 {
                     numberOfRaycastMiddleHit++;
                     averageMiddleDistance = numberOfRaycastMiddleHit == 1 ? distance : (distance + averageMiddleDistance) * 0.5f;
-                    minimumDistanceHitMiddle = minimumDistanceHitMiddle < distance ? minimumDistanceHitMiddle : distance;
                 }
             }
         }
         totalNumberOfRaysHit = numberOfRaycastLeftSideHit + numberOfRaycastRightSideHit + numberOfRaycastMiddleHit;
-        averageLeftDistance = totalLeftDistance / numberOfSideRays;
-        averageRightDistance = totalRightDistance / numberOfSideRays;
+        if (numberOfRaycastLeftSideHit < numberOfSideRays * raycastsPercentage)
+        {
+            averageLeftDistance = 100f;
+        }
+
+        if (numberOfRaycastRightSideHit < numberOfSideRays * raycastsPercentage)
+        {
+            averageRightDistance = 100f;
+        }
         #endregion
+        Debug.Log("averageLeftDistance = "+ averageLeftDistance + ", averageMiddleDistance = "+averageMiddleDistance+ ", averageRightDistance = "+ averageRightDistance);
 
         #region Position obtenue selon les raycasts envoyés
         if (totalNumberOfRaysHit == 0)
         {
             return positionToGetTo;
         }
-        else if (totalNumberOfRaysHit == totalNumberOfRays)
+
+        if (averageMiddleDistance < middleDistance)
         {
-            if (averageLeftDistance < shortDistance && averageRightDistance < shortDistance && averageMiddleDistance < shortDistance)
-            {
-                Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.behind, positionToGetTo, pathWidth) +
-                    RandomVector(movementDistance * resultingMovementRandomness);
-                direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth);
-
-                return direction;
-            }
-            else if (averageLeftDistance < shortDistance || averageRightDistance < shortDistance && averageMiddleDistance < shortDistance)
+            if (averageMiddleDistance < shortDistance)
             {
                 if (averageLeftDistance < shortDistance)
                 {
-                    float movementReduced = 0.4f;
-                    Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.shortRight, positionToGetTo, pathWidth) +
-                        RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
-                    direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                    direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
-
-                    return direction;
-                }
-                else
-                {
-                    float reduceMovement = 0.4f;
-                    Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.shortLeft, positionToGetTo, pathWidth) +
-                        RandomVector(movementDistance * reduceMovement * resultingMovementRandomness);
-                    direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                    direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
-
-                    return direction;
-                }
-            }
-            else if (averageLeftDistance < shortDistance || averageRightDistance < shortDistance)
-            {
-                if (averageLeftDistance < shortDistance)
-                {
-                    if (averageRightDistance > middleDistance)
+                    if (averageRightDistance < shortDistance)
                     {
-                        float movementReduced = 0.7f;
-                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.longRight, positionToGetTo, pathWidth) +
-                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
-                        direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
-
-                        return direction;
+                        mainDirection = AdditionalDirections.behind;
                     }
                     else
                     {
-                        float movementReduced = 0.5f;
-                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.middleRight, positionToGetTo, pathWidth) +
-                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
-                        direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
-
-                        return direction;
+                        movementReduced = 0.4f;
+                        mainDirection = AdditionalDirections.shortRight;
+                        additionalDirectionsList.Add(AdditionalDirections.behind);
                     }
                 }
                 else
                 {
-                    if (averageRightDistance > middleDistance)
+                    if (averageRightDistance < shortDistance)
                     {
-                        float movementReduced = 0.7f;
-                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.longRight, positionToGetTo, pathWidth) +
-                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
-                        direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
-
-                        return direction;
+                        movementReduced = 0.4f;
+                        mainDirection = AdditionalDirections.shortLeft;
+                        additionalDirectionsList.Add(AdditionalDirections.behind);
                     }
                     else
                     {
-                        float movementReduced = 0.5f;
-                        Vector2 direction = PositionAccordingToAdditionalDirection(AdditionalDirections.middleRight, positionToGetTo, pathWidth) +
-                            RandomVector(movementDistance * movementReduced * resultingMovementRandomness);
-                        direction = Vector2.ClampMagnitude(direction, movementDistance);
-
-                        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, AdditionalDirections.behind);
-
-                        return direction;
+                        mainDirection = AdditionalDirections.shortMiddle;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.shortLeft,
+                            AdditionalDirections.shortRight,
+                            AdditionalDirections.behind });
+                    }
+                }
+            }
+            else
+            {
+                if (averageLeftDistance > shortDistance)
+                {
+                    if (averageRightDistance > shortDistance)
+                    {
+                        movementReduced = 0.7f;
+                        mainDirection = AdditionalDirections.middleMiddle;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.middleRight,
+                            AdditionalDirections.middleLeft,
+                            AdditionalDirections.shortLeft,
+                            AdditionalDirections.shortRight,
+                            AdditionalDirections.shortMiddle,
+                            AdditionalDirections.behind });
+                    }
+                    else
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.middleLeft;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.shortLeft,
+                            AdditionalDirections.shortMiddle,
+                            AdditionalDirections.behind });
+                    }
+                }
+                else
+                {
+                    if (averageRightDistance > shortDistance)
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.middleRight;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.shortRight,
+                            AdditionalDirections.shortMiddle,
+                            AdditionalDirections.behind });
+                    }
+                    else
+                    {
+                        mainDirection = AdditionalDirections.behind;
+                        additionalDirectionsList.Add(AdditionalDirections.shortMiddle);
                     }
                 }
             }
         }
+        else if (averageLeftDistance < middleDistance)
+        {
+            if (averageRightDistance < middleDistance)
+            {
+                movementReduced = 0.6f;
+                mainDirection = AdditionalDirections.shortMiddle;
+                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                    AdditionalDirections.shortRight,
+                    AdditionalDirections.shortLeft,
+                    AdditionalDirections.behind });
+            }
+            else if(averageRightDistance > longDistance)
+            {
+                movementReduced = 0.7f;
+                mainDirection = AdditionalDirections.longRight;
+                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                    AdditionalDirections.middleRight,
+                    AdditionalDirections.shortMiddle,
+                    AdditionalDirections.behind });
+            }
+            else
+            {
+                movementReduced = 0.5f;
+                mainDirection = AdditionalDirections.middleRight;
+                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                    AdditionalDirections.shortRight,
+                    AdditionalDirections.shortMiddle,
+                    AdditionalDirections.behind });
+            }
+        }
+        else
+        {
+            if(averageRightDistance < middleDistance)
+            {
+                movementReduced = 0.5f;
+                mainDirection = AdditionalDirections.middleLeft;
+                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                    AdditionalDirections.middleRight,
+                    AdditionalDirections.shortMiddle,
+                    AdditionalDirections.behind });
+            }
+            else if (averageRightDistance > longDistance)
+            {
+                movementReduced = 0.7f;
+                mainDirection = AdditionalDirections.longLeft;
+                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                    AdditionalDirections.middleLeft,
+                    AdditionalDirections.shortMiddle,
+                    AdditionalDirections.behind });
+            }
+            else
+            {
+                movementReduced = 0.5f;
+                mainDirection = AdditionalDirections.middleRight;
+                additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                    AdditionalDirections.shortRight,
+                    AdditionalDirections.shortMiddle,
+                    AdditionalDirections.behind });
+            }
+        }
+
+        additionalDirections = new AdditionalDirections[additionalDirectionsList.Count];
+        for (int i = 0; i < additionalDirectionsList.Count; i++)
+        {
+            additionalDirections[i] = additionalDirectionsList[i];
+        }
+
+        Vector2 direction = PositionAccordingToAdditionalDirection(mainDirection, positionToGetTo, pathWidth) + new Vector2(
+            UnityEngine.Random.Range(-movementDistance * movementReduced * resultingMovementRandomness, movementDistance * movementReduced * resultingMovementRandomness),
+            UnityEngine.Random.Range(-movementDistance * movementReduced * resultingMovementRandomness, movementDistance * movementReduced * resultingMovementRandomness));
+        direction = Vector2.ClampMagnitude(direction, movementDistance);
+
+        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, additionalDirections);
+
+        return direction;
         #endregion
     }
 
@@ -796,15 +893,11 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    //Méthodes pour alléger PositionDependingOnObjectsOnTheWay (les additionalDirections sont censées terminer avec behind toujours)
-    private enum AdditionalDirections
+    //Méthodes pour alléger PositionDependingOnObjectsOnTheWay (les additionalDirections sont toujours censées terminer avec behind)
+    private Vector2 WhileObjectBetweenMeAndThere(Vector2 myPosition, Vector2 destination, float movementRandomness, float movementDistance, float pathWidth, params AdditionalDirections[] additionalDirections)
     {
-        behind, longLeft, longRight, middleLeft, middleRight, shortLeft, shortRight
-    }
-    private Vector2 WhileObjectBetweenMeAndThere(Vector2 myPosition, Vector2 direction, float movementRandomness, float movementDistance, float pathWidth, params AdditionalDirections[] additionalDirections)
-    {
-        Vector2 firstDirection = direction;
-        while (!NoObjectBetweenMeAndThere(direction))
+        Vector2 firstDirection = destination;
+        while (!NoObjectBetweenMeAndThere(destination))
         {
             if (
                 !NoObjectBetweenMeAndThere(myPosition + Vector2.down) &&
@@ -816,40 +909,44 @@ public abstract class EnemyBase : MonoBehaviour
             }
             if (additionalDirections.Length == 0)
             {
-                direction = firstDirection + new Vector2(
+                destination = firstDirection + new Vector2(
                         UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
                         UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
-                direction = Vector2.ClampMagnitude(direction, movementDistance);
+                destination = Vector2.ClampMagnitude(destination, movementDistance);
             }
             else
             {
                 int directionChosen = UnityEngine.Random.Range(0, additionalDirections.Length * 2 + 1);
                 if (directionChosen >= additionalDirections.Length * 2 - 1)
                 {
-                    direction = firstDirection + new Vector2(
+                    destination = firstDirection + new Vector2(
                             UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
                             UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
-                    direction = Vector2.ClampMagnitude(direction, movementDistance);
+                    destination = Vector2.ClampMagnitude(destination, movementDistance);
                 }
                 else
                 {
-                    direction = PositionAccordingToAdditionalDirection(additionalDirections[Mathf.FloorToInt(directionChosen * 0.5f)], direction, pathWidth);
-                    direction += new Vector2(
+                    destination = PositionAccordingToAdditionalDirection(additionalDirections[Mathf.FloorToInt(directionChosen * 0.5f)], destination, pathWidth);
+                    destination += new Vector2(
                             UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
                             UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
-                    direction = Vector2.ClampMagnitude(direction, movementDistance);
+                    destination = Vector2.ClampMagnitude(destination, movementDistance);
                 }
             }
         }
-        return direction;
+        return destination;
+    }
+    private enum AdditionalDirections
+    {
+        behind, longLeft, longMiddle, longRight, middleLeft, middleMiddle, middleRight, shortLeft, shortMiddle, shortRight
     }
     private Vector2 PositionAccordingToAdditionalDirection(AdditionalDirections direction, Vector2 positionToGetTo, float pathWidth)
     {
-        float maxDistance = Vector2.Distance(positionToGetTo, parent.transform.position);
+        Vector2 myPosition = transform.position;
+        float maxDistance = Vector2.Distance(positionToGetTo, myPosition);
         float longDistance = maxDistance * 0.8f;
         float middleDistance = maxDistance * 0.5f;
         float shortDistance = maxDistance * 0.2f;
-        Vector2 myPosition = parent.transform.position;
 
         #region Angle
         Vector2 baseRaycast = positionToGetTo - myPosition;
@@ -862,7 +959,7 @@ public abstract class EnemyBase : MonoBehaviour
             else
                 calculationAdjustment = Mathf.PI;
         }
-        float angle = Mathf.Atan(baseRaycast.x / baseRaycast.y) + calculationAdjustment + Mathf.PI * 0.5f;
+        float angle = Mathf.Atan(baseRaycast.y / baseRaycast.x) + calculationAdjustment - Mathf.PI * 0.5f;
         #endregion
         Vector2 leftOffset = new Vector2(-pathWidth * 0.5f * Mathf.Cos(angle), -pathWidth * 0.5f * Mathf.Sin(angle));
         Vector2 rightOffset = new Vector2(pathWidth * 0.5f * Mathf.Cos(angle), pathWidth * 0.5f * Mathf.Sin(angle));
@@ -879,30 +976,27 @@ public abstract class EnemyBase : MonoBehaviour
                 {
                     return UnityEngine.Random.Range(0, 2) == 0 ? behindMe + leftOffset : behindMe + rightOffset;
                 }
-
             case AdditionalDirections.longLeft:
                 return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition + leftOffset;
+            case AdditionalDirections.longMiddle:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition;
             case AdditionalDirections.longRight:
                 return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition + rightOffset;
             case AdditionalDirections.middleLeft:
                 return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition + leftOffset;
+            case AdditionalDirections.middleMiddle:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition;
             case AdditionalDirections.middleRight:
                 return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition + rightOffset;
             case AdditionalDirections.shortLeft:
                 return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition + leftOffset;
+            case AdditionalDirections.shortMiddle:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition;
             case AdditionalDirections.shortRight:
                 return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition + rightOffset;
             default:
                 return Vector2.zero;
         }
-    }
-    private Vector2 RandomVector(float random)
-    {
-        return new Vector2
-            (
-                UnityEngine.Random.Range(-random, random),
-                UnityEngine.Random.Range(-random, random)
-            );
     }
     #endregion
 
