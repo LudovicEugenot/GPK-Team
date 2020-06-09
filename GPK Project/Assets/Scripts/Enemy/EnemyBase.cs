@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -386,7 +386,7 @@ public abstract class EnemyBase : MonoBehaviour
     {
         for (int i = 0; i < lastSeenPlayerPosition.Count; i++)
         {
-            if (NoObstacleBetweenMeAndThere(lastSeenPlayerPosition[i]))
+            if (NoObjectBetweenMeAndThere(lastSeenPlayerPosition[i]))
             {
                 if (Vector2.Distance(lastSeenPlayerPosition[i], parent.position) < 0.5f)
                 {
@@ -402,20 +402,467 @@ public abstract class EnemyBase : MonoBehaviour
         return (Vector2)parent.transform.position + new Vector2(UnityEngine.Random.Range(-distance, distance), UnityEngine.Random.Range(-distance, distance));
     }
 
-    protected bool NoObstacleBetweenMeAndThere(Vector2 positionToGetTo)
+    /// <summary>
+    /// Sends a raycast to positionToGetTo according to objectLayers. If objectLayers is empty, checks "Obstacle" per default.
+    /// </summary>
+    /// <param name="positionToGetTo">Absolute position to get to.</param>
+    /// <param name="objectLayers">Name of layers to check. If empty, fills in "Obstacle" per default.</param>
+    /// <returns></returns>
+    protected bool NoObjectBetweenMeAndThere(Vector2 positionToGetTo, params string[] objectLayers)
     {
+        if (objectLayers.Length == 0)
+        {
+            objectLayers = new string[1];
+            objectLayers[0] = "Obstacle";
+        }
         RaycastHit2D travelPathHitObject = Physics2D.Raycast
             (
                 parent.transform.position,
                 positionToGetTo - (Vector2)parent.transform.position,
                 Vector2.Distance(positionToGetTo, parent.transform.position),
-                LayerMask.GetMask("Obstacle")
+                LayerMask.GetMask(objectLayers)
             );
 
         if (travelPathHitObject)
             return false;
         else
             return true;
+    }
+
+    #region Init de PositionDependingOnObjectsOnTheWay
+    float raycastGap = 0.3f;
+    float raycastsPercentage = 0.5f; //Pourcentage de raycasts nécessaires pour valider une path (en pourcentage)
+
+    int numberOfSideRays;
+    int numberOfMiddleRays;
+
+    int numberOfRaycastLeftSideHit;
+    float averageLeftDistance;
+
+    int numberOfRaycastMiddleHit;
+    float averageMiddleDistance;
+
+    int numberOfRaycastRightSideHit;
+    float averageRightDistance;
+
+    int totalNumberOfRays;
+    int totalNumberOfRaysHit;
+
+    float[] allRays;
+
+    AdditionalDirections mainDirection;
+    List<AdditionalDirections> additionalDirectionsList = new List<AdditionalDirections> { AdditionalDirections.behind };
+    AdditionalDirections[] additionalDirections;
+    float movementReduced;
+    #endregion
+
+    /// <summary>
+    /// Renvoie une position selon les objets détectés sur le chemin. Le chemin en question est divisé en 3 paths : gauche, milieu et droite.
+    /// </summary>
+    /// <param name="positionToGetTo">Position vers laquelle cet ennemi essaie d'aller.</param>
+    /// <param name="includingEnemies">Si false, détecte les murs. Si true, détecte aussi les ennemis.</param>
+    /// <param name="resultingMovementRandomness">0 = va précisément aux positions de PositionAccordingToAdditionalDirection. 1 = a de la liberté de mouvement autour de la position visée.</param>
+    /// <param name="pathWidth">Largeur du chemin à "scanner" (un ennemi basique fait 0.4 de large).</param>
+    /// <param name="movementDistance">Insérer ici la variable de vitesse de déplacement propre à l'ennemi.</param>
+    /// <returns></returns>
+    protected Vector2 PositionDependingOnObjectsOnTheWay(Vector2 positionToGetTo, bool includingEnemies, float resultingMovementRandomness, float pathWidth, float movementDistance)
+    {
+        #region Init
+        Vector2 myPosition = parent.transform.position;
+        float maxDistance = Vector2.Distance(positionToGetTo, myPosition);
+        //Stats
+        float longDistance = maxDistance * 0.8f;
+        float middleDistance = maxDistance * 0.5f;
+        float shortDistance = maxDistance * 0.3f;
+
+        //Set les Variables
+        numberOfRaycastLeftSideHit = 0;
+        averageLeftDistance = 100f;
+
+        numberOfRaycastMiddleHit = 0;
+        averageMiddleDistance = 100f;
+
+        numberOfRaycastRightSideHit = 0;
+        averageRightDistance = 100f;
+
+        additionalDirectionsList.Clear();
+        movementReduced = 1f;
+        #endregion
+
+        #region Set up des raycasts à envoyer
+        //la voie est checkée par différents raycasts envoyés tous les 0.3 de distance + les bords de la voie
+        if (pathWidth < raycastGap)
+        {
+            allRays = new float[] { -pathWidth * 0.5f, 0f, pathWidth * 0.5f };
+        }
+        else
+        {
+            int numberOfRays = Mathf.FloorToInt(pathWidth / raycastGap) + 2;
+
+            allRays = new float[numberOfRays];
+
+            allRays[0] = -pathWidth * 0.5f;
+            allRays[numberOfRays - 1] = pathWidth * 0.5f;
+
+            float centerOffset = allRays.Length % 2 == 0 ? raycastGap * 0.5f : 0f;
+            float firstRay = centerOffset - Mathf.FloorToInt((numberOfRays - 2) * 0.5f) * raycastGap;
+
+            for (int i = 1; i < numberOfRays - 1; i++)
+            {
+                allRays[i] = firstRay;
+                firstRay += raycastGap;
+            }
+        }
+
+        if (allRays.Length % 2 == 0)
+        {
+            numberOfMiddleRays = 2;
+            numberOfSideRays = (int)(allRays.Length * 0.5f) - 1;
+        }
+        else
+        {
+            numberOfMiddleRays = 1;
+            numberOfSideRays = Mathf.FloorToInt(allRays.Length * 0.5f);
+        }
+        totalNumberOfRays = numberOfSideRays * 2 + numberOfMiddleRays;
+        #endregion
+
+        #region Calcul de l'angle pour l'offset des raycasts à venir
+        Vector2 baseRaycast = positionToGetTo - myPosition;
+
+        float calculationAdjustment = 0f;
+        if (baseRaycast.x < 0 || baseRaycast.y < 0)
+        {
+            if (baseRaycast.x > 0)
+                calculationAdjustment = Mathf.PI * 2;
+            else
+                calculationAdjustment = Mathf.PI;
+        }
+        float angle = Mathf.Atan(baseRaycast.y / baseRaycast.x) + calculationAdjustment - Mathf.PI * 0.5f;
+        #endregion
+
+        #region Envois de raycasts
+        for (int i = 0; i < allRays.Length; i++)
+        {
+            RaycastHit2D raycast;
+            Vector2 offset = new Vector2(allRays[i] * Mathf.Cos(angle), allRays[i] * Mathf.Sin(angle));
+            if (includingEnemies)
+            {
+                raycast = Physics2D.Raycast
+                    (
+                        myPosition + offset,
+                        baseRaycast,
+                        baseRaycast.magnitude,
+                        LayerMask.GetMask("Obstacle", "Enemy")
+                    );
+            }
+            else
+            {
+                raycast = Physics2D.Raycast
+                    (
+                        myPosition + offset,
+                        baseRaycast,
+                        baseRaycast.magnitude,
+                        LayerMask.GetMask("Obstacle")
+                    );
+            }
+
+            if (raycast)
+            {
+                float distance = raycast.distance;
+                if (i <= numberOfSideRays - 1)
+                {
+                    numberOfRaycastLeftSideHit++;
+                    averageLeftDistance = averageLeftDistance * (numberOfRaycastLeftSideHit - 1) + distance / numberOfRaycastLeftSideHit;
+                }
+                else if (i > numberOfSideRays + numberOfMiddleRays - 1)
+                {
+                    numberOfRaycastRightSideHit++;
+                    averageRightDistance = averageRightDistance * (numberOfRaycastRightSideHit - 1) + distance / numberOfRaycastRightSideHit;
+                }
+                else
+                {
+                    numberOfRaycastMiddleHit++;
+                    averageMiddleDistance = numberOfRaycastMiddleHit == 1 ? distance : (distance + averageMiddleDistance) * 0.5f;
+                }
+            }
+        }
+        totalNumberOfRaysHit = numberOfRaycastLeftSideHit + numberOfRaycastRightSideHit + numberOfRaycastMiddleHit;
+        if (numberOfRaycastLeftSideHit < numberOfSideRays * raycastsPercentage)
+        {
+            averageLeftDistance = 100f;
+        }
+
+        if (numberOfRaycastRightSideHit < numberOfSideRays * raycastsPercentage)
+        {
+            averageRightDistance = 100f;
+        }
+        #endregion
+
+        #region Position obtenue selon les raycasts envoyés
+        if (totalNumberOfRaysHit == 0)
+        {
+            return positionToGetTo;
+        }
+
+        if (averageMiddleDistance < longDistance)
+        {
+            if (averageMiddleDistance < middleDistance)
+            {
+                if (averageMiddleDistance < shortDistance)
+                {
+                    if (averageLeftDistance < shortDistance)
+                    {
+                        if (averageRightDistance < shortDistance)
+                        {
+                            mainDirection = AdditionalDirections.behind;
+                        }
+                        else
+                        {
+                            movementReduced = 0.4f;
+                            mainDirection = AdditionalDirections.shortRight;
+                            additionalDirectionsList.Add(AdditionalDirections.behind);
+                        }
+                    }
+                    else
+                    {
+                        if (averageRightDistance < shortDistance)
+                        {
+                            movementReduced = 0.4f;
+                            mainDirection = AdditionalDirections.shortLeft;
+                            additionalDirectionsList.Add(AdditionalDirections.behind);
+                        }
+                        else
+                        {
+                            mainDirection = AdditionalDirections.shortMiddle;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.shortLeft,
+                                AdditionalDirections.shortRight,
+                                AdditionalDirections.behind });
+                        }
+                    }
+                }
+                else
+                {
+                    if (averageLeftDistance > shortDistance)
+                    {
+                        if (averageRightDistance > shortDistance)
+                        {
+                            movementReduced = 0.7f;
+                            mainDirection = AdditionalDirections.middleMiddle;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.middleRight,
+                                AdditionalDirections.middleLeft,
+                                AdditionalDirections.shortLeft,
+                                AdditionalDirections.shortRight,
+                                AdditionalDirections.shortMiddle,
+                                AdditionalDirections.behind });
+                        }
+                        else
+                        {
+                            movementReduced = 0.5f;
+                            mainDirection = AdditionalDirections.middleLeft;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.shortLeft,
+                                AdditionalDirections.shortMiddle,
+                                AdditionalDirections.behind });
+                        }
+                    }
+                    else
+                    {
+                        if (averageRightDistance > shortDistance)
+                        {
+                            movementReduced = 0.5f;
+                            mainDirection = AdditionalDirections.middleRight;
+                            additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                                AdditionalDirections.shortRight,
+                                AdditionalDirections.shortMiddle,
+                                AdditionalDirections.behind });
+                        }
+                        else
+                        {
+                            mainDirection = AdditionalDirections.behind;
+                            additionalDirectionsList.Add(AdditionalDirections.shortMiddle);
+                        }
+                    }
+                }
+            }
+            else if (averageLeftDistance < middleDistance)
+            {
+                if (averageRightDistance < middleDistance)
+                {
+                    movementReduced = 0.6f;
+                    mainDirection = AdditionalDirections.shortMiddle;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.shortRight,
+                        AdditionalDirections.shortLeft,
+                        AdditionalDirections.behind });
+                }
+                else if (averageRightDistance > longDistance)
+                {
+                    movementReduced = 0.7f;
+                    mainDirection = AdditionalDirections.longRight;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.shortMiddle,
+                        AdditionalDirections.behind });
+                }
+                else
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleRight;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.shortRight,
+                        AdditionalDirections.shortMiddle,
+                        AdditionalDirections.behind });
+                }
+            }
+            else
+            {
+                if (averageRightDistance < middleDistance)
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.shortMiddle,
+                        AdditionalDirections.behind });
+                }
+                else if (averageRightDistance > longDistance)
+                {
+                    movementReduced = 0.7f;
+                    mainDirection = AdditionalDirections.longRight;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.longLeft,
+                        AdditionalDirections.middleLeft,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.behind });
+                }
+                else
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.behind });
+                }
+            }
+        }
+        else
+        {
+            if (averageLeftDistance > longDistance)
+            {
+                if (averageRightDistance > longDistance)
+                {
+                    movementReduced = 0.8f;
+                    mainDirection = AdditionalDirections.longMiddle;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.longLeft,
+                        AdditionalDirections.longRight,
+                        AdditionalDirections.longMiddle,
+                        AdditionalDirections.longLeft,
+                        AdditionalDirections.longRight,
+                        AdditionalDirections.behind });
+                }
+                else if (averageRightDistance > shortDistance)
+                {
+                    movementReduced = 0.7f;
+                    mainDirection = AdditionalDirections.longLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.longMiddle,
+                        AdditionalDirections.middleLeft,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.middleRight,
+                        AdditionalDirections.behind });
+                }
+                else
+                {
+                    movementReduced = 0.5f;
+                    mainDirection = AdditionalDirections.middleLeft;
+                    additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                        AdditionalDirections.middleLeft,
+                        AdditionalDirections.middleMiddle,
+                        AdditionalDirections.behind });
+                }
+            }
+            else
+            {
+                if (averageLeftDistance > shortDistance)
+                {
+                    if (averageRightDistance > longDistance)
+                    {
+                        movementReduced = 0.7f;
+                        mainDirection = AdditionalDirections.longRight;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.longMiddle,
+                            AdditionalDirections.middleLeft,
+                            AdditionalDirections.middleMiddle,
+                            AdditionalDirections.middleRight,
+                            AdditionalDirections.behind });
+                    }
+                    else if (averageRightDistance > shortDistance)
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.middleMiddle;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.middleRight,
+                            AdditionalDirections.middleLeft,
+                            AdditionalDirections.behind });
+                    }
+                    else
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.middleLeft;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.middleRight,
+                            AdditionalDirections.middleLeft,
+                            AdditionalDirections.behind });
+                    }
+                }
+                else
+                {
+                    if (averageRightDistance > middleDistance)
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.middleRight;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.middleMiddle,
+                            AdditionalDirections.shortRight,
+                            AdditionalDirections.behind });
+                    }
+                    else if (averageRightDistance > shortDistance)
+                    {
+                        movementReduced = 0.5f;
+                        mainDirection = AdditionalDirections.shortRight;
+                        additionalDirectionsList.AddRange(new List<AdditionalDirections>() {
+                            AdditionalDirections.shortMiddle,
+                            AdditionalDirections.behind });
+                    }
+                    else
+                    {
+                        mainDirection = AdditionalDirections.behind;
+                    }
+                }
+            }
+        }
+
+        additionalDirections = new AdditionalDirections[additionalDirectionsList.Count];
+        for (int i = 0; i < additionalDirectionsList.Count; i++)
+        {
+            additionalDirections[i] = additionalDirectionsList[i];
+        }
+
+        Vector2 direction = PositionAccordingToAdditionalDirection(mainDirection, positionToGetTo, pathWidth) + new Vector2(
+            UnityEngine.Random.Range(-movementDistance * movementReduced * resultingMovementRandomness, movementDistance * movementReduced * resultingMovementRandomness),
+            UnityEngine.Random.Range(-movementDistance * movementReduced * resultingMovementRandomness, movementDistance * movementReduced * resultingMovementRandomness));
+        direction = myPosition + Vector2.ClampMagnitude(direction - myPosition, movementDistance);
+
+        direction = WhileObjectBetweenMeAndThere(myPosition, direction, resultingMovementRandomness, movementDistance, pathWidth, additionalDirections);
+
+        return direction;
+        #endregion
     }
 
     protected void GetTriggered()
@@ -452,7 +899,7 @@ public abstract class EnemyBase : MonoBehaviour
                 GetConverted(false);
             }
 
-            if(animator != null)
+            if (animator != null)
             {
                 animator.SetTrigger("Hurt");
             }
@@ -518,7 +965,7 @@ public abstract class EnemyBase : MonoBehaviour
             animator.SetTrigger("Conversion");
         }
 
-        if(!initialize)
+        if (!initialize)
         {
             OnConverted();
         }
@@ -537,7 +984,7 @@ public abstract class EnemyBase : MonoBehaviour
     //D'autres méthodes utiles pour autre chose que les behaviours :
     private void UpdateLastSeenPosition()
     {
-        if (NoObstacleBetweenMeAndThere(player.position))
+        if (NoObjectBetweenMeAndThere(player.position))
         {
             if (lastSeenPlayerPosition.Contains(player.position))
             {
@@ -546,6 +993,112 @@ public abstract class EnemyBase : MonoBehaviour
             lastSeenPlayerPosition.Insert(0, player.position);
 
             alreadyGotToLastPosition = false;
+        }
+    }
+
+    //Méthodes pour alléger PositionDependingOnObjectsOnTheWay (les additionalDirections sont toujours censées terminer avec behind)
+    private Vector2 WhileObjectBetweenMeAndThere(Vector2 myPosition, Vector2 destination, float movementRandomness, float movementDistance, float pathWidth, params AdditionalDirections[] additionalDirections)
+    {
+        Vector2 firstDestination = destination;
+        while (!NoObjectBetweenMeAndThere(destination))
+        {
+            if (
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.down) &&
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.left) &&
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.up) &&
+                !NoObjectBetweenMeAndThere(myPosition + Vector2.right))
+            {
+                break;
+            }
+            if (additionalDirections.Length == 0)
+            {
+                destination = firstDestination + new Vector2(
+                        UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
+                        UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
+                destination = Vector2.ClampMagnitude(destination, movementDistance);
+            }
+            else
+            {
+                int directionChosen = UnityEngine.Random.Range(0, additionalDirections.Length * 2 + 1);
+                if (directionChosen >= additionalDirections.Length * 2 - 1)
+                {
+                    destination = firstDestination + new Vector2(
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
+                    destination = Vector2.ClampMagnitude(destination, movementDistance);
+                }
+                else
+                {
+                    destination = PositionAccordingToAdditionalDirection(additionalDirections[Mathf.FloorToInt(directionChosen * 0.5f)], destination, pathWidth);
+                    destination += new Vector2(
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
+                            UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
+                    destination = Vector2.ClampMagnitude(destination, movementDistance);
+                }
+            }
+        }
+        return destination;
+    }
+    private enum AdditionalDirections
+    {
+        behind, longLeft, longMiddle, longRight, middleLeft, middleMiddle, middleRight, shortLeft, shortMiddle, shortRight
+    }
+    private Vector2 PositionAccordingToAdditionalDirection(AdditionalDirections direction, Vector2 positionToGetTo, float pathWidth)
+    {
+        Vector2 myPosition = transform.position;
+        float maxDistance = Vector2.Distance(positionToGetTo, myPosition);
+        float longDistance = maxDistance * 0.8f;
+        float middleDistance = maxDistance * 0.5f;
+        float shortDistance = maxDistance * 0.2f;
+
+        #region Angle
+        Vector2 baseRaycast = positionToGetTo - myPosition;
+
+        float calculationAdjustment = 0f;
+        if (baseRaycast.x < 0 || baseRaycast.y < 0)
+        {
+            if (baseRaycast.x > 0)
+                calculationAdjustment = Mathf.PI * 2;
+            else
+                calculationAdjustment = Mathf.PI;
+        }
+        float angle = Mathf.Atan(baseRaycast.y / baseRaycast.x) + calculationAdjustment - Mathf.PI * 0.5f;
+        #endregion
+        Vector2 leftOffset = new Vector2(-pathWidth * 0.5f * Mathf.Cos(angle), -pathWidth * 0.5f * Mathf.Sin(angle));
+        Vector2 rightOffset = new Vector2(pathWidth * 0.5f * Mathf.Cos(angle), pathWidth * 0.5f * Mathf.Sin(angle));
+
+        switch (direction)
+        {
+            case AdditionalDirections.behind:
+                Vector2 behindMe = -(positionToGetTo - myPosition) * 0.5f + myPosition;
+                if (UnityEngine.Random.Range(0, 3) == 0)
+                {
+                    return behindMe;
+                }
+                else
+                {
+                    return UnityEngine.Random.Range(0, 2) == 0 ? behindMe + leftOffset : behindMe + rightOffset;
+                }
+            case AdditionalDirections.longLeft:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition + leftOffset;
+            case AdditionalDirections.longMiddle:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition;
+            case AdditionalDirections.longRight:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, longDistance) + myPosition + rightOffset;
+            case AdditionalDirections.middleLeft:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition + leftOffset;
+            case AdditionalDirections.middleMiddle:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition;
+            case AdditionalDirections.middleRight:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, middleDistance) + myPosition + rightOffset;
+            case AdditionalDirections.shortLeft:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition + leftOffset;
+            case AdditionalDirections.shortMiddle:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition;
+            case AdditionalDirections.shortRight:
+                return Vector2.ClampMagnitude(positionToGetTo - myPosition, shortDistance) + myPosition + rightOffset;
+            default:
+                return Vector2.zero;
         }
     }
     #endregion

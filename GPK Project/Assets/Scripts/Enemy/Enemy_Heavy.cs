@@ -49,7 +49,7 @@ public class Enemy_Heavy : EnemyBase
         new EnemyBehaviour(EnemyState.Action)
     };
 
-    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[] // il a très potentiellement aucun triggeredPattern et tout dans le passive pattern
+    private EnemyBehaviour[] triggeredPattern = new EnemyBehaviour[] // il a aucun triggeredPattern et tout dans le passive pattern
     {
 
     };
@@ -142,26 +142,14 @@ public class Enemy_Heavy : EnemyBase
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             source.PlayOneShot(jumpSound);
-            Vector2 finalDirection = playerPositionStartOfBeat;
-            while (!NoObstacleBetweenMeAndThere(finalDirection))
-            {
-                if (
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
-                {
-                    break;
-                }
-                finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
-            }
-            endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
+
+            endOfDash = PositionDependingOnObjectsOnTheWay(playerPositionStartOfBeat, true, 0.3f, 1.5f, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
 
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0f, 0.5f));
         float progression = CurrentBeatProgressionAdjusted(2, 0);
-        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
     }
 
     protected override void KnockbackBehaviour()
@@ -195,7 +183,7 @@ public class Enemy_Heavy : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 3 * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.6f * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 
