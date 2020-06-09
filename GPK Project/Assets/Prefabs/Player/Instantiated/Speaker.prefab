@@ -50,9 +50,11 @@ MonoBehaviour:
   isSecureHook: 0
   blinkableColor: {r: 1, g: 1, b: 1, a: 1}
   selectedColor: {r: 1, g: 0.831001, b: 0.740566, a: 1}
-  unselectableColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  unBlinkableColor: {r: 1, g: 1, b: 1, a: 1}
   decorationAnimator: {fileID: 0}
+  drawTrajectoryLine: 0
   selected: 0
+  selectable: 0
   blinkable: 0
   sprite: {fileID: 0}
   hookState:
@@ -96,7 +98,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 882915597
-  m_SortingLayer: -6
+  m_SortingLayer: -7
   m_SortingOrder: 3
   m_Sprite: {fileID: -6553543963255914765, guid: 71a15b7e9f8760442820479af79b6d57,
     type: 3}
