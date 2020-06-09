@@ -1000,8 +1000,10 @@ public abstract class EnemyBase : MonoBehaviour
     private Vector2 WhileObjectBetweenMeAndThere(Vector2 myPosition, Vector2 destination, float movementRandomness, float movementDistance, float pathWidth, params AdditionalDirections[] additionalDirections)
     {
         Vector2 firstDestination = destination;
+        int iteration = 0;
         while (!NoObjectBetweenMeAndThere(destination))
         {
+            iteration++;
             if (
                 !NoObjectBetweenMeAndThere(myPosition + Vector2.down) &&
                 !NoObjectBetweenMeAndThere(myPosition + Vector2.left) &&
@@ -1010,8 +1012,15 @@ public abstract class EnemyBase : MonoBehaviour
             {
                 break;
             }
+
+            if (iteration > 4)
+            {
+                return firstDestination;
+            }
+
             if (additionalDirections.Length == 0)
             {
+                
                 destination = firstDestination + new Vector2(
                         UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness),
                         UnityEngine.Random.Range(-movementDistance * movementRandomness, movementDistance * movementRandomness));
