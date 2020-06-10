@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -175,7 +175,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1667927913
-  m_SortingLayer: -21
+  m_SortingLayer: -22
   m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: 73d247476ae4be249a86a3d06e2ee640, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -479,7 +479,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 416957345
-  m_SortingLayer: -17
+  m_SortingLayer: -18
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 234364ddc18bd72469b5ac204ea0b11a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -565,7 +565,7 @@ MonoBehaviour:
   narrator: {fileID: 730947629}
   narration:
     sentences:
-    - "Le monde \xE9tait devenu pourri jusqu'a la souche"
+    - "Le monde \xE9tait devenu pourri jusqu'a la souche..."
     - et du coup on est triste
     timeBetweenSentences: 2
 --- !u!1 &730947626
@@ -692,7 +692,7 @@ MonoBehaviour:
   narrator: {fileID: 730947629}
   narration:
     sentences:
-    - Il s'en rapprocha puis ...
+    - Il s'en rapprocha puis...
     timeBetweenSentences: 1.5
 --- !u!61 &756563911
 BoxCollider2D:
@@ -1125,7 +1125,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1061410221
-  m_SortingLayer: -15
+  m_SortingLayer: -16
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 09d68c9b70617384fadcfbd2551a9995, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1171,7 +1171,7 @@ MonoBehaviour:
   narrator: {fileID: 730947629}
   narration:
     sentences:
-    - "Trouva un instrument \xE9trange"
+    - "Trouva un instrument \xE9trange..."
     timeBetweenSentences: 2
 --- !u!61 &1260737602
 BoxCollider2D:
@@ -1341,7 +1341,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1970879897
-  m_SortingLayer: -14
+  m_SortingLayer: -15
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 72aa3592bf75570419827b713903933d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1516,8 +1516,8 @@ MonoBehaviour:
   narrator: {fileID: 730947629}
   narration:
     sentences:
-    - "Mais un cam\xE9l\xE9on ..."
-    - "diff\xE9rent des autres"
+    - "Mais un cam\xE9l\xE9on..."
+    - "Diff\xE9rent des autres..."
     timeBetweenSentences: 1
 --- !u!61 &1418477578
 BoxCollider2D:
@@ -1627,7 +1627,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -19
+  m_SortingLayer: -20
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d810d3dee99aee9428d0c2309a6869ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1708,7 +1708,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -19
+  m_SortingLayer: -20
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ef0f790d3e6ae8a44bed7352a72b40f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1789,7 +1789,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1061410221
-  m_SortingLayer: -15
+  m_SortingLayer: -16
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2df6965ed0a9dc445aadfd20da6220ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6668,7 +6668,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1182132515
-  m_SortingLayer: -13
+  m_SortingLayer: -14
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6766,7 +6766,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1918136707
-  m_SortingLayer: -11
+  m_SortingLayer: -12
   m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6818,7 +6818,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1970879897
-  m_SortingLayer: -14
+  m_SortingLayer: -15
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -6894,7 +6894,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -19
+  m_SortingLayer: -20
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7d8714c3391001749a57192f78d16a71, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7015,7 +7015,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1791857029
-  m_SortingLayer: -12
+  m_SortingLayer: -13
   m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

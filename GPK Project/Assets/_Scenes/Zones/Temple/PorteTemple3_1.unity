@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1139,7 +1139,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1789185281
-  m_SortingLayer: -9
+  m_SortingLayer: -10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b3aa7fd433159c444acb4ceacfe101ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1333,7 +1333,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[0]
-      value: Oh, toujours en couleur hein?
+      value: Oh, toujours en couleurs hein?
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1350,7 +1350,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[3]
       value: "Tu n'as rien \xE0 faire ici tant que le vent ne portera pas la musique
-        de Ceux qui sont cach\xE9s. "
+        de Ceux qui sont cach\xE9s."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1371,7 +1371,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[1]
       value: "Tu n'as rien \xE0 faire ici tant que le vent ne portera pas la musique
-        de Ceux qui sont cach\xE9s. "
+        de Ceux qui sont cach\xE9s."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1456,12 +1456,12 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[1]
-      value: "N'ai crainte, jeune L\xE9on."
+      value: "N'aie crainte, jeune L\xE9on."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[2]
-      value: "Les seuls monstres \xE0 l'int\xE9rieur sont ceux que tu y emmenera."
+      value: "Les seuls monstres \xE0 l'int\xE9rieur sont ceux que tu apporteras."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1491,7 +1491,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[1]
-      value: Ne doutes pas que nous n'oublierons jamais ce que tu as fait pour nous.
+      value: Ne doute pas que nous n'oublierons jamais ce que tu as fait pour nous.
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1557,7 +1557,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[4].talk.sentences.Array.data[1]
-      value: "Tu as r\xE9ussis \xE0 venir jusqu'ici. Maintenant, c'est \xE0 moi de
+      value: "Tu as r\xE9ussi \xE0 venir jusqu'ici. Maintenant, c'est \xE0 moi de
         te montrer le passage."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
@@ -1807,7 +1807,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -19
+  m_SortingLayer: -20
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 265c1a333f730cc4eaae79052cebbab6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1888,7 +1888,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2044193909
-  m_SortingLayer: -19
+  m_SortingLayer: -20
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 56ada2e7443fecb41a6e8eb17526415d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2230,7 +2230,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1061410221
-  m_SortingLayer: -15
+  m_SortingLayer: -16
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 097b17df3d1e48648aa2d83577299b17, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2936,7 +2936,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -20
+  m_SortingLayer: -21
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c1320a0c35b6a6644bc5510f6a61edc9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4026,12 +4026,12 @@ PrefabInstance:
         type: 3}
       propertyPath: commentary.sentences.Array.data[1]
       value: "Une lumi\xE8re sur un des piliers est allum\xE9e! Elle ne l'\xE9tait
-        pas quand nous somme pass\xE9s ici avant."
+        pas quand nous sommes pass\xE9s ici avant."
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
       propertyPath: commentary.sentences.Array.data[2]
-      value: "Quelque-chose s'est pass\xE9. Ce doit \xEAtre l'influence du Grand
+      value: "Quelque chose s'est pass\xE9. Ce doit \xEAtre l'influence du Grand
         Instrument!"
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
@@ -4371,7 +4371,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1791857029
-  m_SortingLayer: -12
+  m_SortingLayer: -13
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 306d0cca0a7710b449b4a82537f0b139, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4751,7 +4751,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1791857029
-  m_SortingLayer: -12
+  m_SortingLayer: -13
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c1320a0c35b6a6644bc5510f6a61edc9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4988,7 +4988,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -20
+  m_SortingLayer: -21
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 306d0cca0a7710b449b4a82537f0b139, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

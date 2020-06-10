@@ -1015,7 +1015,7 @@ public abstract class EnemyBase : MonoBehaviour
 
             if (iteration > 4)
             {
-                return firstDestination;
+                return destination;
             }
 
             if (additionalDirections.Length == 0)
