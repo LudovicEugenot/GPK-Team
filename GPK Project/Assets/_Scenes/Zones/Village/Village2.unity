@@ -691,7 +691,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.size
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -761,7 +761,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[5].talk.sentences.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -942,7 +942,8 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[2]
-      value: "Il y a une sortie au passage nord du village M\xE9lodie."
+      value: "Il y a une sortie au passage nord du village M\xE9lodie. Elle t'es
+        ouverte d\xE9sormais."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1254,18 +1255,17 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[5].talk.sentences.Array.data[1]
       value: "Pour compl\xE9ter la musique, il ne manque plus que la voix! Tu es
-        d\xE9brouillard, tu la trouvera bien assez t\xF4t. Je compte sur toi.\n\n"
+        d\xE9brouillard, tu la trouvera bien assez t\xF4t."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[5].talk.sentences.Array.data[2]
-      value: Hmm...
+      value: Je compte sur toi.
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[5].talk.sentences.Array.data[3]
-      value: 'Oh et n''oublie pas: en musique, un repos compte autant qu''une note.
-        Un vide pour trouver un plein, astucieux!'
+      value: Hmm...
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1305,16 +1305,13 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[10]
-      value: "Il te faut explorer afin de trouver l'origine de ce pouvoir. A l'ouest
-        du village tu trouveras une grande maison et son h\xF4te. Il pourra tout
-        t'expliquer, j'en suis s\xFBr!"
+      value: "J'avais bloqu\xE9 le passage au nord du village pour nous prot\xE9ger,
+        mais tu pourra d\xE9sormais passer."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[11]
-      value: "Il te faut explorer afin de trouver l'origine de ce pouvoir. A l'ouest
-        du village tu trouveras une grande maison et son h\xF4te. Il pourra tout
-        t'expliquer, j'en suis s\xFBr!"
+      value: Hmm...
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -2289,6 +2286,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[9].lastValidStoryStep
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].lastValidStoryStep
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709870, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
