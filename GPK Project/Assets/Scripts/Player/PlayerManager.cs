@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public float beatInvulnerableTime;
     public bool playerOffBeated;
     public bool beatAndOffBeatAllowed;
+    public bool multipleActionByBeatAllowed;
     [Space]
     public float deathCinematicZoom;
     public float interactMaxDistance;

@@ -80,7 +80,11 @@ public class BlinkAttack : MonoBehaviour
             attackDirectionAngle = Vector2.SignedAngle(Vector2.right, attackDirection);
             attackDirectionPreview.transform.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle - 90));
 
-            if(Input.GetButtonUp("Blink"))
+            float mouseDirectionAngle = Vector2.SignedAngle(Vector2.right, worldMousePos - (Vector2)transform.position);
+            GameManager.playerAnimator.SetFloat("BlinkDirection", mouseDirectionAngle >= 0 ? mouseDirectionAngle : 360 + mouseDirectionAngle);
+            GameManager.Instance.playerManager.ResetIdleTime();
+
+            if (Input.GetButtonUp("Blink"))
             {
                 if(BeatManager.Instance.CanAct())
                 {

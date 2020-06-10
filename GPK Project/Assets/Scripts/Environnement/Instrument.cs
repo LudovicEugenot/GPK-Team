@@ -22,11 +22,11 @@ public class Instrument : SwitchElement
     private void UpdateState()
     {
         ZoneHandler.Instance.reliveRemotlyChanged = true;
+        ZoneHandler.Instance.currentReliveProgression = GetVillageReliveProgression();
         animator.SetBool("Relived", active);
         if(active)
         {
             synchronizer.Synchronize();
-            ZoneHandler.Instance.currentReliveProgression = 1;
             ZoneHandler.Instance.currentZone.isRelived = true;
             foreach(HookState hook in GameManager.Instance.zoneHooks)
             {
@@ -35,8 +35,31 @@ public class Instrument : SwitchElement
         }
         else
         {
-            ZoneHandler.Instance.currentReliveProgression = 0;
             ZoneHandler.Instance.currentZone.isRelived = false;
         }
+    }
+
+    private float GetVillageReliveProgression()
+    {
+        int instrumentConverted = 0;
+
+        if(WorldManager.GetWorldEvent(WorldManager.EventName.TambourRelived).occured)
+        {
+            instrumentConverted++;
+        }
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.ViolonRelived).occured)
+        {
+            instrumentConverted++;
+        }
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.FluteRelived).occured)
+        {
+            instrumentConverted++;
+        }
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.SaxophoneRelived).occured)
+        {
+            instrumentConverted++;
+        }
+
+        return 0.25f * instrumentConverted;
     }
 }

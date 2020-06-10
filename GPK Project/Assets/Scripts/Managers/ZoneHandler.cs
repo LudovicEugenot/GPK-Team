@@ -11,7 +11,6 @@ public class ZoneHandler : MonoBehaviour
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
     [HideInInspector] public bool zoneInitialized;
-    //private bool isAnimatingRecolor;
 
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
@@ -57,7 +56,7 @@ public class ZoneHandler : MonoBehaviour
 
     private void UpdateRelive()
     {
-        if(!reliveRemotlyChanged/* && !isAnimatingRecolor*/)
+        if(!reliveRemotlyChanged)
         {
             int hooksRelived = 0;
             if (!currentZone.isRelived)
@@ -91,19 +90,11 @@ public class ZoneHandler : MonoBehaviour
 
     public IEnumerator RecolorEffect()
     {
-        //Jouer son recolor
-        /*isAnimatingRecolor = true;
-        StartCoroutine(GameManager.Instance.cameraHandler.CinematicLook(Vector2.zero, 2.0f, 5.625f, true));
-        currentReliveProgression = 0;
-        yield return new WaitForSeconds(1.0f);
-        currentReliveProgression = 1;*/
-        // animation de recolor
         for (int i = 0; i < GameManager.Instance.recolorHealthHealed; i++)
         {
             GameManager.Instance.playerManager.Heal(1);
             yield return new WaitForSeconds(0.2f);
         }
-        //isAnimatingRecolor = false;
     }
 
     public void SaveZoneState()

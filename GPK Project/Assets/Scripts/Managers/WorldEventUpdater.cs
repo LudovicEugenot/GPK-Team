@@ -122,7 +122,7 @@ public class WorldEventUpdater : MonoBehaviour
     {
         if(WorldManager.currentStoryStep >= cursedUntilStoryStep)
         {
-            ZoneHandler.Instance.reliveRemotlyChanged = false;
+            //ZoneHandler.Instance.reliveRemotlyChanged = false;
         }
         else
         {

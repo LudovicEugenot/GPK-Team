@@ -613,17 +613,17 @@ MonoBehaviour:
   - range: 5.5
     pointDisplay: {fileID: 21300000, guid: 7497fbf69f708354aa5ae0f528b95932, type: 3}
   - range: 5.8
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 6.1
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 6.4
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 6.7
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 7
-    pointDisplay: {fileID: 21300000, guid: b3a8cb1ea012ab745bad5672c1c890e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 0b19694398b62ff4e96b5c5d5a811278, type: 3}
   - range: 7.2
-    pointDisplay: {fileID: 21300000, guid: b3a8cb1ea012ab745bad5672c1c890e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 0b19694398b62ff4e96b5c5d5a811278, type: 3}
   allowedConsecutiveOnbeatMiss: 1
   comboMalus: 2
   startHook: {fileID: 0}
@@ -809,6 +809,7 @@ MonoBehaviour:
   beatInvulnerableTime: 1.8
   playerOffBeated: 0
   beatAndOffBeatAllowed: 0
+  multipleActionByBeatAllowed: 0
   deathCinematicZoom: 2
   interactMaxDistance: 2
   timeBeforeDancing: 3
@@ -1252,12 +1253,12 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.29411766}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 0.5789946, b: 0.4764151, a: 1}
+      key1: {r: 1, g: 0.5803922, b: 0.47450984, a: 1}
+      key2: {r: 1, g: 1, b: 1, a: 0.29411766}
       key3: {r: 0, g: 0, b: 0, a: 0.29411766}
-      key4: {r: 0, g: 0, b: 0, a: 1}
-      key5: {r: 0, g: 0, b: 0, a: 1}
+      key4: {r: 0, g: 0, b: 0, a: 0.29411766}
+      key5: {r: 0, g: 0, b: 0, a: 0.29411766}
       key6: {r: 0, g: 0, b: 0, a: 0.29411766}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
@@ -1269,16 +1270,16 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 10023
-      atime2: 21588
-      atime3: 32189
-      atime4: 43754
-      atime5: 56669
+      atime1: 65535
+      atime2: 65535
+      atime3: 65535
+      atime4: 65535
+      atime5: 65535
       atime6: 65535
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 7
+      m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0

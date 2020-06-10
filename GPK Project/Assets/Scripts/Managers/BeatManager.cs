@@ -302,7 +302,7 @@ public class BeatManager : MonoBehaviour
     public bool CanAct()
     {
         bool used = beatActionUsed;
-        if (!beatActionUsed)
+        if (!beatActionUsed && !GameManager.Instance.playerManager.multipleActionByBeatAllowed)
         {
             beatActionUsed = true;
         }
