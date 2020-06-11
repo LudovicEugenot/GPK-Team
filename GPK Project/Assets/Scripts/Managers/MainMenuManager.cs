@@ -8,6 +8,9 @@ public class MainMenuManager : MonoBehaviour
     public GameObject mainPanel;
     public GameObject savePanel;
     public GameObject customLoadPanel;
+    public Text subtitle;
+    public List<string> subtitles;
+    public float timeBetweenSubtitleChange; 
 
     [Header("Main Save Preview")]
     public GameObject gameSavePreviewO;
@@ -33,6 +36,7 @@ public class MainMenuManager : MonoBehaviour
     {
         OpenMainPanel();
         CloseSavePanel();
+        InvokeRepeating("ChangeSubtitle",0.0f,timeBetweenSubtitleChange);
     }
 
     private void Update()
@@ -104,5 +108,10 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log("No save preview found");
             customSaveZoneText.text = noSaveText;
         }
+    }
+
+    private void ChangeSubtitle()
+    {
+        subtitle.text = subtitles[Random.Range(0, subtitles.Count)];
     }
 }

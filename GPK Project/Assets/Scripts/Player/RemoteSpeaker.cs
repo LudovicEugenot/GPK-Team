@@ -38,7 +38,12 @@ public class RemoteSpeaker : MonoBehaviour
     {
         if(GameManager.Instance.playerManager.ownSpeaker)
         {
+            cooldownDisplay.transform.parent.gameObject.SetActive(true);
             UpdateSpeaker();
+        }
+        else
+        {
+            cooldownDisplay.transform.parent.gameObject.SetActive(false);
         }
     }
 

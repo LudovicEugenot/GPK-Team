@@ -688,7 +688,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 882915597
-  m_SortingLayer: -6
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f2d27f2d2c0bea9439b503eada9f3a46, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1135,7 +1135,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -20
+  m_SortingLayer: -21
   m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: c6ca7104e1ff10e4899307a0f26dff06, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1609,8 +1609,8 @@ PrefabInstance:
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
       propertyPath: commentary.sentences.Array.data[1]
-      value: "D\xE9places-toi en rythme pour augmenter la port\xE9e de ton saut,
-        et on pourra y aller!"
+      value: "D\xE9place-toi en rythme pour augmenter la port\xE9e de ton saut, et
+        on pourra y aller!"
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
@@ -2002,7 +2002,7 @@ PrefabInstance:
     - target: {fileID: 3822639274368582671, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
       propertyPath: beatAndOffBeatAllowed
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7556608464088615825, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
@@ -2499,6 +2499,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1538759465627236087}
     m_Modifications:
+    - target: {fileID: 2488691751857785680, guid: 802e1452027e1e74a8c830c8bd4aefef,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 596390283
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488691751857785680, guid: 802e1452027e1e74a8c830c8bd4aefef,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -6
+      objectReference: {fileID: 0}
     - target: {fileID: 2488691751857785685, guid: 802e1452027e1e74a8c830c8bd4aefef,
         type: 3}
       propertyPath: m_Name
@@ -3285,7 +3295,7 @@ PrefabInstance:
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
       propertyPath: commentary.sentences.Array.data[1]
-      value: Il doit bien y avoir une de ces runes qui ouvre ce passage!
+      value: Une de ces runes doit bien ouvrir ce passage!
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
@@ -3457,6 +3467,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1538759465627236087}
     m_Modifications:
+    - target: {fileID: 2488691751857785680, guid: 802e1452027e1e74a8c830c8bd4aefef,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 596390283
+      objectReference: {fileID: 0}
+    - target: {fileID: 2488691751857785680, guid: 802e1452027e1e74a8c830c8bd4aefef,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -6
+      objectReference: {fileID: 0}
     - target: {fileID: 2488691751857785685, guid: 802e1452027e1e74a8c830c8bd4aefef,
         type: 3}
       propertyPath: m_Name

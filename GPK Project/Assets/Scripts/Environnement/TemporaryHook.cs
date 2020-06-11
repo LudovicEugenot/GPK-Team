@@ -9,15 +9,17 @@ public class TemporaryHook : Hook
     public float addedTBBTime;
     public Color brokenColor;
     public AudioClip breakSound;
+    public WorldManager.EventName brokeTriggeredEvent;
 
     private bool isBroken;
     private bool unstable;
     private float currentTimeBeforeRepair;
     private TransitionManager.TransitionHook transitionHook;
-
+    private WorldManager.WorldEvent brokeTriggeredWorldEvent;
     void Start()
     {
         HandlerStart();
+        brokeTriggeredWorldEvent = WorldManager.GetWorldEvent(brokeTriggeredEvent);
         currentTimeBeforeRepair = 0;
         foreach (TransitionManager.TransitionHook tHook in GameManager.Instance.transitionHooks)
         {
@@ -88,6 +90,11 @@ public class TemporaryHook : Hook
 
     private void FallEffect()
     {
+        if(brokeTriggeredEvent != WorldManager.EventName.NullEvent)
+        {
+            brokeTriggeredWorldEvent.occured = true;
+        }
+
         if (transitionHook == null)
         {
             StartCoroutine(GameManager.Instance.blink.RespawnPlayer());

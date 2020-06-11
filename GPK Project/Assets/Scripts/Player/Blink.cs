@@ -307,7 +307,7 @@ public class Blink : MonoBehaviour
             Vector2 blinkDirection = destination - (Vector2)transform.parent.position;
 
             Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
-            Instantiate(blinkDisparition, transform.position, Quaternion.identity);
+            Instantiate(blinkDisparition, transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y, Quaternion.identity);
             GameManager.Instance.playerManager.ResetIdleTime();
 
             RaycastHit2D blinkCrossHurtHit = Physics2D.Raycast(transform.parent.position, blinkDirection, blinkDirection.magnitude, LayerMask.GetMask("CrossHurt"));

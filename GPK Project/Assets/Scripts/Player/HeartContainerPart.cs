@@ -70,6 +70,7 @@ public class HeartContainerPart : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         isObtained = true;
+        GameManager.playerAnimator.SetTrigger("Throw");
         GameManager.Instance.playerManager.ObtainHeartContainer();
         GameManager.Instance.playerManager.InitializeHealthBar();
         yield return new WaitForSeconds(timeBeforeHeal);

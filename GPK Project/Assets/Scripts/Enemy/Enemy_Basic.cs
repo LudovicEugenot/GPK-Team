@@ -64,13 +64,13 @@ public class Enemy_Basic : EnemyBase
             if(isConvertedMoving)
             {
                 Vector2 finalDirection = playerPositionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance)).normalized;
-                while (!NoObstacleBetweenMeAndThere(finalDirection))
+                while (!NoObjectBetweenMeAndThere(finalDirection))
                 {
                     if (
-                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
-                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
-                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
-                        !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
+                        !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
+                        !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
+                        !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
+                        !NoObjectBetweenMeAndThere(positionStartOfBeat + Vector2.right))
                     {
                         break;
                     }
@@ -138,25 +138,13 @@ public class Enemy_Basic : EnemyBase
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             source.PlayOneShot(jumpSound);
-            Vector2 finalDirection = playerPositionStartOfBeat;
-            while (!NoObstacleBetweenMeAndThere(finalDirection))
-            {
-                if (
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.down) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.left) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.up) &&
-                    !NoObstacleBetweenMeAndThere(positionStartOfBeat + Vector2.right))
-                {
-                    break;
-                }
-                finalDirection = positionStartOfBeat + new Vector2(Random.Range(-movementDistance, movementDistance), Random.Range(-movementDistance, movementDistance));
-            }
-            endOfDash = Vector2.ClampMagnitude(finalDirection - positionStartOfBeat, movementDistance);
+
+            endOfDash = PositionDependingOnObjectsOnTheWay(playerPositionStartOfBeat, true, 0.3f, 2f, movementDistance);
         }
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
         float progression = CurrentBeatProgressionAdjusted(2, 0);
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0.0f, 0.5f));
-        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
 
         if (PlayerIsInAggroRange())
         {

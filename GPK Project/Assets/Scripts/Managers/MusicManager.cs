@@ -1,19 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-/*  DONE Changer la musique quand un combat se déclenche
- *  DONE Synchroniser la musique de combat avec la musique de non combat
- *  TEST THE SHIT OUT OF IT
- *  
- *  
- *  
- *  PROBLEM : quand on charge une nouvelle zone avec un nouveau scriptableObject de musique, la dernière musique joue jusqu'à ce qu'elle est censé changer
- *  hors le bpm de la nouvelle musique va entrer en scène et foutre le bordel.
- *  
- *  Il faut trouver le moyen de voir quelle est le scriptable object de musique dans la zone suivante pour fade out si besoin et initier les nouvelles 
- *  musiques en s'en battant les couilles du rythme sur la transition
- */
-
 public class MusicManager : MonoBehaviour
 {
     #region Initialization
@@ -21,6 +8,7 @@ public class MusicManager : MonoBehaviour
     public MusicSO musicSO;
     BeatManager beatManager;
 
+    private bool playBreak;
     private bool startFlag;
     #endregion
 
@@ -44,7 +32,7 @@ public class MusicManager : MonoBehaviour
                 LoadNextMusic();
             }
 
-            if (EnemyStatusHasChanged() && musicSO.combatLoop.Length != 0)
+            if (EnemyStatusHasChanged() && musicSO.combatLoop.Length > 0)
             {
                 if (!MusicIsInArray(beatManager.currentSongName, musicSO.breaks))
                 {
@@ -55,18 +43,27 @@ public class MusicManager : MonoBehaviour
 
             if (CurrentMusicIsPlayingItsLastBar() && beatManager.currentBarProgression == beatManager.beatToSwitchTo)
             {
-                beatManager.PlayMusicLoadedNextBeat();
-                beatManager.currentSongProgression = 0;
+                if (playBreak)
+                {
+                    playBreak = false;
+                    beatManager.PlayBreakNextBeat();
+                    beatManager.currentSongProgression = 0;
+                }
+                else
+                {
+                    beatManager.PlayMusicLoadedNextBeat();
+                    beatManager.currentSongProgression = 0;
+                }
             }
 
-            beatManager.changingMusicZone = false; // à changer quand ChangeMusicZone sera opérationnel
+            beatManager.changingMusicZone = false;
         }
     }
 
 
     private void StartManager()
     {
-        if(ZoneHandler.Instance.zoneInitialized && startFlag)
+        if (ZoneHandler.Instance.zoneInitialized && startFlag)
         {
             startFlag = false;
             beatManager = BeatManager.Instance;
@@ -88,13 +85,17 @@ public class MusicManager : MonoBehaviour
     void LoadNextMusic()
     {
         string currentMusic = beatManager.currentSongName;
+        if (!beatManager.breakLoaded && musicSO.breaks.Length > 0)
+        {
+            int musicChosen = Random.Range(0, musicSO.breaks.Length);
+            beatManager.LoadBreak(musicSO.breaks[musicChosen], musicSO.breakMusicStartTimeOffset[musicChosen]);
+        }
 
         if (ZoneHandler.Instance.AllEnemiesConverted() || musicSO.combatLoop.Length == 0)
         {
             if (MusicIsInArray(currentMusic, musicSO.combatLoop) || MusicIsInArray(currentMusic, musicSO.drops))
             {
-                int musicChosen = Random.Range(0, musicSO.breaks.Length);
-                beatManager.LoadMusic(musicSO.breaks[musicChosen], musicSO.breakMusicStartTimeOffset[musicChosen]);
+                playBreak = true;
                 return;
             }
             else
@@ -118,6 +119,11 @@ public class MusicManager : MonoBehaviour
                     beatManager.LoadMusic(musicSO.combatLoop[musicChosen], musicSO.combatMusicStartTimeOffset[musicChosen]);
                     return;
                 }
+                else
+                {
+                    beatManager.LoadMusic(musicSO.combatLoop[0], musicSO.combatMusicStartTimeOffset[0]);
+                    return;
+                }
             }
             else if (currentMusic == musicSO.calmLoop.name && musicSO.drops.Length > 0)
             {
@@ -135,12 +141,6 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    void ChangeMusicZone()
-    {
-        //Fonction qui s'occupe de fadeout la musique actuelle et de charger la musique de la prochaine zone
-        beatManager.changingMusicZone = true;
-    }
-
     void ScriptableObjectSetUp()
     {
         beatManager.bpm = musicSO.bpm;
@@ -152,6 +152,7 @@ public class MusicManager : MonoBehaviour
         //beatManager.cameraBeatEffectAmplitude = musicSO.cameraBeatEffectAmplitude;
         beatManager.beatToSwitchTo = musicSO.canSwitchOnBeat2 ? 2 : 4;
         beatManager.changingMusicZone = true;
+        beatManager.breakLoaded = false;
 
     }
 

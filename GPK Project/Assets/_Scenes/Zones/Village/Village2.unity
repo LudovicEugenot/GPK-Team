@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1098,7 +1098,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[2].talk.sentences.Array.data[7]
       value: "Vers le nord tu trouveras mon ancienne demeure, peut-\xEAtre devrais-tu
-        aller l\xE0-bas. J'y ai laisser des affaires."
+        aller l\xE0-bas. J'y ai laiss\xE9 des affaires."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1125,7 +1125,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[3].talk.sentences.Array.data[2]
       value: "Vers le nord tu trouveras mon ancienne demeure, peut-\xEAtre devrais-tu
-        aller l\xE0-bas. J'y ai laisser des affaires."
+        aller l\xE0-bas. J'y ai laiss\xE9 des affaires."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -1213,7 +1213,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[4].talk.sentences.Array.data[3]
-      value: "Il ne manque plus que la m\xE9lodie! Tu es d\xE9brouillard, tu la trouvera
+      value: "Il ne manque plus que la m\xE9lodie! Tu es d\xE9brouillard, tu la trouveras
         bien assez t\xF4t. Je compte sur toi."
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
@@ -2315,7 +2315,7 @@ Animator:
   m_GameObject: {fileID: 433778084}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d21dbd6d621afa0449f9363d7dbfff59, type: 2}
+  m_Controller: {fileID: 22100000, guid: 3d9d2f5b456031c48bef0a95dbdc4f48, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2324,6 +2324,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &433778086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433778084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b22d8fdf90b2cc438648b6cb2342248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storyStepToRelive: 3
+  relived: 0
+--- !u!114 &433778087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433778084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca74dd053f982ec4ca7d8fb087dae82d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &446234207 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3717861869360096243, guid: afb23417cf9d9ad4293f49c7aa8558fa,
@@ -2913,7 +2939,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].compromisingEvents.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -3179,6 +3205,11 @@ PrefabInstance:
       propertyPath: dialogues.Array.data[0].talk.pitch
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[0].lastValidStoryStep
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709870, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: m_Name
@@ -3352,7 +3383,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1918136707
-  m_SortingLayer: -11
+  m_SortingLayer: -12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ee11d83aaaee28b42a6d147ea9bf9297, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4416,7 +4447,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1762269375
-  m_SortingLayer: -20
+  m_SortingLayer: -21
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 722edb9fecbc05d499209442cd503fea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

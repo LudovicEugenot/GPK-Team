@@ -690,19 +690,23 @@ MonoBehaviour:
     direction: 0
     connectedSceneBuildIndex: 20
     storyStepRequired: 0
+    eventRequired: 0
     blockedTalk:
       pnjName: 
       pitch: 1
       sentences: []
+    customCinematicTransitionSceneIndex: 0
   - hook: {fileID: 0}
     isTemporary: 0
     direction: 1
     connectedSceneBuildIndex: 18
     storyStepRequired: 0
+    eventRequired: 0
     blockedTalk:
       pnjName: 
       pitch: 1
       sentences: []
+    customCinematicTransitionSceneIndex: 0
   hooksHolder: {fileID: 0}
   zoneHooks:
   - relived: 0
@@ -722,6 +726,7 @@ MonoBehaviour:
   - {fileID: 0}
   elementsHolder: {fileID: 0}
   heartContainers: []
+  respawnEnnemiesIfZoneNotConverted: 1
   zoneElements: []
   blink: {fileID: 0}
   attack: {fileID: 0}
@@ -756,6 +761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoneNameUnknownUntilRecolor: 0
+  cursedUntilStoryStep: 0
   storyStepSkip: 0
   warningTempleOpen:
     pnjName: Clarinetto
