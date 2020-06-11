@@ -85,7 +85,7 @@ public class MusicManager : MonoBehaviour
     void LoadNextMusic()
     {
         string currentMusic = beatManager.currentSongName;
-        if (!beatManager.breakLoaded)
+        if (!beatManager.breakLoaded && musicSO.breaks.Length > 0)
         {
             int musicChosen = Random.Range(0, musicSO.breaks.Length);
             beatManager.LoadBreak(musicSO.breaks[musicChosen], musicSO.breakMusicStartTimeOffset[musicChosen]);
