@@ -6,6 +6,7 @@ using UnityEngine;
 public class ZoneHandler : MonoBehaviour
 {
     [HideInInspector] public bool reliveRemotlyChanged;
+    [HideInInspector] public int bossState;
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public float currentReliveProgression;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
@@ -128,6 +129,7 @@ public class ZoneHandler : MonoBehaviour
     {
         currentZone = newZone;
         reliveRemotlyChanged = false;
+        bossState = 0;
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
@@ -173,19 +175,22 @@ public class ZoneHandler : MonoBehaviour
     public bool AllEnemiesConverted()
     {
         SaveZoneState();
-        /*foreach (bool enemyConverted in currentZone.enemiesConverted)
+
+        if(bossState >= 1)
         {
-            if (!enemyConverted)
+            if(bossState == 1)
             {
                 return false;
             }
-        }*/
-
-        foreach (EnemyBase enemy in GameManager.Instance.zoneEnemies)
+        }
+        else
         {
-            if (!enemy.IsConverted() && (enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial)))
+            foreach (EnemyBase enemy in GameManager.Instance.zoneEnemies)
             {
-                return false;
+                if (!enemy.IsConverted() && (enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial)))
+                {
+                    return false;
+                }
             }
         }
 

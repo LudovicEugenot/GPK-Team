@@ -6,6 +6,7 @@ public class InkBubble : MonoBehaviour
 {
     [SerializeField] private Transform bubbleDirection = null;
     public float bubbleSpeed;
+    public float convertedSpeed;
     public float bubbleSize;
     public AnimationClip apparitionAnim;
     public GameObject blackExplosionPrefab;
@@ -19,9 +20,11 @@ public class InkBubble : MonoBehaviour
     private bool isConverted;
     private Animator animator;
     private AudioSource source;
+    private Animator bossAnimator;
 
     void Start()
     {
+        bossAnimator = boss.GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -48,7 +51,26 @@ public class InkBubble : MonoBehaviour
     {
         if(Physics2D.OverlapCircle(transform.position, bubbleSize, LayerMask.GetMask("Obstacle")))
         {
+            if(isConverted)
+            {
+                Vector2 bossDirection = boss.transform.position - transform.position;
+                bossDirection.Normalize();
+                transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, bossDirection));
+                rb.velocity = bossDirection * convertedSpeed;
+            }
+            else
+            {
+                Explode();
+            }
+        }
+
+        if (Physics2D.OverlapCircle(transform.position, bubbleSize, LayerMask.GetMask("Boss")))
+        {
             Explode();
+            if(isConverted)
+            {
+                bossAnimator.SetTrigger("Hurt");
+            }
         }
     }
 
@@ -63,10 +85,12 @@ public class InkBubble : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Convert()
+    public void Convert(Vector2 direction)
     {
         if (convertable)
         {
+            rb.velocity = direction.normalized * convertedSpeed;
+            transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction));
             isConverted = true;
             animator.SetBool("Converted", true);
         }

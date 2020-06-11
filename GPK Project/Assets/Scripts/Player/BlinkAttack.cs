@@ -147,7 +147,7 @@ public class BlinkAttack : MonoBehaviour
                 foreach (Collider2D collider in colliders)
                 {
                     InkBubble inkBubble = collider.GetComponent<InkBubble>();
-                    inkBubble.Convert();
+                    inkBubble.Convert(attackDirection);
                 }
             }
 
