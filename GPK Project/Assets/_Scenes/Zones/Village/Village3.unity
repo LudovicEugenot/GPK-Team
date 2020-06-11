@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -688,7 +688,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1758610611}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &373536591
 SpriteRenderer:
@@ -2637,6 +2637,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
+      propertyPath: dialogues.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].requiredEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].compromisingEvents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
       propertyPath: hookToTalk
       value: 
       objectReference: {fileID: 716414610}
@@ -2653,7 +2673,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].triggeredEvent
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -2668,7 +2688,7 @@ PrefabInstance:
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
       propertyPath: dialogues.Array.data[0].compromisingEvents.Array.data[0]
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
@@ -2696,6 +2716,64 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogues.Array.data[0].talk.sentences.Array.data[5]
       value: "Merci du fond du coeur L\xE9on. Nous nous reverrons. J'en suis certaine!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.pnjName
+      value: "Sinea, Luthi\xE8re des Voix"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[0]
+      value: Au fait, j'ai cru voir Oros ranger ses affaires... Est-ce qu'il va quelque
+        part?
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[1]
+      value: ...
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[2]
+      value: "Je tenais \xE0 te remercier de m'avoir lib\xE9r\xE9, et de t'\xEAtre
+        occup\xE9 du village."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[3]
+      value: Nous te devons tous beaucoup. Oros le sait.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[4]
+      value: Je ne vais pas rester longtemps ici, je dois retourner m'occuper de
+        Cacao.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].talk.sentences.Array.data[5]
+      value: "Merci du fond du coeur L\xE9on. Nous nous reverrons. J'en suis certaine!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].triggeredEvent
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].progressionNeeded
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].requiredEvents.Array.data[0]
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584789732411709869, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
+        type: 3}
+      propertyPath: dialogues.Array.data[1].compromisingEvents.Array.data[0]
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4584789732411709870, guid: 3f93ed76e58f4f448b8dd84c8ce94204,
         type: 3}
