@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2325,6 +2325,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 153799171}
     m_Modifications:
+    - target: {fileID: 438687561573204886, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.09916851
+      objectReference: {fileID: 0}
+    - target: {fileID: 438687561573204886, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.1983371
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651683442848524319, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.06295574
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651683442848524319, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.1259115
+      objectReference: {fileID: 0}
     - target: {fileID: 3311372326607935932, guid: 31a93b313ec36a446866f6172d052271,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2384,6 +2404,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ExteriorWalls
+      objectReference: {fileID: 0}
+    - target: {fileID: 6555808328325333671, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.060730845
+      objectReference: {fileID: 0}
+    - target: {fileID: 6555808328325333671, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.1214612
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731875884899770439, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.04526037
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731875884899770439, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.0905204
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a93b313ec36a446866f6172d052271, type: 3}
