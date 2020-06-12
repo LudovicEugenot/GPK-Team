@@ -43,7 +43,6 @@ public class SpeakerObtention : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         GameManager.playerAnimator.SetTrigger("Throw");
-        StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
         GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, GameManager.Instance.player.transform.position, 3);
         WorldManager.currentStoryStep = WorldManager.StoryStep.SpeakerObtained;
         spriteRenderer.enabled = false;

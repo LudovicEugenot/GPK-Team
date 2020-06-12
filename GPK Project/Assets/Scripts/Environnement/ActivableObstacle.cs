@@ -6,6 +6,7 @@ public class ActivableObstacle : SwitchElement
 {
     public AudioClip upSound;
     public AudioClip downSound;
+    public Animator nbAnimator;
 
     private Collider2D obstacleCollider;
     private AudioSource source;
@@ -29,6 +30,10 @@ public class ActivableObstacle : SwitchElement
         if(animator != null)
         {
             animator.SetBool("Activated", active);
+        }
+        if(nbAnimator != null)
+        {
+            nbAnimator.SetBool("Activated", active);
         }
 
         if (active && obstacleCollider.enabled == false)

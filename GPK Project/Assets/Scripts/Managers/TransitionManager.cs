@@ -334,7 +334,8 @@ public class TransitionManager : MonoBehaviour
                 break;
         }
 
-        if(previousWorldData != null)
+        BeatManager.Instance.UnMuteMusic();
+        if (previousWorldData != null)
         {
             zoneHandler.zones = previousWorldData.worldZones;
             WorldManager.allWorldEvents = previousWorldData.worldEvents;
