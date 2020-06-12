@@ -49,9 +49,14 @@ public class BossAOEPattern : MonoBehaviour
 
         }
 
+        while(warningZones.Count > 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
         if(!isTesting)
         {
-            Destroy(gameObject);
+            Destroy(gameObject,0.1f);
         }
     }
 
