@@ -20,6 +20,7 @@ public class RemoteSpeaker : MonoBehaviour
     public Image cooldownDisplay;
     public GameObject attackFx;
     public GameObject attackMissFx;
+    public bool isHook;
 
     private GameObject remoteSpeakerO;
     private SpeakerHook speakerHook;
@@ -50,6 +51,11 @@ public class RemoteSpeaker : MonoBehaviour
     {
         if (speakerPlaced)
         {
+            if(!isHook)
+            {
+                speakerHook.isDisabled = true;
+            }
+
             if (speakerRemainingTime > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
             {
                 speakerRemainingTime--;
