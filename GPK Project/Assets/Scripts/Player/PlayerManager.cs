@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject healParticle;
     [Header("Sounds")]
     public AudioClip[] damageSounds;
+    public AudioClip healSound;
     public AudioClip gameOverSound;
 
     [HideInInspector] public int currentHealth;
@@ -92,6 +93,7 @@ public class PlayerManager : MonoBehaviour
 
     public void Heal(int life)
     {
+        GameManager.playerSource.PlayOneShot(healSound);
         if(currentHealth + life <= maxhealthPoint * 2)
         {
             currentHealth += life;

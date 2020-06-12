@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1721,6 +1721,11 @@ PrefabInstance:
         type: 3}
       propertyPath: compromisingEvents.Array.data[0]
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: lastValidStoryStep
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
