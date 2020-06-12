@@ -80,124 +80,15 @@ MonoBehaviour:
   - spawnPosition: {fileID: 3410323546495371344}
     position: {x: 2.94, y: -2.44}
     beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -2.24, y: -3.2199998}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 2.21, y: -3.25}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 6.78, y: -3.25}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 6.2999997, y: 0.21999997}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 3.4699998, y: 2.53}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -0.029999971, y: 0.060000002}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -3.6999998, y: 2.69}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -6.49, y: 0.24000001}
-    beatTimeBeforeNextAOE: 1
-    damage: 1
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 3410323546495371344}
-    position: {x: -6.09, y: -3.25}
-    beatTimeBeforeNextAOE: 1
     damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -2.24, y: -3.2199998}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 2.21, y: -3.25}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 6.78, y: -3.25}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 6.2999997, y: 0.21999997}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: 3.4699998, y: 2.53}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -0.029999971, y: 0.060000002}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -3.6999998, y: 2.69}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -6.49, y: 0.24000001}
-    beatTimeBeforeNextAOE: 1
-    damage: 2
-    radius: 2
-    warningBeatTime: 2
-  - spawnPosition: {fileID: 0}
-    position: {x: -0.07999992, y: -0.46999997}
-    beatTimeBeforeNextAOE: 6
-    damage: 3
-    radius: 5.5
-    warningBeatTime: 5
+    radius: 1
+    warningBeatTime: 1
   warningZonePrefab: {fileID: 3856039389742450725, guid: 32e3e65ff3aa71742a82a31aa5aa308a,
     type: 3}
   aoeFx: {fileID: 3979257338722313630, guid: 4606c8d8d066b834e876f0a8b8576efe, type: 3}
   aoeSound: {fileID: 8300000, guid: d5a12afe6aa90254598ca0f4393f1e7b, type: 3}
   warningSound: {fileID: 8300000, guid: 5b3e8d27e8ce3c14cb6ebb43955ad47b, type: 3}
   warningSoundOffset: 0.1
-  warningZones: []
 --- !u!82 &5962500460686097728
 AudioSource:
   m_ObjectHideFlags: 0

@@ -3623,12 +3623,12 @@ PrefabInstance:
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[0].numberOfAttacksBeforeBubble
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[1].numberOfAttacksBeforeBubble
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
@@ -4025,6 +4025,26 @@ PrefabInstance:
         type: 3}
       propertyPath: firstTalk.sentences.Array.data[4]
       value: MON REGNE ETERNEL, DEUIL SOUS UN SILENCE IMPLACABLE!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745050, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.051371127
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745050, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.31508207
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745050, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 2.039359
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745050, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.6883905
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745051, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}

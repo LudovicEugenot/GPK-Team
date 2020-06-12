@@ -14,7 +14,7 @@ public class BossAOEPattern : MonoBehaviour
     public AudioClip warningSound;
     public float warningSoundOffset;
 
-    public List<GameObject> warningZones = new List<GameObject>();
+    private List<GameObject> warningZones = new List<GameObject>();
 
     private AudioSource source;
 
