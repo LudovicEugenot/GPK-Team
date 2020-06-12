@@ -15,6 +15,7 @@ public class SoloTalk : MonoBehaviour
     public Vector2 alternateBoxPos;
     public WorldManager.EventName triggeredEvent;
     public WorldManager.StoryStep storyStepRequired;
+    public WorldManager.StoryStep lastValidStoryStep = WorldManager.StoryStep.EndGame;
     public WorldManager.EventName[] requiredEvents;
     public WorldManager.EventName[] compromisingEvents;
     public GameObject interactionIndicator;
@@ -37,7 +38,7 @@ public class SoloTalk : MonoBehaviour
     {
         if (previousTalk == null)
         {
-            if (GameManager.Instance.blink.currentHook == nearbyHook && storyStepRequired <= WorldManager.currentStoryStep && IsValid())
+            if (GameManager.Instance.blink.currentHook == nearbyHook && IsValid())
             {
                 if(shinyParticle!= null && !shinyParticle.isPlaying)
                 {
@@ -128,20 +129,27 @@ public class SoloTalk : MonoBehaviour
     private bool IsValid()
     {
         bool isValid = true;
-        foreach(WorldManager.WorldEvent worldEvent in requiredWorldEvents)
+        if(WorldManager.currentStoryStep >= storyStepRequired && (WorldManager.currentStoryStep <= lastValidStoryStep || lastValidStoryStep == WorldManager.StoryStep.Tutorial))
         {
-            if(!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
+            foreach (WorldManager.WorldEvent worldEvent in requiredWorldEvents)
             {
-                isValid = false;
+                if (!worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
+                {
+                    isValid = false;
+                }
+            }
+
+            foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
+            {
+                if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
+                {
+                    isValid = false;
+                }
             }
         }
-
-        foreach (WorldManager.WorldEvent worldEvent in compromisingWorldEvents)
+        else
         {
-            if (worldEvent.occured && worldEvent.name != WorldManager.EventName.NullEvent)
-            {
-                isValid = false;
-            }
+            isValid = false;
         }
 
         return isValid;

@@ -143,14 +143,6 @@ public class Blink : MonoBehaviour
 
     private void DrawHookRange(float radius, Vector2 center)
     {
-        if (playerManager.isInControl)
-        {
-            timingLine.enabled = true;
-        }
-        else
-        {
-            timingLine.enabled = false;
-        }
         rangeCenter = Vector2.Lerp(rangeCenter, center, rangeCenterLerpSpeed * Time.deltaTime);
         currentRadius += (radius - currentRadius) * rangeCenterLerpSpeed * Time.deltaTime;
         currentTimingRadius = Mathf.Lerp(currentRadius * originTimingRadiusMultiplier, currentRadius, BeatManager.Instance.currentBeatProgression);
@@ -174,15 +166,6 @@ public class Blink : MonoBehaviour
                 {
                     circlePointPos[i] = hit.point;
                 }
-            }
-
-            if(playerManager.isInControl)
-            {
-                rangePoints[i].enabled = true;
-            }
-            else
-            {
-                rangePoints[i].enabled = false;
             }
 
             rangePoints[i].transform.position = circlePointPos[i];

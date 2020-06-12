@@ -5,12 +5,17 @@ using UnityEngine;
 public class Instrument : SwitchElement
 {
     private AnimSynchronizer synchronizer;
+    public AudioClip reliveSound;
 
+    private AudioSource source;
+    private int soundFlag;
     void Start()
     {
         HandlerStart();
+        source = GetComponent<AudioSource>();
         ZoneHandler.Instance.reliveRemotlyChanged = true;
         synchronizer = GetComponent<AnimSynchronizer>();
+        soundFlag = 0;
     }
 
     void Update()
@@ -28,6 +33,11 @@ public class Instrument : SwitchElement
         {
             synchronizer.Synchronize();
             ZoneHandler.Instance.currentZone.isRelived = true;
+            if(soundFlag >= 5)
+            {
+                soundFlag = 0;
+                source.PlayOneShot(reliveSound);
+            }
             foreach(HookState hook in GameManager.Instance.zoneHooks)
             {
                 hook.Relive();
@@ -36,6 +46,7 @@ public class Instrument : SwitchElement
         else
         {
             ZoneHandler.Instance.currentZone.isRelived = false;
+            soundFlag++;
         }
     }
 

@@ -64,10 +64,20 @@ public class Boss : MonoBehaviour
             BossPhaseInit();
         }
 
+        if(GameManager.Instance.playerManager.dying)
+        {
+            isPassive = true;
+        }
+
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             if (!isPassive)
             {
+                if(attacksBeforeBubble <= 0)
+                {
+                    throwingAOE = false;
+                }
+
                 if(throwingAOE)
                 {
                     ZoneHandler.Instance.bossState = 1;
@@ -121,7 +131,6 @@ public class Boss : MonoBehaviour
             }
             else
             {
-
                 ZoneHandler.Instance.bossState = 2;
             }
         }

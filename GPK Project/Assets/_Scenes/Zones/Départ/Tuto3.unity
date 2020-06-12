@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -131,12 +131,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.56
+      value: -0.9
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.73
+      value: 3.48
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -188,6 +188,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClassicHook (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 6405902346724256939, guid: 4ccc10c0519f4b64e8a69c22063739db,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: af913f2056ba35546962e6fb7af44acd,
+        type: 3}
+    - target: {fileID: 8041818756792354879, guid: 4ccc10c0519f4b64e8a69c22063739db,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ccc10c0519f4b64e8a69c22063739db, type: 3}
 --- !u!4 &35008308 stripped
@@ -196,6 +207,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 35008307}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &35008309 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4747918219657966855, guid: 4ccc10c0519f4b64e8a69c22063739db,
+    type: 3}
+  m_PrefabInstance: {fileID: 35008307}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b11acae0f35b5514e948e4becc2bad3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &54949494
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +465,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: background_greyscale
       objectReference: {fileID: 0}
+    - target: {fileID: 85692013082805951, guid: 5791b197170996846a1ebeacfb1dd3dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2154755308323811966, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -453,6 +481,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c5c41a5a38f6f56498700c9fd050a130,
         type: 3}
+    - target: {fileID: 3656001651558385487, guid: 5791b197170996846a1ebeacfb1dd3dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5802939614182676014, guid: 5791b197170996846a1ebeacfb1dd3dd,
         type: 3}
       propertyPath: m_Sprite
@@ -2316,12 +2349,12 @@ PrefabInstance:
     - target: {fileID: 3822639273655229814, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3822639273655229814, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.43
+      value: 3.3
       objectReference: {fileID: 0}
     - target: {fileID: 3822639273655229814, guid: 309abdd403ce9a44b8df601b7d582cbb,
         type: 3}
@@ -2427,6 +2460,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1151904814}
   - component: {fileID: 1151904815}
+  - component: {fileID: 1151904816}
+  - component: {fileID: 1151904817}
   m_Layer: 0
   m_Name: Background_Piano
   m_TagString: Untagged
@@ -2442,7 +2477,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1151904813}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.719, y: 4.422, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5224762872894729622}
@@ -2484,10 +2519,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 2044193909
-  m_SortingLayer: -20
+  m_SortingLayerID: -1235943399
+  m_SortingLayer: -19
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 3b0b71c894c283d4bb421271e76d1ac4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a7a5d5cce8d1ba740bf2214e42d65010, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2498,6 +2533,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1151904816
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151904813}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cd5572bda8e2ce14fb01fe18dedb60d1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1151904817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151904813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46811fdbb2ce894b90c4369f450538d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storyStepToPlay: 3
 --- !u!1001 &1258567071
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2917,11 +2984,16 @@ PrefabInstance:
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: transitionHooks.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: zoneEnemies.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].blockedTalk.sentences.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
@@ -2998,6 +3070,53 @@ PrefabInstance:
         type: 3}
       propertyPath: zoneName
       value: Berceau du Son - Nord
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].hook
+      value: 
+      objectReference: {fileID: 35008309}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].direction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].connectedSceneBuildIndex
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].blockedTalk.pitch
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].storyStepRequired
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].blockedTalk.sentences.Array.data[0]
+      value: On ne peux pas passer par la
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].blockedTalk.sentences.Array.data[1]
+      value: Il nous bloque le passage jusqu'au village! Nous devons prendre un autre
+        chemin.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].blockedTalk.pnjName
+      value: Clarinetto
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[2].blockedTalk.sentences.Array.data[2]
+      value: "Quand tu vois un objet qui brille comme \xE7a, n'h\xE9site pas \xE0
+        me demander. J'ai grandi ici."
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
@@ -3138,6 +3257,11 @@ PrefabInstance:
         type: 3}
       propertyPath: commentary.pitch
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419620273563152128, guid: 42a8ce6d2ed85d44db8bc307c140af16,
+        type: 3}
+      propertyPath: lastValidStoryStep
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7419620273563152129, guid: 42a8ce6d2ed85d44db8bc307c140af16,
         type: 3}
@@ -3354,12 +3478,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.59
+      value: 4.41
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.03
+      value: 2.93
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -3713,6 +3837,11 @@ PrefabInstance:
     - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
       propertyPath: commentary.pitch
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
+        type: 3}
+      propertyPath: lastValidStoryStep
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670629, guid: 2dcb1f66a78f4884b829bb1e4d943267,
@@ -4225,12 +4354,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.87
+      value: 1.97
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.54
+      value: 3.66
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -4429,7 +4558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056390793}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.716, y: 4.422, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 187417358}
@@ -4453,7 +4582,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ac0ccae3b2c4bee4483d127640b0d824, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4474,7 +4603,7 @@ SpriteRenderer:
   m_SortingLayerID: -1918136707
   m_SortingLayer: -12
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: a414077d985cd94429d1b15b1a4c9b4c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 057577c327eb6d24cb5d66fe065a023a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

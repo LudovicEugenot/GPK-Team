@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class RemoteSpeaker : MonoBehaviour
 {
     [Header("Speaker options")]
-    public int initialBeatCooldown;
+    public int maximumSpeakerBeatTime;
     public int minimumBeatCooldown;
+    public int reloadMultiplier;
     public int airBeatTime;
     public float attackDamageMultiplier;
     public float knockbackDistance;
@@ -19,18 +20,17 @@ public class RemoteSpeaker : MonoBehaviour
     public Image cooldownDisplay;
     public GameObject attackFx;
     public GameObject attackMissFx;
+    public bool isHook;
 
     private GameObject remoteSpeakerO;
     private SpeakerHook speakerHook;
-    private int beatCooldownRemaining;
+    private int speakerRemainingTime;
     [HideInInspector] public bool speakerPlaced;
-    //private Animator animator;
     private Animator speakerAnimator;
 
     private void Start()
     {
-        //animator = transform.parent.GetComponentInChildren<Animator>();
-        beatCooldownRemaining = initialBeatCooldown;
+        speakerRemainingTime = maximumSpeakerBeatTime;
         speakerPlaced = false;
     }
 
@@ -51,34 +51,43 @@ public class RemoteSpeaker : MonoBehaviour
     {
         if (speakerPlaced)
         {
-            if (beatCooldownRemaining > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
+            if(!isHook)
             {
-                beatCooldownRemaining--;
+                speakerHook.isDisabled = true;
             }
-            else if (beatCooldownRemaining == 0 && remoteSpeakerO != null)
+
+            if (speakerRemainingTime > 0 && GameManager.Instance.Beat.onBeatFirstFrame)
+            {
+                speakerRemainingTime--;
+            }
+            else if (speakerRemainingTime == 0 && remoteSpeakerO != null)
             {
                 StartCoroutine(PickupSpeaker());
             }
         }
         else
         {
-            if (beatCooldownRemaining < initialBeatCooldown && GameManager.Instance.Beat.onBeatFirstFrame)
+            if (speakerRemainingTime < maximumSpeakerBeatTime && GameManager.Instance.Beat.onBeatFirstFrame)
             {
-                beatCooldownRemaining++;
+                speakerRemainingTime += reloadMultiplier;
+                if(speakerRemainingTime > maximumSpeakerBeatTime)
+                {
+                    speakerRemainingTime = maximumSpeakerBeatTime;
+                }
             }
-            else if (beatCooldownRemaining == initialBeatCooldown && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+            else if (speakerRemainingTime == maximumSpeakerBeatTime && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
                 StartCoroutine(ThrowSpeaker());
             }
         }
 
-        cooldownDisplay.fillAmount = (float)beatCooldownRemaining / (float)initialBeatCooldown;
+        cooldownDisplay.fillAmount = (float)speakerRemainingTime / (float)maximumSpeakerBeatTime;
     }
 
     private IEnumerator ThrowSpeaker()
     {
         GameManager.playerAnimator.SetTrigger("Throw");
-        beatCooldownRemaining = initialBeatCooldown;
+        speakerRemainingTime = maximumSpeakerBeatTime;
         Vector2 targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 launchPos = transform.parent.position;
         float currentLaunchTime = 0;
@@ -118,7 +127,7 @@ public class RemoteSpeaker : MonoBehaviour
     private IEnumerator SpeakerEffect()
     {
         Instantiate(onTimeParticleEffectPrefab, remoteSpeakerO.transform.position, Quaternion.identity);
-        beatCooldownRemaining = initialBeatCooldown - minimumBeatCooldown;
+        speakerRemainingTime = maximumSpeakerBeatTime - minimumBeatCooldown;
         yield return null;
     }
 
