@@ -68,6 +68,11 @@ public class Boss : MonoBehaviour
         {
             if (!isPassive)
             {
+                if(attacksBeforeBubble <= 0)
+                {
+                    throwingAOE = false;
+                }
+
                 if(throwingAOE)
                 {
                     ZoneHandler.Instance.bossState = 1;
