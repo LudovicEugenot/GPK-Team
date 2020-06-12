@@ -348,9 +348,7 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         pausePanel.SetActive(true);
-        Beat.PauseMusic();
-        Time.timeScale = 0;
-        Time.fixedDeltaTime = 0;
+        PauseTime();
         paused = true;
         playerSource.PlayOneShot(validationSound);
     }
@@ -360,12 +358,24 @@ public class GameManager : MonoBehaviour
         RefreshVolumes();
         PlayerPrefs.Save();
         pausePanel.SetActive(false);
-        Beat.UnPauseMusic();
-        Time.timeScale = 1;
-        Time.fixedDeltaTime = 0.02f;
+        UnPauseTime();
         paused = false;
         playerSource.time = 0.3f;
         playerSource.PlayOneShot(backSound);
+    }
+
+    public void PauseTime()
+    {
+        Beat.PauseMusic();
+        Time.timeScale = 0;
+        Time.fixedDeltaTime = 0;
+    }
+
+    public void UnPauseTime()
+    {
+        Beat.UnPauseMusic();
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = 0.02f;
     }
 
     private void RefreshVolumes()

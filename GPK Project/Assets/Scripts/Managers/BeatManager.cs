@@ -306,7 +306,7 @@ public class BeatManager : MonoBehaviour
     public bool CanAct()
     {
         bool used = beatActionUsed;
-        if (!beatActionUsed)
+        if (!beatActionUsed && !GameManager.Instance.playerManager.multipleActionByBeatAllowed)
         {
             beatActionUsed = true;
         }
@@ -341,6 +341,7 @@ public class BeatManager : MonoBehaviour
         {
             switchingSource.Pause();
             otherSource.Pause();
+            breakSource.Pause();
         }
         pauseStartTime = audioPlayTime;
     }
@@ -351,9 +352,29 @@ public class BeatManager : MonoBehaviour
         {
             otherSource.UnPause();
             switchingSource.UnPause();
+            breakSource.UnPause();
         }
 
         audioDspTimeDelay += audioPlayTime - pauseStartTime;
+    }
+
+    public void MuteMusic()
+    {
+        if (otherSource != null)
+        {
+            otherSource.volume = 0;
+            switchingSource.volume = 0;
+            breakSource.volume = 0;
+        }
+    }
+    public void UnMuteMusic()
+    {
+        if (otherSource != null)
+        {
+            otherSource.volume = 0.2f;
+            switchingSource.volume = 0.2f;
+            breakSource.volume = 0.2f;
+        }
     }
 
     private void MusicInit()

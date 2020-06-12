@@ -6,12 +6,12 @@ using UnityEngine;
 public class ZoneHandler : MonoBehaviour
 {
     [HideInInspector] public bool reliveRemotlyChanged;
+    [HideInInspector] public int bossState;
     [HideInInspector] public Zone currentZone;
     [HideInInspector] public float currentReliveProgression;
     [HideInInspector] public List<Zone> zones = new List<Zone>();
 
     [HideInInspector] public bool zoneInitialized;
-    //private bool isAnimatingRecolor;
 
     #region Singleton
     public static ZoneHandler Instance { get; private set; }
@@ -57,7 +57,7 @@ public class ZoneHandler : MonoBehaviour
 
     private void UpdateRelive()
     {
-        if(!reliveRemotlyChanged/* && !isAnimatingRecolor*/)
+        if(!reliveRemotlyChanged)
         {
             int hooksRelived = 0;
             if (!currentZone.isRelived)
@@ -91,19 +91,11 @@ public class ZoneHandler : MonoBehaviour
 
     public IEnumerator RecolorEffect()
     {
-        //Jouer son recolor
-        /*isAnimatingRecolor = true;
-        StartCoroutine(GameManager.Instance.cameraHandler.CinematicLook(Vector2.zero, 2.0f, 5.625f, true));
-        currentReliveProgression = 0;
-        yield return new WaitForSeconds(1.0f);
-        currentReliveProgression = 1;*/
-        // animation de recolor
         for (int i = 0; i < GameManager.Instance.recolorHealthHealed; i++)
         {
             GameManager.Instance.playerManager.Heal(1);
             yield return new WaitForSeconds(0.2f);
         }
-        //isAnimatingRecolor = false;
     }
 
     public void SaveZoneState()
@@ -137,6 +129,7 @@ public class ZoneHandler : MonoBehaviour
     {
         currentZone = newZone;
         reliveRemotlyChanged = false;
+        bossState = 0;
 
         for(int i = 0; i < currentZone.enemiesConverted.Length; i++)
         {
@@ -182,19 +175,22 @@ public class ZoneHandler : MonoBehaviour
     public bool AllEnemiesConverted()
     {
         SaveZoneState();
-        /*foreach (bool enemyConverted in currentZone.enemiesConverted)
+
+        if(bossState >= 1)
         {
-            if (!enemyConverted)
+            if(bossState == 1)
             {
                 return false;
             }
-        }*/
-
-        foreach (EnemyBase enemy in GameManager.Instance.zoneEnemies)
+        }
+        else
         {
-            if (!enemy.IsConverted() && (enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial)))
+            foreach (EnemyBase enemy in GameManager.Instance.zoneEnemies)
             {
-                return false;
+                if (!enemy.IsConverted() && (enemy.firstStoryStepToAppear <= WorldManager.currentStoryStep && (enemy.lastStoryStepToAppear >= WorldManager.currentStoryStep || enemy.lastStoryStepToAppear == WorldManager.StoryStep.Tutorial)))
+                {
+                    return false;
+                }
             }
         }
 

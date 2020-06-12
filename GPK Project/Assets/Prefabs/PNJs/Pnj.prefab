@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 219301207791820373}
   - component: {fileID: 9134048367308340378}
-  - component: {fileID: 219301207791820372}
+  - component: {fileID: 3206251626054288989}
   - component: {fileID: 219301207791820379}
   - component: {fileID: 219301207791820378}
   - component: {fileID: 219301207791820374}
@@ -51,7 +51,7 @@ MonoBehaviour:
   cinematicLookPos: {fileID: 0}
   cinematicLookZoom: 0
   dialogues: []
---- !u!114 &219301207791820372
+--- !u!114 &3206251626054288989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,9 +60,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 219301207791820377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02ec315c5009bb34f84824df246f2f5f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b22d8fdf90b2cc438648b6cb2342248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storyStepToRelive: 3
   relived: 0
 --- !u!212 &219301207791820379
 SpriteRenderer:
@@ -100,8 +101,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1974562565
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0f03293a58aec8d4b91acd37b56d2264, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

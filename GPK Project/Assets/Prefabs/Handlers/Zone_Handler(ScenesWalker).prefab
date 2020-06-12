@@ -81,14 +81,33 @@ MonoBehaviour:
     type: 3}
   disparitionPrefab: {fileID: 2061613087851263279, guid: 5c341fdb81c2d0a48863842114f46bd7,
     type: 3}
+  oneFootPrefab: {fileID: 3173569544986736094, guid: b4e2f3b57725c854081c1f0171378265,
+    type: 3}
   timeBeforePlayerAppearence: 0.6
   timeBeforeZoneQuitting: 1
   blackScreen: {fileID: 6173341646428391875}
   blackScreenMask: {fileID: 6173341647272042934}
   transitionLerpSpeed: 5
   maxMaskSize: 45
-  savePos: {x: 0, y: 0}
-  newPlayerHp: 0
+  previousPlayerData:
+    maxHealthPoint: 0
+    health: 0
+    position: []
+    ownSpeaker: 0
+    heartContainerOwned: 0
+  firstInit: 0
+  previousTransitionHook:
+    hook: {fileID: 0}
+    isTemporary: 0
+    direction: 0
+    connectedSceneBuildIndex: 0
+    storyStepRequired: 0
+    eventRequired: 0
+    blockedTalk:
+      pnjName: 
+      pitch: 1
+      sentences: []
+    customCinematicTransitionSceneIndex: 0
 --- !u!114 &445385845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a342adae8de6fd44b22c03c3e65faee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCurrentRelived: 0
+  reliveRemotlyChanged: 0
   currentZone:
     isRelived: 0
     buildIndex: 0
@@ -110,8 +129,10 @@ MonoBehaviour:
     hooksRelived: 
     enemiesConverted: 
     elementsEnabled: 
+    heartContainersObtained: 
   currentReliveProgression: 0
   zones: []
+  zoneInitialized: 0
 --- !u!1 &6173341647272042934
 GameObject:
   m_ObjectHideFlags: 0

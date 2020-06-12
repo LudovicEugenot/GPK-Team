@@ -613,17 +613,17 @@ MonoBehaviour:
   - range: 5.5
     pointDisplay: {fileID: 21300000, guid: 7497fbf69f708354aa5ae0f528b95932, type: 3}
   - range: 5.8
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 6.1
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 6.4
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 6.7
-    pointDisplay: {fileID: 21300000, guid: d14619b19d978f74aa21ac648b0378e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 7cac2d0d55e729640b111161fda96703, type: 3}
   - range: 7
-    pointDisplay: {fileID: 21300000, guid: b3a8cb1ea012ab745bad5672c1c890e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 0b19694398b62ff4e96b5c5d5a811278, type: 3}
   - range: 7.2
-    pointDisplay: {fileID: 21300000, guid: b3a8cb1ea012ab745bad5672c1c890e5, type: 3}
+    pointDisplay: {fileID: 21300000, guid: 0b19694398b62ff4e96b5c5d5a811278, type: 3}
   allowedConsecutiveOnbeatMiss: 1
   comboMalus: 2
   startHook: {fileID: 0}
@@ -711,9 +711,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a35c74761bbdf34080b3e4df828ca1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialBeatCooldown: 10
+  maximumSpeakerBeatTime: 10
   minimumBeatCooldown: 3
-  airBeatTime: 3
+  reloadMultiplier: 3
+  airBeatTime: 1
   attackDamageMultiplier: 2
   knockbackDistance: -2
   launchCurveVisual:
@@ -792,6 +793,7 @@ MonoBehaviour:
     type: 3}
   attackMissFx: {fileID: 4090550013682170832, guid: da77a1887e2917c4c97e4e8a5ee7d94e,
     type: 3}
+  isHook: 0
   speakerPlaced: 0
 --- !u!114 &3822639274368582671
 MonoBehaviour:
@@ -809,6 +811,7 @@ MonoBehaviour:
   beatInvulnerableTime: 1.8
   playerOffBeated: 0
   beatAndOffBeatAllowed: 0
+  multipleActionByBeatAllowed: 0
   deathCinematicZoom: 2
   interactMaxDistance: 2
   timeBeforeDancing: 3
@@ -829,12 +832,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2a34d8593a1c10a47bf878034d1820a3, type: 3}
   - {fileID: 8300000, guid: d6d7981d02fa08d4cb055fdf39e3d827, type: 3}
   - {fileID: 8300000, guid: 5312bfa15ab95f04bbac45dd67163a54, type: 3}
+  healSound: {fileID: 8300000, guid: 072aa7ff9d08f314cbde375dd91485b2, type: 3}
+  gameOverSound: {fileID: 8300000, guid: af08b0ffaea47ed4baa9da6df7d6bc97, type: 3}
   currentHealth: 0
   currentPower: 0
   ownSpeaker: 0
   isInControl: 0
   heartContainerOwned: 0
   animSynchronizer: {fileID: 866918040769869003}
+  dying: 0
 --- !u!114 &7556608464088615825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,7 +1091,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3822639275442409410}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.221, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3822639273655229814}
@@ -1252,12 +1258,12 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.29411766}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 0.5789946, b: 0.4764151, a: 1}
+      key1: {r: 1, g: 0.5803922, b: 0.47450984, a: 1}
+      key2: {r: 1, g: 1, b: 1, a: 0.29411766}
       key3: {r: 0, g: 0, b: 0, a: 0.29411766}
-      key4: {r: 0, g: 0, b: 0, a: 1}
-      key5: {r: 0, g: 0, b: 0, a: 1}
+      key4: {r: 0, g: 0, b: 0, a: 0.29411766}
+      key5: {r: 0, g: 0, b: 0, a: 0.29411766}
       key6: {r: 0, g: 0, b: 0, a: 0.29411766}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
@@ -1269,16 +1275,16 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 10023
-      atime2: 21588
-      atime3: 32189
-      atime4: 43754
-      atime5: 56669
+      atime1: 65535
+      atime2: 65535
+      atime3: 65535
+      atime4: 65535
+      atime5: 65535
       atime6: 65535
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 7
+      m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0

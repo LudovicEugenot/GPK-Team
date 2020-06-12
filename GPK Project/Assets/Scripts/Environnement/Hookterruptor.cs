@@ -50,6 +50,11 @@ public class Hookterruptor : Hook
     {
         if (Physics2D.OverlapCircle(transform.position, speakerTriggerDistance, LayerMask.GetMask("Speaker")) && GameManager.remoteSpeaker.speakerPlaced)
         {
+            if (BeatManager.Instance.OnBeat(false, false, "(__)"))
+            {
+                hookState.relived = true;
+            }
+
             if(!switchInterruptor)
             {
                 if (stayPressedUntilNextBlink)

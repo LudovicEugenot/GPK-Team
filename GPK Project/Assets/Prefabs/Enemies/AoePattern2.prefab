@@ -194,7 +194,7 @@ MonoBehaviour:
     warningBeatTime: 2
   - spawnPosition: {fileID: 5858943556608007502}
     position: {x: -2.672998, y: -14.839981}
-    beatTimeBeforeNextAOE: 2
+    beatTimeBeforeNextAOE: 3
     damage: 2
     radius: 2.5
     warningBeatTime: 2
@@ -206,7 +206,7 @@ MonoBehaviour:
     warningBeatTime: 2
   - spawnPosition: {fileID: 5858943556154663439}
     position: {x: -6.422998, y: -14.824981}
-    beatTimeBeforeNextAOE: 2
+    beatTimeBeforeNextAOE: 3
     damage: 2
     radius: 2.5
     warningBeatTime: 2
@@ -218,7 +218,7 @@ MonoBehaviour:
     warningBeatTime: 2
   - spawnPosition: {fileID: 224604526242403547}
     position: {x: 1.7470016, y: -14.839981}
-    beatTimeBeforeNextAOE: 2
+    beatTimeBeforeNextAOE: 3
     damage: 2
     radius: 2.5
     warningBeatTime: 2
@@ -227,7 +227,8 @@ MonoBehaviour:
   aoeFx: {fileID: 3979257338722313630, guid: 4606c8d8d066b834e876f0a8b8576efe, type: 3}
   aoeSound: {fileID: 8300000, guid: d5a12afe6aa90254598ca0f4393f1e7b, type: 3}
   warningSound: {fileID: 8300000, guid: 5b3e8d27e8ce3c14cb6ebb43955ad47b, type: 3}
-  warningSoundOffset: 2
+  warningSoundOffset: 0.1
+  warningZones: []
 --- !u!82 &1998773156350519931
 AudioSource:
   m_ObjectHideFlags: 0
@@ -240,7 +241,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5252602945293585120, guid: 5b672f6cc4e102c4dad0dffd05495290,
     type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

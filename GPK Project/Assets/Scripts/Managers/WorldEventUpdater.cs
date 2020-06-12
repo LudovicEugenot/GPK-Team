@@ -73,14 +73,35 @@ public class WorldEventUpdater : MonoBehaviour
 
     private void CheckGreatInstrumentReliving()
     {
-        if (WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured
-          && WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured
-          && WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured
-          && WorldManager.currentStoryStep < WorldManager.StoryStep.AllInstrumentRelived)
+        int giRelived = 0;
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.StringInstrumentRelived).occured)
+        {
+            giRelived++;
+        }
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.RythmInstrumentRelived).occured)
+        {
+            giRelived++;
+        }
+        if (WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured)
+        {
+            giRelived++;
+        }
+
+        if(giRelived == 3 && WorldManager.currentStoryStep < WorldManager.StoryStep.AllInstrumentRelived)
         {
             Debug.Log("Tous les instrument sont reactivés");
             GameManager.Instance.dialogueManager.StartTalk(warningTempleOpen, GameManager.Instance.player.transform.position, 3);
             WorldManager.currentStoryStep = WorldManager.StoryStep.AllInstrumentRelived;
+        }
+        else if(giRelived == 2 && WorldManager.currentStoryStep < WorldManager.StoryStep.SecondInstrumentRelived)
+        {
+            Debug.Log("Le deuxième instrument est reactivé");
+            WorldManager.currentStoryStep = WorldManager.StoryStep.SecondInstrumentRelived;
+        }
+        else if (giRelived == 1 && WorldManager.currentStoryStep < WorldManager.StoryStep.FirstInstrumentRelived)
+        {
+            Debug.Log("Le premier instrument est reactivé");
+            WorldManager.currentStoryStep = WorldManager.StoryStep.FirstInstrumentRelived;
         }
     }
 
@@ -122,7 +143,7 @@ public class WorldEventUpdater : MonoBehaviour
     {
         if(WorldManager.currentStoryStep >= cursedUntilStoryStep)
         {
-            ZoneHandler.Instance.reliveRemotlyChanged = false;
+            //ZoneHandler.Instance.reliveRemotlyChanged = false;
         }
         else
         {

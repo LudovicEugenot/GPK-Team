@@ -5,6 +5,7 @@ using UnityEngine;
 public class CliffHandler : MonoBehaviour
 {
     public WorldManager.EventName eventToFall;
+    public Animator dustAnimator;
 
     private WorldManager.WorldEvent worldEventToFall;
     private bool fell;
@@ -27,6 +28,7 @@ public class CliffHandler : MonoBehaviour
         {
             fell = true;
             animator.SetTrigger("Fall");
+            dustAnimator.SetTrigger("Fall");
         }
     }
 }

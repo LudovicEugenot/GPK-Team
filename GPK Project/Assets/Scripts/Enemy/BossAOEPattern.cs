@@ -14,6 +14,8 @@ public class BossAOEPattern : MonoBehaviour
     public AudioClip warningSound;
     public float warningSoundOffset;
 
+    private List<GameObject> warningZones = new List<GameObject>();
+
     private AudioSource source;
 
     void Start()
@@ -47,9 +49,14 @@ public class BossAOEPattern : MonoBehaviour
 
         }
 
+        while(warningZones.Count > 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
         if(!isTesting)
         {
-            Destroy(gameObject);
+            Destroy(gameObject,0.1f);
         }
     }
 
@@ -57,15 +64,17 @@ public class BossAOEPattern : MonoBehaviour
     {
         GameObject warningZone = Instantiate(warningZonePrefab, aoe.position, Quaternion.identity);
         warningZone.transform.localScale = Vector2.one * aoe.radius;
-        //Invoke("PlayWarningSound", aoe.warningBeatTime * BeatManager.Instance.BeatTime - warningSoundOffset);
+        warningZones.Add(warningZone);
+        source.clip = aoeSound;
+        yield return new WaitForSeconds((aoe.warningBeatTime * BeatManager.Instance.BeatTime) - warningSoundOffset);
 
-        yield return new WaitForSeconds(aoe.warningBeatTime * BeatManager.Instance.BeatTime);
-
+        source.Play();
+        yield return new WaitForSeconds(warningSoundOffset);
+        warningZones.Remove(warningZone);
         Destroy(warningZone);
 
         GameObject fx = Instantiate(aoeFx, aoe.position, Quaternion.identity);
         fx.transform.localScale = Vector2.one * aoe.radius;
-        source.PlayOneShot(aoeSound);
         while(BeatManager.Instance.OnBeat(false,false, "--__--"))
         {
             yield return new WaitForFixedUpdate();
@@ -121,6 +130,14 @@ public class BossAOEPattern : MonoBehaviour
         {
             Aoe aoeInfo = aoe.Info();
             Gizmos.DrawWireSphere(aoeInfo.position, aoeInfo.radius);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach(GameObject warningZone in warningZones)
+        {
+            Destroy(warningZone);
         }
     }
 }

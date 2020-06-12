@@ -7,6 +7,7 @@ public class TransitionManager : MonoBehaviour
 {
     public GameObject apparitionPrefab;
     public GameObject disparitionPrefab;
+    public GameObject oneFootPrefab;
     public float timeBeforePlayerAppearence;
     public float timeBeforeZoneQuitting;
     [Space]
@@ -208,7 +209,7 @@ public class TransitionManager : MonoBehaviour
             blackScreenMask.transform.localScale = new Vector2(maskLerpProgression * maxMaskSize, maskLerpProgression * maxMaskSize);
             yield return new WaitForEndOfFrame();
         }
-        Instantiate(apparitionPrefab, !firstInit ? startHook.transform.position : (Vector3)apparitionPos, Quaternion.identity);
+        Instantiate(apparitionPrefab, !firstInit ? startHook.transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y : (Vector3)apparitionPos, Quaternion.identity);
         firstInit = false;
         yield return new WaitForSeconds(timeBeforePlayerAppearence);
         isTransitionning = false;
@@ -222,8 +223,12 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
+        GameObject oneFoot = null;
         if(transitionHook.customCinematicTransitionSceneIndex != 0)
         {
+            currentPlayerRendererO.SetActive(false);
+            oneFoot = Instantiate(oneFootPrefab, GameManager.Instance.player.transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y, Quaternion.identity);
+            Destroy(transitionHook.hook.gameObject);
             yield return new WaitForSeconds(2);
         }
 
@@ -239,15 +244,24 @@ public class TransitionManager : MonoBehaviour
         PlayTestRecorder.currentZoneRecord.timeSpent += timeSpentInZone;
         PlayTestRecorder.SaveCurrentZone();
 
+
         float maskLerpProgression = 0;
         while (maskLerpProgression < 0.92f)
         {
             maskLerpProgression += (1 - maskLerpProgression) * transitionLerpSpeed * Time.deltaTime;
             blackScreenMask.transform.localScale = new Vector2((1 - maskLerpProgression) * maxMaskSize, (1 - maskLerpProgression) * maxMaskSize);
+            if (transitionHook.customCinematicTransitionSceneIndex != 0)
+            {
+                oneFoot.transform.position += Vector3.down * Time.deltaTime * 10;
+            }
             yield return new WaitForEndOfFrame();
         }
-        currentPlayerRendererO.SetActive(false);
-        Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position, Quaternion.identity);
+
+        if(transitionHook.customCinematicTransitionSceneIndex == 0)
+        {
+            currentPlayerRendererO.SetActive(false);
+            Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y, Quaternion.identity);
+        }
 
         GameManager.playerSource.PlayOneShot(GameManager.Instance.blink.transitionBlinkSound);
 
@@ -320,7 +334,8 @@ public class TransitionManager : MonoBehaviour
                 break;
         }
 
-        if(previousWorldData != null)
+        BeatManager.Instance.UnMuteMusic();
+        if (previousWorldData != null)
         {
             zoneHandler.zones = previousWorldData.worldZones;
             WorldManager.allWorldEvents = previousWorldData.worldEvents;

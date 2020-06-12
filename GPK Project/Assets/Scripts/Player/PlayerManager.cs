@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public float beatInvulnerableTime;
     public bool playerOffBeated;
     public bool beatAndOffBeatAllowed;
+    public bool multipleActionByBeatAllowed;
     [Space]
     public float deathCinematicZoom;
     public float interactMaxDistance;
@@ -26,6 +27,8 @@ public class PlayerManager : MonoBehaviour
     public GameObject healParticle;
     [Header("Sounds")]
     public AudioClip[] damageSounds;
+    public AudioClip healSound;
+    public AudioClip gameOverSound;
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int currentPower;
@@ -40,6 +43,7 @@ public class PlayerManager : MonoBehaviour
     private float remainingTimeBeforeDancing;
     public AnimSynchronizer animSynchronizer;
     private int interactionPossible;
+    [HideInInspector] public bool dying;
 
     void Start()
     {
@@ -77,7 +81,10 @@ public class PlayerManager : MonoBehaviour
             invulTimeRemaining = beatInvulnerableTime * GameManager.Instance.Beat.BeatTime;
             if (currentHealth <= 0)
             {
-                StartCoroutine(Die());
+                if (!dying)
+                {
+                    StartCoroutine(Die());
+                }
             }
 
             GameManager.playerSource.PlayOneShot(damageSounds[Random.Range(0, damageSounds.Length)]);
@@ -86,6 +93,7 @@ public class PlayerManager : MonoBehaviour
 
     public void Heal(int life)
     {
+        GameManager.playerSource.PlayOneShot(healSound);
         if(currentHealth + life <= maxhealthPoint * 2)
         {
             currentHealth += life;
@@ -168,9 +176,14 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator Die()
     {
+        dying = true;
         GameManager.Instance.PauseEnemyBehaviour();
+        ZoneHandler.Instance.reliveRemotlyChanged = true;
+        ZoneHandler.Instance.currentReliveProgression = 0;
         StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(transform.parent.position, deathCinematicZoom, true));
         GameManager.playerAnimator.SetTrigger("Die");
+        GameManager.playerSource.PlayOneShot(gameOverSound);
+        BeatManager.Instance.MuteMusic();
         gameOverPanel.SetActive(true);
         yield return new WaitForSeconds(2);
         while(!keyPressed)

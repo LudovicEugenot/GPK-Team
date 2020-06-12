@@ -8,14 +8,17 @@ public class GreatInstrument : MonoBehaviour
     public Talk triggeredTalk;
     public float timeBeforeTalk;
     public WorldManager.EventName triggeredEvent;
+    public AudioClip reliveSound;
 
     [HideInInspector] public bool isRelived;
     private WorldManager.WorldEvent triggeredWorldEvent;
     private Animator animator;
     private AnimSynchronizer synchronizer;
+    private AudioSource source;
 
     void Start()
     {
+        source = GetComponent<AudioSource>();
         synchronizer = GetComponent<AnimSynchronizer>();
         ZoneHandler.Instance.reliveRemotlyChanged = true;
         animator = GetComponent<Animator>();
@@ -52,6 +55,7 @@ public class GreatInstrument : MonoBehaviour
                 triggeredWorldEvent.occured = true;
                 animator.SetBool("Relive", true);
                 GameManager.playerAnimator.SetTrigger("Throw");
+                source.PlayOneShot(reliveSound);
                 StartCoroutine(StartTalk());
             }
         }

@@ -362,7 +362,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -332317139
-  m_SortingLayer: -10
+  m_SortingLayer: -11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8bbd3007c7abb0243aa5588246e9bbd4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2343,7 +2343,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1235943399
-  m_SortingLayer: -18
+  m_SortingLayer: -19
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b5e2d324ce2f7ba408674582bba282c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2524,6 +2524,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 153799171}
     m_Modifications:
+    - target: {fileID: 438687561573204886, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.12277982
+      objectReference: {fileID: 0}
+    - target: {fileID: 438687561573204886, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.2455597
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651683442848524319, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.05925238
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651683442848524319, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.1185048
+      objectReference: {fileID: 0}
     - target: {fileID: 3311372326607935932, guid: 31a93b313ec36a446866f6172d052271,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2583,6 +2603,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ExteriorWalls
+      objectReference: {fileID: 0}
+    - target: {fileID: 6555808328325333671, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.05863659
+      objectReference: {fileID: 0}
+    - target: {fileID: 6555808328325333671, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.117273
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731875884899770439, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.05618535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731875884899770439, guid: 31a93b313ec36a446866f6172d052271,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.11237
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a93b313ec36a446866f6172d052271, type: 3}
