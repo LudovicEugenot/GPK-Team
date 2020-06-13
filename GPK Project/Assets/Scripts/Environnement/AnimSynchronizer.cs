@@ -12,6 +12,7 @@ public class AnimSynchronizer : MonoBehaviour
         {
             animator = GetComponent<Animator>();
         }
+        Debug.Log(gameObject.name + " synchronize");
         animator.SetFloat("Speed", BeatManager.Instance.bpm > 120 ? 1 / BeatManager.Instance.BeatTime : 2 / BeatManager.Instance.BeatTime);
     }
 }

@@ -26,6 +26,7 @@ public class RemoteSpeaker : MonoBehaviour
     private SpeakerHook speakerHook;
     private int speakerRemainingTime;
     [HideInInspector] public bool speakerPlaced;
+    [HideInInspector] public Transform speakerAttackPreview;
     private Animator speakerAnimator;
 
     private void Start()
@@ -97,6 +98,8 @@ public class RemoteSpeaker : MonoBehaviour
         speakerAnimator = remoteSpeakerO.GetComponent<Animator>();
         speakerHook.remoteSpeaker = this;
         speakerAnimator.SetBool("Placed", false);
+        speakerAttackPreview = remoteSpeakerO.transform.GetChild(0);
+        speakerAttackPreview.gameObject.SetActive(false);
         while (currentLaunchTime < GameManager.Instance.Beat.BeatTime * airBeatTime)
         {
             Vector2 realPos = Vector2.Lerp(launchPos, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / (GameManager.Instance.Beat.BeatTime * airBeatTime)));
@@ -120,6 +123,7 @@ public class RemoteSpeaker : MonoBehaviour
     {
         Destroy(remoteSpeakerO);
         remoteSpeakerO = null;
+        speakerAttackPreview = null;
         speakerPlaced = false;
         yield return null;
     }
@@ -149,5 +153,13 @@ public class RemoteSpeaker : MonoBehaviour
                 enemy.TakeDamage(Mathf.FloorToInt(damage * attackDamageMultiplier), attackDirection * knockbackDistance);
             }
         }
+    }
+
+    public void RotateAttackPreview()
+    {
+        Vector2 attackDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - remoteSpeakerO.transform.position;
+        attackDirection.Normalize();
+        float attackDirectionAngle = Vector2.SignedAngle(Vector2.right, attackDirection);
+        speakerAttackPreview.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle - 90));
     }
 }
