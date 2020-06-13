@@ -8,6 +8,7 @@ public static class SaveSystem
     public static string playerDataSaveFileName;
     public static string worldDataSaveFileName;
     public static string previewDataSaveFileName;
+    public static string playerPrefSaveFileName = "/Pref";
     public static string saveFileExtension;
     public static string defaultSaveDirectoryName;
     public static string defaultGameDirectoryName;
@@ -243,9 +244,51 @@ public static class SaveSystem
             PreviewData previewData = formatter.Deserialize(stream) as PreviewData;
             stream.Close();
 
-            //Debug.Log("Preview loaded from " + path);
 
             return previewData;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+
+    public static void SavePlayerPref(GameManager gameManager)
+    {
+        if (savePath != "" && savePath != null)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            string path = savePath + playerPrefSaveFileName + saveFileExtension;
+
+            FileStream stream = new FileStream(path, FileMode.Create);
+
+            PlayerPrefData playerPref = new PlayerPrefData(gameManager);
+
+            formatter.Serialize(stream, playerPref);
+            stream.Close();
+        }
+        else
+        {
+            Debug.LogError("The savePath has not been set");
+        }
+    }
+
+    public static PlayerPrefData LoadPlayerPref()
+    {
+        string path = savePath + playerPrefSaveFileName + saveFileExtension;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PlayerPrefData playerPref = formatter.Deserialize(stream) as PlayerPrefData;
+            stream.Close();
+
+            return playerPref;
         }
         else
         {
