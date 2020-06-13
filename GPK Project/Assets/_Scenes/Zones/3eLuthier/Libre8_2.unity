@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1672,6 +1672,58 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4297581, y: 0.94489}
   m_EdgeRadius: 0
+--- !u!61 &863222643
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863222641}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!61 &863222644
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863222641}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -4.265012, y: 0.95041704}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3771763, y: 1.188632}
+  m_EdgeRadius: 0
 --- !u!61 &863222645
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1737,7 +1789,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -3.1846147, y: -3.1301794}
+  m_Offset: {x: -3.34419, y: -3.1301794}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1748,7 +1800,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.8292246, y: 1.8596973}
+  m_Size: {x: 3.148375, y: 1.8596973}
   m_EdgeRadius: 0
 --- !u!61 &863222648
 BoxCollider2D:
@@ -1763,7 +1815,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.025623351, y: -1.8700151}
+  m_Offset: {x: 0.01064378, y: -1.8917804}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1774,7 +1826,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0922441, y: 1.3160219}
+  m_Size: {x: 1.01971, y: 1.2724915}
   m_EdgeRadius: 0
 --- !u!1001 &863869001
 PrefabInstance:
@@ -2703,7 +2755,7 @@ PrefabInstance:
         type: 3}
       propertyPath: musicSO
       value: 
-      objectReference: {fileID: 11400000, guid: 2c51e6ab037bd9f489ac94ee29bb1217,
+      objectReference: {fileID: 11400000, guid: c452e03fcdbf7e240870e4d19a47a4be,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25034624d0a6cb942b829e19fc2c8444, type: 3}
@@ -2986,22 +3038,22 @@ PrefabInstance:
     - target: {fileID: 5831566477151593844, guid: dc1557379403cd84eaa51eab377e6b0b,
         type: 3}
       propertyPath: m_Offset.x
-      value: 0.23908758
+      value: -4.2580333
       objectReference: {fileID: 0}
     - target: {fileID: 5831566477151593844, guid: dc1557379403cd84eaa51eab377e6b0b,
         type: 3}
       propertyPath: m_Size.x
-      value: 2.3693209
+      value: 1.3248281
       objectReference: {fileID: 0}
     - target: {fileID: 5831566477151593844, guid: dc1557379403cd84eaa51eab377e6b0b,
         type: 3}
       propertyPath: m_Offset.y
-      value: 0.30435348
+      value: -1.632756
       objectReference: {fileID: 0}
     - target: {fileID: 5831566477151593844, guid: dc1557379403cd84eaa51eab377e6b0b,
         type: 3}
       propertyPath: m_Size.y
-      value: 0.6086898
+      value: 1.1455655
       objectReference: {fileID: 0}
     - target: {fileID: 5831566477151593845, guid: dc1557379403cd84eaa51eab377e6b0b,
         type: 3}
