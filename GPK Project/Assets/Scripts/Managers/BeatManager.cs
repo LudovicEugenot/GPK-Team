@@ -384,11 +384,6 @@ public class BeatManager : MonoBehaviour
         beatActionUsed = false;
     }
 
-    public void LoadMusic(AudioClip clip)
-    {
-        switchingSource.clip = clip;
-    }
-
     public void LoadMusic(AudioClip clip, float timerEntryMusic)
     {
         switchingSource.clip = clip;
@@ -408,10 +403,7 @@ public class BeatManager : MonoBehaviour
     public void PlayMusicLoadedNextBeat()
     {
         switchingSource.PlayScheduled(timeBeforeNextBeat);
-        if (playingBreak)
-            StartCoroutine(FadeOutMusic(breakSource, (float)timeBeforeNextBeat, fadeOutTime, true));
-        else
-            StartCoroutine(FadeOutMusic(otherSource, (float)timeBeforeNextBeat, fadeOutTime, false));
+        StartCoroutine(FadeOutMusic(playingBreak ? breakSource : otherSource, (float)timeBeforeNextBeat, fadeOutTime, playingBreak));
         StartCoroutine(RefreshSongInfos((float)timeBeforeNextBeat));
         SwitchSource();
     }
@@ -420,20 +412,26 @@ public class BeatManager : MonoBehaviour
     {
         breakSource.PlayScheduled(timeBeforeNextBeat);
         StartCoroutine(FadeOutMusic(otherSource, (float)timeBeforeNextBeat, fadeOutTime, false));
-        StartCoroutine(RefreshSongInfos((float)timeBeforeNextBeat));
         StartCoroutine(PlayingBreak((float)timeBeforeNextBeat));
+        StartCoroutine(RefreshSongInfos((float)timeBeforeNextBeat));
     }
 
     public void PlayMusicLoadedInSomeBeats(int numberOfBeatsUntilPlayed)
     {
         double timeUntilPlayed = timeBeforeNextBeat + numberOfBeatsUntilPlayed * BeatTime;
         switchingSource.PlayScheduled(timeUntilPlayed);
-        if (playingBreak)
-            StartCoroutine(FadeOutMusic(breakSource, (float)timeUntilPlayed, fadeOutTime, true));
-        else
-            StartCoroutine(FadeOutMusic(otherSource, (float)timeUntilPlayed, fadeOutTime, false));
+        StartCoroutine(FadeOutMusic(playingBreak ? breakSource : otherSource, (float)timeUntilPlayed, fadeOutTime, playingBreak));
         StartCoroutine(RefreshSongInfos((float)timeUntilPlayed));
         SwitchSource();
+    }
+
+    public void PlayBreakInSomeBeats(int numberOfBeatsUntilPlayed)
+    {
+        double timeUntilPlayed = timeBeforeNextBeat + numberOfBeatsUntilPlayed * BeatTime;
+        breakSource.PlayScheduled(timeUntilPlayed);
+        StartCoroutine(FadeOutMusic(otherSource, (float)timeUntilPlayed, fadeOutTime, false));
+        StartCoroutine(PlayingBreak((float)timeUntilPlayed));
+        StartCoroutine(RefreshSongInfos((float)timeUntilPlayed));
     }
 
     void SwitchSource()
@@ -455,6 +453,12 @@ public class BeatManager : MonoBehaviour
         yield return new WaitForSeconds(timeUntilFadeOut);
         float startVolume = source.volume;
 
+        if (fadedOutMusicIsBreak)
+        {
+            breakLoaded = false;
+            playingBreak = false;
+        }
+
         while (source.volume > 0)
         {
             source.volume -= startVolume * Time.deltaTime / fadeTime;
@@ -464,19 +468,13 @@ public class BeatManager : MonoBehaviour
 
         source.Stop();
         source.volume = startVolume;
-
-        if (fadedOutMusicIsBreak)
-        {
-            breakLoaded = false;
-            playingBreak = false;
-        }
     }
 
     IEnumerator RefreshSongInfos(float timeUntilRefresh)
     {
         yield return new WaitForSeconds(timeUntilRefresh);
         newMusicPlaying = true;
-        currentSongName = otherSource.clip.name;
+        currentSongName = playingBreak ? breakSource.clip.name : otherSource.clip.name;
     }
 
     IEnumerator PlayingBreak(float timeUntilBreakStarted)

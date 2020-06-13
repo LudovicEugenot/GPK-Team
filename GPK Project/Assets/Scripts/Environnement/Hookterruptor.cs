@@ -10,6 +10,7 @@ public class Hookterruptor : Hook
     public float addedPressTime;
     public bool switchInterruptor;
     public float speakerTriggerDistance;
+    public bool isActivator;
     [Header("Sounds")]
     public AudioClip pressSound;
     public AudioClip unpressSound;
@@ -48,7 +49,7 @@ public class Hookterruptor : Hook
 
     private void UpdateSpeakerProximity()
     {
-        if (Physics2D.OverlapCircle(transform.position, speakerTriggerDistance, LayerMask.GetMask("Speaker")) && GameManager.remoteSpeaker.speakerPlaced)
+        if (isActivator && Physics2D.OverlapCircle(transform.position, speakerTriggerDistance, LayerMask.GetMask("Speaker")) && GameManager.remoteSpeaker.speakerPlaced)
         {
             if (BeatManager.Instance.OnBeat(false, false, "(__)"))
             {
@@ -165,6 +166,6 @@ public class Hookterruptor : Hook
             blinkable = false;
         }
 
-        sprite.color = !pressed ? (blinkable ? (selected ? selectedColor : blinkableColor) : unBlinkableColor) : pressedColor;
+        sprite.color = isActivator ? blinkableColor : !pressed ? (blinkable ? (selected ? selectedColor : blinkableColor) : unBlinkableColor) : pressedColor;
     }
 }

@@ -14,7 +14,7 @@ public class BossAOEPattern : MonoBehaviour
     public AudioClip warningSound;
     public float warningSoundOffset;
 
-    public List<GameObject> warningZones = new List<GameObject>();
+    private List<GameObject> warningZones = new List<GameObject>();
 
     private AudioSource source;
 
@@ -49,9 +49,14 @@ public class BossAOEPattern : MonoBehaviour
 
         }
 
+        while(warningZones.Count > 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
         if(!isTesting)
         {
-            Destroy(gameObject);
+            Destroy(gameObject,0.1f);
         }
     }
 
