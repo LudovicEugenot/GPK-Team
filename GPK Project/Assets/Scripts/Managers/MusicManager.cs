@@ -8,7 +8,8 @@ public class MusicManager : MonoBehaviour
     public MusicSO musicSO;
     BeatManager beatManager;
 
-    private bool playBreak;
+    private bool playBreakNext;
+    private bool musicAlreadyChanging;
     private bool startFlag;
     #endregion
 
@@ -41,18 +42,21 @@ public class MusicManager : MonoBehaviour
                 }
             }
 
-            if (CurrentMusicIsPlayingItsLastBar() && beatManager.currentBarProgression == beatManager.beatToSwitchTo)
+            if (!musicAlreadyChanging)
             {
-                if (playBreak)
+                if (CurrentMusicIsPlayingItsLastBar() && beatManager.currentBarProgression == beatManager.beatToSwitchTo)
                 {
-                    playBreak = false;
-                    beatManager.PlayBreakNextBeat();
-                    beatManager.currentSongProgression = 0;
-                }
-                else
-                {
-                    beatManager.PlayMusicLoadedNextBeat();
-                    beatManager.currentSongProgression = 0;
+                    if (playBreakNext)
+                    {
+                        playBreakNext = false;
+                        beatManager.PlayBreakNextBeat();
+                        beatManager.currentSongProgression = 0;
+                    }
+                    else
+                    {
+                        beatManager.PlayMusicLoadedNextBeat();
+                        beatManager.currentSongProgression = 0;
+                    }
                 }
             }
 
@@ -95,7 +99,7 @@ public class MusicManager : MonoBehaviour
         {
             if (MusicIsInArray(currentMusic, musicSO.combatLoop) || MusicIsInArray(currentMusic, musicSO.drops))
             {
-                playBreak = true;
+                playBreakNext = true;
                 return;
             }
             else
@@ -183,7 +187,17 @@ public class MusicManager : MonoBehaviour
             return;
         }
 
-        beatManager.PlayMusicLoadedInSomeBeats(beatManager.beatToSwitchTo - beatManager.currentBarProgression);
+        musicAlreadyChanging = true;
+        StartCoroutine(MusicWillBeChanged((float)beatManager.timeBeforeNextBeat + beatManager.BeatTime * (beatManager.beatToSwitchTo - beatManager.currentBarProgression)));
+        if (playBreakNext)
+        {
+            playBreakNext = false;
+            beatManager.PlayBreakInSomeBeats(beatManager.beatToSwitchTo - beatManager.currentBarProgression);
+        }
+        else
+        {
+            beatManager.PlayMusicLoadedInSomeBeats(beatManager.beatToSwitchTo - beatManager.currentBarProgression);
+        }
         beatManager.currentSongProgression = beatManager.beatToSwitchTo - beatManager.currentBarProgression - 1;
     }
 
@@ -238,5 +252,11 @@ public class MusicManager : MonoBehaviour
             int rand = Random.Range(0, musicSO.beatsToInsertCalmMusic.Length);
             beatManager.LoadMusic(musicSO.calmLoop, musicSO.calmMusicStartTimeOffset + beatManager.BeatTime * musicSO.beatsToInsertCalmMusic[rand]);
         }
+    }
+
+    IEnumerator MusicWillBeChanged(float timeUntilMusicChanged)
+    {
+        yield return new WaitForSeconds(timeUntilMusicChanged);
+        musicAlreadyChanging = false;
     }
 }
