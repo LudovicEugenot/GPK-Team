@@ -64,7 +64,6 @@ public class ZoneHandler : MonoBehaviour
             int hooksRelived = 0;
             if (!currentZone.isRelived)
             {
-                Debug.Log(currentZone.name + " is not relived");
                 bool zoneRelived = true;
                 foreach (HookState zoneHook in currentZone.zoneHooks)
                 {
