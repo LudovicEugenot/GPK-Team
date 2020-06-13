@@ -2172,6 +2172,11 @@ PrefabInstance:
       propertyPath: commentary.pitch
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
+        type: 3}
+      propertyPath: lastValidStoryStep
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1346479616893670629, guid: 2dcb1f66a78f4884b829bb1e4d943267,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3289,7 +3294,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.49740767, y: -0.5517398}
+  m_Offset: {x: 0.49740767, y: -1.0360919}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3300,7 +3305,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.0026956, y: 2.2251158}
+  m_Size: {x: 7.0026956, y: 1.2564116}
   m_EdgeRadius: 0
 --- !u!212 &2488691751082914291
 SpriteRenderer:

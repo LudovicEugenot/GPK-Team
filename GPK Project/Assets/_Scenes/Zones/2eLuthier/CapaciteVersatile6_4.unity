@@ -3977,6 +3977,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 54949495}
     m_Modifications:
+    - target: {fileID: 3717861869360096240, guid: afb23417cf9d9ad4293f49c7aa8558fa,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: abe7aa804f2c3a94197bcf59eaf866c5,
+        type: 3}
+    - target: {fileID: 3717861869360096243, guid: afb23417cf9d9ad4293f49c7aa8558fa,
+        type: 3}
+      propertyPath: isActivator
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3717861869360096246, guid: afb23417cf9d9ad4293f49c7aa8558fa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3985,7 +3996,7 @@ PrefabInstance:
     - target: {fileID: 3717861869360096246, guid: afb23417cf9d9ad4293f49c7aa8558fa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.8461938
+      value: -2.92
       objectReference: {fileID: 0}
     - target: {fileID: 3717861869360096246, guid: afb23417cf9d9ad4293f49c7aa8558fa,
         type: 3}
@@ -4037,6 +4048,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: HookTerruptor
       objectReference: {fileID: 0}
+    - target: {fileID: 5167041344435325913, guid: afb23417cf9d9ad4293f49c7aa8558fa,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 0f76314bdce8c4647bfd7fbe109eb12e,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afb23417cf9d9ad4293f49c7aa8558fa, type: 3}
 --- !u!1 &1802608154
