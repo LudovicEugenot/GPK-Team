@@ -53,7 +53,7 @@ public class ZoneHandler : MonoBehaviour
 
         if(zoneInitialized)
         {
-            UpdateRelive();
+            Invoke("UpdateRelive", 0.02f);
         }
     }
 
@@ -64,6 +64,7 @@ public class ZoneHandler : MonoBehaviour
             int hooksRelived = 0;
             if (!currentZone.isRelived)
             {
+                Debug.Log(currentZone.name + " is not relived");
                 bool zoneRelived = true;
                 foreach (HookState zoneHook in currentZone.zoneHooks)
                 {

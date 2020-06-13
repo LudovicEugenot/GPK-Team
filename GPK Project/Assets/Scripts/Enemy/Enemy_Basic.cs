@@ -120,7 +120,7 @@ public class Enemy_Basic : EnemyBase
         {
             attackCollider.enabled = true;
             List<Collider2D> colliders = new List<Collider2D>();
-            if (!BeatManager.Instance.OnBeat(false, false, "---"))
+            if (!BeatManager.Instance.OnBeat(false, false, "---") && BeatManager.Instance.onBeatNextFrame)
             {
                 Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
             }
@@ -130,6 +130,10 @@ public class Enemy_Basic : EnemyBase
             {
                 GameManager.Instance.playerManager.TakeDamage(attackDamage);
             }
+        }
+        else
+        {
+            Debug.LogWarning("Attack Collider not found");
         }
     }
 
