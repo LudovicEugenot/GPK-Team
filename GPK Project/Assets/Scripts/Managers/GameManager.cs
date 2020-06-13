@@ -237,6 +237,12 @@ public class GameManager : MonoBehaviour
             WorldManager.GetWorldEvent(WorldManager.EventName.VoiceInstrumentRelived).occured = true;
         }
 
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Debug.Log(WorldManager.currentStoryStep);
+        }
+
         if (Input.GetButtonDown("Cancel"))
         {
             if(paused)
@@ -348,6 +354,10 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         pausePanel.SetActive(true);
+        if(dialogueManager.isTalking)
+        {
+            dialogueManager.dialogueBoxO.SetActive(false);
+        }
         PauseTime();
         paused = true;
         playerSource.PlayOneShot(validationSound);
@@ -358,6 +368,10 @@ public class GameManager : MonoBehaviour
         RefreshVolumes();
         PlayerPrefs.Save();
         pausePanel.SetActive(false);
+        if (dialogueManager.isTalking)
+        {
+            dialogueManager.dialogueBoxO.SetActive(true);
+        }
         UnPauseTime();
         paused = false;
         playerSource.time = 0.3f;

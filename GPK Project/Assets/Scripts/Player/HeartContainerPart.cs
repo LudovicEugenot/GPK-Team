@@ -74,7 +74,7 @@ public class HeartContainerPart : MonoBehaviour
         GameManager.Instance.playerManager.ObtainHeartContainer();
         GameManager.Instance.playerManager.InitializeHealthBar();
         yield return new WaitForSeconds(timeBeforeHeal);
-        GameManager.Instance.playerManager.Heal(500);
+        GameManager.Instance.playerManager.Heal(500, true);
         GameManager.Instance.cameraHandler.StartStopCinematicLook();
         GameManager.Instance.playerManager.isInControl = true;
     }

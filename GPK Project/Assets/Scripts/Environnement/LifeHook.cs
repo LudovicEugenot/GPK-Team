@@ -25,7 +25,7 @@ public class LifeHook : Hook
     {
         if(!used && ZoneHandler.Instance.currentReliveProgression < 1)
         {
-            GameManager.Instance.playerManager.Heal(storedLife);
+            GameManager.Instance.playerManager.Heal(storedLife, true);
             used = true;
         }
         yield return null;
@@ -44,7 +44,7 @@ public class LifeHook : Hook
                 else
                 {
                     beatTimeBeforeNextHeal = beatTimeBewteenHeals;
-                    GameManager.Instance.playerManager.Heal(1);
+                    GameManager.Instance.playerManager.Heal(1, false);
                 }
             }
         }

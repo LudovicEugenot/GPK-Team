@@ -263,11 +263,11 @@ public class TransitionManager : MonoBehaviour
             Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y, Quaternion.identity);
         }
 
-        GameManager.playerSource.PlayOneShot(GameManager.Instance.blink.transitionBlinkSound);
 
         GameManager.Instance.StopAllCoroutines();
 
         yield return new WaitForSeconds(timeBeforeZoneQuitting);
+        GameManager.playerSource.PlayOneShot(GameManager.Instance.blink.transitionBlinkSound);
 
         switch (transitionHook.direction)
         {
@@ -295,7 +295,7 @@ public class TransitionManager : MonoBehaviour
     public IEnumerator Respawn()
     {
         GameManager.Instance.playerManager.isInControl = false;
-        GameManager.Instance.playerManager.Heal(500);
+        GameManager.Instance.playerManager.Heal(500, false);
 
         previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
 

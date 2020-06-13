@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ZoneHandler : MonoBehaviour
 {
+    public AudioClip recolorSound;
+
     [HideInInspector] public bool reliveRemotlyChanged;
     [HideInInspector] public int bossState;
     [HideInInspector] public Zone currentZone;
@@ -91,9 +93,10 @@ public class ZoneHandler : MonoBehaviour
 
     public IEnumerator RecolorEffect()
     {
+        GameManager.playerSource.PlayOneShot(recolorSound);
         for (int i = 0; i < GameManager.Instance.recolorHealthHealed; i++)
         {
-            GameManager.Instance.playerManager.Heal(1);
+            GameManager.Instance.playerManager.Heal(1, false);
             yield return new WaitForSeconds(0.2f);
         }
     }
