@@ -56,6 +56,7 @@ public class BeatManager : MonoBehaviour
     [HideInInspector] public bool currentEnemyStatus;
     [HideInInspector] public int currentBarProgression = 1;
     [HideInInspector] public int currentSongProgression = 0;
+    [HideInInspector] public int calmMusicIntroBeat = 0;
     [HideInInspector] public int beatToSwitchTo = 4;
     [HideInInspector] public bool changingMusicZone = false;
     [HideInInspector] public string currentMusicSOName;
@@ -406,6 +407,12 @@ public class BeatManager : MonoBehaviour
         StartCoroutine(FadeOutMusic(playingBreak ? breakSource : otherSource, (float)timeBeforeNextBeat, fadeOutTime, playingBreak));
         StartCoroutine(RefreshSongInfos((float)timeBeforeNextBeat));
         SwitchSource();
+
+        if (calmMusicIntroBeat != 0)
+        {
+            currentSongProgression = calmMusicIntroBeat;
+            calmMusicIntroBeat = 0;
+        }
     }
 
     public void PlayBreakNextBeat()
@@ -423,6 +430,12 @@ public class BeatManager : MonoBehaviour
         StartCoroutine(FadeOutMusic(playingBreak ? breakSource : otherSource, (float)timeUntilPlayed, fadeOutTime, playingBreak));
         StartCoroutine(RefreshSongInfos((float)timeUntilPlayed));
         SwitchSource();
+
+        if (calmMusicIntroBeat != 0)
+        {
+            currentSongProgression = calmMusicIntroBeat - numberOfBeatsUntilPlayed;
+            calmMusicIntroBeat = 0;
+        }
     }
 
     public void PlayBreakInSomeBeats(int numberOfBeatsUntilPlayed)
