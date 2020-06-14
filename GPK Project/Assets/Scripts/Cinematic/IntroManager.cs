@@ -46,6 +46,11 @@ namespace Introduction
         {
             MoveClarinetto();
 
+            if(Input.GetKeyDown(KeyCode.S))
+            {
+                SceneManager.LoadScene(startZone);
+            }
+
             switch (introCurrentStep)
             {
                 case 0:

@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveAndBackToMainMenu()
     {
-        SaveGame();
+        //SaveGame();
         StartCoroutine(AndBackToMainMenu());
     }
 
