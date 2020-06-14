@@ -73,9 +73,9 @@ namespace Introduction
                         endVideoFlag = false;
                         introCurrentStep = 2;
                         clarinetto.SetActive(false);
+                        videoImage.color = Color.black;
 
                         SceneManager.LoadScene(startZone);
-                        source.PlayOneShot(recolorSound);
                         introPlayer.animator.SetTrigger("Relive");
                         StartCoroutine(Recolor());
                     }
