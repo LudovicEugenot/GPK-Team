@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: Music3
   m_EditorClassIdentifier: 
   calmLoop: {fileID: 8300000, guid: 411ccb0b42a4cbc42aadcdfec7305a9c, type: 3}
-  calmMusicStartTimeOffset: 34
+  calmMusicStartTimeOffset: 0.097
   numberOfBeatsUntilLoop: 312
-  beatsToInsertCalmMusic: 00000000
+  beatsToInsertCalmMusic: 22000000
   combatLoop: []
   combatMusicStartTimeOffset: []
+  combatBeatAmount: 32
   drops: []
   dropMusicStartTimeOffset: []
+  dropBeatAmount: 36
   breaks: []
   breakMusicStartTimeOffset: []
+  breakBeatAmount: 32
   bpm: 90
   generalStartTimeOffset: 0
   canSwitchOnBeat2: 0
