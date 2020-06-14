@@ -2753,10 +2753,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2003546036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b568d544931120a41b4f91676e68809e, type: 3}
+  m_Script: {fileID: 11500000, guid: d8204e88ff33ba24da9cb97dae0f0d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storyStepToAppear: 10
+  goToDisable:
+  - {fileID: 2003546036}
+  firstStoryStep: 10
+  LastStoryStep: 10
+  eventsRequired: 0a000000
+  eventsCompromising: 
 --- !u!114 &2125356514 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1346479616893670628, guid: 2dcb1f66a78f4884b829bb1e4d943267,
