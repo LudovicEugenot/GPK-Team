@@ -9,7 +9,9 @@ public class MainMenuManager : MonoBehaviour
     public GameObject savePanel;
     public GameObject customLoadPanel;
     public Text subtitle;
-    public List<string> subtitles;
+    public Text preSubtitle;
+    public SubTitle firstSubtitle;
+    public List<SubTitle> subtitles;
     public float timeBetweenSubtitleChange; 
 
     [Header("Main Save Preview")]
@@ -36,7 +38,10 @@ public class MainMenuManager : MonoBehaviour
     {
         OpenMainPanel();
         CloseSavePanel();
-        InvokeRepeating("ChangeSubtitle",0.0f,timeBetweenSubtitleChange);
+
+        subtitle.text = firstSubtitle.postSubtitle;
+        preSubtitle.text = firstSubtitle.preSubtitle;
+        InvokeRepeating("ChangeSubtitle",5.0f,timeBetweenSubtitleChange);
     }
 
     private void Update()
@@ -112,6 +117,15 @@ public class MainMenuManager : MonoBehaviour
 
     private void ChangeSubtitle()
     {
-        subtitle.text = subtitles[Random.Range(0, subtitles.Count)];
+        int subtitleChosen = Random.Range(0, subtitles.Count);
+        subtitle.text = subtitles[subtitleChosen].postSubtitle;
+        preSubtitle.text = subtitles[subtitleChosen].preSubtitle;
+    }
+
+    [System.Serializable]
+    public class SubTitle
+    {
+        public string preSubtitle;
+        public string postSubtitle;
     }
 }

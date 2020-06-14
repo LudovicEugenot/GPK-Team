@@ -155,7 +155,7 @@ public class Hookterruptor : Hook
             }
         }
 
-        if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange)
+        if (Vector2.Distance(GameManager.Instance.blink.transform.position, transform.position) <= GameManager.Instance.blink.currentRange && !isActivator)
         {
             selectable = true;
             blinkable = PlayerInSight();

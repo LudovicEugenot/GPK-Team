@@ -16,16 +16,19 @@ public class MusicSO : ScriptableObject
     [Tooltip("Les Loops qui font toutes 4 beats et qui changent aléatoirement vers une autre loop.")]
     public AudioClip[] combatLoop;
     [Range(0f, 3f)] public float[] combatMusicStartTimeOffset;
+    [Range(2, 60)] public int combatBeatAmount = 32;
     [Space]
     [Tooltip("Les drops font le passage entre musique calme et musique de combat.")]
     public AudioClip[] drops;
     [Range(0f, 3f)] public float[] dropMusicStartTimeOffset;
+    [Range(2, 60)] public int dropBeatAmount = 36;
     [Space]
     [Tooltip("Les breaks sont déclenchés à chaque fin de combat et font la transition entre le combat et le calme (mais aussi combat vers combat).")]
     public AudioClip[] breaks;
     [Range(0f, 3f)] public float[] breakMusicStartTimeOffset;
+    [Range(2, 60)] public int breakBeatAmount = 32;
 
-    [Space(35)] [Header("Music Data")]
+    [Header("Music Data")] [Space(35)]
     [Range(1, 250)] public int bpm = 140;
     [Range(0, 1)] public float generalStartTimeOffset = 0;
 

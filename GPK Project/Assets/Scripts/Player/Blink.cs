@@ -306,7 +306,7 @@ public class Blink : MonoBehaviour
         {
             Vector2 blinkDirection = destination - (Vector2)transform.parent.position;
 
-            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
+            Instantiate(blinkTrailStartPrefab, (Vector2)transform.parent.position + Vector2.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y + blinkDirection.normalized * trailStartOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             Instantiate(blinkDisparition, transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y, Quaternion.identity);
             GameManager.Instance.playerManager.ResetIdleTime();
 
@@ -352,7 +352,7 @@ public class Blink : MonoBehaviour
 
                 GameManager.playerSource.PlayOneShot(missBeatSound);
             }
-            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position - blinkDirection.normalized * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
+            Instantiate(blinkTrailEndPrefab, (Vector2)transform.parent.position + Vector2.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y - blinkDirection.normalized * trailEndOffset, Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, blinkDirection)));
             animator.SetTrigger("Blink");
             currentHook = selectedHook;
             selectedHook.selected = false;

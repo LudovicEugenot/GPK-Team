@@ -7,8 +7,6 @@ public class RemoteSpeaker : MonoBehaviour
 {
     [Header("Speaker options")]
     public int maximumSpeakerBeatTime;
-    public int minimumBeatCooldown;
-    public int reloadMultiplier;
     public int airBeatTime;
     public float attackDamageMultiplier;
     public float knockbackDistance;
@@ -20,12 +18,14 @@ public class RemoteSpeaker : MonoBehaviour
     public Image cooldownDisplay;
     public GameObject attackFx;
     public GameObject attackMissFx;
+    public GameObject speakerDisparitionFx;
     public bool isHook;
 
     private GameObject remoteSpeakerO;
     private SpeakerHook speakerHook;
     private int speakerRemainingTime;
     [HideInInspector] public bool speakerPlaced;
+    [HideInInspector] public Transform speakerAttackPreview;
     private Animator speakerAnimator;
 
     private void Start()
@@ -67,15 +67,7 @@ public class RemoteSpeaker : MonoBehaviour
         }
         else
         {
-            if (speakerRemainingTime < maximumSpeakerBeatTime && GameManager.Instance.Beat.onBeatFirstFrame)
-            {
-                speakerRemainingTime += reloadMultiplier;
-                if(speakerRemainingTime > maximumSpeakerBeatTime)
-                {
-                    speakerRemainingTime = maximumSpeakerBeatTime;
-                }
-            }
-            else if (speakerRemainingTime == maximumSpeakerBeatTime && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+            if (Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
                 StartCoroutine(ThrowSpeaker());
             }
@@ -97,6 +89,8 @@ public class RemoteSpeaker : MonoBehaviour
         speakerAnimator = remoteSpeakerO.GetComponent<Animator>();
         speakerHook.remoteSpeaker = this;
         speakerAnimator.SetBool("Placed", false);
+        speakerAttackPreview = remoteSpeakerO.transform.GetChild(0);
+        speakerAttackPreview.gameObject.SetActive(false);
         while (currentLaunchTime < GameManager.Instance.Beat.BeatTime * airBeatTime)
         {
             Vector2 realPos = Vector2.Lerp(launchPos, targetPos, launchCurveProgression.Evaluate(currentLaunchTime / (GameManager.Instance.Beat.BeatTime * airBeatTime)));
@@ -118,8 +112,11 @@ public class RemoteSpeaker : MonoBehaviour
 
     public IEnumerator PickupSpeaker()
     {
+        Instantiate(speakerDisparitionFx, remoteSpeakerO.transform.position, Quaternion.identity);
         Destroy(remoteSpeakerO);
+        speakerRemainingTime = maximumSpeakerBeatTime;
         remoteSpeakerO = null;
+        speakerAttackPreview = null;
         speakerPlaced = false;
         yield return null;
     }
@@ -127,7 +124,7 @@ public class RemoteSpeaker : MonoBehaviour
     private IEnumerator SpeakerEffect()
     {
         Instantiate(onTimeParticleEffectPrefab, remoteSpeakerO.transform.position, Quaternion.identity);
-        speakerRemainingTime = maximumSpeakerBeatTime - minimumBeatCooldown;
+        speakerRemainingTime = maximumSpeakerBeatTime;
         yield return null;
     }
 
@@ -149,5 +146,13 @@ public class RemoteSpeaker : MonoBehaviour
                 enemy.TakeDamage(Mathf.FloorToInt(damage * attackDamageMultiplier), attackDirection * knockbackDistance);
             }
         }
+    }
+
+    public void RotateAttackPreview()
+    {
+        Vector2 attackDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - remoteSpeakerO.transform.position;
+        attackDirection.Normalize();
+        float attackDirectionAngle = Vector2.SignedAngle(Vector2.right, attackDirection);
+        speakerAttackPreview.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, attackDirectionAngle - 90));
     }
 }

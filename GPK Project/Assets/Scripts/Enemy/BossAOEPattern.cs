@@ -7,6 +7,7 @@ public class BossAOEPattern : MonoBehaviour
     public bool isTesting;
     [Header("Aoe settings")]
     public List<Aoe> patternAoes;
+    public bool startNextAoeDirectly;
     [Header("Prefabs")]
     public GameObject warningZonePrefab;
     public GameObject aoeFx;
@@ -39,7 +40,7 @@ public class BossAOEPattern : MonoBehaviour
         {
             StartCoroutine(SpawnAOE(patternAoes[i].Info()));
 
-            while (patternAoes[i].beatTimeBeforeNextAOE == 0)
+            while (patternAoes[i].beatTimeBeforeNextAOE == 0 && i < patternAoes.Count - 1)
             {
                 i++;
                 StartCoroutine(SpawnAOE(patternAoes[i].Info()));
@@ -53,7 +54,7 @@ public class BossAOEPattern : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-
+        yield return new WaitForSeconds(0.2f);
         if(!isTesting)
         {
             Destroy(gameObject,0.1f);
@@ -63,7 +64,7 @@ public class BossAOEPattern : MonoBehaviour
     private IEnumerator SpawnAOE(Aoe aoe)
     {
         GameObject warningZone = Instantiate(warningZonePrefab, aoe.position, Quaternion.identity);
-        warningZone.transform.localScale = Vector2.one * aoe.radius;
+        warningZone.transform.localScale = Vector2.one * aoe.radius * 1.2f;
         warningZones.Add(warningZone);
         source.clip = aoeSound;
         yield return new WaitForSeconds((aoe.warningBeatTime * BeatManager.Instance.BeatTime) - warningSoundOffset);
@@ -74,7 +75,7 @@ public class BossAOEPattern : MonoBehaviour
         Destroy(warningZone);
 
         GameObject fx = Instantiate(aoeFx, aoe.position, Quaternion.identity);
-        fx.transform.localScale = Vector2.one * aoe.radius;
+        fx.transform.localScale = Vector2.one * aoe.radius * 1.2f;
         while(BeatManager.Instance.OnBeat(false,false, "--__--"))
         {
             yield return new WaitForFixedUpdate();

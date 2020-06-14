@@ -13,6 +13,7 @@ public class Enemy_Heavy : EnemyBase
     public int friendlyAttackDamage;
     public AnimationCurve aoeScaleCurve;
     public AnimationCurve knockbackCurve;
+    public GameObject attackFxPrefab;
     [Header("Sounds")]
     public AudioClip jumpSound;
     public AudioClip attackSound;
@@ -57,13 +58,13 @@ public class Enemy_Heavy : EnemyBase
 
     protected override void Init()
     {
-        attackParent = parent.Find("Attack").gameObject;
-        attackCollider = parent.Find("Attack").GetComponentInChildren<CircleCollider2D>();
+        attackParent = parent.GetChild(2).gameObject;
+        attackCollider = parent.GetChild(2).GetComponent<CircleCollider2D>();
         maxRadiusAttack = attackParent.transform.localScale.x;
         attackParent.SetActive(false);
 
-        convertedAttackParent = parent.Find("Converted Attack").gameObject;
-        convertedAttackCollider = parent.Find("Converted Attack").GetComponent< CircleCollider2D>();
+        convertedAttackParent = parent.GetChild(3).gameObject;
+        convertedAttackCollider = parent.GetChild(3).GetComponent< CircleCollider2D>();
         maxConvertedRadiusAttack = convertedAttackParent.transform.localScale.x;
         convertedAttackParent.SetActive(false);
 
@@ -115,6 +116,7 @@ public class Enemy_Heavy : EnemyBase
         animator.SetBool("Attacking", false);
         if (BeatManager.Instance.onBeatSingleFrame)
         {
+            Instantiate(attackFxPrefab, transform.position, Quaternion.identity);
             source.PlayOneShot(attackSound);
         }
         attackParent.SetActive(true);
@@ -125,20 +127,30 @@ public class Enemy_Heavy : EnemyBase
             attackParent.SetActive(false);
         }
 
-        List<Collider2D> colliders = new List<Collider2D>();
-        if (!BeatManager.Instance.OnBeat(false, false, "-_-_-"))
+        if (attackCollider != null)
         {
-            Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
-        }
+            attackCollider.enabled = true;
+            List<Collider2D> colliders = new List<Collider2D>();
+            if (!BeatManager.Instance.OnBeat(false, false, "-_-_-") && BeatManager.Instance.onBeatNextFrame)
+            {
+                Physics2D.OverlapCollider(attackCollider, playerFilter, colliders);
+            }
+            attackCollider.enabled = false;
 
-        if (colliders.Count > 0)
+            if (colliders.Count > 0)
+            {
+                GameManager.Instance.playerManager.TakeDamage(attackDamage);
+            }
+        }
+        else
         {
-            GameManager.Instance.playerManager.TakeDamage(attackDamage);
+            Debug.LogWarning("Attack Collider not found");
         }
     }
 
     protected override void MovingBehaviour()
     {
+        attackCollider.enabled = false;
         if (GameManager.Instance.Beat.onBeatSingleFrame)
         {
             source.PlayOneShot(jumpSound);
@@ -149,7 +161,7 @@ public class Enemy_Heavy : EnemyBase
 
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0f, 0.5f));
         float progression = CurrentBeatProgressionAdjusted(2, 0);
-        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 1.2f);
     }
 
     protected override void KnockbackBehaviour()
@@ -183,7 +195,7 @@ public class Enemy_Heavy : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.6f * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.33f * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 
@@ -199,6 +211,7 @@ public class Enemy_Heavy : EnemyBase
         animator.SetBool("Attacking", false);
         if (BeatManager.Instance.onBeatSingleFrame)
         {
+            Instantiate(attackFxPrefab, transform.position, Quaternion.identity);
             source.PlayOneShot(friendlyAttackSound);
         }
 

@@ -2442,7 +2442,13 @@ PrefabInstance:
     - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}
       propertyPath: transitionHooks.Array.data[1].blockedTalk.sentences.Array.data[1]
-      value: "Regarde sur la table, une cl\xE9! elle doit bien avoir une utilit\xE9!"
+      value: "Regarde sur la table, une cl\xE9 ! Elle doit bien avoir une utilit\xE9
+        !"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099073887133509539, guid: 25034624d0a6cb942b829e19fc2c8444,
+        type: 3}
+      propertyPath: transitionHooks.Array.data[1].storyStepRequired
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1099073887133509548, guid: 25034624d0a6cb942b829e19fc2c8444,
         type: 3}

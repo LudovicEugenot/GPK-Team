@@ -233,7 +233,8 @@ MonoBehaviour:
   pressBeatTime: 1
   addedPressTime: 0.3
   switchInterruptor: 0
-  speakerTriggerDistance: 0.5
+  speakerTriggerDistance: 1.5
+  isActivator: 0
   pressSound: {fileID: 8300000, guid: 0bcf5f2d00bf34b4ca479c9ac03819c2, type: 3}
   unpressSound: {fileID: 8300000, guid: 0bcf5f2d00bf34b4ca479c9ac03819c2, type: 3}
   eventToOccur: 0
@@ -275,7 +276,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 882915597
-  m_SortingLayer: -6
+  m_SortingLayer: -7
   m_SortingOrder: 3
   m_Sprite: {fileID: -5859952492866999397, guid: bff0bce367c55e34fb6bec49c15fda8d,
     type: 3}

@@ -291,12 +291,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.86
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4
+      value: 3.53
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -2338,27 +2338,42 @@ PrefabInstance:
     - target: {fileID: 3217432129484586144, guid: 81ad6483d76995243a5de7b9f6593f03,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.42
+      value: 7.2
       objectReference: {fileID: 0}
     - target: {fileID: 3217432129484586144, guid: 81ad6483d76995243a5de7b9f6593f03,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.43
+      value: -0.63
       objectReference: {fileID: 0}
     - target: {fileID: 3217432129681029842, guid: 81ad6483d76995243a5de7b9f6593f03,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.76
+      value: 4.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217432129681029842, guid: 81ad6483d76995243a5de7b9f6593f03,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217432130755448552, guid: 81ad6483d76995243a5de7b9f6593f03,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217432130755448552, guid: 81ad6483d76995243a5de7b9f6593f03,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3217432130941228830, guid: 81ad6483d76995243a5de7b9f6593f03,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.54
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3217432130941228830, guid: 81ad6483d76995243a5de7b9f6593f03,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.92
+      value: 11.63
       objectReference: {fileID: 0}
     - target: {fileID: 3423560208062896738, guid: 81ad6483d76995243a5de7b9f6593f03,
         type: 3}
@@ -3269,12 +3284,12 @@ PrefabInstance:
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.81
+      value: -3.49
       objectReference: {fileID: 0}
     - target: {fileID: 6405902346724256933, guid: 4ccc10c0519f4b64e8a69c22063739db,
         type: 3}
@@ -3562,6 +3577,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
+      propertyPath: finalTalk.sentences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
       propertyPath: bossPhases.Array.data[0].hooksDestroyedEndOfPhase.Array.data[0]
       value: 
       objectReference: {fileID: 191805225}
@@ -3644,19 +3664,19 @@ PrefabInstance:
         type: 3}
       propertyPath: bossPhases.Array.data[2].allDifferentAOE.Array.data[0]
       value: 
-      objectReference: {fileID: 5890350629540307997, guid: cd56e88abcdf3e34ebd6c57956615896,
+      objectReference: {fileID: 9146613522701846774, guid: 302888a85cc1eeb44899e99af8cfcf8a,
         type: 3}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[2].allDifferentAOE.Array.data[1]
       value: 
-      objectReference: {fileID: 2635340471605511379, guid: 34a9ffa374eb66d4da57efeb6beddce8,
+      objectReference: {fileID: 5298797380610849715, guid: 44c5c879f67703643b035e41cc1c0586,
         type: 3}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[2].allDifferentAOE.Array.data[2]
       value: 
-      objectReference: {fileID: 1367777024476397268, guid: a9db2cf90fe320e4793392d843ec6d4a,
+      objectReference: {fileID: 729205935855155226, guid: 8d014f89781c5f047b3ce293064c66ee,
         type: 3}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
@@ -3690,7 +3710,7 @@ PrefabInstance:
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[2].beatsBetweenBubbles
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
@@ -3765,12 +3785,12 @@ PrefabInstance:
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[1].numberOfBubblesNeededToRecolorEverything
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
       propertyPath: bossPhases.Array.data[0].numberOfBubblesNeededToRecolorEverything
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
@@ -3999,7 +4019,7 @@ PrefabInstance:
         type: 3}
       propertyPath: bossPhases.Array.data[2].allDifferentAOE.Array.data[3]
       value: 
-      objectReference: {fileID: 2042227251335066006, guid: d256a2c12cdd077459370559114175a4,
+      objectReference: {fileID: 2348400050063683276, guid: 017e1f2bfb9b99d47b22a7ecd38b6e13,
         type: 3}
     - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}
@@ -4025,6 +4045,37 @@ PrefabInstance:
         type: 3}
       propertyPath: firstTalk.sentences.Array.data[4]
       value: MON REGNE ETERNEL, DEUIL SOUS UN SILENCE IMPLACABLE!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: bossPhases.Array.data[1].numberOfBubblesBeforeAttack
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: finalTalk.pnjName
+      value: Clarinetto
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: finalTalk.pitch
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: finalTalk.sentences.Array.data[0]
+      value: C'est finit...?
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: finalTalk.sentences.Array.data[1]
+      value: "Enfin ! Sortons vite d'ici, L\xE9on ! Je suis s\xFBr que l'on nous
+        attend au village !"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4582987142592745048, guid: 3f25f3c305db96c4c8dcc7785b758de6,
+        type: 3}
+      propertyPath: bossPhases.Array.data[1].sameActionTwicePossible
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4582987142592745050, guid: 3f25f3c305db96c4c8dcc7785b758de6,
         type: 3}

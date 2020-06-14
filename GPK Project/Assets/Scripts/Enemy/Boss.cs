@@ -12,6 +12,7 @@ public class Boss : MonoBehaviour
     public Talk bubbleExplanation;
     public BossPhase[] bossPhases;
     public WorldManager.EventName triggeredEventWhenDefeated;
+    public Talk finalTalk;
     public Hook hookToMoveTo;
     public GameObject destroyHookEffect;
     public AudioClip hookDestructionSound;
@@ -22,7 +23,6 @@ public class Boss : MonoBehaviour
     private int attacksBeforeBubble = 0;
     private int bubblesBeforeAttack = 0;
     private int beatsUntilAction;
-    private bool tryingToSwitchAction = false;
     private bool isPassive;
 
     private List<GameObject> currentActions = new List<GameObject>();
@@ -42,10 +42,13 @@ public class Boss : MonoBehaviour
     private void Start()
     {
         triggeredWolrdEventWhenDefeated = WorldManager.GetWorldEvent(triggeredEventWhenDefeated);
+        if (!WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured)
+        {
+            Invoke("LateStart", 0.5f);
+        }
         source = GetComponent<AudioSource>();
         isPassive = true;
         animator = GetComponent<Animator>();
-        Invoke("LateStart", 0.5f);
     }
 
 
@@ -83,17 +86,7 @@ public class Boss : MonoBehaviour
                     ZoneHandler.Instance.bossState = 1;
                     if (beatsUntilAction <= 0)
                     {
-                        if (tryingToSwitchAction)
-                        {
-                            if (CanSwitchActions())
-                            {
-                                ThrowAOE();
-                            }
-                        }
-                        else
-                        {
-                            ThrowAOE();
-                        }
+                        ThrowAOE();
                     }
                     else
                     {
@@ -141,25 +134,34 @@ public class Boss : MonoBehaviour
     private void ThrowAOE()
     {
         animator.SetTrigger("Attack");
-        int attackChosen = Random.Range(0, bossPhases[bossPhaseIndex].allDifferentAOE.Length);
-        if (!bossPhases[bossPhaseIndex].sameActionTwicePossible && attackChosen == lastAttackIndex)
+        int attackChosen;
+        BossAOEPattern patternChosen;
+
+        do
         {
-            while (attackChosen == lastAttackIndex)
+            do
             {
                 attackChosen = Random.Range(0, bossPhases[bossPhaseIndex].allDifferentAOE.Length);
             }
-        }
-        beatsUntilAction = Mathf.RoundToInt(bossPhases[bossPhaseIndex].allDifferentAOE[attackChosen].PatternTime() / BeatManager.Instance.BeatTime);
-        lastAttackIndex = attackChosen;
-        attacksBeforeBubble--;
-        if (attacksBeforeBubble <= 0)
-        {
-            throwingAOE = false;
-            attacksBeforeBubble = bossPhases[bossPhaseIndex].numberOfAttacksBeforeBubble;
-            tryingToSwitchAction = true;
-        }
+            while (!bossPhases[bossPhaseIndex].sameActionTwicePossible && attackChosen == lastAttackIndex);
 
-        currentActions.Add(Instantiate(bossPhases[bossPhaseIndex].allDifferentAOE[attackChosen].gameObject));
+            lastAttackIndex = attackChosen;
+            patternChosen = bossPhases[bossPhaseIndex].allDifferentAOE[attackChosen];
+            attacksBeforeBubble--;
+
+            if (attacksBeforeBubble <= 0)
+            {
+                throwingAOE = false;
+                attacksBeforeBubble = bossPhases[bossPhaseIndex].numberOfAttacksBeforeBubble;
+            }
+
+            currentActions.Add(Instantiate(patternChosen.gameObject));
+        }
+        while (patternChosen.startNextAoeDirectly && patternChosen.patternAoes[patternChosen.patternAoes.Count - 1].beatTimeBeforeNextAOE == 0);
+
+        beatsUntilAction = patternChosen.startNextAoeDirectly ?
+            (int)patternChosen.patternAoes[patternChosen.patternAoes.Count - 1].beatTimeBeforeNextAOE
+            : Mathf.RoundToInt(patternChosen.PatternTime() / BeatManager.Instance.BeatTime);
     }
 
     private void ThrowBubble()
@@ -179,12 +181,14 @@ public class Boss : MonoBehaviour
         {
             throwingAOE = true;
             bubblesBeforeAttack = bossPhases[bossPhaseIndex].numberOfBubblesBeforeAttack;
-            tryingToSwitchAction = true;
-            GameManager.Instance.dialogueManager.StartCommentary(bubbleExplanation, 2.0f, Vector2.zero);
+            if(bossPhaseIndex < bossPhases.Length - 1)
+            {
+                GameManager.Instance.dialogueManager.StartCommentary(bubbleExplanation, 2.0f, Vector2.zero);
+            }
         }
 
         GameObject currentBubble = Instantiate(bossPhases[bossPhaseIndex].allDifferentBubbleThrows[bubbleChosen].gameObject);
-        //currentActions.Add(currentBubble);
+        currentActions.Add(currentBubble);
         currentBubble.GetComponent<InkBubble>().boss = this;
     }
 
@@ -243,9 +247,14 @@ public class Boss : MonoBehaviour
 
     private IEnumerator EndBoss()
     {
+        while(GameManager.Instance.dialogueManager.isTalking)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         triggeredWolrdEventWhenDefeated.occured = true;
         yield return new WaitForSeconds(2.0f);
         ZoneHandler.Instance.reliveRemotlyChanged = false;
+        GameManager.Instance.dialogueManager.StartTalk(finalTalk, GameManager.Instance.player.transform.position, 3);
     }
 
     private IEnumerator Transition()
@@ -262,10 +271,10 @@ public class Boss : MonoBehaviour
         {
             StartCoroutine(GameManager.Instance.cameraHandler.StartCinematicLook(Vector2.zero, 5.625f, true));
             yield return new WaitForSeconds(2.0f);
+            source.pitch = 1.3f;
+            source.PlayOneShot(hookDestructionSound);
             foreach (Hook hook in bossPhases[bossPhaseIndex].hooksDestroyedEndOfPhase)
             {
-                source.pitch = 1.3f;
-                source.PlayOneShot(hookDestructionSound);
                 Instantiate(destroyHookEffect, hook.transform.position, Quaternion.identity);
                 Destroy(hook.gameObject);
             }

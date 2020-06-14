@@ -91,9 +91,13 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void Heal(int life)
+    public void Heal(int life, bool playSound)
     {
-        GameManager.playerSource.PlayOneShot(healSound);
+        if(playSound)
+        {
+            GameManager.playerSource.PlayOneShot(healSound);
+        }
+
         if(currentHealth + life <= maxhealthPoint * 2)
         {
             currentHealth += life;

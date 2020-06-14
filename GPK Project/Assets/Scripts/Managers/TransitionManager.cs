@@ -124,6 +124,7 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber, int heartContainerNumber)
     {
+        //GameManager.Instance.HideInterface();
         ZoneHandler.Zone potentialZone = null;
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         foreach (ZoneHandler.Zone zone in zoneHandler.zones)
@@ -218,12 +219,15 @@ public class TransitionManager : MonoBehaviour
         GameManager.Instance.playerManager.animSynchronizer.Synchronize();
         blackScreen.SetActive(false);
 
+        GameManager.Instance.ShowInterface();
+
         StartCoroutine(GameManager.Instance.DisplayZoneName());
     }
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
         GameObject oneFoot = null;
+        GameManager.Instance.HideInterface();
         if(transitionHook.customCinematicTransitionSceneIndex != 0)
         {
             currentPlayerRendererO.SetActive(false);
@@ -263,11 +267,11 @@ public class TransitionManager : MonoBehaviour
             Instantiate(disparitionPrefab, GameManager.Instance.blink.transform.position + Vector3.up * GameManager.Instance.player.transform.GetChild(1).transform.localPosition.y, Quaternion.identity);
         }
 
-        GameManager.playerSource.PlayOneShot(GameManager.Instance.blink.transitionBlinkSound);
 
         GameManager.Instance.StopAllCoroutines();
 
         yield return new WaitForSeconds(timeBeforeZoneQuitting);
+        GameManager.playerSource.PlayOneShot(GameManager.Instance.blink.transitionBlinkSound);
 
         switch (transitionHook.direction)
         {
@@ -295,7 +299,7 @@ public class TransitionManager : MonoBehaviour
     public IEnumerator Respawn()
     {
         GameManager.Instance.playerManager.isInControl = false;
-        GameManager.Instance.playerManager.Heal(500);
+        GameManager.Instance.playerManager.Heal(500, false);
 
         previousPlayerData = new PlayerData(GameManager.Instance.playerManager);
 

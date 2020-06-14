@@ -49,6 +49,7 @@ public class DialogueManager : MonoBehaviour
         if(!isTalking)
         {
             isTalking = true;
+            GameManager.Instance.playerManager.isInControl = false;
             currentDialogueStep = 0;
             sentenceStarted = false;
             dialogueBoxO.SetActive(true);
@@ -161,6 +162,7 @@ public class DialogueManager : MonoBehaviour
         dialogueBoxO.SetActive(false);
         isTalking = false;
         voiceSource.pitch = 1;
+        GameManager.Instance.playerManager.isInControl = true;
         StartCoroutine(GameManager.Instance.cameraHandler.StopCinematicLook());
         GameManager.Instance.playerManager.isInControl = true;
         GameManager.Instance.UnpauseEnemyBehaviour();
