@@ -17,6 +17,7 @@ public class Boss : MonoBehaviour
     public GameObject destroyHookEffect;
     public AudioClip hookDestructionSound;
     public Transform bossCinematicPos;
+    public GameObject creditsO;
 
     private bool canBeDamaged = false;
     private bool throwingAOE = true;
@@ -35,12 +36,14 @@ public class Boss : MonoBehaviour
     private WorldManager.WorldEvent triggeredWolrdEventWhenDefeated;
     private Animator animator;
     private bool init;
+    private bool tutoShown;
     private AudioSource source;
 
     #endregion
 
     private void Start()
     {
+        creditsO.SetActive(false);
         triggeredWolrdEventWhenDefeated = WorldManager.GetWorldEvent(triggeredEventWhenDefeated);
         if (!WorldManager.GetWorldEvent(WorldManager.EventName.BossBeaten).occured)
         {
@@ -181,9 +184,13 @@ public class Boss : MonoBehaviour
         {
             throwingAOE = true;
             bubblesBeforeAttack = bossPhases[bossPhaseIndex].numberOfBubblesBeforeAttack;
-            if(bossPhaseIndex < bossPhases.Length - 1)
+            if(!tutoShown)
             {
-                GameManager.Instance.dialogueManager.StartCommentary(bubbleExplanation, 2.0f, Vector2.zero);
+                tutoShown = true;
+                if (bossPhaseIndex < bossPhases.Length - 1)
+                {
+                    GameManager.Instance.dialogueManager.StartCommentary(bubbleExplanation, 2.0f, Vector2.zero);
+                }
             }
         }
 
@@ -253,6 +260,14 @@ public class Boss : MonoBehaviour
         }
         triggeredWolrdEventWhenDefeated.occured = true;
         yield return new WaitForSeconds(2.0f);
+        GameManager.Instance.playerManager.isInControl = false;
+        creditsO.SetActive(true);
+        while(!Input.anyKey)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.Instance.playerManager.isInControl = true;
+        creditsO.SetActive(false);
         ZoneHandler.Instance.reliveRemotlyChanged = false;
         GameManager.Instance.dialogueManager.StartTalk(finalTalk, GameManager.Instance.player.transform.position, 3);
     }
