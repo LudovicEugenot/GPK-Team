@@ -188,7 +188,7 @@ public class Enemy_Basic : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) / 3 * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.33f * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 }
