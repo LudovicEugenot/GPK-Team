@@ -77,6 +77,8 @@ public class MusicManager : MonoBehaviour
                 beatManager.currentMusicSOName = musicSO.name;
                 beatManager.currentSongName = musicSO.calmLoop.name;
                 beatManager.currentSongProgression = 0;
+                beatManager.currentBarProgression = 0;
+                beatManager.calmMusicIntroBeat = 0;
                 LoadNextMusic();
                 beatManager.PlayMusicLoadedNextBeat();
                 ScriptableObjectSetUp();
@@ -184,6 +186,7 @@ public class MusicManager : MonoBehaviour
         {
             beatManager.PlayMusicLoadedNextBeat();
             beatManager.currentSongProgression = 0;
+            beatManager.currentBarProgression = 0;
             return;
         }
 
@@ -198,7 +201,7 @@ public class MusicManager : MonoBehaviour
         {
             beatManager.PlayMusicLoadedInSomeBeats(beatManager.beatToSwitchTo - beatManager.currentBarProgression);
         }
-        beatManager.currentSongProgression = beatManager.beatToSwitchTo - beatManager.currentBarProgression - 1;
+        beatManager.currentSongProgression = beatManager.beatToSwitchTo - beatManager.currentBarProgression;
     }
 
     bool CurrentMusicIsPlayingItsLastBar() //la musique joue ses derniers 4 beats ou 2 selon beatManager.beatToSwitchTo
@@ -207,7 +210,7 @@ public class MusicManager : MonoBehaviour
 
         if (MusicIsInArray(currentMusic, musicSO.drops))
         {
-            if (beatManager.currentSongProgression > 6 - beatManager.beatToSwitchTo)
+            if (beatManager.currentSongProgression - 1 >  musicSO.dropBeatAmount - beatManager.beatToSwitchTo)
                 return true;
             else
                 return false;
@@ -215,7 +218,7 @@ public class MusicManager : MonoBehaviour
 
         if (MusicIsInArray(currentMusic, musicSO.combatLoop))
         {
-            if (beatManager.currentSongProgression > 8 - beatManager.beatToSwitchTo)
+            if (beatManager.currentSongProgression - 1 > musicSO.combatBeatAmount - beatManager.beatToSwitchTo)
                 return true;
             else
                 return false;
@@ -223,7 +226,7 @@ public class MusicManager : MonoBehaviour
 
         if (MusicIsInArray(currentMusic, musicSO.breaks))
         {
-            if (beatManager.currentSongProgression > 8 - beatManager.beatToSwitchTo)
+            if (beatManager.currentSongProgression - 1 > musicSO.breakBeatAmount - beatManager.beatToSwitchTo)
                 return true;
             else
                 return false;
@@ -231,7 +234,7 @@ public class MusicManager : MonoBehaviour
 
         if (currentMusic == musicSO.calmLoop.name)
         {
-            if (beatManager.currentSongProgression > musicSO.numberOfBeatsUntilLoop - beatManager.beatToSwitchTo)
+            if (beatManager.currentSongProgression - 1 > musicSO.numberOfBeatsUntilLoop - beatManager.beatToSwitchTo)
                 return true;
             else
                 return false;
@@ -251,6 +254,7 @@ public class MusicManager : MonoBehaviour
         {
             int rand = Random.Range(0, musicSO.beatsToInsertCalmMusic.Length);
             beatManager.LoadMusic(musicSO.calmLoop, musicSO.calmMusicStartTimeOffset + beatManager.BeatTime * musicSO.beatsToInsertCalmMusic[rand]);
+            beatManager.calmMusicIntroBeat = musicSO.beatsToInsertCalmMusic[rand];//(+ 1 entre guillemets qu'on soustrairait plus tard pour faire arriver le beat d'anticipation sur ce beat là)
         }
     }
 

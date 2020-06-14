@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Music5
   m_EditorClassIdentifier: 
   calmLoop: {fileID: 8300000, guid: 69a2cc29a6d483b4ab02cc285190d924, type: 3}
-  calmMusicStartTimeOffset: 0.97
+  calmMusicStartTimeOffset: 0.097
   numberOfBeatsUntilLoop: 188
   beatsToInsertCalmMusic: 00000000
   combatLoop:
@@ -21,19 +21,22 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3736a384ed64afe429c5afbac7702358, type: 3}
   - {fileID: 8300000, guid: 183354b0463a15f419bf39b4f0d4010e, type: 3}
   combatMusicStartTimeOffset:
-  - 0.97
-  - 0.97
-  - 0.97
+  - 0.097
+  - 0.097
+  - 0.097
+  combatBeatAmount: 32
   drops:
   - {fileID: 8300000, guid: ac8e2128cc39d264c863e11e989ae132, type: 3}
   dropMusicStartTimeOffset:
-  - 0.97
+  - 0.097
+  dropBeatAmount: 36
   breaks:
   - {fileID: 8300000, guid: a74c0e238332fd54aa0ba85112610fa6, type: 3}
   - {fileID: 8300000, guid: ec28891038c7f9c4ea14c4769be7d4d8, type: 3}
   breakMusicStartTimeOffset:
-  - 0.97
-  - 0.97
+  - 0.097
+  - 0.097
+  breakBeatAmount: 32
   bpm: 140
   generalStartTimeOffset: 0
   canSwitchOnBeat2: 0
