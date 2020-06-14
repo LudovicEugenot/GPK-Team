@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,7 +82,7 @@ public class Enemy_Basic : EnemyBase
 
         float progression = CurrentBeatProgressionAdjusted(2, 0);
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0.0f, 0.5f));
-        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(positionStartOfBeat + endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 1f);
     }
 
     protected override void TriggeredBehaviour()
@@ -148,7 +148,7 @@ public class Enemy_Basic : EnemyBase
         canBeDamaged = FalseDuringBeatProgression(0.2f, 0.8f);
         float progression = CurrentBeatProgressionAdjusted(2, 0);
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0.0f, 0.5f));
-        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 1.5f);
 
         if (PlayerIsInAggroRange())
         {
