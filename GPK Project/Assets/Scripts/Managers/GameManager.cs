@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public GameObject spriteRendererO;
     [HideInInspector] public ZoneHandler zoneHandler;
     [HideInInspector] public CameraHandler cameraHandler;
+    [HideInInspector] public GameObject interfaceCanvas;
     [Space]
     public GameObject pausePanel;
     public GameObject optionsPanel;
@@ -133,6 +134,7 @@ public class GameManager : MonoBehaviour
         dialogueManager = player.GetComponentInChildren<DialogueManager>();
         remoteSpeaker = player.GetComponentInChildren<RemoteSpeaker>();
         playerAnimator = player.transform.GetChild(1).GetComponent<Animator>();
+        interfaceCanvas = dialogueManager.dialogueBoxO.transform.parent.parent.gameObject;
 
         StartCoroutine(TransitionManager.Instance.ZoneInitialization(zoneHooks, transitionHooks, spriteRendererO, zoneEnemies.Count, zoneElements.Count, heartContainers.Count));
     }
@@ -333,6 +335,7 @@ public class GameManager : MonoBehaviour
             dialogueManager.dialogueBoxO.SetActive(false);
         }
         PauseTime();
+        HideInterface();
         paused = true;
         playerSource.PlayOneShot(validationSound);
     }
@@ -347,6 +350,7 @@ public class GameManager : MonoBehaviour
             dialogueManager.dialogueBoxO.SetActive(true);
         }
         UnPauseTime();
+        ShowInterface();
         paused = false;
         playerSource.time = 0.3f;
         playerSource.PlayOneShot(backSound);
@@ -466,5 +470,14 @@ public class GameManager : MonoBehaviour
         {
             zoneNameO.SetActive(false);
         }
+    }
+
+    public void HideInterface()
+    {
+        interfaceCanvas.SetActive(false);
+    }
+    public void ShowInterface()
+    {
+        interfaceCanvas.SetActive(true);
     }
 }

@@ -711,9 +711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a35c74761bbdf34080b3e4df828ca1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumSpeakerBeatTime: 10
-  minimumBeatCooldown: 3
-  reloadMultiplier: 3
+  maximumSpeakerBeatTime: 6
   airBeatTime: 1
   attackDamageMultiplier: 2
   knockbackDistance: -2
@@ -793,8 +791,11 @@ MonoBehaviour:
     type: 3}
   attackMissFx: {fileID: 4090550013682170832, guid: da77a1887e2917c4c97e4e8a5ee7d94e,
     type: 3}
+  speakerDisparitionFx: {fileID: 3257689244990487036, guid: 561189e8f62df63448bc3ea36027d1e3,
+    type: 3}
   isHook: 0
   speakerPlaced: 0
+  speakerAttackPreview: {fileID: 0}
 --- !u!114 &3822639274368582671
 MonoBehaviour:
   m_ObjectHideFlags: 0

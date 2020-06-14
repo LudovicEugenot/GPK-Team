@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5840408493620353
+--- !u!1 &729205934136266135
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7733555589185628558}
+  - component: {fileID: 729205934136266132}
+  m_Layer: 0
+  m_Name: Aoe1Pos2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &729205934136266132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 729205934136266135}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.85, y: -0.84, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 729205935855155227}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &729205934573984989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 729205934573984986}
   m_Layer: 0
   m_Name: Aoe1Pos
   m_TagString: Untagged
@@ -16,21 +46,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7733555589185628558
+--- !u!4 &729205934573984986
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5840408493620353}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.95, y: -0.04, z: 0}
+  m_GameObject: {fileID: 729205934573984989}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.99, y: -2.39, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4640962310328121490}
+  m_Father: {fileID: 729205935855155227}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2154408955617294386
+--- !u!1 &729205935492981428
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -38,40 +68,71 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4640962310328121490}
-  - component: {fileID: 5890350629540307997}
-  - component: {fileID: 7801041807212276419}
+  - component: {fileID: 729205935492981429}
   m_Layer: 0
-  m_Name: AoeSingle1
+  m_Name: Aoe1Pos4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4640962310328121490
+--- !u!4 &729205935492981429
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2154408955617294386}
+  m_GameObject: {fileID: 729205935492981428}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.54, y: 2.22, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 729205935855155227}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &729205935855155228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 729205935855155227}
+  - component: {fileID: 729205935855155226}
+  - component: {fileID: 729205935855155229}
+  m_Layer: 0
+  m_Name: AoeWarnedLine3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &729205935855155227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 729205935855155228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.97, y: -2.4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7733555589185628558}
-  - {fileID: 12405459990245921}
-  - {fileID: 6484013750836581955}
+  - {fileID: 729205934573984986}
+  - {fileID: 729205934136266132}
+  - {fileID: 729205936264914967}
+  - {fileID: 729205935492981429}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5890350629540307997
+--- !u!114 &729205935855155226
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2154408955617294386}
+  m_GameObject: {fileID: 729205935855155228}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40514d70a28a4a74eafae27451cc1f28, type: 3}
@@ -79,37 +140,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTesting: 0
   patternAoes:
-  - spawnPosition: {fileID: 7733555589185628558}
-    position: {x: -1.02, y: -2.44}
-    beatTimeBeforeNextAOE: 0
+  - spawnPosition: {fileID: 729205935492981429}
+    position: {x: -1.54, y: 2.22}
+    beatTimeBeforeNextAOE: 1
     damage: 2
     radius: 1
-    warningBeatTime: 3
-  - spawnPosition: {fileID: 12405459990245921}
-    position: {x: 1, y: -2.44}
+    warningBeatTime: 2
+  - spawnPosition: {fileID: 729205936264914967}
+    position: {x: -2.34, y: 0.68}
+    beatTimeBeforeNextAOE: 1
+    damage: 2
+    radius: 1.34
+    warningBeatTime: 2
+  - spawnPosition: {fileID: 729205934136266132}
+    position: {x: -1.85, y: -0.84}
     beatTimeBeforeNextAOE: 0
     damage: 2
-    radius: 1
-    warningBeatTime: 3
-  - spawnPosition: {fileID: 6484013750836581955}
-    position: {x: 3.0199997, y: -2.44}
-    beatTimeBeforeNextAOE: 0
+    radius: 2.31
+    warningBeatTime: 2
+  - spawnPosition: {fileID: 729205934573984986}
+    position: {x: 2.99, y: -2.39}
+    beatTimeBeforeNextAOE: 1
     damage: 2
     radius: 1
-    warningBeatTime: 3
+    warningBeatTime: 2
+  startNextAoeDirectly: 1
   warningZonePrefab: {fileID: 3856039389742450725, guid: 32e3e65ff3aa71742a82a31aa5aa308a,
     type: 3}
   aoeFx: {fileID: 3979257338722313630, guid: 4606c8d8d066b834e876f0a8b8576efe, type: 3}
   aoeSound: {fileID: 8300000, guid: d5a12afe6aa90254598ca0f4393f1e7b, type: 3}
   warningSound: {fileID: 8300000, guid: 5b3e8d27e8ce3c14cb6ebb43955ad47b, type: 3}
   warningSoundOffset: 0.1
---- !u!82 &7801041807212276419
+--- !u!82 &729205935855155229
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2154408955617294386}
+  m_GameObject: {fileID: 729205935855155228}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5252602945293585120, guid: 5b672f6cc4e102c4dad0dffd05495290,
@@ -200,7 +268,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &3885127048805622463
+--- !u!1 &729205936264914966
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,37 +276,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 12405459990245921}
-  m_Layer: 0
-  m_Name: Aoe1Pos2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &12405459990245921
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3885127048805622463}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.97, y: -0.04, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4640962310328121490}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6559328133351402538
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6484013750836581955}
+  - component: {fileID: 729205936264914967}
   m_Layer: 0
   m_Name: Aoe1Pos3
   m_TagString: Untagged
@@ -246,17 +284,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6484013750836581955
+--- !u!4 &729205936264914967
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6559328133351402538}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.99, y: -0.04, z: 0}
+  m_GameObject: {fileID: 729205936264914966}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.34, y: 0.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4640962310328121490}
+  m_Father: {fileID: 729205935855155227}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

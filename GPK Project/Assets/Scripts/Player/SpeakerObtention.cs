@@ -46,6 +46,5 @@ public class SpeakerObtention : MonoBehaviour
         GameManager.Instance.dialogueManager.StartTalk(triggeredTalk, GameManager.Instance.player.transform.position, 3);
         WorldManager.currentStoryStep = WorldManager.StoryStep.SpeakerObtained;
         spriteRenderer.enabled = false;
-        GameManager.Instance.playerManager.isInControl = true;
     }
 }

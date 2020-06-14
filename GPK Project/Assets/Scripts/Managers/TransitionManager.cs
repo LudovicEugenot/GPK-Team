@@ -124,6 +124,7 @@ public class TransitionManager : MonoBehaviour
 
     public IEnumerator ZoneInitialization(List<HookState> zoneHooks, List<TransitionHook> transitionHooks, GameObject playerRendererO, int enemyNumber, int elementNumber, int heartContainerNumber)
     {
+        //GameManager.Instance.HideInterface();
         ZoneHandler.Zone potentialZone = null;
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         foreach (ZoneHandler.Zone zone in zoneHandler.zones)
@@ -218,12 +219,15 @@ public class TransitionManager : MonoBehaviour
         GameManager.Instance.playerManager.animSynchronizer.Synchronize();
         blackScreen.SetActive(false);
 
+        GameManager.Instance.ShowInterface();
+
         StartCoroutine(GameManager.Instance.DisplayZoneName());
     }
 
     public IEnumerator TransitionToConnectedZone(TransitionHook transitionHook)
     {
         GameObject oneFoot = null;
+        GameManager.Instance.HideInterface();
         if(transitionHook.customCinematicTransitionSceneIndex != 0)
         {
             currentPlayerRendererO.SetActive(false);

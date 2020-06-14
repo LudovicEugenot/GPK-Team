@@ -7,8 +7,6 @@ public class RemoteSpeaker : MonoBehaviour
 {
     [Header("Speaker options")]
     public int maximumSpeakerBeatTime;
-    public int minimumBeatCooldown;
-    public int reloadMultiplier;
     public int airBeatTime;
     public float attackDamageMultiplier;
     public float knockbackDistance;
@@ -20,6 +18,7 @@ public class RemoteSpeaker : MonoBehaviour
     public Image cooldownDisplay;
     public GameObject attackFx;
     public GameObject attackMissFx;
+    public GameObject speakerDisparitionFx;
     public bool isHook;
 
     private GameObject remoteSpeakerO;
@@ -68,15 +67,7 @@ public class RemoteSpeaker : MonoBehaviour
         }
         else
         {
-            if (speakerRemainingTime < maximumSpeakerBeatTime && GameManager.Instance.Beat.onBeatFirstFrame)
-            {
-                speakerRemainingTime += reloadMultiplier;
-                if(speakerRemainingTime > maximumSpeakerBeatTime)
-                {
-                    speakerRemainingTime = maximumSpeakerBeatTime;
-                }
-            }
-            else if (speakerRemainingTime == maximumSpeakerBeatTime && Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
+            if (Input.GetButtonDown("Blink") && !GameManager.Instance.blink.IsSelecting() && !PlayerManager.IsMouseNearPlayer() && remoteSpeakerO == null && GameManager.Instance.Beat.CanAct() && !GameManager.Instance.paused && GameManager.Instance.playerManager.isInControl)
             {
                 StartCoroutine(ThrowSpeaker());
             }
@@ -121,7 +112,9 @@ public class RemoteSpeaker : MonoBehaviour
 
     public IEnumerator PickupSpeaker()
     {
+        Instantiate(speakerDisparitionFx, remoteSpeakerO.transform.position, Quaternion.identity);
         Destroy(remoteSpeakerO);
+        speakerRemainingTime = maximumSpeakerBeatTime;
         remoteSpeakerO = null;
         speakerAttackPreview = null;
         speakerPlaced = false;
@@ -131,7 +124,7 @@ public class RemoteSpeaker : MonoBehaviour
     private IEnumerator SpeakerEffect()
     {
         Instantiate(onTimeParticleEffectPrefab, remoteSpeakerO.transform.position, Quaternion.identity);
-        speakerRemainingTime = maximumSpeakerBeatTime - minimumBeatCooldown;
+        speakerRemainingTime = maximumSpeakerBeatTime;
         yield return null;
     }
 
