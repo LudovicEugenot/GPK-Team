@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2334,7 +2334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ff6996f6e542443913aae6d1091980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSceneBuildIndex: 1
+  startSceneBuildIndex: 40
   musicManager: {fileID: 675292680}
   specifiedSaveFilePath: 
   playerDataSaveFileName: /playerInfo

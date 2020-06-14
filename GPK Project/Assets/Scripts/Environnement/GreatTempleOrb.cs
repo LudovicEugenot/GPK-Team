@@ -8,10 +8,10 @@ public class GreatTempleOrb : MonoBehaviour
 
     private WorldManager.WorldEvent worldEventToLightUp;
     private Animator animator;
-    private Light2D light;
+    private Light2D orbLight;
     void Start()
     {
-        light = GetComponentInChildren<Light2D>();
+        orbLight = GetComponentInChildren<Light2D>();
         animator = GetComponent<Animator>();
         worldEventToLightUp = WorldManager.GetWorldEvent(eventToLightUp);
     }
@@ -19,6 +19,6 @@ public class GreatTempleOrb : MonoBehaviour
     void Update()
     {
         animator.SetBool("LightenUp", worldEventToLightUp.occured);
-        light.enabled = worldEventToLightUp.occured;
+        orbLight.enabled = worldEventToLightUp.occured;
     }
 }

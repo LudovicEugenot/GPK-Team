@@ -23,7 +23,6 @@ public class Boss : MonoBehaviour
     private int attacksBeforeBubble = 0;
     private int bubblesBeforeAttack = 0;
     private int beatsUntilAction;
-    private bool tryingToSwitchAction = false;
     private bool isPassive;
 
     private List<GameObject> currentActions = new List<GameObject>();
@@ -88,17 +87,6 @@ public class Boss : MonoBehaviour
                     if (beatsUntilAction <= 0)
                     {
                         ThrowAOE();
-                        /*if (tryingToSwitchAction)
-                        {
-                            if (CanSwitchActions())
-                            {
-                                ThrowAOE();
-                            }
-                        }
-                        else
-                        {
-                            ThrowAOE();
-                        }*/
                     }
                     else
                     {
@@ -165,7 +153,6 @@ public class Boss : MonoBehaviour
             {
                 throwingAOE = false;
                 attacksBeforeBubble = bossPhases[bossPhaseIndex].numberOfAttacksBeforeBubble;
-                tryingToSwitchAction = true;
             }
 
             currentActions.Add(Instantiate(patternChosen.gameObject));
@@ -194,7 +181,6 @@ public class Boss : MonoBehaviour
         {
             throwingAOE = true;
             bubblesBeforeAttack = bossPhases[bossPhaseIndex].numberOfBubblesBeforeAttack;
-            tryingToSwitchAction = true;
             if(bossPhaseIndex < bossPhases.Length - 1)
             {
                 GameManager.Instance.dialogueManager.StartCommentary(bubbleExplanation, 2.0f, Vector2.zero);

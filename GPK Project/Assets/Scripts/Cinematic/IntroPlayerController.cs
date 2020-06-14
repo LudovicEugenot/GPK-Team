@@ -8,13 +8,16 @@ namespace Introduction
     {
         public float walkingSpeed;
         public float minusXBoundary;
+        public IntroManager introManager;
 
         private Vector2 mousePosition;
         private Camera mainCamera;
         private Rigidbody2D rb;
+        [HideInInspector] public Animator animator;
         void Start()
         {
             mainCamera = Camera.main;
+            animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
         }
 
@@ -28,7 +31,8 @@ namespace Introduction
             mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mouseDirection = mousePosition - (Vector2)transform.position;
             mouseDirection.Normalize();
-            if (Input.GetButton("Blink"))
+            animator.SetBool("isWalking", rb.velocity.magnitude > 0);
+            if (Input.GetButton("Blink") && !introManager.videoPlaying)
             {
                 if (mouseDirection.x > 0)
                 {
