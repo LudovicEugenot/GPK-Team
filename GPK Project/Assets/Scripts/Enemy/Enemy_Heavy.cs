@@ -161,7 +161,7 @@ public class Enemy_Heavy : EnemyBase
 
         animator.SetBool("InTheAir", !FalseDuringBeatProgression(0f, 0.5f));
         float progression = CurrentBeatProgressionAdjusted(2, 0);
-        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 0.5f);
+        Jump(endOfDash, movementCurve.Evaluate(progression), jumpCurve.Evaluate(progression), 1.2f);
     }
 
     protected override void KnockbackBehaviour()
@@ -195,7 +195,7 @@ public class Enemy_Heavy : EnemyBase
     private void Jump(Vector2 destination, float translationLerp, float jumpLerp, float jumpHeightTweak)
     {
         //La hauteur du saut dépend déjà de la longueur du saut demandé donc jumpHeightTweak est juste un multiplicateur de cette valeur.
-        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.6f * jumpHeightTweak;
+        float JumpHeight = Vector2.Distance(positionStartOfBeat, destination) * 0.33f * jumpHeightTweak;
         parent.position = Vector2.Lerp(positionStartOfBeat, destination, translationLerp) + Vector2.Lerp(Vector2.zero, new Vector2(0, JumpHeight), jumpLerp);
     }
 
