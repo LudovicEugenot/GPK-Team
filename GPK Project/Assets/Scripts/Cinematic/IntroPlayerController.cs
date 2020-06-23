@@ -36,11 +36,11 @@ namespace Introduction
             {
                 if (mouseDirection.x > 0)
                 {
-                    rb.velocity = new Vector2(walkingSpeed * Time.deltaTime, 0.0f);
+                    rb.velocity = new Vector2(walkingSpeed, 0.0f);
                 }
                 else if (transform.position.x > minusXBoundary + 0.1f)
                 {
-                    rb.velocity = new Vector2(-walkingSpeed * Time.deltaTime, 0.0f);
+                    rb.velocity = new Vector2(-walkingSpeed, 0.0f);
                 }
                 else
                 {
